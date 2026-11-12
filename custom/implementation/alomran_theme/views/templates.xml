@@ -86,19 +86,20 @@
     <!-- ============================================================ -->
     <!-- Schema.org JSON-LD - Structured Data for SEO (Updated)     -->
     <!-- ============================================================ -->
+    <!-- The links come from Website > Settings > Domain (website._alomran_site_url). -->
+    <t t-set="alomran_site_url" t-value="website._alomran_site_url() if website else 'https://alomrantd.com'"/>
     <script type="application/ld+json">
-    <![CDATA[
     {
       "@context": "https://schema.org",
       "@graph": [
         {
           "@type": ["EducationalOrganization", "LocalBusiness"],
-          "@id": "https://alomrantd.com/#organization",
+          "@id": "<t t-out="alomran_site_url"/>/#organization",
           "name": "Al Omran Training and Development Center",
           "alternateName": ["مركز العمران للتدريب والتطوير", "مركز العمران", "Al Omran"],
-          "url": "https://alomrantd.com",
-          "logo": "https://alomrantd.com/alomran_theme/static/src/img/logo1.png",
-          "image": "https://alomrantd.com/alomran_theme/static/src/img/hero-bg.jpg",
+          "url": "<t t-out="alomran_site_url"/>",
+          "logo": "<t t-out="alomran_site_url"/>/alomran_theme/static/src/img/logo1.png",
+          "image": "<t t-out="alomran_site_url"/>/alomran_theme/static/src/img/hero-bg.jpg",
           "description": "مركز تدريب في الإمارات يقدم برامج في اللغات وتقنية المعلومات والأعمال والدورات المهنية ومتابعة دراسية. معتمد منذ 2010، و13 فرعاً في العين وأبوظبي ودبي والشارقة ورأس الخيمة والفجيرة.",
           "foundingDate": "2010",
           "email": "alomran.td@gmail.com",
@@ -141,15 +142,14 @@
         },
         {
           "@type": "WebSite",
-          "@id": "https://alomrantd.com/#website",
-          "url": "https://alomrantd.com",
+          "@id": "<t t-out="alomran_site_url"/>/#website",
+          "url": "<t t-out="alomran_site_url"/>",
           "name": "مركز العمران للتدريب والتطوير",
           "inLanguage": ["ar", "en"],
-          "publisher": {"@id": "https://alomrantd.com/#organization"}
+          "publisher": {"@id": "<t t-out="alomran_site_url"/>/#organization"}
         }
       ]
     }
-    ]]>
     </script>
 
     <!-- WebPage + Breadcrumb of the Arabic homepage: on that page only (this
@@ -158,34 +158,32 @@
     <t t-set="alomran_schema_path" t-value="(request and request.httprequest.path or '/').rstrip('/')"/>
     <t t-if="request and request.lang and request.lang.code.startswith('ar') and alomran_schema_path in ('', '/' + request.lang.url_code)">
     <script type="application/ld+json">
-    <![CDATA[
     {
       "@context": "https://schema.org",
       "@graph": [
         {
           "@type": "WebPage",
-          "@id": "https://alomrantd.com/ar#webpage",
-          "url": "https://alomrantd.com/ar",
+          "@id": "<t t-out="alomran_site_url"/>/ar#webpage",
+          "url": "<t t-out="alomran_site_url"/>/ar",
           "name": "دورات لغة إنجليزية ومتابعة دراسية ودورات مهنية في الإمارات | مركز العمران",
           "inLanguage": "ar",
-          "isPartOf": {"@id": "https://alomrantd.com/#website"},
-          "about": {"@id": "https://alomrantd.com/#organization"}
+          "isPartOf": {"@id": "<t t-out="alomran_site_url"/>/#website"},
+          "about": {"@id": "<t t-out="alomran_site_url"/>/#organization"}
         },
         {
           "@type": "BreadcrumbList",
-          "@id": "https://alomrantd.com/ar#breadcrumb",
+          "@id": "<t t-out="alomran_site_url"/>/ar#breadcrumb",
           "itemListElement": [
             {
               "@type": "ListItem",
               "position": 1,
               "name": "الرئيسية",
-              "item": "https://alomrantd.com/ar"
+              "item": "<t t-out="alomran_site_url"/>/ar"
             }
           ]
         }
       ]
     }
-    ]]>
     </script>
     </t>
 

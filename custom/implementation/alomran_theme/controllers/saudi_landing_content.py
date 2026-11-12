@@ -11,7 +11,10 @@
 
 PHONE_NUMBER = '+971505829697'
 PHONE_DISPLAY = '+971 50 582 9697'
-ORG_ID = 'https://alomrantd.com/#organization'
+from .site_facts import DEFAULT_SITE_URL
+
+# fallback only: the pages use the website domain (see main.home_content_org_id)
+ORG_ID = DEFAULT_SITE_URL + '/#organization'
 
 # رقم الواتساب الافتراضي (ممكن يتغير من System Parameter: alomran.saudi_whatsapp)
 WHATSAPP_NUMBER = '971505829697'

@@ -12,7 +12,7 @@
 # ------------------------------------------------------------------
 # أرقام المركز — لازم تتطابق مع باقي صفحات الموقع
 # ------------------------------------------------------------------
-from .site_facts import BRANCHES  # noqa: F401  (عدد الفروع من مكان واحد)
+from .site_facts import BRANCHES, DEFAULT_SITE_URL  # noqa: F401  (عدد الفروع من مكان واحد)
 
 TRAINEES = '+20,000'
 
@@ -26,7 +26,8 @@ PHONE_DISPLAY = '+971 50 582 9697'
 # رابط "شاهد المزيد من تجارب المتدربين"
 MORE_TESTIMONIALS_URL = 'https://www.instagram.com/alomran.td/'
 
-ORG_ID = 'https://alomrantd.com/#organization'
+# fallback only: the pages use the website domain (see main.home_content_org_id)
+ORG_ID = DEFAULT_SITE_URL + '/#organization'
 
 # ------------------------------------------------------------------
 # البرامج — key: (اسم البرنامج بالـ CRM، أيقونة)

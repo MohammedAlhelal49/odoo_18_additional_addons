@@ -9,3 +9,7 @@
 """
 
 BRANCHES = 13
+
+# Public URL of the website used when Website > Settings > Domain is empty
+# (the live value comes from website._alomran_site_url()).
+DEFAULT_SITE_URL = 'https://alomrantd.com'

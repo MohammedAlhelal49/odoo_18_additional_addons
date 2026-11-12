@@ -139,9 +139,15 @@ def _valid_email(email):
     return bool(email) and len(email) <= 150 and bool(_EMAIL_RE.match(email))
 
 
+def site_url():
+    """رابط الموقع من Website > Settings > Domain (وإلا https://alomrantd.com)."""
+    website = getattr(request, 'website', None)
+    return website._alomran_site_url() if website else site_facts.DEFAULT_SITE_URL
+
+
 def home_content_org_id():
-    """@id المؤسسة بالـ JSON-LD (نفس الموجود بصفحات الهبوط)."""
-    return english_content.ORG_ID
+    """@id المؤسسة بالـ JSON-LD (نفس الموجود بصفحات الهبوط) — من دومين الموقع."""
+    return site_url() + '/#organization'
 
 
 def _client_ip():
@@ -1049,9 +1055,9 @@ class AlomranWebsite(http.Controller):
         """JSON-LD لقائمة البرامج (Course) مربوطة بالـ EducationalOrganization الموجود."""
         provider = {
             '@type': 'EducationalOrganization',
-            '@id': english_content.ORG_ID,
+            '@id': home_content_org_id(),
             'name': content['org_name'],
-            'sameAs': 'https://alomrantd.com',
+            'sameAs': site_url(),
         }
         items = []
         for position, prog in enumerate(content['programs']['items'], start=1):
@@ -1261,9 +1267,9 @@ class AlomranWebsite(http.Controller):
         """JSON-LD لقائمة الخدمات (Service) مربوطة بالـ EducationalOrganization الموجود."""
         provider = {
             '@type': 'EducationalOrganization',
-            '@id': tutoring_content.ORG_ID,
+            '@id': home_content_org_id(),
             'name': content['org_name'],
-            'sameAs': 'https://alomrantd.com',
+            'sameAs': site_url(),
         }
         items = []
         for position, svc in enumerate(content['services']['items'], start=1):
@@ -1489,9 +1495,9 @@ class AlomranWebsite(http.Controller):
         """JSON-LD لقائمة الدورات (Course) مربوطة بالـ EducationalOrganization الموجود."""
         provider = {
             '@type': 'EducationalOrganization',
-            '@id': women_content.ORG_ID,
+            '@id': home_content_org_id(),
             'name': content['org_name'],
-            'sameAs': 'https://alomrantd.com',
+            'sameAs': site_url(),
         }
         items = []
         for position, course in enumerate(content['courses']['items'], start=1):
@@ -1727,9 +1733,9 @@ class AlomranWebsite(http.Controller):
     def _saudi_schema(self, content):
         provider = {
             '@type': 'EducationalOrganization',
-            '@id': saudi_content.ORG_ID,
+            '@id': home_content_org_id(),
             'name': content['org_name'],
-            'sameAs': 'https://alomrantd.com',
+            'sameAs': site_url(),
         }
         items = []
         for position, svc in enumerate(content['services']['items'], start=1):
