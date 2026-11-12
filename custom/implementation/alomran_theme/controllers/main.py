@@ -4,6 +4,7 @@ from odoo.http import request
 from odoo.tools import plaintext2html
 from markupsafe import Markup
 from datetime import datetime, timedelta
+import ipaddress
 from .openai_ads import send_lead_created, lead_event_id, pixel_id as openai_pixel_id
 from . import english_landing_content as english_content
 from . import tutoring_landing_content as tutoring_content
@@ -14,6 +15,7 @@ from . import site_facts
 from . import about_content
 from . import courses_content
 from . import contact_content
+from . import saudi_landing_content as saudi_content
 from urllib.parse import quote, urlencode as url_encode
 import json
 import re
@@ -24,7 +26,12 @@ _logger = logging.getLogger(__name__)
 # ============================================================
 # SECURITY HELPERS
 # ============================================================
-RATE_LIMIT_COUNT = 10           # أقصى عدد طلبات من نفس الـ IP (كل فورمات الموقع)
+# حماية الفورمات من السبام (الـ honeypot وفحص التكرار شغالين كمان):
+# - حد لكل IP عام. عالي شوي لأن شبكات الموبايل (اتصالات/du/STC...) بتشارك نفس الـ IP
+#   بين كتير مستخدمين (CGNAT) — حد منخفض كان عم يمنع ناس حقيقيين يسجلوا.
+# - حد لكل رقم هاتف: هو اللي بيوقف السبام الحقيقي لنفس الشخص.
+RATE_LIMIT_COUNT = 30           # أقصى عدد طلبات من نفس الـ IP العام
+RATE_LIMIT_PHONE_COUNT = 5      # أقصى عدد طلبات بنفس رقم الهاتف
 RATE_LIMIT_WINDOW_MIN = 60      # خلال هالمدة (دقائق)
 
 _CTRL_RE = re.compile(r'[\x00-\x08\x0b\x0c\x0e-\x1f\x7f]')
@@ -58,6 +65,10 @@ WOMEN_HERO_VIDEO_FILES = ('alomran_theme/static/src/video/women_hero.mp4',
                           'alomran_theme/static/src/video/women_hero.webm')
 WOMEN_HERO_POSTER_FILES = ('alomran_theme/static/src/video/women_hero_poster.webp',
                            'alomran_theme/static/src/video/women_hero_poster.jpg')
+SAUDI_HERO_VIDEO_FILES = ('alomran_theme/static/src/video/saudi_hero.mp4',
+                          'alomran_theme/static/src/video/saudi_hero.webm')
+SAUDI_HERO_POSTER_FILES = ('alomran_theme/static/src/video/saudi_hero_poster.webp',
+                           'alomran_theme/static/src/video/saudi_hero_poster.jpg')
 
 # ------------------------------------------------------------
 # الفروع: قيمة الفرع بالفورم -> اسم الشركة بـ Odoo
@@ -106,6 +117,12 @@ TUTORING_DUPLICATE_HOURS = 24
 WOMEN_LANDING_URL = '/women-courses'
 WOMEN_DUPLICATE_HOURS = 24
 
+# صفحة التعلم أونلاين لطلاب السعودية
+SAUDI_LANDING_URL = '/saudi-online'
+SAUDI_DUPLICATE_HOURS = 24
+# جوال سعودي: 05XXXXXXXX / 5XXXXXXXX / 9665XXXXXXXX / 009665XXXXXXXX
+_SA_MOBILE_RE = re.compile(r'^(?:00966|966|0)?(5\d{8})$')
+
 
 def _clean(value, max_len=200, multiline=False):
     """تنظيف مدخلات الزائر للتخزين: نص بس، بدون محارف تحكم، بطول محدود.
@@ -132,16 +149,40 @@ def _client_ip():
     return request.httprequest.remote_addr or ''
 
 
-def _rate_limited(ip):
-    if not ip:
-        return False
+def _public_ip(ip):
+    """True إذا الـ IP عام فعلاً. IP داخلي/محلي معناه إن Odoo ورا proxy بدون proxy_mode،
+    فكل الزوار بيطلعوا بنفس الـ IP — وقتها ما منحسب عليه (كان بيسكّر الفورمات عالكل)."""
     try:
-        since = datetime.now() - timedelta(minutes=RATE_LIMIT_WINDOW_MIN)
-        count = request.env['crm.lead'].sudo().with_context(active_test=False).search_count([
-            ('create_date', '>=', since.strftime('%Y-%m-%d %H:%M:%S')),
-            ('description', 'ilike', f'IP: {ip}'),
-        ])
-        return count >= RATE_LIMIT_COUNT
+        addr = ipaddress.ip_address(ip)
+    except ValueError:
+        return False
+    return not (addr.is_private or addr.is_loopback or addr.is_link_local or addr.is_reserved)
+
+
+def _rate_limited(ip, phone=None):
+    since = datetime.now() - timedelta(minutes=RATE_LIMIT_WINDOW_MIN)
+    since_str = since.strftime('%Y-%m-%d %H:%M:%S')
+    try:
+        Lead = request.env['crm.lead'].sudo().with_context(active_test=False)
+
+        # 1) لكل رقم هاتف (الحماية الأساسية)
+        if phone and Lead.search_count([
+            ('create_date', '>=', since_str),
+            ('phone', '=', phone),
+        ]) >= RATE_LIMIT_PHONE_COUNT:
+            return True
+
+        # 2) لكل IP — بس إذا عام. المطابقة دقيقة: "IP: 1.2.3.4" ما بتطابق "IP: 1.2.3.45"
+        if not ip:
+            return False
+        if not _public_ip(ip):
+            _logger.warning('Rate limit: non-public client IP %s — check proxy_mode in odoo.conf; '
+                            'IP limit skipped', ip)
+            return False
+        return Lead.search_count([
+            ('create_date', '>=', since_str),
+            ('description', 'ilike', f'IP: {ip}<'),
+        ]) >= RATE_LIMIT_COUNT
     except Exception as e:
         _logger.warning('Rate-limit check error: %s', e)
         return False
@@ -365,7 +406,7 @@ class AlomranWebsite(http.Controller):
                 'maps_link': 'https://maps.app.goo.gl/SqjyxrKBsU5LsyPN6',
                 'embed_link': 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1846252.4627421533!2d57.85537719726561!3d25.3390614588184!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3e5f5987a4caac77%3A0xb875acbf965eb114!2z2YXYsdmD2LIg2KfZhNi52YXYsdin2YYg2YTZhNiq2K_YsdmK2Kgg2Ygg2KfZhNiq2LfZiNmK2LEg2YHYsdi5INin2YTYtNin2LHZgtip!5e0!3m2!1sar!2slt!4v1771378619575!5m2!1sar!2slt',
                 'image': '/alomran_theme/static/src/img/branches/sharjah_center.jpg',
-                'working_hours': 'Saturday - Thursday: 8:00 AM - 8:00 PM' if is_en else 'السبت - الخميس: 8:00 ص - 8:00 م',
+                'working_hours': 'Saturday - Thursday: 9:00 AM - 10:00 PM' if is_en else 'السبت - الخميس: 9:00 ص - 10:00 م',
             },
             {
                 'slug': 'alain-city-center',
@@ -378,7 +419,7 @@ class AlomranWebsite(http.Controller):
                 'maps_link': 'https://maps.app.goo.gl/CATYSRrQgXAEVbqy9',
                 'embed_link': 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1862946.6091659945!2d58.21243286132814!3d24.221919199872975!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3e8ab78bb01d0847%3A0x402d1b2a947d37f1!2sAl%20Omran%20center%20for%20training%20and%20developing!5e0!3m2!1sar!2slt!4v1771377608099!5m2!1sar!2slt',
                 'image': '/alomran_theme/static/src/img/branches/alain_murbaa.jpg',
-                'working_hours': 'Saturday - Thursday: 8:00 AM - 8:00 PM' if is_en else 'السبت - الخميس: 8:00 ص - 8:00 م',
+                'working_hours': 'Saturday - Thursday: 9:00 AM - 10:00 PM' if is_en else 'السبت - الخميس: 9:00 ص - 10:00 م',
             },
             {
                 'slug': 'alain-foah-mall',
@@ -391,7 +432,7 @@ class AlomranWebsite(http.Controller):
                 'maps_link': 'https://maps.app.goo.gl/zzUzT5iS8wZXjAVc7',
                 'embed_link': 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1861166.29000234!2d58.23165893554686!3d24.343343107244273!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3ef54b16a9464c27%3A0x7c74d0bf4c530123!2z2YXYsdmD2LIg2KfZhNi52YXYsdin2YYg2YTZhNiq2K_YsdmK2Kgg2Ygg2KfZhNiq2LfZiNmK2LEg2YHYsdi5INin2YTZgdmI2LnYqQ!5e0!3m2!1sar!2slt!4v1771377722255!5m2!1sar!2slt',
                 'image': '/alomran_theme/static/src/img/branches/alain_alfouaa.jpg',
-                'working_hours': 'Saturday - Thursday: 8:00 AM - 8:00 PM' if is_en else 'السبت - الخميس: 8:00 ص - 8:00 م',
+                'working_hours': 'Saturday - Thursday: 9:00 AM - 10:00 PM' if is_en else 'السبت - الخميس: 9:00 ص - 10:00 م',
             },
             {
                 'slug': 'alain-barari-mall',
@@ -404,7 +445,7 @@ class AlomranWebsite(http.Controller):
                 'maps_link': 'https://maps.app.goo.gl/cxZwAUdZvCV33dnHA',
                 'embed_link': 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3642.4396765191404!2d55.8298772!3d24.086028799999998!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3e8abf002a3c24e3%3A0x612b51ca0e6fedca!2z2YXYsdmD2LIg2KfZhNi52YXYsdin2YYg2YTZhNiq2K_YsdmK2Kgg2Ygg2KfZhNiq2LfZiNmK2LEg2YHYsdi5INin2YTZiNix2KfYqiDZhdmI2YQ!5e0!3m2!1sar!2slt!4v1771377222330!5m2!1sar!2slt',
                 'image': '/alomran_theme/static/src/img/branches/alain_albrari.jpg',
-                'working_hours': 'Saturday - Thursday: 8:00 AM - 8:00 PM' if is_en else 'السبت - الخميس: 8:00 ص - 8:00 م',
+                'working_hours': 'Saturday - Thursday: 9:00 AM - 10:00 PM' if is_en else 'السبت - الخميس: 9:00 ص - 10:00 م',
             },
             {
                 'slug': 'alain-yahar-mall',
@@ -417,7 +458,7 @@ class AlomranWebsite(http.Controller):
                 'maps_link': 'https://maps.app.goo.gl/wvRP9zkHkaLgHXuk8',
                 'embed_link': 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1862964.9282502981!2d57.98171997070311!3d24.220666802807237!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3e8aab1b21a70995%3A0x8b4e507f5a233cac!2z2YXYsdmD2LIg2KfZhNi52YXYsdin2YYg2YTZhNiq2K_YsdmK2Kgg2Ygg2KfZhNiq2LfZiNmK2LEg2YHYsdi5INin2YTYudin2YXYsdip!5e0!3m2!1sar!2slt!4v1771377929835!5m2!1sar!2slt',
                 'image': '/alomran_theme/static/src/img/branches/allain_alyaher.jpg',
-                'working_hours': 'Saturday - Thursday: 8:00 AM - 8:00 PM' if is_en else 'السبت - الخميس: 8:00 ص - 8:00 م',
+                'working_hours': 'Saturday - Thursday: 9:00 AM - 10:00 PM' if is_en else 'السبت - الخميس: 9:00 ص - 10:00 م',
             },
             {
                 'slug': 'zakher-makani-mall',
@@ -430,7 +471,7 @@ class AlomranWebsite(http.Controller):
                 'maps_link': 'https://maps.app.goo.gl/x52eSzwpa7HPwbrbA',
                 'embed_link': 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1864592.4783181893!2d58.14102172851561!3d24.10915419847753!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3e8abbbcfe88aafb%3A0x6f60a31b074fad23!2z2YXYsdmD2LIg2KfZhNi52YXYsdin2YYg2YTZhNiq2K_YsdmK2Kgg2Ygg2KfZhNiq2LfZiNmK2LEg2YHYsdi5INmF2YPYp9mG2Yog2YXZiNmEINiy2KfYrtix!5e0!3m2!1sar!2slt!4v1771377839762!5m2!1sar!2slt',
                 'image': '/alomran_theme/static/src/img/branches/alain_zakher.jpg',
-                'working_hours': 'Saturday - Thursday: 8:00 AM - 8:00 PM' if is_en else 'السبت - الخميس: 8:00 ص - 8:00 م',
+                'working_hours': 'Saturday - Thursday: 9:00 AM - 10:00 PM' if is_en else 'السبت - الخميس: 9:00 ص - 10:00 م',
             },
             {
                 'slug': 'abudhabi-mazyed-mall',
@@ -443,7 +484,7 @@ class AlomranWebsite(http.Controller):
                 'maps_link': 'https://maps.app.goo.gl/2TZ819WHstLZwZXx7',
                 'embed_link': 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d232588.58344729056!2d54.845294952392585!3d24.374462733901805!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3e5e4723b6b3e2ed%3A0x68af7c666c2da83c!2z2LTYp9ix2Lkg2LPZhNi32KfZhiDYqNmGINmF2K3ZhdivINin2YTZgtio2YrYs9mKIC8g2YXYstmK2K8g2YXZiNmE!5e0!3m2!1sar!2slt!4v1771378027540!5m2!1sar!2slt',
                 'image': '/alomran_theme/static/src/img/branches/abudhabi_mazyd.jpg',
-                'working_hours': 'Saturday - Thursday: 8:00 AM - 8:00 PM' if is_en else 'السبت - الخميس: 8:00 ص - 8:00 م',
+                'working_hours': 'Saturday - Thursday: 9:00 AM - 10:00 PM' if is_en else 'السبت - الخميس: 9:00 ص - 10:00 م',
             },
             {
                 'slug': 'abudhabi-muroor',
@@ -456,7 +497,7 @@ class AlomranWebsite(http.Controller):
                 'maps_link': 'https://maps.app.goo.gl/nezYWL2BYTEUHvbf9',
                 'embed_link': 'https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d3631.2847310108154!2d54.3762301850047!3d24.475589484236885!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3e5e67006bbe0b5f%3A0x97b4ffaefcae532a!2z2YXYsdmD2LIg2KfZhNi52YXYsdin2YYg2YTZhNiq2K_YsdmK2Kgg2Ygg2KfZhNiq2LfZiNmK2LEg2YHYsdi5INin2KjZiNi42KjZiiDYtNin2LHYuSDYp9mE2YXYsdmI2LE!5e0!3m2!1sar!2slt!4v1771378199267!5m2!1sar!2slt',
                 'image': '/alomran_theme/static/src/img/branches/abudabi_almoror.jpg',
-                'working_hours': 'Saturday - Thursday: 8:00 AM - 8:00 PM' if is_en else 'السبت - الخميس: 8:00 ص - 8:00 م',
+                'working_hours': 'Saturday - Thursday: 9:00 AM - 10:00 PM' if is_en else 'السبت - الخميس: 9:00 ص - 10:00 م',
             },
             {
                 'slug': 'dubai-garhoud',
@@ -469,7 +510,7 @@ class AlomranWebsite(http.Controller):
                 'maps_link': 'https://maps.app.goo.gl/KPe6jwVUEFZJ9fKTA',
                 'embed_link': 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d923783.5359432719!2d56.56105041503905!3d25.252769556326484!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3e5f5dcc0638abf3%3A0xf7abd5f5920bdc28!2z2YXYsdmD2LIg2KfZhNi52YXYsdin2YYg2YTZhNiq2K_YsdmK2Kgg2Ygg2KfZhNiq2LfZiNmK2LEg2YHYsdi5INiv2KjZiiDYp9mE2YLYsdmH2YjYrw!5e0!3m2!1sar!2slt!4v1771378338236!5m2!1sar!2slt',
                 'image': '/alomran_theme/static/src/img/branches/dubai_alkarhod.jpg',
-                'working_hours': 'Saturday - Thursday: 8:00 AM - 8:00 PM' if is_en else 'السبت - الخميس: 8:00 ص - 8:00 م',
+                'working_hours': 'Saturday - Thursday: 9:00 AM - 10:00 PM' if is_en else 'السبت - الخميس: 9:00 ص - 10:00 م',
             },
             {
                 'slug': 'dubai-barsha',
@@ -482,7 +523,7 @@ class AlomranWebsite(http.Controller):
                 'maps_link': 'https://maps.app.goo.gl/f6kEvPw7FzKpSu3H8',
                 'embed_link': 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3612.7991416704585!2d55.184069699999995!3d25.1086597!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3e5f6bd7b2fe688d%3A0xbb00ef3993ecffcb!2z2YXYsdmD2LIg2KfZhNi52YXYsdin2YYg2YTZhNiq2K_YsdmK2Kgg2Ygg2KfZhNiq2LfZiNmK2LEg2YHYsdi5INi02KfYsdi5INin2YTYtNmK2K4g2LLYp9mK2K8g2K_YqNmK!5e0!3m2!1sar!2slt!4v1771378453145!5m2!1sar!2slt',
                 'image': '/alomran_theme/static/src/img/branches/dubai_albarshaa.jpg',
-                'working_hours': 'Saturday - Thursday: 8:00 AM - 8:00 PM' if is_en else 'السبت - الخميس: 8:00 ص - 8:00 م',
+                'working_hours': 'Saturday - Thursday: 9:00 AM - 10:00 PM' if is_en else 'السبت - الخميس: 9:00 ص - 10:00 م',
             },
             {
                 'slug': 'rak-rak-mall',
@@ -495,7 +536,7 @@ class AlomranWebsite(http.Controller):
                 'maps_link': 'https://maps.app.goo.gl/pV2LmsL4NZCxzcrc9',
                 'embed_link': 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3592.9505634965103!2d55.95852920000001!3d25.772196399999995!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3ef677f73614a557%3A0x85e8e4499d907f54!2z2YXYsdmD2LIg2KfZhNi52YXYsdin2YYg2YTZhNiq2K_YsdmK2Kgg2Ygg2KfZhNiq2LfZiNmK2LEg2YHYsdi5INix2KPYsyDYp9mE2K7ZitmF2Kk!5e0!3m2!1sar!2slt!4v1771378535800!5m2!1sar!2slt',
                 'image': '/alomran_theme/static/src/img/branches/rasalkhima_rakmall.jpg',
-                'working_hours': 'Saturday - Thursday: 8:00 AM - 8:00 PM' if is_en else 'السبت - الخميس: 8:00 ص - 8:00 م',
+                'working_hours': 'Saturday - Thursday: 9:00 AM - 10:00 PM' if is_en else 'السبت - الخميس: 9:00 ص - 10:00 م',
             },
             {
                 'slug': 'fujairah-awadhi-tower',
@@ -508,7 +549,7 @@ class AlomranWebsite(http.Controller):
                 'maps_link': 'https://share.google/llCYh8OFd8Dtd9QRx',
                 'embed_link': 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3849.3607877784775!2d56.325645059608775!3d25.122631035205597!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3ef4f9e31bb74715%3A0x8a87bd3e2817d3b0!2z2YXYsdmD2LIg2KfZhNi52YXYsdin2YYg2YTZhNiq2K_YsdmK2Kgg2Ygg2KfZhNiq2LfZiNmK2LEg2YHYsdi5INin2YTZgdis2YrYsdip!5e0!3m2!1sar!2sus!4v1790759433887!5m2!1sar!2sus',
                 'image': '/alomran_theme/static/src/img/hero-bg.jpg',
-                'working_hours': 'Saturday - Thursday: 8:00 AM - 8:00 PM' if is_en else 'السبت - الخميس: 8:00 ص - 8:00 م',
+                'working_hours': 'Saturday - Thursday: 9:00 AM - 10:00 PM' if is_en else 'السبت - الخميس: 9:00 ص - 10:00 م',
             },
         ]
 
@@ -654,7 +695,7 @@ class AlomranWebsite(http.Controller):
             return _error('email_invalid')
         if branch not in BRANCH_MAPPING:
             return _error('branch_required')
-        if _rate_limited(ip):
+        if _rate_limited(ip, phone):
             _logger.warning('Contact form: rate limit hit (ip=%s)', ip)
             return _error('rate_limited')
 
@@ -800,7 +841,7 @@ class AlomranWebsite(http.Controller):
                 return {'success': False, 'error': self._get_error_message('phone_invalid')}
             if email and not _valid_email(email):
                 return {'success': False, 'error': self._get_error_message('email_invalid')}
-            if _rate_limited(ip):
+            if _rate_limited(ip, phone):
                 _logger.warning('Registration form: rate limit hit (ip=%s)', ip)
                 return {'success': False, 'error': self._get_error_message('rate_limited')}
 
@@ -1115,7 +1156,7 @@ class AlomranWebsite(http.Controller):
             return {'success': False, 'error': self._get_error_message('required')}
         if not self._validate_phone(phone):
             return {'success': False, 'error': self._get_error_message('phone_invalid')}
-        if _rate_limited(ip):
+        if _rate_limited(ip, phone):
             _logger.warning('English landing: rate limit hit (ip=%s)', ip)
             return {'success': False, 'error': self._get_error_message('rate_limited')}
 
@@ -1320,7 +1361,7 @@ class AlomranWebsite(http.Controller):
             return {'success': False, 'error': self._get_error_message('required')}
         if not self._validate_phone(phone):
             return {'success': False, 'error': self._get_error_message('phone_invalid')}
-        if _rate_limited(ip):
+        if _rate_limited(ip, phone):
             _logger.warning('Tutoring landing: rate limit hit (ip=%s)', ip)
             return {'success': False, 'error': self._get_error_message('rate_limited')}
 
@@ -1556,7 +1597,7 @@ class AlomranWebsite(http.Controller):
             return {'success': False, 'error': self._get_error_message('required')}
         if not self._validate_phone(phone):
             return {'success': False, 'error': self._get_error_message('phone_invalid')}
-        if _rate_limited(ip):
+        if _rate_limited(ip, phone):
             _logger.warning('Women landing: rate limit hit (ip=%s)', ip)
             return {'success': False, 'error': self._get_error_message('rate_limited')}
 
@@ -1627,4 +1668,240 @@ class AlomranWebsite(http.Controller):
 
         except Exception:
             _logger.exception('Women landing error (ip=%s)', ip)
+            return {'success': False, 'error': self._get_error_message('general')}
+
+    # ============================================================
+    # SAUDI ONLINE LEARNING LANDING (/saudi-online)
+    # نفس نمط باقي صفحات الهبوط (ale-/alt- classes و english-landing.js)
+    # كل الطلبات بتروح لشركة السعودية بس (معزولة عن باقي الشركات):
+    #   alomran.saudi_company_id  (إجباري)  ID شركة السعودية
+    #   alomran.saudi_team_id     (اختياري) ID فريق المبيعات (لازم يكون تابع لشركة السعودية)
+    #   alomran.saudi_user_id     (اختياري) ID المستخدم اللي بيتابع الفرص
+    # ============================================================
+
+    def _saudi_whatsapp_link(self, message):
+        return self._whatsapp_link(message, 'alomran.saudi_whatsapp', saudi_content.WHATSAPP_NUMBER)
+
+    def _saudi_assignment(self):
+        """(شركة، فريق، مستخدم) لطلبات السعودية من System Parameters.
+        الفريق والمستخدم بيتقبلوا بس إذا تابعين لشركة السعودية — منعاً لتسريب الفرص لشركة تانية."""
+        icp = request.env['ir.config_parameter'].sudo()
+
+        def _record(model, key):
+            raw = (icp.get_param(key) or '').strip()
+            if not raw.isdigit():
+                return request.env[model].sudo().browse()
+            rec = request.env[model].sudo().browse(int(raw)).exists()
+            return rec
+
+        company = _record('res.company', 'alomran.saudi_company_id')
+        if not company:
+            return company, None, None
+        team = _record('crm.team', 'alomran.saudi_team_id')
+        if team and team.company_id and team.company_id != company:
+            _logger.warning('Saudi landing: team %s is not in the Saudi company — ignored', team.id)
+            team = None
+        user = _record('res.users', 'alomran.saudi_user_id')
+        if user and company not in user.company_ids:
+            _logger.warning('Saudi landing: user %s has no access to the Saudi company — ignored', user.id)
+            user = None
+        return company, team or None, user or None
+
+    def _saudi_pixel(self):
+        """Pixel حملة خاصة إذا انعرّف alomran.openai_saudi_pixel_id، وإلا Pixel الموقع العام."""
+        return 'saudi' if openai_pixel_id('saudi') else 'default'
+
+    @staticmethod
+    def _saudi_phone(phone):
+        """رقم الجوال بصيغة دولية: سعودي → +9665XXXXXXXX، وأي رقم دولي تاني بيبدأ بـ + بيتقبل
+        (طلاب سعوديين بأرقام خليجية). غير هيك ''."""
+        raw = (phone or '').strip()
+        digits = ''.join(ch for ch in raw if ch.isdigit())
+        m = _SA_MOBILE_RE.match(digits)
+        if m:
+            return '+966' + m.group(1)
+        if raw.startswith('+') and 9 <= len(digits) <= 15:
+            return '+' + digits
+        return ''
+
+    def _saudi_schema(self, content):
+        provider = {
+            '@type': 'EducationalOrganization',
+            '@id': saudi_content.ORG_ID,
+            'name': content['org_name'],
+            'sameAs': 'https://alomrantd.com',
+        }
+        items = []
+        for position, svc in enumerate(content['services']['items'], start=1):
+            items.append({
+                '@type': 'ListItem',
+                'position': position,
+                'item': {
+                    '@type': 'Course',
+                    'name': svc['title'],
+                    'description': svc['lead'],
+                    'provider': provider,
+                    'hasCourseInstance': {
+                        '@type': 'CourseInstance',
+                        'courseMode': 'online',
+                    },
+                },
+            })
+        return self._json_ld({
+            '@context': 'https://schema.org',
+            '@type': 'ItemList',
+            'name': content['services']['title'],
+            'itemListElement': items,
+        })
+
+    @http.route(SAUDI_LANDING_URL, type='http', auth='public', website=True, sitemap=True)
+    def saudi_landing(self, service=None, **kwargs):
+        """صفحة التعلم أونلاين لطلاب السعودية. ?service=qiyas بيختار الخدمة مسبقاً (whitelist)."""
+        is_en = self._is_english()
+        content = saudi_content.get_content(is_en)
+
+        service = service if service in saudi_content.SERVICE_KEYS else ''
+        hero_service = next((s for s in content['services']['items'] if s['key'] == service), None)
+        service_labels = dict(content['service_options'])
+        wa_service_links = {
+            key: self._saudi_whatsapp_link(content['wa_service'].format(service=service_labels[key]))
+            for key in saudi_content.CARD_SERVICE_KEYS
+        }
+        pixel = self._saudi_pixel()
+
+        return request.render('alomran_theme.saudi_landing_page', {
+            'c': content,
+            'preselect_service': service,
+            'hero_service': hero_service,
+            'wa_link': self._saudi_whatsapp_link(
+                content['wa_service'].format(service=service_labels[service])
+                if service and service != 'unsure' else content['wa_general']),
+            'wa_service_links': wa_service_links,
+            'hero_media': self._hero_media('alomran.saudi_hero',
+                                           SAUDI_HERO_VIDEO_FILES, SAUDI_HERO_POSTER_FILES),
+            'images': {key: self._first_static_file(files)
+                       for key, files in saudi_content.IMAGE_FILES.items()},
+            'submit_url': f'{SAUDI_LANDING_URL}/submit',
+            'is_en': is_en,
+            'schema_json': self._saudi_schema(content),
+            'alomran_page_title': content['page_title'],
+            'alomran_page_description': content['page_description'],
+            'alomran_oai_pixel_override': openai_pixel_id(pixel) if pixel != 'default' else False,
+        })
+
+    @http.route(f'{SAUDI_LANDING_URL}/submit', type='json', auth='public', methods=['POST'], website=True)
+    def saudi_landing_submit(self, **post):
+        """فورم صفحة السعودية أونلاين → crm.lead"""
+        is_en = self._is_english()
+        ip = _client_ip()
+
+        # Honeypot: نجاح وهمي بدون lead وبدون conversion
+        if post.get('website_url'):
+            _logger.info('Saudi landing: honeypot triggered (ip=%s)', ip)
+            return {'success': True, 'event_id': False}
+
+        name = _clean(post.get('name'), 100)
+        phone = self._saudi_phone(_clean(post.get('phone'), 20))
+        service = _clean(post.get('program'), 30)
+        stage = _clean(post.get('stage'), 30)
+        fmt = _clean(post.get('format'), 20)
+        subjects = _clean(post.get('subjects'), 150)
+
+        if (not name
+                or service not in saudi_content.SERVICE_KEYS
+                or stage not in saudi_content.STAGE_KEYS):
+            return {'success': False, 'error': self._get_error_message('required')}
+        # طريقة الدروس (فردي/مجموعة) إجبارية للإنجليزي بس، وبتتجاهل لغيره
+        if service == 'english':
+            if fmt not in saudi_content.FORMAT_KEYS:
+                return {'success': False, 'error': self._get_error_message('required')}
+        else:
+            fmt = ''
+        if not phone:
+            return {'success': False, 'error': self._get_error_message('phone_invalid')}
+        if _rate_limited(ip, phone):
+            _logger.warning('Saudi landing: rate limit hit (ip=%s)', ip)
+            return {'success': False, 'error': self._get_error_message('rate_limited')}
+
+        content = saudi_content.get_content(is_en)
+        labels = content['lead_labels']
+        crm_service = saudi_content.SERVICE_CRM_NAMES[service]
+
+        try:
+            Lead = request.env['crm.lead'].sudo().with_context(active_test=False)
+
+            # طلب مكرر: منرجّع نجاح بس بدون event_id، فما بتنحسب conversion مرتين
+            since = datetime.now() - timedelta(hours=SAUDI_DUPLICATE_HOURS)
+            if 'x_source_type' in Lead._fields and Lead.search_count([
+                ('phone', '=', phone),
+                ('x_source_type', '=', 'landing_saudi'),
+                ('x_course_interest', '=', crm_service),
+                ('create_date', '>=', since.strftime('%Y-%m-%d %H:%M:%S')),
+            ]):
+                _logger.info('Saudi landing: duplicate request ignored (ip=%s)', ip)
+                return {'success': True, 'event_id': False}
+
+            utm_vals, click_ids = self._landing_tracking(post)
+
+            lines = [
+                f"{labels['service']}: {dict(content['service_options'])[service]}",
+                f"{labels['stage']}: {dict(content['stage_options'])[stage]}",
+            ]
+            if fmt:
+                lines.append(f"{labels['format']}: {dict(content['format_options'])[fmt]}")
+            if subjects:
+                lines.append(f"{labels['subjects']}: {subjects}")
+            lines += [
+                f"{labels['country']}: {labels['country_value']}",
+                f"{labels['source']}: {labels['source_value']}",
+            ]
+            if 'campaign_id' in utm_vals:
+                lines.append(f"{labels['campaign']}: {utm_vals['campaign_id'][1]}")
+            for key in ('gbraid', 'wbraid'):
+                if key in click_ids:
+                    lines.append(f"{labels['click_id']} ({key}): {click_ids[key]}")
+
+            lead_values = {
+                'name': name,
+                'contact_name': name,
+                'phone': phone,
+                'description': _description(lines, ip),
+                'type': 'opportunity',
+            }
+            for field_name, (model_name, value) in utm_vals.items():
+                if field_name in Lead._fields:
+                    record_id = self._find_or_create_utm(model_name, value)
+                    if record_id:
+                        lead_values[field_name] = record_id
+
+            self._safe_set_field(lead_values, 'crm.lead', 'x_source_type', 'landing_saudi')
+            self._safe_set_field(lead_values, 'crm.lead', 'x_course_interest', crm_service)
+            self._safe_set_field(lead_values, 'crm.lead', 'x_training_mode', 'online')
+            if stage in saudi_content.STAGE_TO_CRM:
+                self._safe_set_field(lead_values, 'crm.lead', 'x_study_stage', saudi_content.STAGE_TO_CRM[stage])
+            if subjects:
+                self._safe_set_field(lead_values, 'crm.lead', 'x_subjects', subjects)
+
+            # شركة السعودية + الفريق + المستخدم (من System Parameters)
+            company, team, user = self._saudi_assignment()
+            if not company:
+                # بدون شركة السعودية ما منحفظ الطلب بأي شركة تانية (منعاً لتسريبه)
+                _logger.error('Saudi landing: alomran.saudi_company_id is not configured '
+                              '— lead NOT created (ip=%s)', ip)
+                return {'success': False, 'error': self._get_error_message('general')}
+            lead_values['company_id'] = company.id
+            if team:
+                lead_values['team_id'] = team.id
+            # user_id دايماً صريح: بدونه Odoo بيعيّن الزائر نفسه (Public user)
+            lead_values['user_id'] = user.id if user else False
+            if click_ids.get('gclid'):
+                self._safe_set_field(lead_values, 'crm.lead', 'x_gclid', click_ids['gclid'])
+
+            lead = request.env['crm.lead'].sudo().create(lead_values)
+            _logger.info('Saudi landing lead created: id=%s service=%s', lead.id, service)
+            send_lead_created(lead, pixel=self._saudi_pixel())
+            return {'success': True, 'event_id': lead_event_id(lead)}
+
+        except Exception:
+            _logger.exception('Saudi landing error (ip=%s)', ip)
             return {'success': False, 'error': self._get_error_message('general')}

@@ -28,6 +28,7 @@ class CrmLead(models.Model):
         ('landing_english', 'English & Tests Landing Page'),
         ('landing_tutoring', 'Private Tutoring Landing Page'),
         ('landing_women', "Women's Courses Landing Page"),
+        ('landing_saudi', 'Saudi Online Learning Landing Page'),
         ('manual', 'Manual Entry'),
         ('other', 'Other'),
     ], string='Source Type', default='other', tracking=True)
@@ -119,6 +120,7 @@ class CrmLead(models.Model):
             'landing_english': 'English & Tests Landing Page',
             'landing_tutoring': 'Private Tutoring Landing Page',
             'landing_women': "Women's Courses Landing Page",
+            'landing_saudi': 'Saudi Online Learning Landing Page',
             'manual': 'Manual Entry',
             'other': 'Other',
         }

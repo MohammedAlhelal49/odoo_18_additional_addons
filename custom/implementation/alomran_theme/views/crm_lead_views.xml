@@ -54,8 +54,9 @@
                 <filter string="English &amp; Tests Landing" name="filter_landing_english" domain="[('x_source_type', '=', 'landing_english')]"/>
                 <filter string="Private Tutoring Landing" name="filter_landing_tutoring" domain="[('x_source_type', '=', 'landing_tutoring')]"/>
                 <filter string="Women's Courses Landing" name="filter_landing_women" domain="[('x_source_type', '=', 'landing_women')]"/>
+                <filter string="Saudi Online Landing" name="filter_landing_saudi" domain="[('x_source_type', '=', 'landing_saudi')]"/>
                 <filter string="From Google Ads" name="filter_google_ads" domain="[('x_gclid', '!=', False)]"/>
-                <filter string="From Website" name="filter_website" domain="[('x_source_type', 'in', ('popup', 'course', 'contact', 'landing_english', 'landing_tutoring', 'landing_women'))]"/>
+                <filter string="From Website" name="filter_website" domain="[('x_source_type', 'in', ('popup', 'course', 'contact', 'landing_english', 'landing_tutoring', 'landing_women', 'landing_saudi'))]"/>
                 <separator/>
             </xpath>
             <xpath expr="//filter[@name='salesperson']" position="after" optional="true">
@@ -71,7 +72,7 @@
         <field name="name">Website Registrations</field>
         <field name="res_model">crm.lead</field>
         <field name="view_mode">list,kanban,form</field>
-        <field name="domain">[('x_source_type', 'in', ('popup', 'course', 'contact', 'landing_english', 'landing_tutoring', 'landing_women'))]</field>
+        <field name="domain">[('x_source_type', 'in', ('popup', 'course', 'contact', 'landing_english', 'landing_tutoring', 'landing_women', 'landing_saudi'))]</field>
         <field name="context">{'search_default_filter_website': 1}</field>
     </record>
 

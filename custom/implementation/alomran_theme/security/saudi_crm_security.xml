@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- ============================================================ -->
+    <!-- عزل موظف السعودية بالـ CRM                                    -->
+    <!-- المجموعة: بتنضاف لموظف السعودية بس (من إعدادات المستخدم)        -->
+    <!-- القاعدة عامة (global) منشان تنجمع بـ "و" مع باقي القواعد —      -->
+    <!-- قاعدة على مجموعة كانت بتنجمع بـ "أو" مع قواعد المبيعات وما بتقيّد -->
+    <!-- ============================================================ -->
+    <record id="group_saudi_crm" model="res.groups">
+        <field name="name">Saudi CRM (isolated)</field>
+        <field name="category_id" ref="base.module_category_hidden"/>
+        <field name="comment">Users in this group only see CRM opportunities that belong to a company (no shared/no-company leads). Combine with allowed companies = Saudi company only.</field>
+    </record>
+
+    <!-- موظف السعودية: ما بيشوف أي فرصة بلا شركة. باقي المستخدمين ما بيتأثروا -->
+    <record id="rule_crm_lead_saudi_no_shared" model="ir.rule">
+        <field name="name">Saudi CRM: hide leads without company</field>
+        <field name="model_id" ref="crm.model_crm_lead"/>
+        <field name="global" eval="True"/>
+        <field name="domain_force">[('company_id', '!=', False)] if user.has_group('alomran_theme.group_saudi_crm') else [(1, '=', 1)]</field>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="True"/>
+        <field name="perm_create" eval="True"/>
+        <field name="perm_unlink" eval="True"/>
+    </record>
+</odoo>

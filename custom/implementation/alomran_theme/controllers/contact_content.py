@@ -42,7 +42,7 @@ def get_content(is_en):
         'cards': [
             {'key': 'phone', 'icon': 'fa-phone', 'title': t('Call us', 'اتصل بنا'),
              'value': PHONE_DISPLAY, 'ltr': True, 'href': f'tel:{PHONE_NUMBER}',
-             'note': t('Saturday to Thursday: 10:00 AM - 08:00 PM', 'السبت إلى الخميس: 10:00 ص - 08:00 م')},
+             'note': t('Saturday to Thursday: 9:00 AM - 10:00 PM', 'السبت إلى الخميس: 9:00 ص - 10:00 م')},
             {'key': 'whatsapp', 'icon': 'fab fa-whatsapp', 'title': t('WhatsApp', 'واتساب'),
              'value': t('Chat with us now', 'راسلنا الآن'), 'ltr': False, 'href': f'https://wa.me/{WHATSAPP_NUMBER}',
              'note': t('Instant communication', 'تواصل فوري'), 'external': True},
@@ -90,7 +90,7 @@ def get_content(is_en):
             'text': t('We are happy to hear from you through any of the following methods',
                       'يسعدنا التواصل معك من خلال أي من الطرق التالية'),
             'hours_label': t('Working hours', 'أوقات الدوام'),
-            'hours': t('Saturday to Thursday: 10:00 AM - 08:00 PM', 'السبت إلى الخميس: 10:00 ص - 08:00 م'),
+            'hours': t('Saturday to Thursday: 9:00 AM - 10:00 PM', 'السبت إلى الخميس: 9:00 ص - 10:00 م'),
             'phone_label': t('Phone', 'الهاتف'),
             'email_label': t('Email', 'البريد الإلكتروني'),
             'follow': t('Follow us', 'تابعنا'),

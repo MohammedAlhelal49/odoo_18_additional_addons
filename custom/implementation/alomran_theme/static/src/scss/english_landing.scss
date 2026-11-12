@@ -2262,3 +2262,103 @@ $alw-line: #eadfd6;
         box-shadow: 0 24px 55px rgba(11, 61, 58, 0.32);
     }
 }
+// ============================================================
+// /saudi-online — إضافات صغيرة فوق تصميم alt- (بادئة als-)
+// ============================================================
+.als-flag {
+    margin-inline-end: 0.4rem;
+}
+
+.als-card {
+    --als-c: #{$ale-primary};
+}
+.als-card-curriculum { --als-c: #0f766e; }
+.als-card-qiyas { --als-c: #6d4fc2; }
+.als-card-english { --als-c: #1a5490; }
+.als-card-tests { --als-c: #b7791f; }
+
+.als-media {
+    aspect-ratio: 16 / 7;
+}
+
+.als-fallback {
+    background:
+        radial-gradient(circle at 25% 20%, rgba(255, 255, 255, 0.22), transparent 55%),
+        linear-gradient(135deg, var(--als-c), darken($ale-dark, 4%));
+}
+
+.als-card .alt-service-badge {
+    background: var(--als-c);
+}
+
+.als-format {
+    position: absolute;
+    top: 0.85rem;
+    inset-inline-start: 0.85rem;
+    z-index: 1;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.3rem 0.8rem;
+    border-radius: 999px;
+    font-size: 0.85rem;
+    font-weight: 800;
+    color: $ale-dark;
+    background: rgba(255, 255, 255, 0.95);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+
+    i {
+        color: var(--als-c);
+    }
+}
+
+.als-form-card {
+    background: #fff;
+}
+
+.als-format-pick {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
+}
+
+.als-format-opt {
+    position: relative;
+    margin: 0;
+    cursor: pointer;
+
+    input {
+        position: absolute;
+        opacity: 0;
+        pointer-events: none;
+    }
+
+    span {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        padding: 0.85rem 1rem;
+        border-radius: 14px;
+        border: 2px solid #e3e9f1;
+        font-weight: 800;
+        color: $ale-dark;
+        background: #fff;
+        transition: border-color 0.15s ease, background-color 0.15s ease;
+    }
+
+    input:checked + span {
+        border-color: $ale-primary;
+        background: rgba($ale-primary, 0.06);
+        color: $ale-primary;
+    }
+
+    input:focus-visible + span {
+        outline: 3px solid $ale-accent;
+        outline-offset: 2px;
+    }
+}
+
+[data-ale-show-for][hidden] {
+    display: none !important;
+}

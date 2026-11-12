@@ -1,6 +1,6 @@
 {
     'name': 'Al Omran Theme',
-    'version': '18.0.2.8.0',
+    'version': '18.0.2.11.0',
     'category': 'Website',
     'summary': 'Complete website theme for Al Omran Training Center',
     'description': """
@@ -21,6 +21,7 @@
     'data': [
         'security/ir.model.access.csv',
         'security/ir_rule.xml',
+        'security/saudi_crm_security.xml',
         'views/templates.xml',
         'views/rtl_template.xml',
         'views/pages/teachers.xml',
@@ -37,6 +38,7 @@
         'views/pages/english_landing.xml',
         'views/pages/tutoring_landing.xml',
         'views/pages/women_landing.xml',
+        'views/pages/saudi_landing.xml',
         'views/pages/branches.xml',
         'views/pages/branch_detail.xml',
         'views/pages/contact.xml',

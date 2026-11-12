@@ -39,6 +39,7 @@
                 ('/english-ielts', 'اللغة الإنجليزية والاختبارات' if f_ar else 'English &amp; Standardized Tests'),
                 ('/private-tutoring', 'الدروس الخصوصية والمتابعة الدراسية' if f_ar else 'Private Tutoring &amp; School Follow-up'),
                 ('/women-courses', 'الدورات المهنية للسيدات' if f_ar else 'Women\'s Professional Courses'),
+                ('/saudi-online', 'التعلم أونلاين - السعودية' if f_ar else 'Online Learning - Saudi Arabia'),
                 ('/teachers', 'التدريب المهني' if f_ar else 'Professional Training'),
                 ('/languages', 'تعلم اللغات' if f_ar else 'Language Learning'),
                 ('/it-programs', 'تقنية المعلومات' if f_ar else 'Information Technology'),
@@ -123,7 +124,7 @@
                                     <span class="alf-ic"><i class="fa fa-clock" aria-hidden="true"/></span>
                                     <span>
                                         <small t-out="'أوقات الدوام' if f_ar else 'Working hours'"/>
-                                        <span t-out="'السبت - الخميس: 8:00 ص - 8:00 م' if f_ar else 'Sat - Thu: 8:00 AM - 8:00 PM'"/>
+                                        <span t-out="'السبت - الخميس: 9:00 ص - 10:00 م' if f_ar else 'Sat - Thu: 9:00 AM - 10:00 PM'"/>
                                     </span>
                                 </li>
                                 <li>

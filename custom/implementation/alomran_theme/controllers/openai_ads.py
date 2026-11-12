@@ -48,6 +48,7 @@ PIXELS = {
     # صفحة الدروس الخصوصية: بلا Pixel افتراضي — إذا ما انعرّف بتستخدم Pixel الموقع العام
     'tutoring': ('alomran.openai_tutoring_pixel_id', '', 'alomran.openai_tutoring_capi_key'),
     'women': ('alomran.openai_women_pixel_id', '', 'alomran.openai_women_capi_key'),
+    'saudi': ('alomran.openai_saudi_pixel_id', '', 'alomran.openai_saudi_capi_key'),
 }
 CAPI_URL = 'https://bzr.openai.com/v1/events'
 CAPI_TIMEOUT = 5

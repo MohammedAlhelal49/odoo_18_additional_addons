@@ -248,15 +248,20 @@
         }
         const input = Array.from(form.querySelectorAll('input[name="' + name + '"]'))
             .find((el) => el.value === value);
+        const notify = () => {
+            // الحقول الشرطية (data-ale-show-for) بتسمع لهالحدث
+            form.dispatchEvent(new CustomEvent('ale:program-set'));
+            return true;
+        };
         if (input) {
             input.checked = true;
-            return true;
+            return notify();
         }
         // نفس الحقل ممكن يكون <select> (صفحة الدروس الخصوصية)
         const select = form.querySelector('select[name="' + name + '"]');
         if (select && Array.from(select.options).some((o) => o.value === value)) {
             select.value = value;
-            return true;
+            return notify();
         }
         return false;
     }
@@ -339,6 +344,28 @@
             }
         }
 
+        // حقول شرطية: <div data-ale-show-for="english"> بيظهر بس إذا الخدمة المختارة منها
+        // (قائمة مفصولة بفاصلة). المخفي بيتعطّل، فما بيتفحص وما بينبعت.
+        const conditionals = Array.from(form.querySelectorAll('[data-ale-show-for]'));
+        function syncConditionals() {
+            const program = radioValue(form, 'program');
+            conditionals.forEach((box) => {
+                const show = box.dataset.aleShowFor.split(',').map((x) => x.trim()).includes(program);
+                box.hidden = !show;
+                box.querySelectorAll('input, select, textarea').forEach((el) => {
+                    el.disabled = !show;
+                });
+            });
+        }
+        if (conditionals.length) {
+            form.querySelectorAll('[name="program"]').forEach((el) => {
+                el.addEventListener('change', syncConditionals);
+            });
+            syncConditionals();
+            // الاختيار المسبق (من بطاقة أو ?service=) بيصير بعد هالسطر — منعيد المزامنة
+            form.addEventListener('ale:program-set', syncConditionals);
+        }
+
         form.addEventListener('submit', async (ev) => {
             ev.preventDefault();
             if (busy) {
@@ -352,7 +379,8 @@
             const payload = {
                 name: nameEl.value.trim(),
                 phone: phoneEl.value.trim(),
-                branch: branchEl.value,
+                // بعض الصفحات ما فيها فرع (متل /saudi-online الأونلاين)
+                branch: branchEl ? branchEl.value : '',
                 program: radioValue(form, 'program'),
                 mode: radioValue(form, 'mode'),
                 website_url: (form.querySelector('[name="website_url"]') || {}).value || '',
@@ -364,17 +392,23 @@
             if (!validPhone(payload.phone)) {
                 return showError(form.dataset.errPhone, phoneEl);
             }
-            if (!payload.branch) {
+            if (branchEl && !payload.branch) {
                 return showError(form.dataset.errBranch, branchEl);
             }
             if (!payload.program) {
                 return showError(form.dataset.errProgram, form.querySelector('[name="program"]'));
             }
-            if (!payload.mode) {
+            if (form.querySelector('[name="mode"]') && !payload.mode) {
                 return showError(form.dataset.errMode, form.querySelector('[name="mode"]'));
             }
             const extras = Array.from(form.querySelectorAll('[data-ale-extra][name]'));
             for (const el of extras) {
+                if (el.disabled) {
+                    continue;   // حقل شرطي مخفي (data-ale-show-for)
+                }
+                if (el.type === 'radio' && !el.checked) {
+                    continue;   // من مجموعة radio بناخد المختار بس
+                }
                 const value = (el.value || '').trim();
                 if (el.required && !value) {
                     return showError(el.dataset.err || form.dataset.errNetwork, el);

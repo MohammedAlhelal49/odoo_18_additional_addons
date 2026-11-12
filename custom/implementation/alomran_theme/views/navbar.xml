@@ -50,6 +50,14 @@
                 </a>
             </li>
 
+            <!-- صفحة التعلم أونلاين للسعودية — النص t-out (مش term بـ ar.po) -->
+            <li class="nav-item">
+                <a class="nav-link" href="/saudi-online">
+                    <i class="fa fa-laptop me-2"/>
+                    <t t-out="'السعودية أونلاين' if (request.env.lang or '').startswith('ar') else 'Saudi Online'"/>
+                </a>
+            </li>
+
             <li class="nav-item">
                 <a class="nav-link" href="/contact">
                     <i class="fa fa-envelope me-2"/>

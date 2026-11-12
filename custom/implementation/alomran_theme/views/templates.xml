@@ -105,7 +105,7 @@
           "telephone": "+971505829697",
           "priceRange": "$$",
           "currenciesAccepted": "AED",
-          "openingHours": "Sa-Th 08:00-20:00",
+          "openingHours": "Sa-Th 09:00-22:00",
           "numberOfEmployees": 250,
           "areaServed": [
             {"@type": "City", "name": "Al Ain"},
@@ -146,11 +146,26 @@
           "name": "مركز العمران للتدريب والتطوير",
           "inLanguage": ["ar", "en"],
           "publisher": {"@id": "https://alomrantd.com/#organization"}
-        },
+        }
+      ]
+    }
+    ]]>
+    </script>
+
+    <!-- WebPage + Breadcrumb of the Arabic homepage: on that page only (this
+         layout is used by every page of the website). Odoo serves it at /ar
+         (/ar/ redirects there). -->
+    <t t-set="alomran_schema_path" t-value="(request and request.httprequest.path or '/').rstrip('/')"/>
+    <t t-if="request and request.lang and request.lang.code.startswith('ar') and alomran_schema_path in ('', '/' + request.lang.url_code)">
+    <script type="application/ld+json">
+    <![CDATA[
+    {
+      "@context": "https://schema.org",
+      "@graph": [
         {
           "@type": "WebPage",
-          "@id": "https://alomrantd.com/ar/#webpage",
-          "url": "https://alomrantd.com/ar/",
+          "@id": "https://alomrantd.com/ar#webpage",
+          "url": "https://alomrantd.com/ar",
           "name": "دورات لغة إنجليزية ومتابعة دراسية ودورات مهنية في الإمارات | مركز العمران",
           "inLanguage": "ar",
           "isPartOf": {"@id": "https://alomrantd.com/#website"},
@@ -158,13 +173,13 @@
         },
         {
           "@type": "BreadcrumbList",
-          "@id": "https://alomrantd.com/ar/#breadcrumb",
+          "@id": "https://alomrantd.com/ar#breadcrumb",
           "itemListElement": [
             {
               "@type": "ListItem",
               "position": 1,
               "name": "الرئيسية",
-              "item": "https://alomrantd.com/ar/"
+              "item": "https://alomrantd.com/ar"
             }
           ]
         }
@@ -172,6 +187,7 @@
     }
     ]]>
     </script>
+    </t>
 
     <style type="text/css">
     <![CDATA[
@@ -643,7 +659,7 @@
                             </p>
                             <p class="mb-3">
                                 <i class="fa fa-clock me-2 text-primary"/>
-                                Sat - Thu: 8:00 AM - 8:00 PM
+                                Sat - Thu: 9:00 AM - 10:00 PM
                             </p>
                             <p class="mb-0">
                                 <i class="fa fa-map-marker-alt me-2 text-primary"/>
