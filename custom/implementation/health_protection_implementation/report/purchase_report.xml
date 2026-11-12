@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Request for Quotation: serial number (1, 2, 3...) column before the description, product lines only
+         (the Purchase Order report already gets its "#" column from dekad_purchase_enhancement) -->
+    <template id="report_purchasequotation_document_hp" inherit_id="purchase.report_purchasequotation_document">
+        <xpath expr="//t[@t-foreach='o.order_line']" position="before">
+            <t t-set="hp_seq" t-value="0"/>
+        </xpath>
+        <xpath expr="//th[@name='th_description']" position="before">
+            <th name="th_hp_seq" class="text-center"><strong>#</strong></th>
+        </xpath>
+        <xpath expr="//td[@id='product']" position="before">
+            <td name="td_hp_seq" class="text-center">
+                <t t-set="hp_seq" t-value="hp_seq + 1"/>
+                <span t-out="hp_seq"/>
+            </td>
+        </xpath>
+    </template>
+
+    <!-- Purchase order: centered "PURCHASE ORDER" title (number removed from the title), no "Shipping address" block;
+         left side shows "To:" vendor name, "TRN:" and "Address:" (Country, State, City, Street) like the invoice -->
+    <template id="report_purchaseorder_document_hp" inherit_id="purchase.report_purchaseorder_document">
+        <xpath expr="//div[hasclass('page')]" position="before">
+            <t t-set="information_block" t-value="False"/>
+            <t t-set="address">
+                <div class="d-flex">
+                    <strong class="me-2 text-nowrap" style="font-size: 1.3rem; line-height: 1.1;">To:</strong>
+                    <div t-field="o.partner_id" t-options='{"widget": "contact", "fields": ["name"], "no_marker": True}'/>
+                </div>
+                <t t-set="hp_vat" t-value="o.partner_id.vat or o.partner_id.commercial_partner_id.vat"/>
+                <div t-if="hp_vat" style="margin-top: 7px;">
+                    <strong style="font-size: 1.1rem;">TRN:</strong> <span t-out="hp_vat"/>
+                </div>
+                <t t-set="hp_address_line" t-value="o.hp_partner_address_line()"/>
+                <div t-if="hp_address_line" style="margin-top: 7px; max-width: 80mm;">
+                    <strong style="font-size: 1.1rem;">Address:</strong> <span t-out="hp_address_line"/>
+                </div>
+            </t>
+        </xpath>
+        <xpath expr="//t[@t-set='layout_document_title']" position="after">
+            <t t-set="layout_document_title" t-value="''"/>
+        </xpath>
+        <xpath expr="//div[@id='informations']" position="before">
+            <h2 class="text-center">
+                <t t-if="o.state in ['draft', 'sent', 'to approve']">REQUEST FOR QUOTATION</t>
+                <t t-elif="o.state == 'cancel'">CANCELLED PURCHASE ORDER</t>
+                <t t-else="">PURCHASE ORDER</t>
+            </h2>
+        </xpath>
+        <!-- Labels of the information box: "Order Reference" (was "Your Order Reference"), no trailing colons -->
+        <xpath expr="//div[@t-if='o.partner_ref']/strong" position="replace">
+            <strong>Order Reference</strong>
+        </xpath>
+        <xpath expr="//div[@id='informations']/div[contains(@t-if, 'o.date_approve')]/strong" position="replace">
+            <strong>Order Date</strong>
+        </xpath>
+        <xpath expr="//div[@t-elif='o.date_order']/strong" position="replace">
+            <strong>Order Deadline</strong>
+        </xpath>
+        <xpath expr="//div[@t-if='o.date_planned']/strong" position="replace">
+            <strong>Expected Arrival</strong>
+        </xpath>
+    </template>
+</odoo>

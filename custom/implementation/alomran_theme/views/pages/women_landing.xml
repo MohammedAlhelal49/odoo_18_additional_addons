@@ -1,0 +1,370 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- ============================================================ -->
+    <!-- صفحة الدورات المهنية والإبداعية للسيدات — /women-courses       -->
+    <!-- تصميم خاص بالصفحة (alw- classes بـ english_landing.scss)        -->
+    <!-- + أساس صفحات الهبوط (ale- buttons/form و english-landing.js).   -->
+    <!-- النصوص من controllers/women_landing_content.py (المتغير c)      -->
+    <!-- الصور من static/src/img/women/ (المتغير images)                  -->
+    <!-- ============================================================ -->
+    <template id="women_landing_page" name="Women's Professional &amp; Creative Courses Landing">
+        <t t-call="website.layout">
+            <div id="wrap" class="ale-page alw-page"
+                 t-att-data-program="preselect_course"
+                 t-att-data-mode="preselect_mode">
+
+                <script type="application/ld+json" t-out="schema_json"/>
+
+                <!-- ================= HERO (فيديو إذا موجود، وإلا صورة) ================= -->
+                <section class="alw-hero" id="ale-top">
+                    <svg class="alw-leaf alw-leaf-hero" viewBox="0 0 120 220" aria-hidden="true">
+                        <path d="M60 215 Q55 120 80 10"/>
+                        <path d="M66 160 Q30 150 22 115 Q58 124 66 160 Z"/>
+                        <path d="M70 110 Q104 98 110 64 Q76 76 70 110 Z"/>
+                        <path d="M75 70 Q46 58 44 28 Q72 40 75 70 Z"/>
+                    </svg>
+                    <div class="container position-relative">
+                        <div class="row align-items-center g-4 g-lg-5">
+                            <div class="col-lg-6 alw-hero-text">
+                                <div t-if="hero_course" class="alw-kicker">
+                                    <i t-attf-class="fa #{hero_course['icon']}"/>
+                                    <span t-out="hero_course['title']"/>
+                                </div>
+                                <p t-else="" class="alw-kicker" t-out="c['hero']['kicker']"/>
+                                <h1 class="alw-h1" t-out="c['hero']['h1']"/>
+                                <p class="alw-hero-lead" t-out="c['hero']['question']"/>
+                                <p class="alw-hero-intro" t-out="c['hero']['intro']"/>
+                                <p class="alw-hero-start" t-out="c['hero']['start']"/>
+
+                                <div class="alw-hero-actions">
+                                    <a t-att-href="wa_link" target="_blank" rel="noopener" class="ale-btn alw-btn-wa ale-btn-lg">
+                                        <i class="fab fa-whatsapp"/>
+                                        <span t-out="c['hero']['cta_whatsapp']"/>
+                                    </a>
+                                    <a t-attf-href="tel:#{phone_number}" class="ale-btn alw-btn-line ale-btn-lg">
+                                        <i class="fa fa-phone"/>
+                                        <span dir="ltr" t-out="phone_display"/>
+                                    </a>
+                                </div>
+
+                                <ul class="alw-hero-modes list-unstyled">
+                                    <t t-foreach="c['hero']['modes']" t-as="m">
+                                        <li>
+                                            <i t-attf-class="fa #{m['icon']}"/>
+                                            <span>
+                                                <strong t-out="m['title']"/>
+                                                <small t-out="m['text']"/>
+                                            </span>
+                                        </li>
+                                    </t>
+                                </ul>
+                            </div>
+
+                            <div class="col-lg-6">
+                                <!-- فيديو: alomran.women_hero_video_url أو static/src/video/women_hero.mp4 -->
+                                <div t-if="hero_media" class="alw-hero-media ale-hero-video">
+                                    <video autoplay="autoplay" muted="muted" loop="loop" playsinline="playsinline"
+                                           disablepictureinpicture="disablepictureinpicture"
+                                           preload="auto" aria-hidden="true" tabindex="-1"
+                                           t-att-poster="hero_media['poster'] or images.get('hero') or None"
+                                           class="ale-hero-autoplay">
+                                        <source t-att-src="hero_media['url']" t-att-type="hero_media['type']"/>
+                                    </video>
+                                    <button type="button" class="ale-sound-toggle"
+                                            aria-pressed="false"
+                                            t-att-aria-label="c['video']['unmute']"
+                                            t-att-data-label-unmute="c['video']['unmute']"
+                                            t-att-data-label-mute="c['video']['mute']">
+                                        <i class="fa fa-volume-xmark" aria-hidden="true"/>
+                                        <span class="ale-sound-label" t-out="c['video']['unmute']"/>
+                                    </button>
+                                </div>
+                                <div t-elif="images.get('hero')" class="alw-hero-media">
+                                    <img t-att-src="images['hero']" t-att-alt="c['hero']['image_alt']"
+                                         width="900" height="700" fetchpriority="high"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ================= COURSES ================= -->
+                <section class="alw-section" id="ale-courses">
+                    <div class="container">
+                        <div class="alw-head">
+                            <h2 class="alw-h2" t-out="c['courses']['title']"/>
+                            <p t-out="c['courses']['subtitle']"/>
+                        </div>
+                        <!-- align-items-start: فتح "تفاصيل الدورة" ما بيمط باقي بطاقات الصف -->
+                        <div class="row g-4 align-items-start">
+                            <t t-foreach="c['courses']['items']" t-as="s">
+                                <div class="col-lg-4 col-md-6" t-att-id="'ale-course-%s' % s['key']">
+                                    <article t-attf-class="alw-card alw-c-#{s['color']}">
+                                        <div class="alw-card-media">
+                                            <img t-if="images.get(s['key'])" t-att-src="images[s['key']]"
+                                                 t-att-alt="s['alt']" loading="lazy" width="800" height="520"/>
+                                            <span class="alw-card-icon" aria-hidden="true">
+                                                <i t-attf-class="fa #{s['icon']}"/>
+                                            </span>
+                                        </div>
+                                        <div class="alw-card-body">
+                                            <h3 class="alw-h3" t-out="s['title']"/>
+                                            <p class="alw-card-text" t-out="s['short']"/>
+                                            <details class="alw-more">
+                                                <summary>
+                                                    <span t-out="c['courses']['details']"/>
+                                                    <i class="fa fa-chevron-down" aria-hidden="true"/>
+                                                </summary>
+                                                <p class="alw-more-lead" t-out="s['lead']"/>
+                                                <ul class="alw-checklist">
+                                                    <t t-foreach="s['points']" t-as="pt">
+                                                        <li t-out="pt"/>
+                                                    </t>
+                                                </ul>
+                                                <div class="alw-card-actions">
+                                                    <a href="#ale-form" class="ale-btn alw-btn-main flex-grow-1"
+                                                       t-att-data-ale-program="s['key']">
+                                                        <span t-out="c['courses']['more']"/>
+                                                    </a>
+                                                    <a t-att-href="wa_course_links[s['key']]" target="_blank" rel="noopener"
+                                                       class="ale-btn ale-btn-wa-outline ale-btn-icon"
+                                                       t-att-title="c['courses']['whatsapp']"
+                                                       t-att-aria-label="c['courses']['whatsapp']">
+                                                        <i class="fab fa-whatsapp"/>
+                                                    </a>
+                                                </div>
+                                            </details>
+                                        </div>
+                                    </article>
+                                </div>
+                            </t>
+                            <!-- بطاقة الاقتباس (السادسة) -->
+                            <div class="col-lg-4 col-md-6">
+                                <div class="alw-quote">
+                                    <p t-out="c['courses']['quote']"/>
+                                    <img t-if="images.get('quote')" t-att-src="images['quote']" alt=""
+                                         loading="lazy" width="400" height="420"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ================= WHY ================= -->
+                <section class="alw-section alw-section-soft alw-why-section">
+                    <svg class="alw-leaf alw-leaf-left" viewBox="0 0 120 220" aria-hidden="true">
+                        <path d="M60 215 Q55 120 80 10"/>
+                        <path d="M66 160 Q30 150 22 115 Q58 124 66 160 Z"/>
+                        <path d="M70 110 Q104 98 110 64 Q76 76 70 110 Z"/>
+                    </svg>
+                    <svg class="alw-leaf alw-leaf-right" viewBox="0 0 120 220" aria-hidden="true">
+                        <path d="M60 215 Q55 120 80 10"/>
+                        <path d="M66 160 Q30 150 22 115 Q58 124 66 160 Z"/>
+                        <path d="M70 110 Q104 98 110 64 Q76 76 70 110 Z"/>
+                    </svg>
+                    <div class="container position-relative">
+                        <div class="alw-head">
+                            <h2 class="alw-h2" t-out="c['why']['title']"/>
+                        </div>
+                        <ul class="alw-why list-unstyled">
+                            <t t-foreach="c['why']['items']" t-as="w">
+                                <li>
+                                    <i t-attf-class="fa #{w['icon']}" aria-hidden="true"/>
+                                    <h3 t-out="w['title']"/>
+                                    <p t-out="w['text']"/>
+                                </li>
+                            </t>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- ================= STEPS ================= -->
+                <section class="alw-section">
+                    <div class="container">
+                        <div class="alw-head">
+                            <h2 class="alw-h2" t-out="c['steps']['title']"/>
+                        </div>
+                        <ol class="alw-steps list-unstyled">
+                            <t t-foreach="c['steps']['items']" t-as="st">
+                                <li>
+                                    <span class="alw-step-icon">
+                                        <i t-attf-class="fa #{st['icon']}" aria-hidden="true"/>
+                                        <span class="alw-step-num" t-out="st_index + 1"/>
+                                    </span>
+                                    <h3 t-out="st['title']"/>
+                                    <p t-out="st['text']"/>
+                                </li>
+                            </t>
+                        </ol>
+                    </div>
+                </section>
+
+                <!-- ================= TESTIMONIALS (بس إذا في آراء حقيقية) ================= -->
+                <section t-if="testimonials" class="alw-section alw-section-soft">
+                    <div class="container">
+                        <div class="alw-head">
+                            <h2 class="alw-h2" t-out="c['testimonials']['title']"/>
+                        </div>
+                        <div class="row g-4 justify-content-center">
+                            <t t-foreach="testimonials" t-as="tm">
+                                <div class="col-lg-4 col-md-6">
+                                    <figure class="alw-testimonial">
+                                        <img t-if="tm['photo']" t-att-src="tm['photo']" t-att-alt="tm['name']"
+                                             class="alw-avatar" loading="lazy" width="72" height="72"/>
+                                        <span t-else="" class="alw-avatar alw-avatar-letter" aria-hidden="true"
+                                              t-out="(tm['name'] or '?')[:1]"/>
+                                        <blockquote t-out="tm['text']"/>
+                                        <figcaption>
+                                            <strong t-out="tm['name']"/>
+                                            <small t-if="tm['course']" t-out="tm['course']"/>
+                                        </figcaption>
+                                    </figure>
+                                </div>
+                            </t>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ================= START (فورم + نص + صورة) ================= -->
+                <section class="alw-start" id="ale-form">
+                    <div class="container">
+                        <div class="row g-4 align-items-center">
+                            <div class="col-lg-5 order-2 order-lg-1">
+                                <div class="ale-form-card alw-form-card">
+                                    <h2 class="alw-h3 mb-1" t-out="c['form']['card_title']"/>
+                                    <p class="alw-form-sub" t-out="c['form']['title']"/>
+
+                                    <!-- name="program" = الدورة (نفس اسم الحقل بالـ JS المشترك) -->
+                                    <form id="ale-lead-form" novalidate="novalidate" autocomplete="on"
+                                          t-att-data-submit-url="submit_url"
+                                          t-att-data-err-name="c['form']['err_name']"
+                                          t-att-data-err-phone="c['form']['err_phone']"
+                                          t-att-data-err-branch="c['form']['err_branch']"
+                                          t-att-data-err-program="c['form']['err_course']"
+                                          t-att-data-err-mode="c['form']['err_mode']"
+                                          t-att-data-err-network="c['form']['err_network']"
+                                          t-att-data-sending="c['form']['sending']">
+
+                                        <!-- Honeypot -->
+                                        <div class="ale-hp" aria-hidden="true">
+                                            <label for="ale-website-url">Website</label>
+                                            <input type="text" id="ale-website-url" name="website_url" tabindex="-1" autocomplete="off"/>
+                                        </div>
+
+                                        <div class="row g-2">
+                                            <div class="col-sm-6">
+                                                <label for="ale-name" class="ale-label" t-out="c['form']['name']"/>
+                                                <input type="text" id="ale-name" name="name" class="ale-input"
+                                                       maxlength="100" autocomplete="name" required="required"
+                                                       t-att-placeholder="c['form']['name_ph']"/>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <label for="ale-phone" class="ale-label" t-out="c['form']['phone']"/>
+                                                <input type="tel" id="ale-phone" name="phone" class="ale-input"
+                                                       maxlength="20" inputmode="tel" autocomplete="tel" dir="ltr"
+                                                       required="required" t-att-placeholder="c['form']['phone_ph']"/>
+                                            </div>
+                                            <div class="col-12">
+                                                <label for="alw-course" class="ale-label" t-out="c['form']['course_q']"/>
+                                                <select id="alw-course" name="program" class="ale-input" required="required">
+                                                    <option value="" t-out="c['form']['course_ph']"/>
+                                                    <t t-foreach="c['course_options']" t-as="co">
+                                                        <option t-att-value="co[0]" t-out="co[1]"/>
+                                                    </t>
+                                                </select>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <label for="ale-branch" class="ale-label" t-out="c['form']['branch']"/>
+                                                <!-- نفس قائمة الفروع بفورم تواصل معنا (مجمعة حسب الإمارة) -->
+                                                <select id="ale-branch" name="branch" class="ale-input" required="required">
+                                                    <option value="" t-out="'Select Branch' if is_en else 'اختاري الفرع'"/>
+                                                    <t t-call="alomran_theme.branch_select_options"/>
+                                                </select>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <label for="alw-mode" class="ale-label" t-out="c['form']['mode_q']"/>
+                                                <select id="alw-mode" name="mode" class="ale-input" required="required">
+                                                    <option value="" t-out="c['form']['mode_ph']"/>
+                                                    <t t-foreach="c['mode_options']" t-as="mo">
+                                                        <option t-att-value="mo[0]" t-out="mo[1]"/>
+                                                    </t>
+                                                </select>
+                                            </div>
+                                            <div class="col-12">
+                                                <label for="alw-notes" class="ale-label" t-out="c['form']['notes']"/>
+                                                <textarea id="alw-notes" name="notes" class="ale-input" rows="2"
+                                                          maxlength="500" data-ale-extra="1"
+                                                          t-att-placeholder="c['form']['notes_ph']"/>
+                                            </div>
+                                            <div class="col-12">
+                                                <div class="ale-form-error" role="alert" hidden="hidden"/>
+                                                <button type="submit" class="ale-btn alw-btn-main ale-btn-lg w-100">
+                                                    <i class="fa fa-paper-plane"/>
+                                                    <span t-out="c['form']['submit']"/>
+                                                </button>
+                                                <p class="ale-consent" t-out="c['form']['consent']"/>
+                                            </div>
+                                        </div>
+                                    </form>
+
+                                    <div class="ale-form-success" hidden="hidden" role="status">
+                                        <div class="ale-success-icon"><i class="fa fa-check"/></div>
+                                        <h3 class="alw-h3" t-out="c['form']['success_title']"/>
+                                        <p t-out="c['form']['success_text']"/>
+                                        <a t-att-href="wa_link" target="_blank" rel="noopener" class="ale-btn alw-btn-wa">
+                                            <i class="fab fa-whatsapp"/>
+                                            <span t-out="c['form']['success_wa']"/>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-4 order-1 order-lg-2 alw-start-text">
+                                <h2 class="alw-h2" t-out="c['ready']['title']"/>
+                                <p t-out="c['ready']['text']"/>
+                                <p class="alw-start-sub" t-out="c['form']['subtitle']"/>
+                                <!-- الرسالة جاهزة بنفس البيانات المطلوبة -->
+                                <a t-att-href="wa_details_link" target="_blank" rel="noopener" class="ale-btn alw-btn-wa ale-btn-lg">
+                                    <i class="fab fa-whatsapp"/>
+                                    <span t-out="c['form']['wa_cta']"/>
+                                </a>
+                                <ul class="alw-mini list-unstyled">
+                                    <t t-foreach="c['hero']['modes']" t-as="m">
+                                        <li>
+                                            <i t-attf-class="fa #{m['icon']}" aria-hidden="true"/>
+                                            <span t-out="m['title']"/>
+                                        </li>
+                                    </t>
+                                </ul>
+                                <p class="alw-sign">
+                                    <strong t-out="c['ready']['name']"/>
+                                    <span t-out="c['ready']['slogan']"/>
+                                </p>
+                            </div>
+
+                            <div class="col-lg-3 order-3 d-none d-lg-block">
+                                <div t-if="images.get('form')" class="alw-start-media">
+                                    <img t-att-src="images['form']" t-att-alt="c['form']['image_alt']"
+                                         loading="lazy" width="700" height="800"/>
+                                    <span class="alw-note" t-out="c['form']['image_note']"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ================= STICKY MOBILE CTA ================= -->
+                <div class="ale-sticky" aria-hidden="true">
+                    <a t-att-href="wa_link" target="_blank" rel="noopener" class="ale-btn ale-btn-wa" tabindex="-1">
+                        <i class="fab fa-whatsapp"/>
+                        <span t-out="c['sticky']['whatsapp']"/>
+                    </a>
+                    <a href="#ale-form" class="ale-btn alw-btn-main" tabindex="-1">
+                        <i class="fa fa-paper-plane"/>
+                        <span t-out="c['sticky']['form']"/>
+                    </a>
+                </div>
+            </div>
+        </t>
+    </template>
+</odoo>

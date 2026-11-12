@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <record id="view_picking_form_inherit_viewsport" model="ir.ui.view">
+        <field name="name">stock.picking.form.inherit.viewsport</field>
+        <field name="model">stock.picking</field>
+        <field name="inherit_id" ref="stock.view_picking_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='origin']" position="after">
+                <field name="vs_dln_seq" invisible="picking_type_code != 'outgoing' or not vs_dln_seq"/>
+                <field name="vs_do_seq" invisible="picking_type_code != 'outgoing' or not vs_do_seq"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

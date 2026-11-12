@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Voucher signature image on the user (Preferences, and the Users form) -->
+    <record id="view_users_form_simple_modif_dekad_signature" model="ir.ui.view">
+        <field name="name">res.users.preferences.dekad.signature</field>
+        <field name="model">res.users</field>
+        <field name="inherit_id" ref="base.view_users_form_simple_modif"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='signature']" position="after">
+                <field name="dekad_signature" widget="image" options="{'size': [0, 90]}" readonly="0"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_users_form_dekad_signature" model="ir.ui.view">
+        <field name="name">res.users.form.dekad.signature</field>
+        <field name="model">res.users</field>
+        <field name="inherit_id" ref="base.view_users_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='signature']" position="after">
+                <field name="dekad_signature" widget="image" options="{'size': [0, 90]}"/>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Received By on the payment and the PDC (cheque) form -->
+    <record id="view_account_payment_form_dekad_received_by" model="ir.ui.view">
+        <field name="name">account.payment.form.dekad.received.by</field>
+        <field name="model">account.payment</field>
+        <field name="inherit_id" ref="account.view_account_payment_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='memo']" position="after">
+                <field name="dekad_received_by_id" options="{'no_create': True}"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="sh_pdc_payment_form_view_dekad_received_by" model="ir.ui.view">
+        <field name="name">pdc.wizard.form.dekad.received.by</field>
+        <field name="model">pdc.wizard</field>
+        <field name="inherit_id" ref="sh_pdc.sh_pdc_payment_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='agent']" position="after">
+                <field name="dekad_received_by_id" options="{'no_create': True}"/>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- PDC Image: accept PDF as well as pictures -->
+    <record id="sh_pdc_payment_form_view_dekad_pdc_file" model="ir.ui.view">
+        <field name="name">pdc.wizard.form.dekad.pdc.file</field>
+        <field name="model">pdc.wizard</field>
+        <field name="inherit_id" ref="sh_pdc.sh_pdc_payment_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='pdc_image']" position="replace">
+                <field name="pdc_image" filename="pdc_image_filename"
+                       options="{'accepted_file_extensions': '.pdf,.png,.jpg,.jpeg'}"/>
+                <field name="pdc_image_filename" invisible="1"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_company_form_dekad_tax_start" model="ir.ui.view">
+        <field name="name">res.company.form.dekad.tax.start</field>
+        <field name="model">res.company</field>
+        <field name="inherit_id" ref="base.view_company_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='vat']" position="after">
+                <field name="dekad_tax_start_date"/>
+                <field name="dekad_trade_license"/>
+                <field name="dekad_legal_name"/>
+                <field name="dekad_brand_en"/>
+                <field name="dekad_brand_ar"/>
+                <field name="dekad_stamp" widget="image" options="{'size': [120, 120]}"/>
+                <field name="dekad_signatory_id"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

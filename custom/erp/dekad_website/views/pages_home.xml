@@ -1,0 +1,251 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <template id="page_home" name="Dekad - Home">
+        <t t-call="dekad_website.layout">
+
+            <!-- ==================== HERO ==================== -->
+
+            <style>
+                .dk-v4-hero {
+                    min-height: 760px;
+                    background-image: url('/dekad_website/static/src/img/hero-background.jpg');
+                    background-size: cover;
+                    background-position: center center;
+                    background-repeat: no-repeat;
+                    border-bottom: 0;
+                }
+                .dk-v4-hero:before {
+                    content: '';
+                    position: absolute;
+                    inset: 0;
+                    width: auto;
+                    height: auto;
+                    border: 0;
+                    border-radius: 0;
+                    background: linear-gradient(
+                        180deg,
+                        rgba(7, 18, 34, .68) 0%,
+                        rgba(7, 18, 34, .58) 45%,
+                        rgba(7, 18, 34, .72) 100%
+                    );
+                    z-index: 0;
+                }
+                .dk-v4-hero-grid {
+                    position: relative;
+                    z-index: 1;
+                    width: min(980px, calc(100% - 48px));
+                    display: block;
+                    margin: 0 auto;
+                }
+                .dk-v4-hero-copy {
+                    max-width: 900px;
+                    margin: 0 auto;
+                    padding: 72px 0;
+                    text-align: center;
+                }
+                .dk-v4-eyebrow {
+                    color: rgba(255,255,255,.82);
+                    justify-content: center;
+                }
+                .dk-v4-eyebrow-dot {
+                    background: #9b88ff;
+                    box-shadow: 0 0 0 5px rgba(155,136,255,.16);
+                }
+                .dk-v4-hero h1 {
+                    max-width: 900px;
+                    margin: 22px auto 25px;
+                    color: #fff;
+                    font-size: clamp(48px, 6.5vw, 66px);
+                }
+                .dk-v4-hero h1 em { color: #a99bff; }
+                .dk-v4-hero-lead {
+                    max-width: 700px;
+                    margin: 0 auto 34px;
+                    color: rgba(255,255,255,.82);
+                    font-size: 18px;
+                    line-height: 1.75;
+                }
+                .dk-v4-actions { justify-content: center; }
+                .dk-v4-btn-secondary {
+                    background: rgba(255,255,255,.08);
+                    border-color: rgba(255,255,255,.52);
+                    color: #fff !important;
+                    backdrop-filter: blur(8px);
+                }
+                .dk-v4-btn-secondary:hover {
+                    background: rgba(255,255,255,.16);
+                    border-color: #fff;
+                    color: #fff !important;
+                }
+                .dk-v4-proof-row {
+                    justify-content: center;
+                    color: rgba(255,255,255,.78);
+                    gap: 24px;
+                    margin-top: 28px;
+                }
+                .dk-v4-proof-row i { color: #b0a4ff; }
+                .dk-v4-hero-visual { display: none; }
+                @media (max-width: 767px) {
+                    .dk-v4-hero { min-height: 680px; background-position: center center; }
+                    .dk-v4-hero-grid { width: min(100% - 32px, 680px); }
+                    .dk-v4-hero-copy { padding: 55px 0; }
+                    .dk-v4-hero h1 { font-size: clamp(40px, 12vw, 56px); }
+                    .dk-v4-hero-lead { font-size: 15px; }
+                    .dk-v4-actions { flex-direction: column; align-items: stretch; }
+                    .dk-v4-btn { width: 100%; }
+                    .dk-v4-proof-row { gap: 10px 16px; font-size: 12px; }
+                }
+            </style>
+            <section class="dk-v4-hero">
+                <div class="dk-v4-hero-grid">
+                    <div class="dk-v4-hero-copy">
+                        <span class="dk-v4-eyebrow"><span class="dk-v4-eyebrow-dot"></span> ERP CONSULTING &amp; IMPLEMENTATION</span>
+                        <h1>Build a smarter business with <em>Odoo Erp.</em></h1>
+                        <p class="dk-v4-hero-lead">We help growing businesses design, implement, integrate, and continuously improve Erp System around the way they actually work.</p>
+                        <div class="dk-v4-actions">
+                            <a href="/free-consultation" class="ve-cta-btn">Talk to an ERP Expert <i class="fa fa-arrow-right"></i></a>
+                            <a href="/request-demo" class="ve-cta-btn-outline">Request Demo</a>
+                        </div>
+                        <div class="dk-v4-proof-row">
+                            <span><i class="fa fa-check-circle"></i> Implementation</span>
+                            <span><i class="fa fa-check-circle"></i> Custom Development</span>
+                            <span><i class="fa fa-check-circle"></i> Support</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ==================== SERVICES ==================== -->
+            <section class="dk-v4-section dk-v4-services" id="services-section">
+                <div class="container">
+                    <div class="dk-v4-section-head">
+                        <div><span class="dk-v4-kicker">WHAT WE DO</span><h2>ERP expertise that moves<br/><em>your business forward.</em></h2></div>
+                        <p>From the first process review to long-term support, we turn ERP system into a practical operating system for your business.</p>
+                    </div>
+                    <div class="dk-v4-service-grid">
+                        <a href="/services/odoo-consultancy" class="dk-v4-service-card"><span class="dk-v4-card-no">01</span><span class="dk-v4-service-icon"><i class="fa fa-lightbulb-o"></i></span><h3>ERP Consultancy</h3><p>Map your processes, priorities, and goals to a clear ERP roadmap.</p><span class="dk-v4-link">Explore service <i class="fa fa-arrow-right"></i></span></a>
+                        <a href="/services/odoo-implementation" class="dk-v4-service-card"><span class="dk-v4-card-no">02</span><span class="dk-v4-service-icon"><i class="fa fa-rocket"></i></span><h3>ERP Implementation</h3><p>Configure and tailor ERP around your workflows, users, and reporting needs.</p><span class="dk-v4-link">Explore service <i class="fa fa-arrow-right"></i></span></a>
+                        <a href="/services/odoo-integration" class="dk-v4-service-card"><span class="dk-v4-card-no">03</span><span class="dk-v4-service-icon"><i class="fa fa-plug"></i></span><h3>ERP Integration</h3><p>Connect ERP with the systems, payment providers, platforms, and data you already use.</p><span class="dk-v4-link">Explore service <i class="fa fa-arrow-right"></i></span></a>
+                        <a href="/services/odoo-support" class="dk-v4-service-card"><span class="dk-v4-card-no">04</span><span class="dk-v4-service-icon"><i class="fa fa-headphones"></i></span><h3>ERP Support</h3><p>Keep your operations stable with responsive support, improvements, and ongoing optimization.</p><span class="dk-v4-link">Explore service <i class="fa fa-arrow-right"></i></span></a>
+                        <a href="/services/odoo-migration" class="dk-v4-service-card"><span class="dk-v4-card-no">05</span><span class="dk-v4-service-icon"><i class="fa fa-exchange"></i></span><h3>ERP Migration</h3><p>Move data and workflows safely between ERP versions and legacy environments.</p><span class="dk-v4-link">Explore service <i class="fa fa-arrow-right"></i></span></a>
+                        <a href="/services/odoo-web-design" class="dk-v4-service-card"><span class="dk-v4-card-no">06</span><span class="dk-v4-service-icon"><i class="fa fa-paint-brush"></i></span><h3>Web Design</h3><p>Build polished websites that make your brand easier to trust and easier to choose.</p><span class="dk-v4-link">Explore service <i class="fa fa-arrow-right"></i></span></a>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ==================== INDUSTRIES ==================== -->
+            <section class="dk-v4-industries" id="industries-section">
+                <div class="container">
+                    <div class="dk-v4-industry-intro">
+                        <div><span class="dk-v4-kicker dk-v4-kicker-light">INDUSTRIES</span><h2>Built around the realities<br/>of <em>your industry.</em></h2></div>
+                        <p>ERP Software becomes more valuable when the workflows match the business. We adapt the platform to the processes, teams, and operational priorities of each sector.</p>
+                    </div>
+                    <div class="dk-v4-industry-list">
+                        <a href="/industries/education"><span>01</span><strong>Education</strong><i class="fa fa-arrow-right"></i><small>Student, academic &amp; administration workflows</small></a>
+                        <a href="/industries/manufacturing"><span>02</span><strong>Manufacturing</strong><i class="fa fa-arrow-right"></i><small>Production, inventory &amp; resource planning</small></a>
+                        <a href="/industries/construction"><span>03</span><strong>Construction</strong><i class="fa fa-arrow-right"></i><small>Projects, costs &amp; field operations</small></a>
+                        <a href="/industries/agriculture"><span>04</span><strong>Agriculture</strong><i class="fa fa-arrow-right"></i><small>Operations, supply chain &amp; production</small></a>
+                        <a href="/industries/hospitality"><span>05</span><strong>Hospitality</strong><i class="fa fa-arrow-right"></i><small>Guest experience, reservations &amp; back office</small></a>
+                        <a href="/industries/audit-certification"><span>06</span><strong>Audit &amp; Certification</strong><i class="fa fa-arrow-right"></i><small>Compliance, reporting &amp; professional services</small></a>
+                        <a href="/industries/retail"><span>07</span><strong>Retail</strong><i class="fa fa-arrow-right"></i><small>POS, inventory &amp; customer experience</small></a>
+                        <a href="/industries/law-firm"><span>08</span><strong>Law Firms</strong><i class="fa fa-arrow-right"></i><small>Cases, billing &amp; document workflows</small></a>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ==================== PROCESS ==================== -->
+            <section class="dk-v4-section dk-v4-process">
+                <div class="container">
+                    <div class="dk-v4-section-head dk-v4-process-head">
+                        <div><span class="dk-v4-kicker">HOW WE WORK</span><h2>A clear path from first conversation<br/>to <em>go-live.</em></h2></div>
+                        <p>No black boxes. Each stage has a clear objective, a defined deliverable, and a practical handover to the next step.</p>
+                    </div>
+                    <div class="dk-v4-timeline">
+                        <div class="dk-v4-step"><span>01</span><div><h3>Consult</h3><p>Understand your business, processes, pain points, and goals.</p></div></div>
+                        <div class="dk-v4-step"><span>02</span><div><h3>Plan</h3><p>Define scope, architecture, priorities, timeline, and implementation roadmap.</p></div></div>
+                        <div class="dk-v4-step"><span>03</span><div><h3>Implement</h3><p>Configure, develop, migrate, integrate, and validate the solution.</p></div></div>
+                        <div class="dk-v4-step"><span>04</span><div><h3>Launch</h3><p>Train your team, prepare go-live, and transition into daily operations.</p></div></div>
+                        <div class="dk-v4-step"><span>05</span><div><h3>Support</h3><p>Keep improving the platform as your business and requirements evolve.</p></div></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ==================== CLIENTS ==================== -->
+            <section class="dk-v4-section dk-v4-clients" t-if="home_clients">
+                <div class="container">
+                    <div class="dk-v4-section-head dk-v4-section-head-center">
+                        <div><span class="dk-v4-kicker">OUR CLIENTS</span><h2>Trusted by businesses<br/><em>across industries.</em></h2></div>
+                        <p>Real businesses using Odoo to bring their operations, people, and information together.</p>
+                    </div>
+                    <div class="dk-v4-client-grid">
+                        <a t-foreach="home_clients" t-as="client" t-attf-href="/clients/#{client.slug}" class="dk-v4-client-card">
+                            <div class="dk-v4-client-logo"><img t-attf-src="/web/image/dekad.client/#{client.id}/logo" t-att-alt="client.name"/></div>
+                            <div><strong><t t-esc="client.name"/></strong><span t-if="client.industry"><t t-esc="client.industry"/></span></div>
+                        </a>
+                    </div>
+                    <div class="dk-v4-centered-link" t-if="has_more_clients"><a href="/clients">View all clients <i class="fa fa-arrow-right"></i></a></div>
+                </div>
+            </section>
+
+            <!-- ==================== CTA ==================== -->
+            <section class="dk-v4-cta">
+                <div class="container">
+                    <div class="dk-v4-cta-inner">
+                        <div><span class="dk-v4-kicker dk-v4-kicker-light">READY WHEN YOU ARE</span><h2>Let's turn Odoo into<br/><em>a business advantage.</em></h2><p>Book a free 30-minute conversation with an Odoo specialist and tell us what you want to improve.</p></div>
+                        <a href="/free-consultation" class="ve-cta-btn">Book Free Consultation <i class="fa fa-arrow-right"></i></a>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ==================== INSIGHTS ==================== -->
+            <section class="dk-v4-section dk-v4-insights" t-if="latest_posts">
+                <div class="container">
+                    <div class="dk-v4-section-head">
+                        <div><span class="dk-v4-kicker">INSIGHTS</span><h2>Ideas for running<br/><em>smarter ERP.</em></h2></div>
+                        <p>Practical articles, implementation lessons, and product updates from the Dekad team.</p>
+                    </div>
+                    <div class="dk-v4-insight-grid">
+                        <article t-foreach="latest_posts" t-as="post" class="dk-v4-insight-card">
+                            <span t-if="post.blog_id"><t t-esc="post.blog_id.name"/></span>
+                            <h3><a t-att-href="post.website_url"><t t-esc="post.name"/></a></h3>
+                            <p t-if="post.subtitle"><t t-esc="post.subtitle"/></p>
+                            <div><small><i class="fa fa-calendar"></i> <t t-esc="post.post_date" t-options="{'widget': 'date'}"/></small><a t-att-href="post.website_url">Read article <i class="fa fa-arrow-right"></i></a></div>
+                        </article>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ==================== NEWSLETTER ==================== -->
+            <section class="ve-newsletter-section" id="newsletter-section">
+                <div class="container">
+                    <div class="ve-newsletter-wrap">
+                        <div class="ve-nl-left">
+                            <i class="fa fa-envelope-o"></i>
+                            <div>
+                                <h3>Never Miss an ERP Update</h3>
+                                <p>Product tips, implementation insights, and special offers — straight to your inbox.</p>
+                            </div>
+                        </div>
+                        <div class="ve-nl-right">
+                            <t t-if="form_sent">
+                                <t t-call="dekad_website.success_modal">
+                                    <t t-set="modal_title">Subscribed!</t>
+                                    <t t-set="modal_message">Thank you for subscribing — you'll start receiving our updates soon.</t>
+                                </t>
+                            </t>
+                            <form class="ve-nl-form" action="/newsletter-subscribe" method="post">
+                                <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                                <input type="text" class="ve-hp-field" tabindex="-1" autocomplete="off" name="company_url"/>
+                                <input type="email" name="email" placeholder="Enter your email address" required="required"/>
+                                <button type="submit">Subscribe</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+        </t>
+    </template>
+
+</odoo>

@@ -1,0 +1,38 @@
+{
+    'name': 'Orchida Soft UAE E-Invoicing Module',
+    'version': '18.0.1.4.13',
+    'summary': 'Send invoice to API when validated',
+    'description': """
+        This module automatically triggers an API call when an invoice is validated.
+        It is standardized and reusable across projects.
+    """,
+    'author': 'Orchida-Soft',
+    'website': 'https://orchida-soft.com',
+    'category': 'Accounting',
+    'depends': ['base', 'account', 'product'],
+    'data': [
+        'security/ir.model.access.csv',
+        'security/multi_company_rules.xml',
+        'data/unit_code_data.xml',
+        'views/api_sent_invoice_view.xml',
+        'views/e_invoice_config_form.xml',
+        'views/uom_api_map_views.xml',
+        'views/account_move_line_view.xml',
+        'views/account_journal_view.xml',
+        'views/res_partner_view.xml',
+        'views/res_company_view.xml',
+        'views/account_tax_view.xml',
+        'views/account_move_view.xml',
+        'views/product_product_view.xml',
+        'views/product_template_view.xml',
+        'views/orchida_document_ac_wizard_views.xml',
+        'views/menuitems.xml',
+        'views/orchida_purchase_invoice_views.xml',
+        'views/xml_template.xml',
+        'views/xml_pdf_template.xml',
+    ],
+    'installable': True,
+    'application': False,
+    'license': 'LGPL-3',
+    'post_init_hook': 'post_init_hook',
+}

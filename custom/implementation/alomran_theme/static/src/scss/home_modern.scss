@@ -1,0 +1,2816 @@
+// ============================================================
+// الصفحة الرئيسية — تصميم جديد (بادئة alh-)
+// نفس هوية الموقع: كحلي/أزرق + أصفر ذهبي، بخط Tajawal
+// ============================================================
+$alh-navy: #0b2545;
+$alh-navy-2: #12355f;
+$alh-blue: #1a5490;
+$alh-blue-2: #2d6cb3;
+$alh-gold: #f5b82e;
+$alh-gold-2: #ffd56b;
+$alh-ink: #0f1f35;
+$alh-muted: #5b6b80;
+$alh-soft: #f4f7fb;
+$alh-line: #e3e9f1;
+$alh-wa: #1faa59;
+$alh-radius: 22px;
+$alh-shadow: 0 14px 40px rgba(11, 37, 69, 0.08);
+$alh-shadow-hover: 0 24px 56px rgba(11, 37, 69, 0.16);
+
+.alh-page {
+    font-family: 'Tajawal', sans-serif;
+    color: $alh-ink;
+    background: #fff;
+    overflow-x: clip;
+
+    h1, h2, h3, h4, h5, h6, p, a, span, strong, small, li, button {
+        font-family: inherit;
+    }
+
+    .alh-section {
+        position: relative;
+        padding: 5.5rem 0;
+    }
+
+    .alh-section-soft {
+        background: $alh-soft;
+    }
+}
+
+// ---------- Typography ----------
+.alh-h2 {
+    font-size: clamp(1.75rem, 3.2vw, 2.6rem);
+    font-weight: 800;
+    line-height: 1.35;
+    color: $alh-ink;
+    margin-bottom: 0.75rem;
+}
+
+.alh-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 0.75rem;
+    padding: 0.35rem 1rem;
+    border-radius: 999px;
+    font-size: 0.9rem;
+    font-weight: 800;
+    color: $alh-blue;
+    background: rgba($alh-blue, 0.08);
+
+    &::before {
+        content: '';
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        background: $alh-gold;
+    }
+}
+
+.alh-head {
+    max-width: 760px;
+    margin: 0 auto 3rem;
+    text-align: center;
+
+    p {
+        margin: 0;
+        font-size: 1.1rem;
+        color: $alh-muted;
+    }
+}
+
+// ---------- Buttons ----------
+.alh-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.6rem;
+    padding: 0.9rem 1.7rem;
+    border-radius: 999px;
+    border: 2px solid transparent;
+    font-weight: 800;
+    font-size: 1.02rem;
+    line-height: 1.2;
+    text-decoration: none !important;
+    transition: transform 0.18s ease, box-shadow 0.18s ease, background-color 0.18s ease, color 0.18s ease;
+
+    &:hover {
+        transform: translateY(-2px);
+    }
+
+    &:focus-visible {
+        outline: 3px solid $alh-gold;
+        outline-offset: 3px;
+    }
+}
+
+.alh-btn-accent {
+    color: $alh-navy !important;
+    background: linear-gradient(135deg, $alh-gold, $alh-gold-2);
+    box-shadow: 0 12px 28px rgba($alh-gold, 0.35);
+
+    &:hover {
+        box-shadow: 0 16px 36px rgba($alh-gold, 0.45);
+    }
+}
+
+.alh-btn-glass {
+    color: #fff !important;
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(255, 255, 255, 0.25);
+    backdrop-filter: blur(8px);
+
+    &:hover {
+        background: rgba(255, 255, 255, 0.16);
+    }
+
+    .fa-whatsapp {
+        color: #4ee28a;
+        font-size: 1.15em;
+    }
+}
+
+.alh-btn-outline {
+    color: $alh-blue !important;
+    border-color: rgba($alh-blue, 0.25);
+    background: #fff;
+
+    &:hover {
+        color: #fff !important;
+        background: $alh-blue;
+        border-color: $alh-blue;
+    }
+}
+
+.alh-btn-light {
+    color: $alh-navy !important;
+    background: #fff;
+
+    &:hover {
+        box-shadow: 0 14px 32px rgba(0, 0, 0, 0.2);
+    }
+}
+
+.alh-btn-wa {
+    color: #fff !important;
+    background: $alh-wa;
+
+    &:hover {
+        background: darken($alh-wa, 6%);
+    }
+}
+
+.alh-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.85rem;
+}
+
+// ---------- Hero ----------
+.alh-hero {
+    position: relative;
+    overflow: hidden;
+    padding: 6rem 0 9rem;
+    color: #fff;
+    background: radial-gradient(1200px 600px at 85% -10%, rgba($alh-blue-2, 0.55), transparent 60%),
+                linear-gradient(160deg, $alh-navy 0%, $alh-navy-2 55%, $alh-blue 100%);
+}
+
+.alh-hero-deco {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+}
+
+.alh-blob {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(70px);
+    opacity: 0.45;
+}
+
+.alh-blob-1 {
+    width: 420px;
+    height: 420px;
+    top: -120px;
+    inset-inline-start: -140px;
+    background: $alh-blue-2;
+}
+
+.alh-blob-2 {
+    width: 340px;
+    height: 340px;
+    bottom: -80px;
+    inset-inline-end: 10%;
+    background: rgba($alh-gold, 0.55);
+    opacity: 0.25;
+}
+
+.alh-grid {
+    position: absolute;
+    inset: 0;
+    background-image: linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+                      linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+    background-size: 56px 56px;
+    mask-image: radial-gradient(ellipse at center, #000 30%, transparent 75%);
+    -webkit-mask-image: radial-gradient(ellipse at center, #000 30%, transparent 75%);
+}
+
+.alh-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+    padding: 0.45rem 1.1rem;
+    margin-bottom: 1.5rem;
+    border-radius: 999px;
+    font-weight: 700;
+    font-size: 0.95rem;
+    color: #fff;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+
+    i {
+        color: $alh-gold;
+    }
+}
+
+.alh-title {
+    font-size: clamp(2.4rem, 5.4vw, 4.1rem);
+    font-weight: 900;
+    line-height: 1.2;
+    color: #fff !important;
+    margin-bottom: 1.25rem;
+}
+
+.alh-title-accent {
+    display: block;
+    background: linear-gradient(90deg, $alh-gold, $alh-gold-2);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.alh-lead {
+    font-size: 1.15rem;
+    line-height: 1.9;
+    color: rgba(255, 255, 255, 0.82);
+    max-width: 620px;
+    margin-bottom: 2rem;
+}
+
+.alh-trust {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem 1.75rem;
+    margin: 2.25rem 0 0;
+    padding: 0;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.85);
+
+    li {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    i {
+        color: $alh-gold;
+    }
+}
+
+.alh-hero-center {
+    .alh-lead {
+        margin-inline: auto;
+    }
+
+    .alh-actions,
+    .alh-trust {
+        justify-content: center;
+    }
+}
+
+.alh-hero-visual {
+    position: relative;
+    padding: 1.5rem;
+}
+
+.alh-media {
+    position: relative;
+    overflow: hidden;
+    border-radius: 28px;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    box-shadow: 0 30px 70px rgba(0, 0, 0, 0.35);
+    background: $alh-navy-2;
+
+    img,
+    video {
+        display: block;
+        width: 100%;
+        aspect-ratio: 16 / 11;
+        object-fit: cover;
+    }
+}
+
+.alh-media.ale-hero-video {
+    border-width: 1px;
+
+    video {
+        aspect-ratio: 16 / 10;
+    }
+}
+
+.alh-float {
+    position: absolute;
+    z-index: 3;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.8rem 1.1rem;
+    border-radius: 18px;
+    color: $alh-ink;
+    background: rgba(255, 255, 255, 0.95);
+    box-shadow: 0 18px 40px rgba(0, 0, 0, 0.2);
+    animation: alh-float 6s ease-in-out infinite;
+
+    i {
+        width: 42px;
+        height: 42px;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #fff;
+        background: linear-gradient(135deg, $alh-blue, $alh-blue-2);
+    }
+
+    strong {
+        display: block;
+        font-size: 1.25rem;
+        font-weight: 900;
+        line-height: 1.1;
+        text-align: start;
+    }
+
+    small {
+        color: $alh-muted;
+        font-weight: 600;
+    }
+}
+
+.alh-float-1 {
+    top: 0;
+    inset-inline-start: -0.5rem;
+}
+
+.alh-float-2 {
+    bottom: 0;
+    inset-inline-end: -0.5rem;
+    animation-delay: -3s;
+
+    i {
+        color: $alh-navy;
+        background: linear-gradient(135deg, $alh-gold, $alh-gold-2);
+    }
+}
+
+@keyframes alh-float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}
+
+// ---------- Stats (فوق حافة الهيرو) ----------
+.alh-stats-wrap {
+    position: relative;
+    z-index: 5;
+    margin-top: -4.5rem;
+}
+
+.alh-stats {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    margin: 0;
+    padding: 1.75rem 1rem;
+    background: #fff;
+    border-radius: $alh-radius;
+    box-shadow: 0 24px 60px rgba(11, 37, 69, 0.14);
+
+    li {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        padding: 0.25rem 0.75rem;
+
+        & + li {
+            border-inline-start: 1px solid $alh-line;
+        }
+    }
+
+    i {
+        font-size: 1.3rem;
+        color: $alh-gold;
+        margin-bottom: 0.4rem;
+    }
+
+    strong {
+        font-size: clamp(1.5rem, 2.6vw, 2.1rem);
+        font-weight: 900;
+        line-height: 1.1;
+        color: $alh-blue;
+    }
+
+    span {
+        margin-top: 0.3rem;
+        font-size: 0.92rem;
+        font-weight: 600;
+        color: $alh-muted;
+    }
+}
+
+// ---------- Programs ----------
+.alh-program {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    padding: 2rem 1.75rem 1.75rem;
+    overflow: hidden;
+    border-radius: $alh-radius;
+    border: 1px solid $alh-line;
+    background: #fff;
+    color: $alh-ink !important;
+    text-decoration: none !important;
+    box-shadow: $alh-shadow;
+    transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease;
+
+    // شريط لون فوق البطاقة
+    &::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        inset-inline: 0;
+        height: 5px;
+        background: var(--alh-p, $alh-blue);
+    }
+
+    &:hover {
+        transform: translateY(-6px);
+        box-shadow: $alh-shadow-hover;
+        border-color: transparent;
+
+        .alh-program-cta i {
+            transform: translateX(-4px);
+        }
+    }
+}
+
+[dir='ltr'] .alh-program:hover .alh-program-cta i {
+    transform: translateX(4px);
+}
+
+.alh-program-english { --alh-p: linear-gradient(90deg, #1a5490, #3b82c4); --alh-pi: linear-gradient(135deg, #1a5490, #3b82c4); }
+.alh-program-tutoring { --alh-p: linear-gradient(90deg, #0f766e, #2bb3a3); --alh-pi: linear-gradient(135deg, #0f766e, #2bb3a3); }
+.alh-program-women { --alh-p: linear-gradient(90deg, #c8707a, #e2a65a); --alh-pi: linear-gradient(135deg, #c8707a, #e2a65a); }
+
+.alh-program-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1.4rem;
+}
+
+.alh-program-icon {
+    width: 64px;
+    height: 64px;
+    border-radius: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.6rem;
+    color: #fff;
+    background: var(--alh-pi, $alh-blue);
+    box-shadow: 0 12px 26px rgba(11, 37, 69, 0.18);
+}
+
+.alh-program-badge {
+    padding: 0.3rem 0.85rem;
+    border-radius: 999px;
+    font-size: 0.82rem;
+    font-weight: 800;
+    color: $alh-navy;
+    background: rgba($alh-gold, 0.22);
+}
+
+.alh-program-title {
+    display: block;
+    font-size: 1.35rem;
+    font-weight: 800;
+    line-height: 1.45;
+    margin-bottom: 0.6rem;
+}
+
+.alh-program-text {
+    display: block;
+    color: $alh-muted;
+    line-height: 1.8;
+    margin-bottom: 1.1rem;
+}
+
+.alh-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    margin-bottom: 1.5rem;
+
+    span {
+        padding: 0.25rem 0.7rem;
+        border-radius: 8px;
+        font-size: 0.82rem;
+        font-weight: 700;
+        color: $alh-blue;
+        background: $alh-soft;
+    }
+}
+
+.alh-program-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: auto;
+    font-weight: 800;
+    color: $alh-blue;
+
+    i {
+        transition: transform 0.2s ease;
+    }
+}
+
+// ---------- Why ----------
+.alh-why-intro {
+    p {
+        font-size: 1.1rem;
+        color: $alh-muted;
+    }
+}
+
+.alh-seal {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-top: 1.75rem;
+    padding: 1.1rem 1.25rem;
+    border-radius: 18px;
+    background: #fff;
+    border: 1px dashed rgba($alh-blue, 0.3);
+
+    img {
+        width: 88px;
+        height: auto;
+        flex: 0 0 auto;
+    }
+
+    p {
+        margin: 0;
+        font-size: 1rem !important;
+        font-weight: 700;
+        color: $alh-ink !important;
+    }
+}
+
+.alh-seal-icon {
+    flex: 0 0 auto;
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    color: $alh-navy;
+    background: linear-gradient(135deg, $alh-gold, $alh-gold-2);
+}
+
+.alh-feature {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    height: 100%;
+    padding: 1.35rem 1.4rem;
+    border-radius: 18px;
+    background: #fff;
+    border: 1px solid $alh-line;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+
+    &:hover {
+        transform: translateY(-3px);
+        box-shadow: $alh-shadow;
+    }
+
+    strong {
+        display: block;
+        font-size: 1.08rem;
+        font-weight: 800;
+        margin-bottom: 0.2rem;
+    }
+
+    small {
+        display: block;
+        font-size: 0.95rem;
+        color: $alh-muted;
+        line-height: 1.7;
+    }
+}
+
+.alh-feature-icon {
+    flex: 0 0 auto;
+    width: 50px;
+    height: 50px;
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    color: $alh-blue;
+    background: rgba($alh-blue, 0.08);
+}
+
+// ---------- Branches ----------
+.alh-page .alh-branches {
+    overflow: hidden;
+    padding-bottom: 8.5rem;   // مكان بطاقة الـ CTA اللي طالعة فوقه
+    color: #fff;
+    background: radial-gradient(800px 400px at 15% 0%, rgba($alh-blue-2, 0.5), transparent 60%),
+                linear-gradient(160deg, $alh-navy, $alh-blue);
+}
+
+.alh-head-light {
+    .alh-h2 {
+        color: #fff !important;
+        -webkit-text-fill-color: #fff;
+    }
+
+    p {
+        color: rgba(255, 255, 255, 0.78);
+    }
+
+    .alh-eyebrow {
+        color: #fff;
+        background: rgba(255, 255, 255, 0.1);
+    }
+}
+
+.alh-branch {
+    height: 100%;
+    padding: 2rem 1.5rem;
+    text-align: center;
+    border-radius: $alh-radius;
+    background: rgba(255, 255, 255, 0.07);
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    backdrop-filter: blur(6px);
+    transition: transform 0.2s ease, background-color 0.2s ease;
+
+    &:hover {
+        transform: translateY(-4px);
+        background: rgba(255, 255, 255, 0.12);
+    }
+
+    h3 {
+        font-size: 1.25rem;
+        font-weight: 800;
+        color: #fff !important;
+        margin-bottom: 0.4rem;
+    }
+
+    p {
+        color: rgba(255, 255, 255, 0.75);
+        margin-bottom: 1rem;
+
+        i {
+            color: $alh-gold;
+        }
+    }
+}
+
+.alh-branch-icon {
+    width: 64px;
+    height: 64px;
+    margin: 0 auto 1rem;
+    border-radius: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    color: $alh-navy;
+    background: linear-gradient(135deg, $alh-gold, $alh-gold-2);
+}
+
+.alh-branch-phone {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.45rem 1rem;
+    border-radius: 999px;
+    font-weight: 700;
+    color: #fff !important;
+    background: rgba(255, 255, 255, 0.1);
+    text-decoration: none !important;
+
+    &:hover {
+        background: rgba(255, 255, 255, 0.2);
+    }
+}
+
+// ---------- Final CTA ----------
+.alh-page .alh-cta-section {
+    padding-top: 0;
+    margin-top: -3rem;
+}
+
+.alh-cta {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+    padding: 2.5rem 3rem;
+    border-radius: 28px;
+    background: linear-gradient(135deg, #fff 0%, #fff8e6 100%);
+    box-shadow: 0 28px 70px rgba(11, 37, 69, 0.18);
+    border: 1px solid rgba($alh-gold, 0.35);
+
+    .alh-h2 {
+        margin-bottom: 0.4rem;
+    }
+
+    p {
+        margin: 0;
+        font-size: 1.1rem;
+        color: $alh-muted;
+    }
+}
+
+// ---------- Responsive ----------
+@media (max-width: 991.98px) {
+    .alh-hero {
+        padding: 4rem 0 8rem;
+        text-align: center;
+
+        .alh-lead {
+            margin-inline: auto;
+        }
+
+        .alh-actions,
+        .alh-trust {
+            justify-content: center;
+        }
+    }
+
+    .alh-stats {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        row-gap: 1.25rem;
+
+        li:nth-child(4) {
+            border-inline-start: 0;
+        }
+    }
+
+    .alh-cta {
+        padding: 2rem 1.75rem;
+        text-align: center;
+        justify-content: center;
+
+        .alh-actions {
+            justify-content: center;
+        }
+    }
+}
+
+@media (max-width: 575.98px) {
+    .alh-page .alh-section {
+        padding: 4rem 0;
+    }
+
+    .alh-hero-visual {
+        padding: 1rem 0.5rem;
+    }
+
+    .alh-float {
+        padding: 0.55rem 0.8rem;
+
+        i {
+            width: 34px;
+            height: 34px;
+        }
+
+        strong {
+            font-size: 1.05rem;
+        }
+    }
+
+    .alh-stats {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+
+        li {
+            border-inline-start: 0 !important;
+        }
+
+        li:last-child {
+            grid-column: 1 / -1;
+        }
+    }
+
+    .alh-btn {
+        width: 100%;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .alh-float {
+        animation: none;
+    }
+
+    .alh-program,
+    .alh-feature,
+    .alh-branch,
+    .alh-btn {
+        transition: none;
+    }
+}
+
+// ============================================================
+// صفحة الفروع (/branches) — بادئة alb- (فوق أساس alh- نفسه)
+// ============================================================
+.alb-hero {
+    padding: 4.5rem 0 7.5rem;
+    text-align: center;
+}
+
+.alb-hero-inner {
+    max-width: 900px;
+    margin: 0 auto;
+
+    .alh-lead {
+        margin-inline: auto;
+        margin-bottom: 0.75rem;
+    }
+}
+
+.alb-seo {
+    max-width: 720px;
+    margin: 0 auto 2rem;
+    color: rgba(255, 255, 255, 0.7);
+    line-height: 1.9;
+}
+
+// ---------- Toolbar (فوق حافة الهيرو) ----------
+.alh-page .alb-list {
+    padding-top: 0;
+}
+
+.alb-toolbar {
+    position: relative;
+    z-index: 5;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 1rem;
+    margin: -3.5rem 0 3.5rem;
+    padding: 1.1rem;
+    border-radius: $alh-radius;
+    background: #fff;
+    box-shadow: 0 24px 60px rgba(11, 37, 69, 0.14);
+}
+
+.alb-search {
+    flex: 1 1 280px;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin: 0;
+    padding: 0 1rem;
+    border-radius: 14px;
+    background: $alh-soft;
+    border: 1px solid $alh-line;
+
+    i {
+        color: $alh-muted;
+    }
+
+    input {
+        flex: 1 1 auto;
+        min-width: 0;
+        padding: 0.8rem 0;
+        border: 0;
+        outline: 0;
+        background: transparent;
+        font-family: inherit;
+        font-size: 1rem;
+        color: $alh-ink;
+    }
+
+    &:focus-within {
+        border-color: rgba($alh-blue, 0.45);
+        box-shadow: 0 0 0 3px rgba($alh-blue, 0.12);
+    }
+}
+
+.alb-filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.alb-filter {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    padding: 0.55rem 1rem;
+    border-radius: 999px;
+    border: 1px solid $alh-line;
+    background: #fff;
+    color: $alh-ink;
+    font-family: inherit;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+
+    small {
+        padding: 0.05rem 0.45rem;
+        border-radius: 999px;
+        font-size: 0.78rem;
+        font-weight: 800;
+        color: $alh-blue;
+        background: rgba($alh-blue, 0.08);
+    }
+
+    &:hover {
+        border-color: rgba($alh-blue, 0.4);
+    }
+
+    &.is-active {
+        color: #fff;
+        background: $alh-blue;
+        border-color: $alh-blue;
+
+        small {
+            color: $alh-navy;
+            background: $alh-gold;
+        }
+    }
+
+    &:focus-visible {
+        outline: 3px solid $alh-gold;
+        outline-offset: 2px;
+    }
+}
+
+// ---------- Cards ----------
+.alb-item[hidden] {
+    display: none !important;
+}
+
+.alb-card {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    border-radius: $alh-radius;
+    background: #fff;
+    border: 1px solid $alh-line;
+    box-shadow: $alh-shadow;
+    transition: transform 0.22s ease, box-shadow 0.22s ease;
+
+    &:hover {
+        transform: translateY(-6px);
+        box-shadow: $alh-shadow-hover;
+
+        .alb-card-media img {
+            transform: scale(1.05);
+        }
+    }
+}
+
+.alb-card-media {
+    position: relative;
+    display: block;
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+    background: $alh-navy-2;
+
+    img {
+        display: block;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.4s ease;
+    }
+
+    &::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(180deg, transparent 55%, rgba(11, 37, 69, 0.45));
+        pointer-events: none;
+    }
+}
+
+.alb-media-fallback {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.6rem;
+    color: rgba(255, 255, 255, 0.85);
+    background: radial-gradient(circle at 30% 20%, rgba($alh-gold, 0.35), transparent 55%),
+                linear-gradient(135deg, $alh-navy, $alh-blue);
+}
+
+.alb-city-chip {
+    position: absolute;
+    z-index: 1;
+    top: 0.85rem;
+    inset-inline-start: 0.85rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.3rem 0.8rem;
+    border-radius: 999px;
+    font-size: 0.85rem;
+    font-weight: 800;
+    color: $alh-navy;
+    background: rgba(255, 255, 255, 0.95);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+
+    i {
+        color: $alh-gold;
+    }
+}
+
+.alb-card-body {
+    flex: 1 1 auto;
+    display: flex;
+    flex-direction: column;
+    padding: 1.4rem 1.5rem 1.5rem;
+}
+
+.alb-prefix {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: $alh-blue;
+}
+
+.alb-card-title {
+    margin: 0.15rem 0 0.85rem;
+    font-size: 1.3rem;
+    font-weight: 800;
+
+    a {
+        color: $alh-ink !important;
+        text-decoration: none !important;
+
+        &:hover {
+            color: $alh-blue !important;
+        }
+    }
+}
+
+.alb-meta {
+    margin: 0 0 1.25rem;
+    padding: 0;
+
+    li {
+        display: flex;
+        align-items: flex-start;
+        gap: 0.6rem;
+        margin-bottom: 0.45rem;
+        font-size: 0.95rem;
+        color: $alh-muted;
+    }
+
+    i {
+        width: 16px;
+        margin-top: 0.3rem;
+        text-align: center;
+        color: $alh-gold;
+    }
+}
+
+.alb-actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+    margin-top: auto;
+    padding-top: 1rem;
+    border-top: 1px solid $alh-line;
+}
+
+.alb-act {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+    padding: 0.5rem 0.9rem;
+    border-radius: 999px;
+    font-size: 0.92rem;
+    font-weight: 700;
+    color: $alh-blue !important;
+    background: $alh-soft;
+    text-decoration: none !important;
+    transition: background-color 0.15s ease, color 0.15s ease;
+
+    &:hover {
+        background: rgba($alh-blue, 0.12);
+    }
+}
+
+.alb-act-main {
+    grid-column: 1 / -1;
+    color: #fff !important;
+    background: $alh-blue;
+
+    &:hover {
+        background: $alh-navy;
+    }
+}
+
+.alb-empty {
+    margin: 2rem 0 0;
+    padding: 2rem;
+    text-align: center;
+    border-radius: $alh-radius;
+    border: 1px dashed $alh-line;
+    color: $alh-muted;
+    font-weight: 700;
+}
+
+.alh-page .alb-cta-section {
+    margin-top: 0;
+    padding-top: 1rem;
+}
+
+@media (max-width: 767.98px) {
+    .alb-hero {
+        padding: 3.5rem 0 7rem;
+    }
+
+    .alb-toolbar {
+        margin-bottom: 2.5rem;
+    }
+
+    .alb-filters {
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        padding-bottom: 0.25rem;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .alb-filter {
+        flex: 0 0 auto;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .alb-card,
+    .alb-card-media img {
+        transition: none;
+    }
+}
+
+// ============================================================
+// تصليح: rtl.css بيفرض direction:ltr + inline-block على كل رابط tel:
+// بالصفحات العربية — هاد بيخرب ترتيب الأيقونة والنص بالأزرار.
+// (تخصيص أعلى من قاعدة rtl.css)
+// ============================================================
+html[dir='rtl'] body a[href^='tel:'].alb-act.alb-act,
+html[dir='rtl'] body a[href^='tel:'].alh-branch-phone.alh-branch-phone,
+html[dir='rtl'] body a[href^='tel:'].ale-btn.ale-btn {
+    display: inline-flex;
+    direction: rtl;
+}
+
+html[dir='rtl'] body a[href^='tel:'].alct-card.alct-card {
+    display: flex;
+    direction: rtl;
+}
+
+// ============================================================
+// الفوتر (/footer_rtl) — بادئة alf-، عربي وإنجليزي
+// ============================================================
+.alf-footer {
+    position: relative;
+    z-index: 100;
+    overflow: hidden;
+    padding: 0 0 1.5rem;
+    font-family: 'Tajawal', sans-serif;
+    color: rgba(255, 255, 255, 0.75);
+    background: linear-gradient(170deg, #081b33 0%, $alh-navy 45%, #0d2c52 100%);
+    border-top: 3px solid $alh-gold;
+
+    a {
+        text-decoration: none !important;
+    }
+}
+
+.alf-glow {
+    position: absolute;
+    top: -180px;
+    inset-inline-end: -120px;
+    width: 460px;
+    height: 460px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba($alh-blue-2, 0.45), transparent 65%);
+    pointer-events: none;
+}
+
+// ---------- الأعمدة ----------
+.alf-main {
+    padding: 4rem 0 2.5rem;
+    text-align: start;
+}
+
+.alf-brand img {
+    display: block;
+    max-width: 190px;
+    height: auto;
+    margin-bottom: 1.25rem;
+}
+
+.alf-about {
+    max-width: 360px;
+    line-height: 1.9;
+    margin-bottom: 1.5rem;
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.alf-social {
+    display: flex;
+    gap: 0.6rem;
+
+    a {
+        width: 42px;
+        height: 42px;
+        border-radius: 12px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        color: #fff !important;
+        background: rgba(255, 255, 255, 0.08);
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        transition: background-color 0.18s ease, transform 0.18s ease, color 0.18s ease;
+
+        &:hover {
+            transform: translateY(-3px);
+            color: $alh-navy !important;
+            background: $alh-gold;
+            border-color: $alh-gold;
+        }
+    }
+}
+
+.alf-title {
+    position: relative;
+    margin: 0 0 1.4rem;
+    padding-bottom: 0.75rem;
+    font-size: 1.1rem;
+    font-weight: 800;
+    color: #fff !important;
+
+    &::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        inset-inline-start: 0;
+        width: 36px;
+        height: 3px;
+        border-radius: 3px;
+        background: $alh-gold;
+    }
+}
+
+.alf-links {
+    margin: 0;
+    padding: 0 !important;
+
+    li + li {
+        margin-top: 0.6rem;
+    }
+
+    a {
+        display: inline-flex;
+        align-items: baseline;
+        gap: 0.55rem;
+        color: rgba(255, 255, 255, 0.72) !important;
+        transition: color 0.15s ease, gap 0.15s ease;
+
+        i {
+            font-size: 0.7rem;
+            color: $alh-gold;
+            opacity: 0.8;
+            margin: 0 !important;
+        }
+
+        &:hover {
+            gap: 0.8rem;
+            color: #fff !important;
+        }
+    }
+}
+
+.alf-contact {
+    margin: 0;
+    padding: 0 !important;
+
+    li {
+        display: flex;
+        align-items: flex-start;
+        gap: 0.8rem;
+
+        & + li {
+            margin-top: 1rem;
+        }
+
+        small {
+            display: block;
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        a,
+        > span > span {
+            color: #fff !important;
+            font-weight: 600;
+        }
+
+        a:hover {
+            color: $alh-gold !important;
+        }
+    }
+}
+
+.alf-ic {
+    flex: 0 0 auto;
+    width: 38px;
+    height: 38px;
+    border-radius: 10px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: $alh-gold;
+    background: rgba($alh-gold, 0.1);
+}
+
+// ---------- الحقوق ----------
+.alf-bottom {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem 1.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    font-size: 0.92rem;
+
+    p {
+        margin: 0;
+        color: rgba(255, 255, 255, 0.55);
+    }
+
+    .fa-heart {
+        margin: 0 0.25rem;
+        color: #ef5a6f;
+    }
+}
+
+@media (max-width: 767.98px) {
+    .alf-bottom {
+        justify-content: center;
+        text-align: center;
+    }
+
+    .alf-main {
+        padding: 2.75rem 0 2rem;
+    }
+
+    // مكان شريط الموبايل الثابت بصفحات الهبوط
+    .alf-footer {
+        padding-bottom: 5.5rem;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .alf-social a,
+    .alf-links a {
+        transition: none;
+    }
+}
+
+// ============================================================
+// صفحة الفرع الواحد (/branch/<slug>) — بادئة ald-
+// ============================================================
+.ald-hero {
+    padding: 2.25rem 0 6rem;
+}
+
+.ald-crumbs {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.6rem;
+    margin-bottom: 2.5rem;
+    font-size: 0.92rem;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.6);
+
+    a {
+        color: rgba(255, 255, 255, 0.8) !important;
+        text-decoration: none !important;
+
+        &:hover {
+            color: $alh-gold !important;
+        }
+    }
+
+    i {
+        font-size: 0.7rem;
+        opacity: 0.6;
+    }
+
+    span {
+        color: #fff;
+    }
+}
+
+.ald-prefix {
+    margin: 0 0 0.25rem;
+    font-weight: 800;
+    font-size: 1.1rem;
+    color: $alh-gold;
+}
+
+.alh-title.ald-title {
+    font-size: clamp(2.2rem, 4.6vw, 3.5rem);
+}
+
+.ald-location {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.6rem;
+
+    i {
+        margin-top: 0.45rem;
+        color: $alh-gold;
+    }
+}
+
+.ald-media {
+    img {
+        aspect-ratio: 4 / 3;
+    }
+}
+
+.ald-fallback {
+    display: flex;
+    aspect-ratio: 4 / 3;
+    font-size: 4rem;
+}
+
+// ---------- Info + map ----------
+.alh-page .ald-main {
+    padding-top: 0;
+}
+
+.ald-row {
+    position: relative;
+    z-index: 5;
+    margin-top: -3.5rem;
+}
+
+.ald-card {
+    padding: 1.75rem;
+    border-radius: $alh-radius;
+    background: #fff;
+    border: 1px solid $alh-line;
+    box-shadow: 0 24px 60px rgba(11, 37, 69, 0.12);
+
+    & + & {
+        margin-top: 1.5rem;
+    }
+}
+
+.ald-card-title {
+    margin: 0 0 1.25rem;
+    font-size: 1.25rem;
+    font-weight: 800;
+    color: $alh-ink;
+}
+
+.ald-info {
+    margin: 0;
+    padding: 0;
+
+    li {
+        display: flex;
+        align-items: flex-start;
+        gap: 0.9rem;
+
+        & + li {
+            margin-top: 1.1rem;
+            padding-top: 1.1rem;
+            border-top: 1px dashed $alh-line;
+        }
+    }
+
+    small {
+        display: block;
+        font-size: 0.85rem;
+        color: $alh-muted;
+    }
+
+    strong,
+    a {
+        font-weight: 700;
+        color: $alh-ink !important;
+        text-decoration: none !important;
+    }
+
+    a:hover {
+        color: $alh-blue !important;
+    }
+}
+
+.ald-program {
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+    padding: 0.7rem 0.6rem;
+    border-radius: 14px;
+    font-weight: 700;
+    color: $alh-ink !important;
+    text-decoration: none !important;
+    transition: background-color 0.15s ease;
+
+    & + & {
+        margin-top: 0.25rem;
+    }
+
+    .alh-feature-icon {
+        width: 42px;
+        height: 42px;
+        font-size: 1rem;
+    }
+
+    &:hover {
+        background: $alh-soft;
+
+        .ald-program-go {
+            color: $alh-blue;
+        }
+    }
+}
+
+.ald-program-go {
+    margin-inline-start: auto;
+    font-size: 0.8rem;
+    color: $alh-muted;
+}
+
+.ald-map-card {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.ald-map-head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    margin-bottom: 1.25rem;
+}
+
+.ald-map {
+    flex: 1 1 auto;
+    min-height: 420px;
+    overflow: hidden;
+    border-radius: 16px;
+    background: $alh-soft;
+
+    iframe {
+        display: block;
+        width: 100%;
+        height: 100%;
+        min-height: 420px;
+        border: 0;
+    }
+}
+
+.ald-map-fallback {
+    height: 100%;
+    min-height: 420px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    font-weight: 800;
+    color: $alh-blue !important;
+    text-decoration: none !important;
+
+    i {
+        font-size: 3rem;
+    }
+}
+
+// ---------- Other branches ----------
+.ald-others-head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+.alh-page .alb-cta-section.alb-cta-section {
+    padding-top: 3rem;
+}
+
+.alh-page .alh-section-soft + .alb-cta-section {
+    background: $alh-soft;
+}
+
+@media (max-width: 991.98px) {
+    .ald-hero {
+        text-align: center;
+
+        .ald-crumbs,
+        .ald-location {
+            justify-content: center;
+        }
+    }
+
+    .ald-map,
+    .ald-map iframe,
+    .ald-map-fallback {
+        min-height: 320px;
+    }
+}
+
+// ============================================================
+// صورة المركز بخلفية الهيرو (الرئيسية / الفروع / صفحة الفرع)
+// طبقة كحلية أغمق من جهة الكتابة + زووم بطيء جداً (CSS بس)
+// ============================================================
+.alh-hero-photo {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+
+    img {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transform-origin: 60% 40%;
+        animation: alh-kenburns 24s ease-in-out infinite alternate;
+        will-change: transform;
+    }
+
+    // الطبقة: أغمق من جهة الكتابة (بداية السطر) وأفتح من الجهة التانية
+    &::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background:
+            linear-gradient(90deg, rgba($alh-navy, 0.92) 0%, rgba($alh-navy, 0.78) 45%, rgba($alh-navy, 0.45) 100%),
+            linear-gradient(0deg, rgba($alh-navy, 0.55) 0%, transparent 35%);
+    }
+
+    // نص بالنص: طبقة متساوية
+    &.is-center::after {
+        background:
+            radial-gradient(ellipse at center, rgba($alh-navy, 0.72) 0%, rgba($alh-navy, 0.82) 60%, rgba($alh-navy, 0.9) 100%),
+            linear-gradient(0deg, rgba($alh-navy, 0.6) 0%, transparent 40%);
+    }
+
+    // مع فيديو قدّام: الصورة أغمق وثابتة منشان ما تصير زحمة
+    &.is-still {
+        img {
+            animation: none;
+        }
+
+        &::after {
+            background: linear-gradient(160deg, rgba($alh-navy, 0.93), rgba($alh-navy-2, 0.88));
+        }
+    }
+}
+
+[dir='rtl'] .alh-hero-photo:not(.is-center):not(.is-still)::after {
+    background:
+        linear-gradient(270deg, rgba($alh-navy, 0.92) 0%, rgba($alh-navy, 0.78) 45%, rgba($alh-navy, 0.45) 100%),
+        linear-gradient(0deg, rgba($alh-navy, 0.55) 0%, transparent 35%);
+}
+
+@keyframes alh-kenburns {
+    0% { transform: scale(1) translate3d(0, 0, 0); }
+    100% { transform: scale(1.09) translate3d(-1.5%, -1%, 0); }
+}
+
+// مع الصورة: الزخارف أخف منشان ما تغطي عليها
+.alh-hero.has-photo {
+    .alh-blob {
+        opacity: 0.18;
+    }
+
+    .alh-grid {
+        opacity: 0.5;
+    }
+
+    // نص الهيرو فوق الصورة: ظل خفيف للوضوح
+    .alh-title,
+    .alh-lead {
+        text-shadow: 0 2px 18px rgba(0, 0, 0, 0.25);
+    }
+}
+
+@media (max-width: 991.98px) {
+    // عالموبايل الكتابة بالنص: طبقة متساوية وأغمق شوي
+    .alh-hero-photo::after,
+    [dir='rtl'] .alh-hero-photo:not(.is-center):not(.is-still)::after {
+        background: linear-gradient(180deg, rgba($alh-navy, 0.82), rgba($alh-navy, 0.9));
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .alh-hero-photo img {
+        animation: none;
+    }
+}
+
+// ============================================================
+// صفحة "من نحن" (/about) — بادئة ala-
+// ============================================================
+.ala-hero {
+    padding: 6rem 0 9rem;
+}
+
+.ala-subtitle {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: $alh-blue;
+    margin-bottom: 1.25rem;
+}
+
+.ala-text {
+    font-size: 1.05rem;
+    line-height: 2;
+    color: $alh-muted;
+}
+
+.ala-points {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.75rem 1.25rem;
+    margin: 1.5rem 0 0;
+    padding: 0;
+
+    li {
+        display: flex;
+        align-items: flex-start;
+        gap: 0.6rem;
+        font-weight: 700;
+        color: $alh-ink;
+    }
+
+    i {
+        margin-top: 0.3rem;
+        color: $alh-gold;
+    }
+
+    @media (max-width: 575.98px) {
+        grid-template-columns: 1fr;
+    }
+}
+
+// ---------- Story visual ----------
+.ala-story-visual {
+    position: relative;
+    padding: 1.5rem;
+}
+
+.ala-story-frame {
+    position: relative;
+    overflow: hidden;
+    aspect-ratio: 1 / 1;
+    border-radius: 32px;
+    background: radial-gradient(circle at 30% 20%, rgba($alh-gold, 0.25), transparent 55%),
+                linear-gradient(145deg, $alh-soft, #e8eef7);
+    box-shadow: $alh-shadow;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    img {
+        width: 82%;
+        height: 82%;
+        object-fit: contain;
+    }
+
+    // إطار ذهبي خلفي
+    &::before {
+        content: '';
+        position: absolute;
+        inset: 14px;
+        border-radius: 24px;
+        border: 2px dashed rgba($alh-blue, 0.15);
+        pointer-events: none;
+    }
+}
+
+.ala-story-fallback {
+    font-size: 6rem;
+    color: rgba($alh-blue, 0.35);
+}
+
+.ala-years {
+    position: absolute;
+    bottom: 0;
+    inset-inline-end: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    text-align: center;
+    color: $alh-navy;
+    background: linear-gradient(135deg, $alh-gold, $alh-gold-2);
+    border: 6px solid #fff;
+    box-shadow: 0 18px 40px rgba($alh-gold, 0.4);
+
+    strong {
+        font-size: 2.6rem;
+        font-weight: 900;
+        line-height: 1;
+    }
+
+    span {
+        margin-top: 0.3rem;
+        padding: 0 0.75rem;
+        font-size: 0.9rem;
+        font-weight: 800;
+        line-height: 1.3;
+    }
+}
+
+// ---------- Vision & mission ----------
+.ala-vm {
+    position: relative;
+    height: 100%;
+    overflow: hidden;
+    padding: 2.25rem;
+    border-radius: $alh-radius;
+    background: #fff;
+    border: 1px solid $alh-line;
+    box-shadow: $alh-shadow;
+
+    &::after {
+        content: '';
+        position: absolute;
+        top: -60px;
+        inset-inline-end: -60px;
+        width: 180px;
+        height: 180px;
+        border-radius: 50%;
+        background: rgba($alh-blue, 0.05);
+    }
+
+    p {
+        position: relative;
+        z-index: 1;
+        margin: 0;
+        font-size: 1.05rem;
+        line-height: 2;
+        color: $alh-muted;
+    }
+}
+
+.ala-vm-head {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1.25rem;
+
+    small {
+        display: block;
+        font-weight: 800;
+        color: $alh-gold;
+        letter-spacing: 0.02em;
+    }
+
+    h3 {
+        margin: 0;
+        font-size: 1.5rem;
+        font-weight: 900;
+        color: $alh-ink;
+    }
+}
+
+.ala-vm-icon {
+    flex: 0 0 auto;
+    width: 64px;
+    height: 64px;
+    border-radius: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.6rem;
+    color: #fff;
+    background: linear-gradient(135deg, $alh-blue, $alh-blue-2);
+    box-shadow: 0 12px 26px rgba($alh-blue, 0.25);
+}
+
+.ala-vm-mission .ala-vm-icon {
+    color: $alh-navy;
+    background: linear-gradient(135deg, $alh-gold, $alh-gold-2);
+    box-shadow: 0 12px 26px rgba($alh-gold, 0.3);
+}
+
+// ---------- Goals ----------
+.ala-goal {
+    position: relative;
+    height: 100%;
+    padding: 1.5rem;
+    border-radius: 18px;
+    background: #fff;
+    border: 1px solid $alh-line;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+
+    &:hover {
+        transform: translateY(-3px);
+        box-shadow: $alh-shadow;
+    }
+
+    .alh-feature-icon {
+        margin-bottom: 1rem;
+    }
+
+    strong {
+        display: block;
+        font-size: 1.1rem;
+        font-weight: 800;
+        color: $alh-ink;
+        margin-bottom: 0.3rem;
+    }
+
+    small {
+        display: block;
+        font-size: 0.95rem;
+        color: $alh-muted;
+        line-height: 1.7;
+    }
+}
+
+.ala-goal-num {
+    position: absolute;
+    top: 1rem;
+    inset-inline-end: 1.25rem;
+    font-size: 1.8rem;
+    font-weight: 900;
+    color: rgba($alh-blue, 0.12);
+}
+
+// ---------- Values ----------
+.alh-page .ala-values {
+    overflow: hidden;
+    padding-bottom: 8.5rem;   // مكان بطاقة الـ CTA
+    color: #fff;
+    background: radial-gradient(800px 400px at 85% 0%, rgba($alh-blue-2, 0.5), transparent 60%),
+                linear-gradient(160deg, $alh-navy, $alh-blue);
+}
+
+.ala-value {
+    height: 100%;
+    padding: 2rem 1.5rem;
+    text-align: center;
+    border-radius: $alh-radius;
+    background: rgba(255, 255, 255, 0.07);
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    transition: transform 0.2s ease, background-color 0.2s ease;
+
+    &:hover {
+        transform: translateY(-4px);
+        background: rgba(255, 255, 255, 0.12);
+    }
+
+    h3 {
+        font-size: 1.2rem;
+        font-weight: 800;
+        color: #fff !important;
+        margin-bottom: 0.5rem;
+    }
+
+    p {
+        margin: 0;
+        color: rgba(255, 255, 255, 0.75);
+        line-height: 1.8;
+    }
+}
+
+@media (max-width: 991.98px) {
+    .ala-story-visual {
+        max-width: 440px;
+        margin: 0 auto;
+    }
+
+    .ala-years {
+        width: 120px;
+        height: 120px;
+
+        strong {
+            font-size: 2rem;
+        }
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .ala-goal,
+    .ala-value {
+        transition: none;
+    }
+}
+
+// ============================================================
+// صفحة الدورات (/courses) — بادئة alc-
+// ============================================================
+.alh-page .alc-featured {
+    padding-top: 0;
+    padding-bottom: 4rem;
+}
+
+.alc-featured-row {
+    position: relative;
+    z-index: 5;
+    margin-top: -4.5rem;
+}
+
+.alc-toolbar {
+    margin: 0 0 2.5rem;
+}
+
+.alc-card {
+    --alc-c: #{$alh-blue};
+    --alc-bg: #{rgba($alh-blue, 0.08)};
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    padding: 1.6rem;
+    border-radius: $alh-radius;
+    background: #fff;
+    border: 1px solid $alh-line;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+
+    &:hover {
+        transform: translateY(-4px);
+        box-shadow: $alh-shadow-hover;
+        border-color: transparent;
+    }
+}
+
+.alc-cat-education { --alc-c: #1a5490; --alc-bg: rgba(26, 84, 144, 0.08); }
+.alc-cat-languages { --alc-c: #0f766e; --alc-bg: rgba(15, 118, 110, 0.08); }
+.alc-cat-tech { --alc-c: #6d4fc2; --alc-bg: rgba(109, 79, 194, 0.08); }
+.alc-cat-business { --alc-c: #b7791f; --alc-bg: rgba(183, 121, 31, 0.1); }
+.alc-cat-creative { --alc-c: #c8707a; --alc-bg: rgba(200, 112, 122, 0.1); }
+
+.alc-card-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1.2rem;
+}
+
+.alc-icon {
+    width: 54px;
+    height: 54px;
+    border-radius: 16px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.35rem;
+    color: var(--alc-c, #{$alh-blue});
+    background: var(--alc-bg, #{rgba($alh-blue, 0.08)});
+}
+
+.alc-cat {
+    padding: 0.25rem 0.75rem;
+    border-radius: 999px;
+    font-size: 0.8rem;
+    font-weight: 800;
+    color: var(--alc-c);
+    background: var(--alc-bg);
+}
+
+.alc-title {
+    margin: 0 0 0.5rem;
+    font-size: 1.2rem;
+    font-weight: 800;
+    color: $alh-ink;
+}
+
+.alc-text {
+    flex: 1 1 auto;
+    margin: 0 0 1.25rem;
+    line-height: 1.8;
+    color: $alh-muted;
+}
+
+.alc-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border-radius: 14px;
+    border: 1px solid $alh-line;
+    font-family: inherit;
+    font-weight: 800;
+    color: $alh-blue !important;
+    background: $alh-soft;
+    text-decoration: none !important;
+    cursor: pointer;
+    transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+
+    &:hover {
+        color: #fff !important;
+        background: $alh-blue;
+        border-color: $alh-blue;
+    }
+
+    &:focus-visible {
+        outline: 3px solid $alh-gold;
+        outline-offset: 2px;
+    }
+}
+
+.alc-btn-register {
+    color: $alh-navy !important;
+    background: linear-gradient(135deg, $alh-gold, $alh-gold-2);
+    border-color: transparent;
+
+    &:hover {
+        color: $alh-navy !important;
+        background: linear-gradient(135deg, $alh-gold-2, $alh-gold);
+        box-shadow: 0 10px 24px rgba($alh-gold, 0.35);
+    }
+}
+
+// ---------- Modal ----------
+.alc-modal {
+    font-family: 'Tajawal', sans-serif;
+
+    .modal-content {
+        overflow: hidden;
+        border: 0;
+        border-radius: 24px;
+        box-shadow: 0 30px 80px rgba(11, 37, 69, 0.3);
+    }
+
+    .modal-body {
+        padding: 1.5rem 1.75rem 1.75rem;
+    }
+
+    .form-control,
+    .form-select {
+        border-radius: 12px !important;
+        font-family: inherit;
+    }
+}
+
+.alc-modal-head {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1.4rem 1.75rem;
+    color: #fff;
+    background: linear-gradient(135deg, $alh-navy, $alh-blue);
+
+    .alc-icon {
+        color: $alh-navy;
+        background: linear-gradient(135deg, $alh-gold, $alh-gold-2);
+        flex: 0 0 auto;
+    }
+
+    > div {
+        flex: 1 1 auto;
+        min-width: 0;
+    }
+
+    .btn-close {
+        filter: invert(1) grayscale(1) brightness(2);
+        margin: 0;
+    }
+}
+
+.alc-modal-title {
+    margin: 0;
+    font-size: 1.2rem;
+    font-weight: 800;
+    color: #fff !important;
+}
+
+.alc-modal-course {
+    margin: 0.15rem 0 0;
+    font-weight: 700;
+    color: $alh-gold;
+}
+
+.alc-modal-note {
+    margin: 0 0 1.25rem;
+    padding: 0.75rem 1rem;
+    border-radius: 12px;
+    font-size: 0.92rem;
+    color: $alh-muted;
+    background: $alh-soft;
+}
+
+.alc-success {
+    padding: 1rem 0;
+    text-align: center;
+
+    h3 {
+        font-size: 1.3rem;
+        font-weight: 800;
+        color: $alh-ink;
+    }
+
+    p {
+        color: $alh-muted;
+    }
+}
+
+.alc-success-icon {
+    width: 76px;
+    height: 76px;
+    margin: 0 auto 1rem;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    color: #fff;
+    background: linear-gradient(135deg, #4ade80, #16a34a);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .alc-card,
+    .alc-btn {
+        transition: none;
+    }
+}
+
+// ============================================================
+// صفحة "تواصل معنا" (/contact) — بادئة alct-
+// ============================================================
+.alct-hero {
+    padding: 5.5rem 0 9rem;
+}
+
+// ---------- بطاقات التواصل السريع ----------
+.alct-cards-wrap {
+    position: relative;
+    z-index: 5;
+    margin-top: -5.5rem;
+}
+
+.alct-card {
+    --alct-c: #{$alh-blue};
+    --alct-bg: #{rgba($alh-blue, 0.08)};
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 1.75rem 1.25rem 1.5rem;
+    border-radius: $alh-radius;
+    background: #fff;
+    border: 1px solid $alh-line;
+    box-shadow: 0 20px 50px rgba(11, 37, 69, 0.12);
+    text-decoration: none !important;
+    transition: transform 0.22s ease, box-shadow 0.22s ease;
+
+    &:hover {
+        transform: translateY(-6px);
+        box-shadow: 0 28px 60px rgba(11, 37, 69, 0.18);
+
+        .alct-card-icon {
+            color: #fff;
+            background: var(--alct-c);
+            transform: rotate(-6deg) scale(1.05);
+        }
+    }
+
+    &:focus-visible {
+        outline: 3px solid $alh-gold;
+        outline-offset: 3px;
+    }
+}
+
+.alct-card-whatsapp { --alct-c: #{$alh-wa}; --alct-bg: #{rgba($alh-wa, 0.1)}; }
+.alct-card-email { --alct-c: #c8707a; --alct-bg: rgba(200, 112, 122, 0.1); }
+.alct-card-branches { --alct-c: #b7791f; --alct-bg: rgba(183, 121, 31, 0.1); }
+
+.alct-card-icon {
+    width: 64px;
+    height: 64px;
+    margin-bottom: 1rem;
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    color: var(--alct-c);
+    background: var(--alct-bg);
+    transition: transform 0.22s ease, background-color 0.22s ease, color 0.22s ease;
+}
+
+.alct-card-title {
+    font-size: 0.92rem;
+    font-weight: 700;
+    color: $alh-muted;
+}
+
+.alct-card-value {
+    margin: 0.3rem 0 0.4rem;
+    font-size: 1.15rem;
+    font-weight: 900;
+    color: $alh-ink;
+    word-break: break-word;
+}
+
+.alct-card-note {
+    font-size: 0.85rem;
+    color: $alh-muted;
+    line-height: 1.6;
+}
+
+// ---------- الفورم + اللوحة الجانبية ----------
+.alh-page .alct-main {
+    padding-top: 4rem;
+}
+
+.alct-panel {
+    overflow: hidden;
+    border-radius: 28px;
+    background: #fff;
+    border: 1px solid $alh-line;
+    box-shadow: 0 30px 70px rgba(11, 37, 69, 0.1);
+}
+
+.alct-form {
+    padding: 2.75rem;
+}
+
+.alct-form-sub {
+    margin-bottom: 2rem;
+    font-size: 1.05rem;
+    color: $alh-muted;
+}
+
+.alct-hp {
+    position: absolute !important;
+    left: -9999px !important;
+    width: 1px;
+    height: 1px;
+    opacity: 0;
+}
+
+.alct-label {
+    display: block;
+    margin-bottom: 0.4rem;
+    font-size: 0.92rem;
+    font-weight: 700;
+    color: $alh-ink;
+}
+
+.alct-field {
+    position: relative;
+
+    > i {
+        position: absolute;
+        top: 50%;
+        inset-inline-start: 1rem;
+        transform: translateY(-50%);
+        font-size: 0.95rem;
+        color: $alh-muted;
+        pointer-events: none;
+        transition: color 0.15s ease;
+    }
+
+    &:focus-within > i {
+        color: $alh-blue;
+    }
+}
+
+.alct-field-area > i {
+    top: 1.1rem;
+    transform: none;
+}
+
+.alct-input {
+    display: block;
+    width: 100%;
+    padding: 0.85rem 1rem;
+    padding-inline-start: 2.7rem;
+    border-radius: 14px;
+    border: 1.5px solid $alh-line;
+    background: $alh-soft;
+    font-family: inherit;
+    font-size: 1rem;
+    color: $alh-ink;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease;
+    appearance: none;
+
+    &::placeholder {
+        color: #9aa7b8;
+    }
+
+    &:focus {
+        outline: 0;
+        background: #fff;
+        border-color: rgba($alh-blue, 0.55);
+        box-shadow: 0 0 0 4px rgba($alh-blue, 0.1);
+    }
+}
+
+select.alct-input {
+    padding-inline-end: 2.5rem;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='none' stroke='%235b6b80' stroke-width='2' d='M1 1l5 5 5-5'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 1rem center;
+    background-size: 12px 8px;
+}
+
+[dir='rtl'] select.alct-input {
+    background-position: left 1rem center;
+}
+
+textarea.alct-input {
+    min-height: 140px;
+    resize: vertical;
+}
+
+.alct-submit {
+    width: 100%;
+    margin-top: 0.5rem;
+    padding: 1rem;
+    font-size: 1.08rem;
+}
+
+.alct-privacy {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+    margin: 0.9rem 0 0;
+    font-size: 0.85rem;
+    color: $alh-muted;
+
+    i {
+        color: $alh-gold;
+    }
+}
+
+.alct-side {
+    position: relative;
+    height: 100%;
+    overflow: hidden;
+    padding: 2.75rem 2.5rem;
+    color: #fff;
+    background: radial-gradient(600px 300px at 100% 0%, rgba($alh-blue-2, 0.6), transparent 60%),
+                linear-gradient(160deg, $alh-navy, $alh-blue);
+
+    h3 {
+        position: relative;
+        font-size: 1.6rem;
+        font-weight: 900;
+        color: #fff !important;
+        margin-bottom: 0.6rem;
+    }
+}
+
+.alct-side-glow {
+    position: absolute;
+    bottom: -120px;
+    inset-inline-start: -80px;
+    width: 280px;
+    height: 280px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba($alh-gold, 0.28), transparent 65%);
+    pointer-events: none;
+}
+
+.alct-side-text {
+    position: relative;
+    margin-bottom: 2rem;
+    color: rgba(255, 255, 255, 0.75);
+    line-height: 1.8;
+}
+
+.alct-side-list {
+    position: relative;
+    margin: 0 0 2rem;
+    padding: 0;
+
+    li {
+        display: flex;
+        align-items: flex-start;
+        gap: 0.9rem;
+
+        & + li {
+            margin-top: 1.25rem;
+        }
+    }
+
+    small {
+        display: block;
+        font-size: 0.82rem;
+        color: rgba(255, 255, 255, 0.6);
+    }
+
+    strong,
+    a {
+        font-weight: 700;
+        color: #fff !important;
+        text-decoration: none !important;
+        word-break: break-word;
+    }
+
+    a:hover {
+        color: $alh-gold !important;
+    }
+}
+
+.alct-side-ic {
+    flex: 0 0 auto;
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: $alh-gold;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.alct-side-follow {
+    position: relative;
+    margin-bottom: 2rem;
+
+    small {
+        display: block;
+        margin-bottom: 0.6rem;
+        color: rgba(255, 255, 255, 0.6);
+    }
+}
+
+.alct-side-btn {
+    position: relative;
+    width: 100%;
+}
+
+// ---------- FAQ ----------
+.alct-faq {
+    max-width: 860px;
+    margin: 0 auto;
+}
+
+.alct-faq-item {
+    margin-bottom: 0.85rem;
+    border-radius: 18px;
+    background: #fff;
+    border: 1px solid $alh-line;
+    transition: box-shadow 0.2s ease, border-color 0.2s ease;
+
+    summary {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+        padding: 1.2rem 1.5rem;
+        list-style: none;
+        cursor: pointer;
+        font-size: 1.08rem;
+        font-weight: 800;
+        color: $alh-ink;
+
+        &::-webkit-details-marker {
+            display: none;
+        }
+
+        i {
+            flex: 0 0 auto;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            color: $alh-blue;
+            background: rgba($alh-blue, 0.08);
+            transition: transform 0.2s ease, background-color 0.2s ease, color 0.2s ease;
+        }
+    }
+
+    p {
+        margin: 0;
+        padding: 0 1.5rem 1.35rem;
+        line-height: 1.9;
+        color: $alh-muted;
+    }
+
+    &[open] {
+        border-color: rgba($alh-blue, 0.25);
+        box-shadow: $alh-shadow;
+
+        summary i {
+            transform: rotate(45deg);
+            color: $alh-navy;
+            background: $alh-gold;
+        }
+    }
+}
+
+// ---------- صفحات النجاح/الخطأ ----------
+.alct-result {
+    padding: 6rem 0;
+    background: radial-gradient(700px 350px at 50% 0%, rgba($alh-blue, 0.08), transparent 70%), $alh-soft;
+}
+
+.alct-result-card {
+    max-width: 640px;
+    margin: 0 auto;
+    padding: 3rem 2rem;
+    text-align: center;
+    border-radius: 28px;
+    background: #fff;
+    border: 1px solid $alh-line;
+    box-shadow: 0 30px 70px rgba(11, 37, 69, 0.1);
+
+    p {
+        font-size: 1.08rem;
+        color: $alh-muted;
+        margin-bottom: 1.75rem;
+    }
+}
+
+.alct-result-detail {
+    margin-top: -1rem;
+    font-size: 0.95rem !important;
+    color: #b42318 !important;
+}
+
+.alct-result-icon {
+    width: 88px;
+    height: 88px;
+    margin: 0 auto 1.25rem;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.3rem;
+    color: #fff;
+
+    &.is-ok {
+        background: linear-gradient(135deg, #4ade80, #16a34a);
+        box-shadow: 0 16px 36px rgba(22, 163, 74, 0.3);
+    }
+
+    &.is-err {
+        background: linear-gradient(135deg, #f87171, #dc2626);
+        box-shadow: 0 16px 36px rgba(220, 38, 38, 0.3);
+    }
+}
+
+@media (max-width: 991.98px) {
+    .alct-form,
+    .alct-side {
+        padding: 2rem 1.5rem;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .alct-card,
+    .alct-card-icon,
+    .alct-faq-item summary i {
+        transition: none;
+    }
+}
+
+// حقول الرقم/الإيميل (dir=ltr) بصفحة عربية: الأيقونة يمين، فالمسافة لازم تكون يمين كمان
+[dir='rtl'] .alct-input[dir='ltr'] {
+    display: block;
+    padding-left: 1rem;
+    padding-right: 2.7rem;
+}
+
+// ============================================================
+// الرئيسية: بطاقة "1750+" الطايرة (تحت، بنهاية السطر) كانت مغطية
+// زر "تشغيل الصوت" (نفس الزاوية) — الزر انتقل للزاوية المقابلة
+// ============================================================
+.alh-hero-visual .alh-media .ale-sound-toggle {
+    z-index: 4;
+    bottom: 16px;
+    inset-inline-end: auto;
+    inset-inline-start: 16px;
+}
+
+// ============================================================
+// الرئيسية: بطاقات الإمارات (دبي / أبوظبي / العين)
+// ============================================================
+.alh-city {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    h3 {
+        margin-bottom: 0.5rem;
+    }
+}
+
+.alh-city-count {
+    margin-bottom: 1.25rem;
+    padding: 0.2rem 0.85rem;
+    border-radius: 999px;
+    font-size: 0.85rem;
+    font-weight: 800;
+    color: $alh-navy;
+    background: $alh-gold;
+}
+
+.alh-city-list {
+    width: 100%;
+    margin: 0 0 1.5rem;
+    padding: 0;
+    text-align: start;
+
+    li + li {
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    a {
+        display: flex;
+        align-items: center;
+        gap: 0.6rem;
+        padding: 0.6rem 0.4rem;
+        border-radius: 10px;
+        font-weight: 600;
+        color: rgba(255, 255, 255, 0.85) !important;
+        text-decoration: none !important;
+        transition: background-color 0.15s ease, color 0.15s ease;
+
+        i {
+            font-size: 0.85rem;
+            color: $alh-gold;
+        }
+
+        &:hover {
+            color: #fff !important;
+            background: rgba(255, 255, 255, 0.08);
+        }
+    }
+}
+
+.alh-city-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: auto;
+    padding: 0.6rem 1.3rem;
+    border-radius: 999px;
+    font-weight: 800;
+    color: $alh-navy !important;
+    background: #fff;
+    text-decoration: none !important;
+    transition: transform 0.18s ease, box-shadow 0.18s ease;
+
+    &:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 12px 28px rgba(0, 0, 0, 0.25);
+    }
+}
+
+.alh-branches .alh-city {
+    height: 100%;
+}

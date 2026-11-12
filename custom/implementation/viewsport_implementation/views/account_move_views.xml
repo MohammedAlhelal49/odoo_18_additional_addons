@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <record id="view_move_form_inherit_viewsport" model="ir.ui.view">
+        <field name="name">account.move.form.inherit.viewsport</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_move_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//page[@id='other_tab']" position="before">
+                <page string="Tax Invoice Details" name="viewsport_invoice_details"
+                      invisible="move_type not in ('out_invoice', 'out_refund')">
+                    <group>
+                        <group string="Invoice Information">
+                            <label for="invoice_period_start" string="Invoice Period"/>
+                            <div class="o_row">
+                                <field name="invoice_period_start"/> to <field name="invoice_period_end"/>
+                            </div>
+                            <field name="contract_ref" placeholder="Leave empty to print the project code"/>
+                            <field name="payment_band" placeholder="e.g. Construction Progress Payment No [01]"/>
+                        </group>
+                        <group string="Bill-To">
+                            <field name="invoice_attention"/>
+                            <field name="vs_note_reason" placeholder="One reason per line (credit / debit notes)"/>
+                        </group>
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+</odoo>

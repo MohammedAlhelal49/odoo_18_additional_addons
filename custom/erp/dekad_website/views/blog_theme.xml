@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- ======================================================================
+         1) Make every website_blog page (listing + single post) render inside
+            OUR header/footer instead of Odoo's default website.layout.
+            website_blog.index is the shared wrapper both blog_post_short
+            (listing) and blog_post_complete (single post) call into, so this
+            one swap fixes both pages at once. Only the t-call target itself
+            is changed - everything else about website_blog's own structure,
+            assets, and behavior stays exactly as Odoo built it.
+         ====================================================================== -->
+    <template id="blog_index_vaultedge_layout" inherit_id="website_blog.index" name="Dekad Blog Layout">
+        <xpath expr="//t[@t-call='website.layout']" position="attributes">
+            <attribute name="t-call">dekad_website.layout</attribute>
+        </xpath>
+    </template>
+
+</odoo>

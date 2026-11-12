@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Contract Payments: read-only block under the order lines of a sales order. -->
+    <record id="view_order_form_dekad_contract_payments" model="ir.ui.view">
+        <field name="name">sale.order.form.dekad.contract.payments</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//page[@name='order_lines']//group[@name='note_group']" position="after">
+                <div name="contract_payments" class="mt-3 mb-3" invisible="not contract_has_invoices">
+                    <field name="contract_has_invoices" invisible="1"/>
+                    <separator string="Contract Payments | دفعات العقد"/>
+                    <div class="row g-2 mb-3">
+                        <div class="col-12 col-md-4">
+                            <div class="border rounded p-2 text-center">
+                                <label for="amount_total" string="Contract Total | إجمالي العقد" class="text-muted small d-block"/>
+                                <span class="fs-4 fw-bold"><field name="amount_total" readonly="1" nolabel="1"/></span>
+                                <div class="text-muted small">100%</div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-4">
+                            <div class="border border-success rounded p-2 text-center">
+                                <label for="contract_invoiced_amount" string="Invoiced so far | المفوتر حتى الآن" class="text-muted small d-block"/>
+                                <span class="fs-4 fw-bold text-success"><field name="contract_invoiced_amount" nolabel="1"/></span>
+                                <div class="text-muted small"><field name="contract_invoiced_percent" nolabel="1"/>%</div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-4">
+                            <div class="border border-warning rounded p-2 text-center">
+                                <label for="contract_remaining_amount" string="Remaining of the contract | المتبقي من العقد" class="text-muted small d-block"/>
+                                <span class="fs-4 fw-bold"><field name="contract_remaining_amount" nolabel="1"/></span>
+                                <div class="text-muted small"><field name="contract_remaining_percent" nolabel="1"/>%</div>
+                            </div>
+                        </div>
+                    </div>
+                    <field name="contract_invoice_ids" nolabel="1" readonly="1">
+                        <list no_open="1">
+                            <field name="currency_id" column_invisible="1"/>
+                            <field name="invoice_date" string="Date | التاريخ"/>
+                            <field name="name" string="Invoice | الفاتورة"/>
+                            <field name="amount_total" string="Amount | المبلغ" sum="Total"/>
+                            <field name="contract_percent" string="% of Contract | النسبة من العقد" sum="Total"/>
+                            <field name="state" widget="badge" decoration-success="state == 'posted'"
+                                   decoration-info="state == 'draft'"/>
+                            <field name="payment_state" widget="badge"
+                                   decoration-danger="payment_state == 'not_paid'"
+                                   decoration-warning="payment_state in ('partial', 'in_payment')"
+                                   decoration-success="payment_state == 'paid'"/>
+                            <button name="action_open_contract_bill" type="object" icon="fa-external-link"
+                                    title="Open Invoice"/>
+                        </list>
+                    </field>
+                </div>
+            </xpath>
+        </field>
+    </record>
+</odoo>

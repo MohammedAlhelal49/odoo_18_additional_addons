@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- الأشخاص اللي بيوصّلوا الطلبات: بينضافوا لحالهم لما الكاشير يكتب اسم جديد بالـ POS -->
+    <record id="view_london_delivery_person_list" model="ir.ui.view">
+        <field name="name">london.delivery.person.list</field>
+        <field name="model">london.delivery.person</field>
+        <field name="arch" type="xml">
+            <list editable="bottom">
+                <field name="name"/>
+                <field name="active" widget="boolean_toggle"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_london_delivery_person_search" model="ir.ui.view">
+        <field name="name">london.delivery.person.search</field>
+        <field name="model">london.delivery.person</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                <filter name="archived" string="Archived" domain="[('active', '=', False)]"/>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_london_delivery_person" model="ir.actions.act_window">
+        <field name="name">Delivery Persons</field>
+        <field name="res_model">london.delivery.person</field>
+        <field name="view_mode">list</field>
+    </record>
+
+    <!-- القائمة انشالت: "Delivered By" صار الموظف اللي ضغط Delivered بالـ POS (الأسماء القديمة بتضل للأرشيف) -->
+</odoo>

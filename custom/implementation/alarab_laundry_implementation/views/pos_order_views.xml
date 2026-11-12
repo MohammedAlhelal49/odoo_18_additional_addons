@@ -1,0 +1,42 @@
+<odoo>
+
+    <record id="view_pos_pos_form_inherit_whatsapp" model="ir.ui.view">
+        <field name="name">pos.order.form.whatsapp</field>
+        <field name="model">pos.order</field>
+        <field name="inherit_id" ref="point_of_sale.view_pos_pos_form"/>
+        <field name="arch" type="xml">
+
+            <!-- Backend "Invoice": open WhatsApp Web with the invoice message right after posting -->
+            <xpath expr="//header/button[@name='action_pos_order_invoice']" position="attributes">
+                <attribute name="context">{'alarab_wa_open': True}</attribute>
+            </xpath>
+
+            <xpath expr="//sheet/div[@name='button_box']" position="inside">
+                <button name="action_send_whatsapp"
+                        string="Order Ready"
+                        type="object"
+                        class="oe_stat_button"
+                        icon="fa-whatsapp"
+                        invisible="not wa_phone_valid"/>
+                <button name="action_send_whatsapp_invoice"
+                        string="Invoice"
+                        type="object"
+                        class="oe_stat_button"
+                        icon="fa-whatsapp"
+                        invisible="not wa_phone_valid or not account_move"/>
+            </xpath>
+
+            <xpath expr="//field[@name='date_order']" position="after">
+                <field name="wa_phone_valid" invisible="1"/>
+                <field name="account_move" invisible="1"/>
+                <div colspan="2" class="text-warning" invisible="wa_phone_valid">
+                    <i class="fa fa-exclamation-triangle me-1"/>
+                    <span invisible="partner_id">No customer on this order: WhatsApp is not available.</span>
+                    <span invisible="not partner_id">The customer's phone number is missing or invalid: WhatsApp is not available.</span>
+                </div>
+            </xpath>
+
+        </field>
+    </record>
+
+</odoo>

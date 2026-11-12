@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+
+    <t t-name="london_laundry_implementation.DeliveryPersonPopup">
+        <Dialog title="props.title">
+            <input type="text" class="form-control form-control-lg" placeholder="Name"
+                   t-model="state.name" t-ref="input" t-on-keydown="(ev) => ev.key === 'Enter' and this.confirm()"/>
+            <div t-if="suggestions.length" class="d-flex flex-wrap gap-2 mt-3">
+                <button t-foreach="suggestions" t-as="name" t-key="name"
+                        class="btn btn-light btn-lg" t-on-click="() => this.pick(name)" t-esc="name"/>
+            </div>
+            <t t-set-slot="footer">
+                <button class="btn btn-primary btn-lg lh-lg o-default-button" t-on-click="confirm">Apply</button>
+                <button class="btn btn-secondary btn-lg lh-lg o-default-button" t-on-click="clear">Clear</button>
+                <button class="btn btn-secondary btn-lg lh-lg o-default-button" t-on-click="props.close">Discard</button>
+            </t>
+        </Dialog>
+    </t>
+
+</templates>

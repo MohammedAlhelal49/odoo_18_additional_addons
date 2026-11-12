@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_move_form_hp_batch_expiry" model="ir.ui.view">
+        <field name="name">account.move.form.hp.batch.expiry</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_move_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='invoice_line_ids']/list/field[@name='product_id']" position="before">
+                <field name="hp_item_code" column_invisible="parent.move_type not in ('out_invoice', 'out_refund', 'out_receipt', 'in_invoice', 'in_refund', 'in_receipt')"/>
+            </xpath>
+            <xpath expr="//field[@name='invoice_line_ids']/list/field[@name='quantity']" position="before">
+                <field name="hp_batch_number" optional="show"/>
+                <field name="hp_expiry_date" optional="show"/>
+            </xpath>
+        </field>
+    </record>
+    <!-- Customer PO No under the customer (filled from the sales order, editable) -->
+    <record id="view_move_form_hp_po_number" model="ir.ui.view">
+        <field name="name">account.move.form.hp.po.number</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_move_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//group[@id='header_left_group']/field[@name='partner_shipping_id']" position="before">
+                <field name="hp_po_number" invisible="move_type not in ('out_invoice', 'out_refund', 'out_receipt')"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

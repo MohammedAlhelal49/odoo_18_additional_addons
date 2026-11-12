@@ -1,0 +1,550 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- ===== EN | AR LANGUAGE SWITCH =====
+         Shared by the top bar (dark) and the footer bottom bar
+         (light variant via dk_lang_class). Uses the exact same
+         `frontend_languages` Odoo 18's own selector (portal.language_selector)
+         iterates, EN always first, and renders nothing when the website has
+         a single language. Each link carries the same href / data-url_code
+         as Odoo's selector; dekad.js routes the click through
+         /website/lang/<code> exactly like Odoo does. -->
+    <template id="lang_switch" name="Dekad Language Switch">
+        <t t-set="dk_switch_langs" t-value="sorted((frontend_languages or {}).values(), key=lambda lg: lg.code[:2] != 'en')"/>
+        <div t-if="len(dk_switch_langs) &gt; 1" t-attf-class="dk-lang-switch #{dk_lang_class or ''}" dir="ltr" role="navigation" aria-label="Language">
+            <t t-foreach="dk_switch_langs" t-as="lg">
+                <span t-if="not lg_first" class="dk-lang-sep" aria-hidden="true">|</span>
+                <a t-att-href="url_localized(lang_code=lg.code, prefetch_langs=True, force_default_lang=True)"
+                   t-attf-class="dk-lang-link #{lg.code == lang and 'active' or ''}"
+                   t-att-data-url_code="lg.url_code"
+                   t-att-lang="lg.code.replace('_', '-')"
+                   t-att-title="lg.name.split('/').pop()"
+                   t-att-aria-current="lg.code == lang and 'true' or None">
+                    <t t-esc="lg.url_code.split('_')[0].upper()"/>
+                </a>
+            </t>
+        </div>
+    </template>
+
+    <!-- ===== HEADER (own nav, replaces website's default) ===== -->
+    <template id="header" name="Dekad Header">
+        <!-- Languages the website serves: the exact same
+             `frontend_languages` dict Odoo 18's own language selector
+             (portal.language_selector) iterates, EN always first. The
+             top bar only renders when the website has more than one
+             language. -->
+        <t t-set="dk_langs" t-value="sorted((frontend_languages or {}).values(), key=lambda lg: lg.code[:2] != 'en')"/>
+        <t t-set="dk_show_topbar" t-value="len(dk_langs) &gt; 1"/>
+        <header t-attf-class="ve-header #{dk_show_topbar and 'dk-has-topbar' or ''}" id="ve-sticky">
+            <!-- ===== TOP BAR: EN | AR language switch =====
+                 Replaces Odoo's language selector dropdown (which is NOT
+                 shown anywhere - website.layout's default header/footer
+                 are suppressed). Each link carries the same href /
+                 data-url_code as Odoo's own selector, and dekad.js sends
+                 the click through the same /website/lang/<code> route
+                 Odoo's selector uses, so the frontend_lang cookie is set
+                 exactly the same way. -->
+            <div class="dk-topbar" t-if="dk_show_topbar">
+                <div class="container-fluid dk-topbar-wrap">
+                    <span class="dk-topbar-brand">Dekad Software Solutions</span>
+                    <div class="dk-topbar-end">
+                        <div class="dk-topbar-contacts">
+                            <a dir="ltr" href="tel:+971 56 955 9537" class="dk-topbar-contact" aria-label="+971 56 955 9537"><i class="fa fa-phone"/><span>+971 56 955 9537</span></a>
+                            <a dir="ltr" href="mailto:info@dekad.tech" class="dk-topbar-contact dk-topbar-email" aria-label="info@dekad.tech"><i class="fa fa-envelope"/><span>info@dekad.tech</span></a>
+                        </div>
+                        <span class="dk-topbar-divider" aria-hidden="true"/>
+                        <t t-call="dekad_website.lang_switch"/>
+                    </div>
+                </div>
+            </div>
+
+            <div class="container-fluid ve-nav-wrap">
+                <div class="ve-logo">
+                    <a href="/">
+                        <img src="/dekad_website/static/src/img/dekad-logo.png" alt="Dekad Software Solutions" class="ve-logo-img"/>
+                    </a>
+                </div>
+
+                <nav class="ve-nav">
+                    <ul>
+                        <li><a href="/" t-attf-class="#{active_page == 'home' and 'active' or ''}">Home</a></li>
+                        <li class="has-drop ve-has-mega">
+                            <a href="#" t-attf-class="#{active_page == 'apps' and 'active' or ''}">Apps <i class="fa fa-angle-down"/></a>
+                            <div class="ve-mega-menu">
+                                <div class="ve-mega-col">
+                                    <h6><i class="fa fa-money"/> Finance</h6>
+                                    <a href="/apps/accounting-finance">Accounting &amp; Invoicing</a>
+                                    <a href="/apps/spreadsheet-ib">Spreadsheets (BI)</a>
+                                    <a href="/apps/cheque-management">Cheque Management</a>
+                                    <a href="/apps/sign">Sign</a>
+                                </div>
+                                <div class="ve-mega-col">
+                                    <h6><i class="fa fa-line-chart"/> Sales</h6>
+                                    <a href="/apps/crm">CRM</a>
+                                    <a href="/apps/sales">Sales</a>
+                                    <a href="/apps/point-of-sale">POS</a>
+                                    <a href="/apps/subscriptions">Subscriptions</a>
+                                    <a href="/apps/rental">Rental</a>
+                                </div>
+                                <div class="ve-mega-col">
+                                    <h6><i class="fa fa-users"/> Human Resources</h6>
+                                    <a href="/apps/employee">Employees</a>
+                                    <a href="/apps/recruitment">Recruitment</a>
+                                    <a href="/apps/time-off-attendance">Time Off &amp; Attendance</a>
+                                    <a href="/apps/appraisals">Appraisals</a>
+                                    <a href="/apps/fleet-management">Fleet</a>
+                                </div>
+                                <div class="ve-mega-col">
+                                    <h6><i class="fa fa-truck"/> Supply Chain</h6>
+                                    <a href="/apps/inventory-management">Inventory</a>
+                                    <a href="/apps/manufacturing">Manufacturing</a>
+                                    <a href="/apps/plm">PLM</a>
+                                    <a href="#">Distribution System</a>
+                                    <a href="/apps/maintenance">Maintenance</a>
+                                    <a href="/apps/quality-management">Quality</a>
+                                    <a href="/apps/purchase">Purchase</a>
+                                </div>
+                                <div class="ve-mega-col">
+                                    <h6><i class="fa fa-wrench"/> Services</h6>
+                                    <a href="/apps/project">Project</a>
+                                    <a href="/submit-ticket">Helpdesk</a>
+                                    <a href="/apps/field-service">Field Service</a>
+                                    <a href="/apps/timesheet">Timesheets</a>
+                                    <a href="/apps/appointments">Appointments</a>
+                                    <a href="/apps/events">Event Management</a>
+                                </div>
+                                <div class="ve-mega-col">
+                                    <h6><i class="fa fa-tasks"/> Productivity</h6>
+                                    <a href="/apps/discuss">Discuss</a>
+                                    <a href="/apps/approvals">Approvals</a>
+                                    <a href="/apps/e-signatures">E-Signature</a>
+                                    <a href="/apps/documents">Document</a>
+                                    <a href="/apps/calendar">Calendar</a>
+                                </div>
+                                <div class="ve-mega-col">
+                                    <h6><i class="fa fa-globe"/> Websites</h6>
+                                    <a href="/apps/website">Website Builder</a>
+                                    <a href="/apps/ecommerce">eCommerce</a>
+                                    <a href="/apps/blog-forum">Blog &amp; Forum</a>
+                                    <a href="/apps/live-chat">Live Chat</a>
+                                    <a href="/apps/elearning">eLearning</a>
+                                </div>
+                                <div class="ve-mega-col">
+                                    <h6><i class="fa fa-bullhorn"/> Marketing</h6>
+                                    <a href="/apps/social-media-marketing">Social Marketing</a>
+                                    <a href="/apps/email-marketing">Email Marketing</a>
+                                    <a href="/apps/sms-marketing">SMS Marketing</a>
+                                    <a href="/apps/marketing-automation">Marketing Automation</a>
+                                    <a href="/apps/surveys">Surveys</a>
+                                </div>
+                            </div>
+                        </li>
+                        <li><a href="/#services-section" t-attf-class="#{active_page == 'services' and 'active' or ''}">Services</a></li>
+                        <li><a href="/#industries-section" t-attf-class="#{active_page == 'services' and 'active' or ''}">Industries</a></li>
+                        <!-- TEMPORARILY DISABLED - About Us (real content not ready): <li><a href="/about" t-attf-class="#{active_page == 'about' and 'active' or ''}">About Us</a></li> -->
+                        <li><a href="/blog" t-attf-class="#{active_page == 'blog' and 'active' or ''}">Blog</a></li>
+                        <!-- Privacy Policy moved to footer-only, not shown in the top nav: <li><a href="/privacy-policy" t-attf-class="#{active_page == 'privacy' and 'active' or ''}">Privacy Policy</a></li> -->
+                        <li t-if="not request.env.user._is_public()"><a href="/submit-ticket" t-attf-class="#{active_page == 'submit-ticket' and 'active' or ''}">Submit a Ticket</a></li>
+                        <li><a href="/contact" t-attf-class="#{active_page == 'contact' and 'active' or ''}">Contact</a></li>
+                    </ul>
+                </nav>
+
+                <div class="ve-nav-cta">
+                    <t t-if="not request.env.user._is_public()">
+                        <div class="dropdown ve-user-dropdown">
+                            <a href="#" class="ve-signin-link dropdown-toggle" data-dk-dropdown="" aria-haspopup="true" aria-expanded="false">
+                                <i class="fa fa-user-circle"/> <t t-esc="request.env.user.name"/>
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right dropdown-menu-end ve-user-menu">
+                                <a t-if="request.env.user.has_group('base.group_user')" class="dropdown-item" href="/odoo">
+                                    <i class="fa fa-th"/> Apps
+                                </a>
+                                <a class="dropdown-item" href="/my/home">
+                                    <i class="fa fa-id-card"/> My Account
+                                </a>
+                                <a class="dropdown-item" t-attf-href="/web/session/logout?redirect=#{request.httprequest.path}">
+                                    <i class="fa fa-sign-out"/> Logout
+                                </a>
+                            </div>
+                        </div>
+                    </t>
+                    <t t-else="">
+                        <a t-attf-href="/web/login?redirect=#{request.httprequest.path}" class="ve-signin-link">
+                            <i class="fa fa-sign-in"/> Sign In
+                        </a>
+                    </t>
+<a href="/free-consultation" class="ve-cta-btn">Book a Consultation <i class="fa fa-arrow-right"/></a>
+                </div>
+
+                <button class="ve-toggler" id="ve-toggle">
+                    <span/><span/><span/>
+                </button>
+            </div>
+
+            <div class="ve-mobile-menu" id="ve-mobile-menu">
+                <ul>
+                    <li><a href="/">Home</a></li>
+                    <li class="ve-mobile-has-sub">
+                        <details>
+                            <summary>Apps <i class="fa fa-angle-down"/></summary>
+                            <div class="ve-mobile-submenu">
+                                <span class="ve-mobile-sub-title">Finance</span>
+                                <a href="/apps/accounting-finance">Accounting &amp; Invoicing</a>
+                                <a href="/apps/spreadsheet-ib">Spreadsheets (BI)</a>
+                                <a href="/apps/cheque-management">Cheque Management</a>
+                                <a href="/apps/sign">Sign</a>
+
+                                <span class="ve-mobile-sub-title">Sales</span>
+                                <a href="/apps/crm">CRM</a>
+                                <a href="/apps/sales">Sales</a>
+                                <a href="/apps/point-of-sale">POS</a>
+                                <a href="/apps/subscriptions">Subscriptions</a>
+                                <a href="/apps/rental">Rental</a>
+
+                                <span class="ve-mobile-sub-title">Human Resources</span>
+                                <a href="/apps/employee">Employees</a>
+                                <a href="/apps/recruitment">Recruitment</a>
+                                <a href="/apps/time-off-attendance">Time Off &amp; Attendance</a>
+                                <a href="/apps/appraisals">Appraisals</a>
+                                <a href="/apps/fleet-management">Fleet</a>
+
+                                <span class="ve-mobile-sub-title">Supply Chain</span>
+                                <a href="/apps/inventory-management">Inventory</a>
+                                <a href="/apps/manufacturing">Manufacturing</a>
+                                <a href="/apps/plm">PLM</a>
+                                <a href="#">Distribution System</a>
+                                <a href="/apps/maintenance">Maintenance</a>
+                                <a href="/apps/quality-management">Quality</a>
+                                <a href="/apps/purchase">Purchase</a>
+
+                                <span class="ve-mobile-sub-title">Services</span>
+                                <a href="/apps/project">Project</a>
+                                <a href="/submit-ticket">Helpdesk</a>
+                                <a href="/apps/field-service">Field Service</a>
+                                <a href="/apps/timesheet">Timesheets</a>
+                                <a href="/apps/appointments">Appointments</a>
+                                <a href="/apps/events">Event Management</a>
+
+                                <span class="ve-mobile-sub-title">Productivity</span>
+                                <a href="/apps/discuss">Discuss</a>
+                                <a href="/apps/approvals">Approvals</a>
+                                <a href="/apps/e-signatures">E-Signature</a>
+                                <a href="/apps/documents">Document</a>
+                                <a href="/apps/calendar">Calendar</a>
+
+                                <span class="ve-mobile-sub-title">Websites</span>
+                                <a href="/apps/website">Website Builder</a>
+                                <a href="/apps/ecommerce">eCommerce</a>
+                                <a href="/apps/blog-forum">Blog &amp; Forum</a>
+                                <a href="/apps/live-chat">Live Chat</a>
+                                <a href="/apps/elearning">eLearning</a>
+
+                                <span class="ve-mobile-sub-title">Marketing</span>
+                                <a href="/apps/social-media-marketing">Social Marketing</a>
+                                <a href="/apps/email-marketing">Email Marketing</a>
+                                <a href="/apps/sms-marketing">SMS Marketing</a>
+                                <a href="/apps/marketing-automation">Marketing Automation</a>
+                                <a href="/apps/surveys">Surveys</a>
+                            </div>
+                        </details>
+                    </li>
+                    <li><a href="/#services-section">Services</a></li>
+                    <li><a href="/#industries-section">Industries</a></li>
+                    <!-- TEMPORARILY DISABLED - About Us: <li><a href="/about">About Us</a></li> -->
+                    <li><a href="/blog">Blog</a></li>
+                    <!-- Privacy Policy moved to footer-only, not shown in the mobile menu: <li><a href="/privacy-policy">Privacy Policy</a></li> -->
+                    <li t-if="not request.env.user._is_public()"><a href="/submit-ticket">Submit a Ticket</a></li>
+                    <li><a href="/contact">Contact</a></li>
+                    <li>
+                        <t t-if="not request.env.user._is_public()">
+                            <a href="/my/home">My Account</a>
+                        </t>
+                        <t t-else="">
+                            <a t-attf-href="/web/login?redirect=#{request.httprequest.path}">Sign In</a>
+                        </t>
+                    </li>
+                    <li t-if="not request.env.user._is_public()">
+                        <a t-attf-href="/web/session/logout?redirect=#{request.httprequest.path}">Logout</a>
+                    </li>
+                </ul>
+            </div>
+        </header>
+    </template>
+
+    <!-- ===== FOOTER (own footer, replaces website's default) ===== -->
+    <template id="footer" name="Dekad Footer">
+        <footer class="ve-footer">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12 col-sm-6 col-lg-4 mb-50">
+                        <div class="ve-footer-brand">
+                            <a href="/" class="ve-footer-logo">
+                                <img src="/dekad_website/static/src/img/dekad-logo.png" alt="Dekad Software Solutions" class="ve-logo-img"/>
+                            </a>
+                            <p>Dekad Software Solutions partners with growing businesses to turn ERP software into a real competitive advantage.</p>
+                            <div class="ve-social">
+                                <a href="https://www.facebook.com/profile.php?id=61566927503139" target="_blank" rel="noopener"><i class="fa fa-facebook"/></a>
+                                <a href="https://www.linkedin.com/company/dekad-software-solutions" target="_blank" rel="noopener"><i class="fa fa-linkedin"/></a>
+                                <a href="https://www.instagram.com/dekad.tech/" target="_blank" rel="noopener"><i class="fa fa-instagram"/></a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm-6 col-lg-5 mb-50">
+                        <h5 class="ve-footer-title">Quick Links</h5>
+                        <ul class="ve-footer-links ve-footer-links-grid">
+                            <li><a href="/">Home</a></li>
+                            <li><a href="/apps">Apps</a></li>
+                            <li><a href="/#services-section">Services</a></li>
+                            <li><a href="/#industries-section">Industries</a></li>
+                            <li><a href="/blog">Blog</a></li>
+                            <li><a href="/privacy-policy">Privacy Policy</a></li>
+                            <li t-if="not request.env.user._is_public()"><a href="/submit-ticket">Submit a Ticket</a></li>
+                            <li><a href="/contact">Contact</a></li>
+                        </ul>
+                    </div>
+
+                    <div class="col-12 col-sm-6 col-lg-3 mb-50">
+                        <h5 class="ve-footer-title">Get In Touch</h5>
+                        <ul class="ve-footer-contact">
+                            <li><i class="fa fa-envelope"/> info@dekad.tech</li>
+                            <li><i class="fa fa-phone"/> <a dir="ltr" href="tel:+971 56 955 9537" class="ve-footer-plain-link">+971 56 955 9537</a></li>
+                            <li><i class="fa fa-clock-o"/> Sat–Thu, 9am – 6pm</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="ve-footer-bottom">
+                <div class="container">
+                    <div class="ve-footer-bottom-inner">
+                        <p>Copyright © <span t-esc="current_year"/> &#160; &#160; &#160; &#160; <a href="/" class="ve-copyright-link">Dekad Software Solutions</a></p>
+                        <t t-call="dekad_website.lang_switch">
+                            <t t-set="dk_lang_class" t-value="'dk-lang-switch--light'"/>
+                        </t>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </template>
+
+    <!-- ===== MAIN LAYOUT: wraps website.layout, own header/footer ===== -->
+    <template id="layout" name="Dekad Layout">
+        <t t-name="dekad_website.layout">
+            <!-- Capture the page's own content BEFORE entering the
+                 website.layout call below - "0" only refers to our
+                 direct caller's body at this nesting level, so it has
+                 to be saved into a variable here or it becomes
+                 unreachable once we're inside the nested t-call. -->
+            <t t-set="page_content"><t t-out="0"/></t>
+
+            <t t-call="website.layout">
+                <!-- Header, footer, floating contact buttons, dekad.js and
+                     the Arabic webfont are injected into website.layout
+                     itself (see website_layout_dekad_chrome below), so
+                     they're shared by every page of the site - ours and
+                     Odoo's (/my, /shop, /blog...). This flag only tells
+                     that inherit our pages handle the fixed-header offset
+                     themselves (their hero sections are padded for it). -->
+                <t t-set="dk_custom_page" t-value="True"/>
+
+                <!-- Preloader -->
+                <div class="preloader d-flex align-items-center justify-content-center">
+                    <div class="ve-loader-dots">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
+                </div>
+                <!-- Safety-net: hide the preloader even if a vendor
+                     script errors out and active.js never gets to run
+                     its own $('.preloader').fadeOut(...) call. -->
+                <script>
+                    (function () {
+                        var veLoaderStart = Date.now();
+                        var veLoaderMinMs = 1500; // let the ring animation play at least once
+                        var veLoaderHidden = false;
+                        function reallyHidePreloader() {
+                            if (veLoaderHidden) { return; }
+                            veLoaderHidden = true;
+                            var el = document.querySelector('.preloader');
+                            if (!el) { return; }
+                            el.style.transition = 'opacity .4s ease';
+                            el.style.opacity = '0';
+                            setTimeout(function () { if (el.parentNode) { el.parentNode.removeChild(el); } }, 400);
+                        }
+                        function hidePreloader() {
+                            var elapsed = Date.now() - veLoaderStart;
+                            var remaining = veLoaderMinMs - elapsed;
+                            if (remaining > 0) {
+                                setTimeout(reallyHidePreloader, remaining);
+                            } else {
+                                reallyHidePreloader();
+                            }
+                        }
+                        window.addEventListener('load', hidePreloader);
+                        setTimeout(hidePreloader, 2500);
+                    })();
+                </script>
+
+                <!-- reCAPTCHA v3 (invisible) - only loaded once the site
+                     key is configured (Settings > Technical > System
+                     Parameters > dekad_website.recaptcha_site_key). Any
+                     form with class "ve-contact-form" or "ve-nl-form" is
+                     protected automatically - no per-form JS needed. -->
+                <script t-if="recaptcha_site_key"
+                        t-attf-src="https://www.google.com/recaptcha/api.js?render=#{recaptcha_site_key}"/>
+                <script t-if="recaptcha_site_key">
+                    (function () {
+                        var SITE_KEY = "<t t-esc="recaptcha_site_key"/>";
+                        function protect(form) {
+                            if (form.dataset.veRecaptchaBound) { return; }
+                            form.dataset.veRecaptchaBound = '1';
+                            form.addEventListener('submit', function (e) {
+                                if (form.dataset.veRecaptchaSubmitting) { return; }
+                                e.preventDefault();
+                                grecaptcha.ready(function () {
+                                    grecaptcha.execute(SITE_KEY, {action: 'submit'}).then(function (token) {
+                                        var input = form.querySelector('input[name="g-recaptcha-response"]');
+                                        if (!input) {
+                                            input = document.createElement('input');
+                                            input.type = 'hidden';
+                                            input.name = 'g-recaptcha-response';
+                                            form.appendChild(input);
+                                        }
+                                        input.value = token;
+                                        form.dataset.veRecaptchaSubmitting = '1';
+                                        form.submit();
+                                    });
+                                });
+                            });
+                        }
+                        document.querySelectorAll('.ve-contact-form, .ve-nl-form').forEach(protect);
+                    })();
+                </script>
+
+                <!-- website.layout already wraps us in <main> -->
+                <t t-out="page_content"/>
+
+                <!-- Image lightbox: click any .ve-feature-card-img image to
+                     view it full-size. Site-wide, plain vanilla JS (no
+                     jQuery/Bootstrap), so it works the same everywhere and
+                     can't be broken by a jQuery conflict elsewhere. -->
+                <div class="ve-lightbox-overlay" id="ve-lightbox">
+                    <button type="button" class="ve-lightbox-close" aria-label="Close">&#215;</button>
+                    <img class="ve-lightbox-img" id="ve-lightbox-img" src="" alt=""/>
+                </div>
+                <script>
+                    (function () {
+                        function initLightbox() {
+                            var overlay = document.getElementById('ve-lightbox');
+                            var img = document.getElementById('ve-lightbox-img');
+                            if (!overlay || !img) { return; }
+
+                            function hide() {
+                                overlay.classList.remove('ve-modal-open');
+                                document.body.style.overflow = '';
+                                img.src = '';
+                            }
+                            function show(src, alt) {
+                                img.src = src;
+                                img.alt = alt || '';
+                                overlay.classList.add('ve-modal-open');
+                                document.body.style.overflow = 'hidden';
+                            }
+
+                            document.addEventListener('click', function (e) {
+                                var target = e.target.closest('.ve-feature-card-img img');
+                                if (target) {
+                                    show(target.getAttribute('src'), target.getAttribute('alt'));
+                                }
+                            });
+                            overlay.addEventListener('click', function (e) {
+                                if (e.target === overlay) { hide(); }
+                            });
+                            overlay.querySelector('.ve-lightbox-close').addEventListener('click', hide);
+                            document.addEventListener('keydown', function (e) {
+                                if (e.key === 'Escape') { hide(); }
+                            });
+                        }
+                        if (document.readyState === 'loading') {
+                            document.addEventListener('DOMContentLoaded', initLightbox);
+                        } else {
+                            initLightbox();
+                        }
+                    })();
+                </script>
+
+                <!-- Load our own scripts directly, instead of putting
+                     them in the web.assets_frontend bundle (that would
+                     wrap each one in odoo.define(...), which these old
+                     jQuery plugins don't expect, and forcing the whole
+                     bundle to re-run risks double-initializing Odoo's
+                     own frontend widgets). Plain sequential <script>
+                     tags, in the exact order these plugins need
+                     (jQuery first, our own dekad.js last),
+                     rendered here - already deep inside <body> - so
+                     document.body always exists by the time they run. -->
+                <!-- jQuery must be our own bundled copy: Odoo's website
+                     frontend does NOT reliably expose a global jQuery at
+                     the point these deferred scripts run here (confirmed
+                     - removing this caused "jQuery is not defined"
+                     everywhere below). -->
+                <script type="text/javascript" src="/dekad_website/static/src/js/jquery-2.2.4.min.js" defer="defer"/>
+                <script type="text/javascript" src="/dekad_website/static/src/js/popper.min.js" defer="defer"/>
+                <script type="text/javascript" src="/dekad_website/static/src/js/bootstrap.min.js" defer="defer"/>
+                <script type="text/javascript" src="/dekad_website/static/src/js/plugins.js" defer="defer"/>
+                <script type="text/javascript" src="/dekad_website/static/src/js/active.js" defer="defer"/>
+                <!-- dekad.js is loaded site-wide from website_layout_dekad_chrome (after the footer), so it still runs after these. -->
+            </t>
+        </t>
+    </template>
+
+
+    <!-- ===== SITE-WIDE CHROME =====
+         Replaces website.layout's own header and footer with ours, so EVERY
+         frontend page - our custom pages and Odoo's own (/my/*, /shop,
+         /blog, /web/login, ...) - gets the same header (with the EN | AR
+         top bar), footer and floating contact buttons. Odoo's language
+         selector disappears with Odoo's header/footer.
+         priority=99: applied after all of Website's own header/footer
+         customizations (template options, website_sale cart, ...), which
+         xpath INTO <header>/<footer> - they're applied first, then the
+         whole element is swapped, so nothing fails to locate its target. -->
+    <template id="website_layout_dekad_chrome" inherit_id="website.layout" name="Dekad Site-wide Header/Footer" priority="99">
+        <!-- Arabic webfont, loaded only for RTL visitors -->
+        <xpath expr="//head" position="inside">
+            <t t-if="request.env['res.lang']._get_data(code=request.env.lang).direction == 'rtl'">
+                <link rel="preconnect" href="https://fonts.googleapis.com"/>
+                <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin=""/>
+                <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800;900&amp;display=swap"/>
+            </t>
+        </xpath>
+        <xpath expr="//header[@id='top']" position="replace">
+            <t t-if="not no_header">
+                <t t-call="dekad_website.header"/>
+                <!-- Odoo's pages aren't designed for a fixed header: push
+                     their content below it. Our own pages don't need it. -->
+                <div t-if="not dk_custom_page" class="dk-header-offset" aria-hidden="true"/>
+            </t>
+        </xpath>
+        <xpath expr="//footer[@id='bottom']" position="replace">
+            <t t-if="not no_footer">
+                <t t-call="dekad_website.footer"/>
+            </t>
+                <!-- Floating contact buttons (WhatsApp + Call) - fixed
+                 bottom-left, shown on every page via the shared layout. -->
+            <div class="ve-floating-contact">
+                <a href="https://wa.me/971569559537" target="_blank" rel="noopener"
+                   class="ve-float-btn ve-float-whatsapp" aria-label="Chat on WhatsApp">
+                    <i class="fa fa-whatsapp"/>
+                </a>
+                <a dir="ltr" href="tel:+971569559537" class="ve-float-btn ve-float-call" aria-label="Call us">
+                    <i class="fa fa-phone"/>
+                </a>
+            </div>
+
+            <script type="text/javascript" src="/dekad_website/static/src/js/dekad.js" defer="defer"/>
+        </xpath>
+    </template>
+
+</odoo>

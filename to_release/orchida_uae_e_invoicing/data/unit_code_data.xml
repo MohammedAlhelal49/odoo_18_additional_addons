@@ -1,0 +1,125 @@
+<odoo>
+    <data noupdate="1">
+        <record id="orchida_unit_code_ea" model="orchida.unit.code">
+            <field name="code">EA</field>
+            <field name="name">Each</field>
+        </record>
+        <record id="orchida_unit_code_c62" model="orchida.unit.code">
+            <field name="code">C62</field>
+            <field name="name">Unit</field>
+        </record>
+        <record id="orchida_unit_code_kgm" model="orchida.unit.code">
+            <field name="code">KGM</field>
+            <field name="name">Kilogram</field>
+        </record>
+        <record id="orchida_unit_code_ltr" model="orchida.unit.code">
+            <field name="code">LTR</field>
+            <field name="name">Litre</field>
+        </record>
+        <record id="orchida_unit_code_mtr" model="orchida.unit.code">
+            <field name="code">MTR</field>
+            <field name="name">Metre</field>
+        </record>
+        <record id="orchida_unit_code_mtk" model="orchida.unit.code">
+            <field name="code">MTK</field>
+            <field name="name">Square Metre</field>
+        </record>
+        <record id="orchida_unit_code_mtq" model="orchida.unit.code">
+            <field name="code">MTQ</field>
+            <field name="name">Cubic Metre</field>
+        </record>
+        <record id="orchida_unit_code_hur" model="orchida.unit.code">
+            <field name="code">HUR</field>
+            <field name="name">Hour</field>
+        </record>
+        <record id="orchida_unit_code_day" model="orchida.unit.code">
+            <field name="code">DAY</field>
+            <field name="name">Day</field>
+        </record>
+        <record id="orchida_unit_code_bx" model="orchida.unit.code">
+            <field name="code">BX</field>
+            <field name="name">Box</field>
+        </record>
+        <record id="orchida_unit_code_pac" model="orchida.unit.code">
+            <field name="code">PAC</field>
+            <field name="name">Package</field>
+        </record>
+        <record id="orchida_unit_code_set" model="orchida.unit.code">
+            <field name="code">SET</field>
+            <field name="name">Set</field>
+        </record>
+        <record id="orchida_unit_code_dzn" model="orchida.unit.code">
+            <field name="code">DZN</field>
+            <field name="name">Dozen</field>
+        </record>
+        <record id="orchida_unit_code_mmt" model="orchida.unit.code">
+            <field name="code">MMT</field>
+            <field name="name">Millimetre</field>
+        </record>
+        <record id="orchida_unit_code_grm" model="orchida.unit.code">
+            <field name="code">GRM</field>
+            <field name="name">Gram</field>
+        </record>
+        <record id="orchida_unit_code_cmt" model="orchida.unit.code">
+            <field name="code">CMT</field>
+            <field name="name">Centimetre</field>
+        </record>
+        <record id="orchida_unit_code_inq" model="orchida.unit.code">
+            <field name="code">INQ</field>
+            <field name="name">Cubic Inch</field>
+        </record>
+        <record id="orchida_unit_code_inh" model="orchida.unit.code">
+            <field name="code">INH</field>
+            <field name="name">Inch</field>
+        </record>
+        <record id="orchida_unit_code_onz" model="orchida.unit.code">
+            <field name="code">ONZ</field>
+            <field name="name">Ounce</field>
+        </record>
+        <record id="orchida_unit_code_oza" model="orchida.unit.code">
+            <field name="code">OZA</field>
+            <field name="name">Fluid Ounce (US)</field>
+        </record>
+        <record id="orchida_unit_code_ftk" model="orchida.unit.code">
+            <field name="code">FTK</field>
+            <field name="name">Square Foot</field>
+        </record>
+        <record id="orchida_unit_code_fot" model="orchida.unit.code">
+            <field name="code">FOT</field>
+            <field name="name">Foot</field>
+        </record>
+        <record id="orchida_unit_code_lbr" model="orchida.unit.code">
+            <field name="code">LBR</field>
+            <field name="name">Pound</field>
+        </record>
+        <record id="orchida_unit_code_yrd" model="orchida.unit.code">
+            <field name="code">YRD</field>
+            <field name="name">Yard</field>
+        </record>
+        <record id="orchida_unit_code_qtl" model="orchida.unit.code">
+            <field name="code">QTL</field>
+            <field name="name">Quart (US)</field>
+        </record>
+        <record id="orchida_unit_code_gll" model="orchida.unit.code">
+            <field name="code">GLL</field>
+            <field name="name">Gallon (US)</field>
+        </record>
+        <record id="orchida_unit_code_ftq" model="orchida.unit.code">
+            <field name="code">FTQ</field>
+            <field name="name">Cubic Foot</field>
+        </record>
+        <record id="orchida_unit_code_kmt" model="orchida.unit.code">
+            <field name="code">KMT</field>
+            <field name="name">Kilometre</field>
+        </record>
+        <record id="orchida_unit_code_tne" model="orchida.unit.code">
+            <field name="code">TNE</field>
+            <field name="name">Tonne</field>
+        </record>
+        <record id="orchida_unit_code_smi" model="orchida.unit.code">
+            <field name="code">SMI</field>
+            <field name="name">Mile</field>
+        </record>
+    </data>
+    <function model="orchida.uom.api.map" name="seed_default_mappings"/>
+</odoo>

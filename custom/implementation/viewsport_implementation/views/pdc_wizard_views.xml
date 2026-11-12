@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <record id="sh_pdc_payment_form_view_inherit_viewsport" model="ir.ui.view">
+        <field name="name">pdc.wizard.form.inherit.viewsport</field>
+        <field name="model">pdc.wizard</field>
+        <field name="inherit_id" ref="sh_pdc.sh_pdc_payment_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//notebook" position="inside">
+                <page string="Cheque Acknowledgement" name="viewsport_cheque_ack" invisible="payment_type != 'send_money'">
+                    <group>
+                        <field name="vs_ack_type"/>
+                        <field name="vs_detail" placeholder="Leave empty to describe the paid bills automatically"/>
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+</odoo>

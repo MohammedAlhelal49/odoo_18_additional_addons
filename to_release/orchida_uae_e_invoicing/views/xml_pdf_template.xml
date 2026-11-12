@@ -1,0 +1,236 @@
+<odoo>
+
+    <record id="report_orchida_invoice_ubl_pdf" model="ir.actions.report">
+        <field name="name">Orchida pdf Invoice</field>
+        <field name="model">orchida.purchase.invoice</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">orchida_uae_e_invoicing.orchida_invoice_pdf_ubl_template</field>
+        <field name="report_file">orchida_uae_e_invoicing.orchida_invoice_pdf_ubl_template</field>
+    </record>
+
+
+    <template id="orchida_invoice_pdf_ubl_template">
+
+        <t t-call="web.html_container">
+
+            <t t-foreach="docs" t-as="doc">
+
+                <t t-call="web.external_layout">
+
+                    <!-- parse XML -->
+                    <t t-set="inv" t-value="doc._parse_xml_ubl_pdf(doc.invoice_xml)"/>
+
+                    <div class="page">
+
+                        <h2>Invoice</h2>
+
+                        <!-- Supplier + Invoice Info -->
+                        <div class="row mt16">
+
+                            <div class="col-6">
+
+                                <strong>Supplier</strong>
+
+                                <div>
+                                    <span t-esc="inv.get('supplier', {}).get('name')"/>
+                                </div>
+
+                                <div>
+                                    VAT:
+                                    <span t-esc="inv.get('supplier', {}).get('vat')"/>
+                                </div>
+
+                                <div>
+                                    <span t-esc="inv.get('supplier', {}).get('city')"/>
+                                    -
+                                    <span t-esc="inv.get('supplier', {}).get('country')"/>
+                                </div>
+
+                            </div>
+
+                            <div class="col-6 text-end">
+
+                                <strong>Invoice Info</strong>
+
+                                <div>
+                                    Invoice No:
+                                    <span t-esc="inv.get('invoice_number')"/>
+                                </div>
+
+                                <div>
+                                    UUID:
+                                    <span t-esc="inv.get('uuid')"/>
+                                </div>
+
+                                <div>
+                                    Issue Date:
+                                    <span t-esc="inv.get('issue_date')"/>
+                                </div>
+
+                                <div>
+                                    Due Date:
+                                    <span t-esc="inv.get('due_date')"/>
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        <hr/>
+
+                        <!-- Customer + Payment -->
+                        <div class="row mt16">
+
+                            <div class="col-6">
+
+                                <strong>Customer</strong>
+
+                                <div>
+                                    <span t-esc="inv.get('customer', {}).get('name')"/>
+                                </div>
+
+                                <div>
+                                    VAT:
+                                    <span t-esc="inv.get('customer', {}).get('vat')"/>
+                                </div>
+
+                                <div>
+                                    <span t-esc="inv.get('customer', {}).get('city')"/>
+                                    -
+                                    <span t-esc="inv.get('customer', {}).get('country')"/>
+                                </div>
+
+                            </div>
+
+                            <div class="col-6">
+
+                                <strong>Payment</strong>
+
+                                <div>
+                                    Method:
+                                    <span t-esc="inv.get('payment', {}).get('method')"/>
+                                </div>
+
+                                <div>
+                                    Card:
+                                    <span t-esc="inv.get('payment', {}).get('card')"/>
+                                </div>
+
+                                <div>
+                                    Network:
+                                    <span t-esc="inv.get('payment', {}).get('network')"/>
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        <hr/>
+
+                        <!-- Invoice Lines -->
+                        <h4>Invoice Lines</h4>
+
+                        <table class="table table-sm table-bordered">
+
+                            <thead>
+                                <tr>
+                                    <th>Description</th>
+                                    <th class="text-center">Qty</th>
+                                    <th class="text-end">Price</th>
+                                    <th class="text-end">Tax</th>
+                                    <th class="text-end">Total</th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+
+                                <tr t-foreach="inv.get('lines', [])" t-as="l">
+
+                                    <td>
+                                        <div t-att-class="'text-info fst-italic' if l.get('is_allowance') else ('text-warning fst-italic' if l.get('is_charge') else '')">
+                                            <span t-if="l.get('is_allowance')">Discount: </span>
+                                            <span t-if="l.get('is_charge')">Surcharge: </span>
+                                            <span t-esc="l.get('name')"/>
+                                        </div>
+
+                                        <div class="text-muted">
+                                            <span t-esc="l.get('description')"/>
+                                        </div>
+                                    </td>
+
+                                    <td class="text-center">
+                                        <span t-esc="l.get('qty')"/>
+                                    </td>
+
+                                    <td class="text-end">
+                                        <span t-esc="l.get('price')"/>
+                                        <span t-esc="inv.get('currency')"/>
+                                    </td>
+
+                                    <td class="text-end">
+                                        <span t-esc="l.get('tax')"/>
+                                        <span t-esc="inv.get('currency')"/>
+                                    </td>
+
+                                    <td class="text-end">
+                                        <span t-esc="l.get('total')"/>
+                                        <span t-esc="inv.get('currency')"/>
+                                    </td>
+
+                                </tr>
+
+                            </tbody>
+
+                        </table>
+
+                        <!-- Totals -->
+                        <div class="mt32" style="width:40%; margin-left:auto;">
+
+                            <table class="table table-sm">
+
+                                <tr>
+                                    <td>Subtotal</td>
+
+                                    <td class="text-end">
+                                        <span t-esc="inv.get('totals', {}).get('subtotal')"/>
+                                        <span t-esc="inv.get('currency')"/>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td>Tax</td>
+
+                                    <td class="text-end">
+                                        <span t-esc="inv.get('tax', {}).get('amount')"/>
+                                        <span t-esc="inv.get('currency')"/>
+                                    </td>
+                                </tr>
+
+                                <tr style="font-weight:bold">
+
+                                    <td>Total</td>
+
+                                    <td class="text-end">
+
+                                        <span t-esc="inv.get('totals', {}).get('payable')"/>
+                                        <span t-esc="inv.get('currency')"/>
+
+                                    </td>
+
+                                </tr>
+
+                            </table>
+
+                        </div>
+
+                    </div>
+
+                </t>
+
+            </t>
+
+        </t>
+
+    </template>
+
+</odoo>

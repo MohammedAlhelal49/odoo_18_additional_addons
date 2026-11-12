@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_london_delivery_method_list" model="ir.ui.view">
+        <field name="name">london.delivery.method.list</field>
+        <field name="model">london.delivery.method</field>
+        <field name="arch" type="xml">
+            <list editable="bottom">
+                <field name="sequence" widget="handle"/>
+                <field name="name"/>
+                <field name="laundry_with_charge" widget="boolean_toggle"/>
+                <field name="active" widget="boolean_toggle"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="action_london_delivery_method" model="ir.actions.act_window">
+        <field name="name">Delivery Methods</field>
+        <field name="res_model">london.delivery.method</field>
+        <field name="view_mode">list</field>
+        <field name="context">{'active_test': False}</field>
+    </record>
+
+    <menuitem id="menu_london_delivery_method"
+              name="Delivery Methods"
+              parent="point_of_sale.menu_point_config_product"
+              action="action_london_delivery_method"
+              groups="point_of_sale.group_pos_manager"
+              sequence="40"/>
+</odoo>

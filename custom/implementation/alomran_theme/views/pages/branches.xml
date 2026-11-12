@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- ============================================================ -->
+    <!-- صفحة الفروع — تصميم جديد (alb- classes بـ home_modern.scss)     -->
+    <!-- النصوص: controllers/branches_content.py (المتغير bc)             -->
+    <!-- البيانات: _get_branches_data بـ main.py (المتغير branches)        -->
+    <!-- الفلترة والبحث: static/src/js/branches-page.js                  -->
+    <!-- ============================================================ -->
+    <template id="branches_template" name="Branches">
+        <t t-call="website.layout">
+            <t t-set="arrow_icon" t-value="'fa-arrow-right' if is_en else 'fa-arrow-left'"/>
+            <div id="wrap" class="alh-page alb-page">
+
+                <!-- ================= HERO ================= -->
+                <section t-attf-class="alh-hero alb-hero #{'has-photo' if hero_photo else ''}">
+                    <!-- صورة المركز بالخلفية: طبقة كحلية للوضوح + زووم بطيء (CSS بس) -->
+                    <div t-if="hero_photo" t-attf-class="alh-hero-photo is-center" aria-hidden="true">
+                        <img t-att-src="hero_photo" alt="" fetchpriority="high" decoding="async"/>
+                    </div>
+                    <div class="alh-hero-deco" aria-hidden="true">
+                        <span class="alh-blob alh-blob-1"/>
+                        <span class="alh-blob alh-blob-2"/>
+                        <span class="alh-grid"/>
+                    </div>
+                    <div class="container position-relative">
+                        <div class="alb-hero-inner">
+                            <span class="alh-badge">
+                                <i class="fa fa-location-dot" aria-hidden="true"/>
+                                <span t-out="bc['badge']"/>
+                            </span>
+                            <h1 class="alh-title" t-out="bc['h1']"/>
+                            <p class="alh-lead" t-out="bc['lead']"/>
+                            <p t-if="bc['seo']" class="alb-seo" t-out="bc['seo']"/>
+
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ================= LIST ================= -->
+                <section class="alh-section alb-list" id="branches-list">
+                    <div class="container">
+                        <!-- شريط البحث والفلترة -->
+                        <div class="alb-toolbar">
+                            <label class="alb-search">
+                                <i class="fa fa-magnifying-glass" aria-hidden="true"/>
+                                <input type="search" class="alb-search-input" maxlength="60"
+                                       autocomplete="off"
+                                       t-att-placeholder="bc['search_ph']"
+                                       t-att-aria-label="bc['search_ph']"/>
+                            </label>
+                            <div class="alb-filters" role="group">
+                                <button type="button" class="alb-filter is-active" data-city="" aria-pressed="true">
+                                    <span t-out="bc['all']"/>
+                                </button>
+                                <t t-foreach="cities" t-as="city">
+                                    <button type="button" class="alb-filter" t-att-data-city="city['name']" aria-pressed="false">
+                                        <span t-out="city['name']"/>
+                                        <small dir="ltr" t-out="city['count']"/>
+                                    </button>
+                                </t>
+                            </div>
+                        </div>
+
+                        <div class="alh-head">
+                            <span class="alh-eyebrow" t-out="bc['list_eyebrow']"/>
+                            <h2 class="alh-h2" t-out="bc['list_title']"/>
+                            <p t-out="bc['list_sub']"/>
+                        </div>
+
+                        <div class="row g-4 alb-grid">
+                            <t t-foreach="branches" t-as="branch">
+                                <div class="col-xl-4 col-md-6 alb-item"
+                                     t-att-data-city="branch['city']"
+                                     t-att-data-search="' '.join([branch['name'], branch['location'], branch['city']]).lower()">
+                                    <article class="alb-card">
+                                        <a t-attf-href="/branch/#{branch['slug']}" class="alb-card-media" tabindex="-1" aria-hidden="true">
+                                            <img t-if="branch['image_url']" t-att-src="branch['image_url']"
+                                                 t-att-alt="branch['name']" loading="lazy"/>
+                                            <span t-else="" class="alb-media-fallback">
+                                                <i class="fa fa-building" aria-hidden="true"/>
+                                            </span>
+                                            <span class="alb-city-chip">
+                                                <i class="fa fa-location-dot" aria-hidden="true"/>
+                                                <span t-out="branch['city']"/>
+                                            </span>
+                                        </a>
+                                        <div class="alb-card-body">
+                                            <span t-if="branch['prefix']" class="alb-prefix" t-out="branch['prefix']"/>
+                                            <h3 class="alb-card-title">
+                                                <a t-attf-href="/branch/#{branch['slug']}" t-out="branch['title']"/>
+                                            </h3>
+                                            <ul class="alb-meta list-unstyled">
+                                                <li>
+                                                    <i class="fa fa-map-pin" aria-hidden="true"/>
+                                                    <span t-out="branch['location']"/>
+                                                </li>
+                                                <li t-if="branch.get('working_hours')">
+                                                    <i class="fa fa-clock" aria-hidden="true"/>
+                                                    <span t-out="branch['working_hours']"/>
+                                                </li>
+                                                <li>
+                                                    <i class="fa fa-phone" aria-hidden="true"/>
+                                                    <bdi dir="ltr" t-out="branch['phone']"/>
+                                                </li>
+                                            </ul>
+                                            <div class="alb-actions">
+                                                <a t-attf-href="tel:+#{branch['phone_link']}" class="alb-act">
+                                                    <i class="fa fa-phone" aria-hidden="true"/>
+                                                    <span t-out="bc['call']"/>
+                                                </a>
+                                                <a t-if="branch.get('maps_link')" t-att-href="branch['maps_link']"
+                                                   target="_blank" rel="noopener" class="alb-act">
+                                                    <i class="fa fa-diamond-turn-right" aria-hidden="true"/>
+                                                    <span t-out="bc['directions']"/>
+                                                </a>
+                                                <a t-attf-href="/branch/#{branch['slug']}" class="alb-act alb-act-main">
+                                                    <span t-out="bc['details']"/>
+                                                    <i t-attf-class="fa #{arrow_icon}" aria-hidden="true"/>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </article>
+                                </div>
+                            </t>
+                        </div>
+                        <p class="alb-empty" hidden="hidden" t-out="bc['empty']"/>
+                    </div>
+                </section>
+
+                <!-- ================= CTA ================= -->
+                <section class="alh-section alh-cta-section alb-cta-section">
+                    <div class="container">
+                        <div class="alh-cta">
+                            <div>
+                                <h2 class="alh-h2" t-out="bc['cta_title']"/>
+                                <p t-out="bc['cta_text']"/>
+                            </div>
+                            <div class="alh-actions">
+                                <a href="/contact" class="alh-btn alh-btn-accent">
+                                    <i class="fa fa-envelope" aria-hidden="true"/>
+                                    <span t-out="bc['cta_contact']"/>
+                                </a>
+                                <a t-att-href="wa_link" target="_blank" rel="noopener" class="alh-btn alh-btn-wa">
+                                    <i class="fab fa-whatsapp" aria-hidden="true"/>
+                                    <span t-out="bc['cta_whatsapp']"/>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </t>
+    </template>
+</odoo>

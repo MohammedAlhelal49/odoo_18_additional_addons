@@ -1,0 +1,335 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- ============================================================ -->
+    <!-- صفحة "تواصل معنا" (/contact) — تصميم جديد                      -->
+    <!-- alh-/alt- classes بـ home_modern.scss (بادئة الصفحة: alct-)       -->
+    <!-- النصوص: controllers/contact_content.py (المتغير ct)              -->
+    <!-- الفورم: نفس الحقول والأسماء → /contact/submit (POST + CSRF)       -->
+    <!-- ============================================================ -->
+    <template id="custom_contact_template" name="Contact">
+        <t t-call="website.layout">
+            <t t-set="arrow_icon" t-value="'fa-arrow-right' if is_en else 'fa-arrow-left'"/>
+            <div id="wrap" class="alh-page alct-page">
+
+                <!-- ================= HERO ================= -->
+                <section t-attf-class="alh-hero alct-hero #{'has-photo' if hero_photo else ''}">
+                    <div t-if="hero_photo" class="alh-hero-photo is-center" aria-hidden="true">
+                        <img t-att-src="hero_photo" alt="" fetchpriority="high" decoding="async"/>
+                    </div>
+                    <div class="alh-hero-deco" aria-hidden="true">
+                        <span class="alh-blob alh-blob-1"/>
+                        <span class="alh-blob alh-blob-2"/>
+                        <span class="alh-grid"/>
+                    </div>
+                    <div class="container position-relative">
+                        <div class="col-lg-8 mx-auto text-center alh-hero-center">
+                            <span class="alh-badge">
+                                <i class="fa fa-clock" aria-hidden="true"/>
+                                <span t-out="ct['hero']['badge']"/>
+                            </span>
+                            <h1 class="alh-title">
+                                <span t-out="ct['hero']['title_1']"/>
+                                <span class="alh-title-accent d-inline" t-out="ct['hero']['title_2']"/>
+                            </h1>
+                            <p class="alh-lead" t-out="ct['hero']['lead']"/>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ================= QUICK CARDS ================= -->
+                <div class="container alct-cards-wrap">
+                    <div class="row g-3">
+                        <t t-foreach="ct['cards']" t-as="cd">
+                            <div class="col-lg-3 col-sm-6">
+                                <a t-att-href="cd['href']" t-attf-class="alct-card alct-card-#{cd['key']}"
+                                   t-att-target="'_blank' if cd.get('external') else None"
+                                   t-att-rel="'noopener' if cd.get('external') else None">
+                                    <span class="alct-card-icon">
+                                        <i t-att-class="cd['icon'] if cd['icon'].startswith('fab') else 'fa %s' % cd['icon']" aria-hidden="true"/>
+                                    </span>
+                                    <span class="alct-card-title" t-out="cd['title']"/>
+                                    <span t-if="cd['ltr']" class="alct-card-value"><bdi dir="ltr" t-out="cd['value']"/></span>
+                                    <span t-else="" class="alct-card-value" t-out="cd['value']"/>
+                                    <span class="alct-card-note" t-out="cd['note']"/>
+                                </a>
+                            </div>
+                        </t>
+                    </div>
+                </div>
+
+                <!-- ================= FORM + SIDE ================= -->
+                <section class="alh-section alct-main" id="contact-form">
+                    <div class="container">
+                        <div class="alct-panel">
+                            <div class="row g-0">
+                                <div class="col-lg-7">
+                                    <div class="alct-form">
+                                        <span class="alh-eyebrow" t-out="ct['form']['eyebrow']"/>
+                                        <h2 class="alh-h2" t-out="ct['form']['title']"/>
+                                        <p class="alct-form-sub" t-out="ct['form']['subtitle']"/>
+
+                                        <form id="contact_form_custom" action="/contact/submit" method="post" data-no-loading="true">
+                                            <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                                            <!-- Honeypot: مخفي عن الزوار، البوتات بتعبيه -->
+                                            <input type="text" name="website_url" value="" tabindex="-1" autocomplete="off" aria-hidden="true" class="alct-hp"/>
+
+                                            <div class="row g-3">
+                                                <div class="col-md-6">
+                                                    <label class="alct-label" for="contact_name" t-out="ct['form']['name'] + ' *'"/>
+                                                    <div class="alct-field">
+                                                        <i class="fa fa-user" aria-hidden="true"/>
+                                                        <input type="text" class="alct-input" id="contact_name" name="name"
+                                                               required="required" maxlength="100" autocomplete="name"
+                                                               t-att-placeholder="ct['form']['name_ph']"/>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <label class="alct-label" for="contact_phone" t-out="ct['form']['phone'] + ' *'"/>
+                                                    <div class="alct-field">
+                                                        <i class="fa fa-phone" aria-hidden="true"/>
+                                                        <input type="tel" class="alct-input" id="contact_phone" name="phone"
+                                                               required="required" maxlength="20" inputmode="tel" autocomplete="tel"
+                                                               dir="ltr" placeholder="05XXXXXXXX"/>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <label class="alct-label" for="contact_subject" t-out="ct['form']['subject'] + ' *'"/>
+                                                    <div class="alct-field">
+                                                        <i class="fa fa-tag" aria-hidden="true"/>
+                                                        <select class="alct-input" id="contact_subject" name="subject" required="required">
+                                                            <option value="" t-out="ct['form']['subject_ph']"/>
+                                                            <t t-foreach="ct['subjects']" t-as="sb">
+                                                                <option t-att-value="sb[0]" t-out="sb[1]"/>
+                                                            </t>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <label class="alct-label" for="contact_branch" t-out="ct['form']['branch'] + ' *'"/>
+                                                    <div class="alct-field">
+                                                        <i class="fa fa-location-dot" aria-hidden="true"/>
+                                                        <select class="alct-input" id="contact_branch" name="branch" required="required">
+                                                            <option value="" t-out="ct['form']['branch_ph']"/>
+                                                            <t t-call="alomran_theme.branch_select_options"/>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="col-12">
+                                                    <label class="alct-label" for="contact_email" t-out="ct['form']['email']"/>
+                                                    <div class="alct-field">
+                                                        <i class="fa fa-envelope" aria-hidden="true"/>
+                                                        <input type="email" class="alct-input" id="contact_email" name="email_from"
+                                                               maxlength="150" autocomplete="email" dir="ltr"
+                                                               placeholder="example@email.com"/>
+                                                    </div>
+                                                </div>
+                                                <div class="col-12">
+                                                    <label class="alct-label" for="contact_message" t-out="ct['form']['message'] + ' *'"/>
+                                                    <div class="alct-field alct-field-area">
+                                                        <i class="fa fa-comment-dots" aria-hidden="true"/>
+                                                        <textarea class="alct-input" id="contact_message" name="body_html" rows="5"
+                                                                  required="required" maxlength="3000"
+                                                                  t-att-placeholder="ct['form']['message_ph']"/>
+                                                    </div>
+                                                </div>
+                                                <div class="col-12">
+                                                    <button type="submit" class="alh-btn alh-btn-accent alct-submit" data-loading="false">
+                                                        <i class="fa fa-paper-plane" aria-hidden="true"/>
+                                                        <span t-out="ct['form']['submit']"/>
+                                                    </button>
+                                                    <p class="alct-privacy">
+                                                        <i class="fa fa-lock" aria-hidden="true"/>
+                                                        <span t-out="ct['form']['privacy']"/>
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-5">
+                                    <aside class="alct-side">
+                                        <span class="alct-side-glow" aria-hidden="true"/>
+                                        <h3 t-out="ct['side']['title']"/>
+                                        <p class="alct-side-text" t-out="ct['side']['text']"/>
+                                        <ul class="alct-side-list list-unstyled">
+                                            <li>
+                                                <span class="alct-side-ic"><i class="fa fa-clock" aria-hidden="true"/></span>
+                                                <span>
+                                                    <small t-out="ct['side']['hours_label']"/>
+                                                    <strong t-out="ct['side']['hours']"/>
+                                                </span>
+                                            </li>
+                                            <li>
+                                                <span class="alct-side-ic"><i class="fa fa-phone" aria-hidden="true"/></span>
+                                                <span>
+                                                    <small t-out="ct['side']['phone_label']"/>
+                                                    <a t-attf-href="tel:#{phone_number}"><bdi dir="ltr" t-out="phone_display"/></a>
+                                                </span>
+                                            </li>
+                                            <li>
+                                                <span class="alct-side-ic"><i class="fa fa-envelope" aria-hidden="true"/></span>
+                                                <span>
+                                                    <small t-out="ct['side']['email_label']"/>
+                                                    <a t-attf-href="mailto:#{email}" t-out="email"/>
+                                                </span>
+                                            </li>
+                                        </ul>
+                                        <div class="alct-side-follow">
+                                            <small t-out="ct['side']['follow']"/>
+                                            <div class="alf-social">
+                                                <t t-foreach="social" t-as="so">
+                                                    <a t-att-href="so[0]" target="_blank" rel="noopener" t-att-aria-label="so[2]" t-att-title="so[2]">
+                                                        <i t-att-class="so[1]" aria-hidden="true"/>
+                                                    </a>
+                                                </t>
+                                            </div>
+                                        </div>
+                                        <a href="/branches" class="alh-btn alh-btn-light alct-side-btn">
+                                            <i class="fa fa-map-location-dot" aria-hidden="true"/>
+                                            <span t-out="ct['side']['branches_cta']"/>
+                                        </a>
+                                    </aside>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ================= FAQ ================= -->
+                <section class="alh-section alh-section-soft">
+                    <div class="container">
+                        <div class="alh-head">
+                            <span class="alh-eyebrow" t-out="ct['faq']['eyebrow']"/>
+                            <h2 class="alh-h2" t-out="ct['faq']['title']"/>
+                        </div>
+                        <div class="alct-faq">
+                            <t t-foreach="ct['faq']['items']" t-as="fq">
+                                <details class="alct-faq-item" t-att-open="'open' if fq_index == 0 else None">
+                                    <summary>
+                                        <span t-out="fq['q']"/>
+                                        <i class="fa fa-plus" aria-hidden="true"/>
+                                    </summary>
+                                    <p t-out="fq['a']"/>
+                                </details>
+                            </t>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </t>
+    </template>
+
+    <!-- ================= نجاح الإرسال ================= -->
+    <template id="contact_success" name="Contact Success">
+        <t t-call="website.layout">
+            <div id="wrap" class="alh-page alct-page">
+                <section class="alct-result">
+                    <div class="container">
+                        <div class="alct-result-card">
+                            <span class="alct-result-icon is-ok"><i class="fa fa-check" aria-hidden="true"/></span>
+                            <h1 class="alh-h2">
+                                <t t-out="cr['ok_title']"/><t t-if="name"> <t t-out="name"/></t>!
+                            </h1>
+                            <p t-out="cr['ok_text']"/>
+                            <div class="alh-actions justify-content-center">
+                                <a href="/" class="alh-btn alh-btn-accent">
+                                    <i class="fa fa-house" aria-hidden="true"/>
+                                    <span t-out="cr['home']"/>
+                                </a>
+                                <a href="https://wa.me/971505829697" target="_blank" rel="noopener" class="alh-btn alh-btn-wa">
+                                    <i class="fab fa-whatsapp" aria-hidden="true"/>
+                                    <span t-out="cr['whatsapp']"/>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                <!-- ChatGPT Ads: lead_created (نفس event_id تبع السيرفر) -->
+                <script t-if="oai_event_id" t-att-data-event-id="oai_event_id">
+                    (function () {
+                        var id = document.currentScript.getAttribute('data-event-id');
+                        if (window.alomranTrackLead) { window.alomranTrackLead(id); }
+                    })();
+                </script>
+            </div>
+        </t>
+    </template>
+
+    <!-- ================= خطأ بالإرسال ================= -->
+    <template id="contact_error" name="Contact Error">
+        <t t-call="website.layout">
+            <div id="wrap" class="alh-page alct-page">
+                <section class="alct-result">
+                    <div class="container">
+                        <div class="alct-result-card">
+                            <span class="alct-result-icon is-err"><i class="fa fa-triangle-exclamation" aria-hidden="true"/></span>
+                            <h1 class="alh-h2" t-out="cr['err_title']"/>
+                            <p t-out="cr['err_text']"/>
+                            <p t-if="error" class="alct-result-detail" t-out="error"/>
+                            <div class="alh-actions justify-content-center">
+                                <a href="/contact#contact-form" class="alh-btn alh-btn-accent">
+                                    <i class="fa fa-rotate-right" aria-hidden="true"/>
+                                    <span t-out="cr['retry']"/>
+                                </a>
+                                <a href="https://wa.me/971505829697" target="_blank" rel="noopener" class="alh-btn alh-btn-wa">
+                                    <i class="fab fa-whatsapp" aria-hidden="true"/>
+                                    <span t-out="cr['whatsapp']"/>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </t>
+    </template>
+
+    <!-- ============================================================ -->
+    <!-- قائمة الفروع المشتركة (تواصل معنا + صفحة الإنجليزي)           -->
+    <!-- الـ value ثابت بالعربي لأنه مربوط بـ BRANCH_MAPPING بالكونترولر -->
+    <!-- ============================================================ -->
+    <!-- حقل الفرع الكامل لمودالات التسجيل (الكورسات / المعلمين / اللغات / تقنية المعلومات)
+         branch_field_id: id الـ select (اختياري) -->
+    <template id="branch_select_field" name="Branch Select Field">
+        <t t-set="alomran_is_ar" t-value="(request.env.lang or '').startswith('ar')"/>
+        <div class="mb-4">
+            <label class="form-label fw-semibold" t-att-for="branch_field_id or None">
+                <i class="fa fa-map-marker-alt text-primary me-2"></i>
+                <t t-out="'الفرع *' if alomran_is_ar else 'Branch *'"/>
+            </label>
+            <select class="form-select form-select-lg" name="branch" required="required"
+                    t-att-id="branch_field_id or None" style="border-radius: 12px;">
+                <option value="" t-out="'اختر الفرع' if alomran_is_ar else 'Select Branch'"/>
+                <t t-call="alomran_theme.branch_select_options"/>
+            </select>
+        </div>
+    </template>
+
+    <template id="branch_select_options" name="Branch Select Options">
+        <t t-set="alomran_is_ar" t-value="(request.env.lang or '').startswith('ar')"/>
+        <optgroup t-att-label="'العين' if alomran_is_ar else 'Al Ain'">
+            <option value="وسط المدينة - العين" t-esc="'وسط المدينة' if alomran_is_ar else 'Downtown'"/>
+            <option value="اليحر مول - العين" t-esc="'اليحر مول' if alomran_is_ar else 'Al Yahar Mall'"/>
+            <option value="مكاني مول زاخر - العين" t-esc="'مكاني مول زاخر' if alomran_is_ar else 'Makani Mall Zakher'"/>
+            <option value="البراري مول - العين" t-esc="'البراري مول' if alomran_is_ar else 'Al Barari Mall'"/>
+            <option value="الفوعة مول - العين" t-esc="'الفوعة مول' if alomran_is_ar else 'Al Foah Mall'"/>
+        </optgroup>
+        <optgroup t-att-label="'أبوظبي' if alomran_is_ar else 'Abu Dhabi'">
+            <option value="مزيد مول - ابوظبي" t-esc="'مزيد مول' if alomran_is_ar else 'Mazyad Mall'"/>
+            <option value="شارع المرور - ابوظبي" t-esc="'شارع المرور' if alomran_is_ar else 'Al Muroor Street'"/>
+        </optgroup>
+        <optgroup t-att-label="'دبي' if alomran_is_ar else 'Dubai'">
+            <option value="القرهود - دبي" t-esc="'القرهود' if alomran_is_ar else 'Al Garhoud'"/>
+            <option value="البرشا - دبي" t-esc="'البرشا' if alomran_is_ar else 'Al Barsha'"/>
+        </optgroup>
+        <optgroup t-att-label="'الشارقة' if alomran_is_ar else 'Sharjah'">
+            <option value="سنترال مول - الشارقة" t-esc="'سنترال مول' if alomran_is_ar else 'Central Mall'"/>
+        </optgroup>
+        <optgroup t-att-label="'رأس الخيمة' if alomran_is_ar else 'Ras Al Khaimah'">
+            <option value="راك مول - راس الخيمة" t-esc="'راك مول' if alomran_is_ar else 'RAK Mall'"/>
+        </optgroup>
+        <optgroup t-att-label="'الفجيرة' if alomran_is_ar else 'Fujairah'">
+            <option value="برج العوضي - الفجيرة" t-esc="'برج العوضي' if alomran_is_ar else 'Al Awadhi Tower'"/>
+        </optgroup>
+    </template>
+</odoo>

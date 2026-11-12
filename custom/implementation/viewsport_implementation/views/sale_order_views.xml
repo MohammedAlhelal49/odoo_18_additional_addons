@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <record id="sale_order_form_inherit_custom_details" model="ir.ui.view">
+        <field name="name">sale.order.form.inherit.custom.details</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//notebook" position="inside">
+                <page string="Quotation Details" name="shipping_contact_details">
+                    <group>
+                        <group string="Quote Info">
+                            <field name="qtn_seq"/>
+                            <field name="qtn_revision"/>
+                            <field name="so_no_of_pages" placeholder="e.g. 1 include cover letter"/>
+                            <field name="implementation_period"/>
+                            <field name="so_enclose" placeholder="e.g. The customer quote"/>
+                        </group>
+                        <group string="Shipping &amp; Contact">
+                            <field name="ship_to_info" placeholder="e.g. Head office in Dubai."/>
+                            <field name="contact_person_id" options="{'no_create': True}"/>
+                            <field name="contact_number" placeholder="e.g. +971 547064647"/>
+                        </group>
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+</odoo>

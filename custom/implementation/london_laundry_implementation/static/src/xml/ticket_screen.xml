@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+
+    <!-- أعمدة المغسلة بشاشة الطلبات: الرف، والتسليم المتوقع، وحالة التسليم (من الفاتورة) -->
+    <t t-inherit="point_of_sale.TicketScreen" t-inherit-mode="extension">
+        <!-- رقم الزبون تحت اسمه (موبايل، وإلا الهاتف) -->
+        <xpath expr="//div[@class='order-row']//t[@t-esc='order.partner_id?.name']/.." position="after">
+            <div t-if="getLaundryPartnerPhone(order)" class="small opacity-75 lry-nowrap" t-esc="getLaundryPartnerPhone(order)"/>
+        </xpath>
+        <!-- تلوين السطور متل لائحة الفواتير (التسليم والدفع) -->
+        <xpath expr="//div[@class='order-row']" position="attributes">
+            <attribute name="t-att-class">getLaundryRowClass(order)</attribute>
+        </xpath>
+        <xpath expr="//div[hasclass('mobileOrderList')]" position="attributes">
+            <attribute name="t-att-class">getLaundryRowClass(order)</attribute>
+        </xpath>
+        <!-- عمود Status أعرض شوي حتى ما تنكسر "Partially Paid" على كذا سطر -->
+        <xpath expr="//div[hasclass('header-row')]/div[hasclass('narrow')]" position="attributes">
+            <attribute name="class" add="lry-status" separator=" "/>
+        </xpath>
+        <xpath expr="//div[@class='order-row']/div[hasclass('narrow')]" position="attributes">
+            <attribute name="class" add="lry-status" separator=" "/>
+        </xpath>
+        <xpath expr="//div[hasclass('header-row')]/div[hasclass('narrow')]" position="before">
+            <div class="col lry-col p-2">Shelf</div>
+            <div class="col lry-col p-2">Expected Delivery</div>
+            <div class="col lry-col p-2">Delivered</div>
+        </xpath>
+        <xpath expr="//div[@class='order-row']/div[hasclass('narrow')]" position="before">
+            <div class="col lry-col p-2">
+                <t t-esc="getLaundryShelf(order)"/>
+            </div>
+            <div class="col lry-col p-2">
+                <div class="lry-nowrap" t-esc="getLaundryExpectedDelivery(order)"/>
+                <div class="small lry-nowrap" t-esc="getLaundryExpectedHour(order)"/>
+            </div>
+            <div class="col lry-col p-2">
+                <t t-if="order.laundry_delivered">
+                    <div class="fw-bold">✓ Yes</div>
+                    <div class="small lry-nowrap" t-esc="getLaundryDeliveryDate(order)"/>
+                </t>
+                <t t-elif="order.finalized">No</t>
+                <div t-if="order.laundry_delivered_employee_id" class="small lry-nowrap" t-esc="order.laundry_delivered_employee_id.name"/>
+            </div>
+        </xpath>
+        <!-- مع أزرار المغسلة صاروا الأزرار كتار على عرض القسم: بينزلوا لسطر تاني بدل ما ينضغطوا -->
+        <xpath expr="//div[hasclass('control-buttons')]" position="attributes">
+            <attribute name="class" add="flex-wrap" separator=" "/>
+        </xpath>
+        <!-- تحصيل دين على طلب On Credit -->
+        <xpath expr="//div[hasclass('control-buttons')]" position="inside">
+            <button t-if="canLaundryCollect(_selectedSyncedOrder)"
+                    class="control-button btn btn-primary btn-lg lh-lg flex-grow-1 flex-shrink-1"
+                    t-on-click="() => this.onLaundryCollect(_selectedSyncedOrder)">
+                <i class="fa fa-money me-1"/> Collect Payment
+            </button>
+            <button t-if="canLaundryWhatsappReady(_selectedSyncedOrder)"
+                    class="control-button btn btn-light btn-lg lh-lg flex-grow-1 flex-shrink-1"
+                    t-on-click="() => this.onLaundryWhatsappReady(_selectedSyncedOrder)">
+                <i class="fa fa-whatsapp me-1 text-success"/> WhatsApp Ready
+            </button>
+            <button t-if="canLaundrySetShelf(_selectedSyncedOrder)"
+                    class="control-button btn btn-light btn-lg lh-lg flex-grow-1 flex-shrink-1"
+                    t-on-click="() => this.onLaundrySetShelf(_selectedSyncedOrder)">
+                <i class="fa fa-th me-1"/> Shelf<t t-if="_selectedSyncedOrder.laundry_shelf">: <t t-esc="_selectedSyncedOrder.laundry_shelf"/></t>
+            </button>
+            <button t-if="canLaundryMarkDelivered(_selectedSyncedOrder)"
+                    class="control-button btn btn-success btn-lg lh-lg flex-grow-1 flex-shrink-1"
+                    t-on-click="() => this.onLaundryMarkDelivered(_selectedSyncedOrder)">
+                <i class="fa fa-check me-1"/> Delivered
+            </button>
+        </xpath>
+        <!-- طلب التحصيل ما فيه أصناف، وOdoo ما بيعرض تفاصيل وأزرار الطلب إلا إذا فيه أصناف
+             (بيطلع "Select an order"): منعرض لوحة صغيرة للتحصيل فيها إعادة الطباعة والإلغاء -->
+        <xpath expr="//CenteredIcon[@icon=&quot;'fa-shopping-cart fa-4x'&quot;]" position="before">
+            <t t-set="_lryCollection"
+               t-value="_selectedSyncedOrder?.finalized and _selectedSyncedOrder.isLaundryCollection() ? _selectedSyncedOrder : false"/>
+            <div t-if="_lryCollection" class="d-flex flex-column flex-grow-1 bg-100 rounded-3 p-3 gap-3">
+                <div class="d-flex justify-content-between align-items-start">
+                    <div>
+                        <div class="fs-4 fw-bold" t-esc="_lryCollection.name"/>
+                        <div t-esc="_lryCollection.get_partner()?.name or ''"/>
+                    </div>
+                    <span class="badge text-bg-secondary fs-6" t-esc="getStatus(_lryCollection)"/>
+                </div>
+                <div class="d-flex flex-column gap-1">
+                    <div t-foreach="_lryCollection.payment_ids" t-as="payment" t-key="payment.uuid"
+                         class="d-flex justify-content-between border-bottom py-1">
+                        <span>
+                            <t t-esc="payment.payment_method_id?.name"/>
+                            <t t-if="payment.laundry_collected_order_id or payment.laundry_collected_order_name">
+                                (<t t-esc="payment.laundry_collected_order_id?.name or payment.laundry_collected_order_name"/>)
+                            </t>
+                        </span>
+                        <span t-esc="env.utils.formatCurrency(payment.get_amount())"/>
+                    </div>
+                </div>
+                <div class="control-buttons d-flex flex-wrap gap-2 mt-auto">
+                    <button class="control-button btn btn-light btn-lg lh-lg flex-grow-1 flex-shrink-1"
+                            t-on-click="() => doPrint.call(_lryCollection)">
+                        <i t-attf-class="fa {{doPrint.status === 'loading' ? 'fa-fw fa-spin fa-circle-o-notch' : 'fa-print'}} me-1"/>Print Receipt
+                    </button>
+                    <button t-if="canLaundryCancelCollection(_lryCollection)"
+                            class="control-button btn btn-danger btn-lg lh-lg flex-grow-1 flex-shrink-1"
+                            t-on-click="() => this.onLaundryCancelCollection(_lryCollection)">
+                        <i class="fa fa-undo me-1"/> Cancel Collection
+                    </button>
+                </div>
+            </div>
+        </xpath>
+        <xpath expr="//CenteredIcon[@icon=&quot;'fa-shopping-cart fa-4x'&quot;]" position="attributes">
+            <attribute name="t-if">!_lryCollection</attribute>
+        </xpath>
+    </t>
+
+</templates>

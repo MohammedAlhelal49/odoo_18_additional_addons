@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Hide the "Delete" action everywhere on contacts (server side is enforced too) -->
+    <record id="view_partner_form_no_delete" model="ir.ui.view">
+        <field name="name">res.partner.form.no.delete</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="/form" position="attributes">
+                <attribute name="delete">0</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_partner_tree_no_delete" model="ir.ui.view">
+        <field name="name">res.partner.list.no.delete</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="/list" position="attributes">
+                <attribute name="delete">0</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_partner_kanban_no_delete" model="ir.ui.view">
+        <field name="name">res.partner.kanban.no.delete</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.res_partner_kanban_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="/kanban" position="attributes">
+                <attribute name="delete">0</attribute>
+            </xpath>
+        </field>
+    </record>
+</odoo>

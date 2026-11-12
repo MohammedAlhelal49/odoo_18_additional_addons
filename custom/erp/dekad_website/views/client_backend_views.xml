@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_vaultedge_client_list" model="ir.ui.view">
+        <field name="name">dekad.client.list</field>
+        <field name="model">dekad.client</field>
+        <field name="arch" type="xml">
+            <list string="Clients">
+                <field name="sequence" widget="handle"/>
+                <field name="logo" widget="image" options="{'size': [40, 40]}"/>
+                <field name="name"/>
+                <field name="industry"/>
+                <field name="is_published" widget="boolean_toggle"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_vaultedge_client_form" model="ir.ui.view">
+        <field name="name">dekad.client.form</field>
+        <field name="model">dekad.client</field>
+        <field name="arch" type="xml">
+            <form string="Client">
+                <sheet>
+                    <field name="logo" widget="image" class="oe_avatar"/>
+                    <div class="oe_title">
+                        <label for="name"/>
+                        <h1><field name="name" placeholder="e.g. Acme Corp"/></h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="industry" placeholder="e.g. Retail"/>
+                            <field name="is_published"/>
+                        </group>
+                        <group>
+                            <field name="slug" placeholder="auto-generated from the name"/>
+                            <field name="sequence"/>
+                        </group>
+                    </group>
+                    <group>
+                        <field name="short_description" placeholder="One or two sentences shown on the client card..."/>
+                    </group>
+                    <group>
+                        <field name="full_description" placeholder="Full write-up shown on the client's own page..."/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_vaultedge_client" model="ir.actions.act_window">
+        <field name="name">Clients</field>
+        <field name="res_model">dekad.client</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <menuitem id="menu_vaultedge_clients"
+              name="Clients"
+              parent="menu_vaultedge_root"
+              action="action_vaultedge_client"
+              sequence="20"/>
+
+</odoo>

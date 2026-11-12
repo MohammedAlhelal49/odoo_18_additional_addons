@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <template id="page_privacy" name="Dekad- Privacy Policy">
+<t t-call="dekad_website.layout">
+
+    <section class="ve-page-hero" style="background-image:url(/dekad_website/static/src/img/privacy.png);">
+        <div class="ve-page-hero-overlay"></div>
+        <div class="container ve-page-hero-content">
+            <span class="ve-section-tag ve-tag-onlight">Legal</span>
+            <h1>Privacy Policy</h1>
+            <nav aria-label="breadcrumb"><ol class="ve-breadcrumb"><li><a href="/">Home</a></li><li class="active">Privacy Policy</li></ol></nav>
+        </div>
+    </section>
+
+    <section class="ve-section">
+        <div class="container">
+            <div class="ve-legal-content">
+                <p class="ve-legal-updated">Last Updated: September 9, 2026</p>
+
+                <p>At Dekad Software Solutions, we respect your privacy and are committed to protecting the personal
+                    and business information entrusted to us.</p>
+                <p>This Privacy Policy explains how we collect, use, protect, and manage information when you visit
+                    our website, contact us, or use our products and services.</p>
+                <p>By accessing or using our website, you acknowledge that you have read and understood this Privacy
+                    Policy.</p>
+
+                <h3>1. Information We Collect</h3>
+                <p>We may collect information that you voluntarily provide to us when interacting with our website
+                    or services, including when you:</p>
+                <ul>
+                    <li>Submit an inquiry or contact form through our website.</li>
+                    <li>Request information about our ERP, Odoo, software development, or other services.</li>
+                    <li>Request a quotation, consultation, or software demonstration.</li>
+                    <li>Contact us by email, telephone, WhatsApp, or other communication channels.</li>
+                    <li>Request technical support or assistance.</li>
+                    <li>Enter into a business or service relationship with us.</li>
+                </ul>
+                <p>Depending on the nature of your interaction with us, the information we may collect can include:</p>
+                <ul>
+                    <li>Name</li>
+                    <li>Company or organization name</li>
+                    <li>Email address</li>
+                    <li>Phone number</li>
+                    <li>Job title or position</li>
+                    <li>Business and software requirements</li>
+                    <li>Any other information you choose to provide to us</li>
+                </ul>
+                <p>We may also automatically collect limited technical information when you visit our website, such
+                    as your IP address, browser type, device information, pages visited, and general website usage
+                    information.</p>
+
+                <h3>2. How We Use Your Information</h3>
+                <p>Information collected through our website and services may be used for the following purposes:</p>
+                <ul>
+                    <li>To respond to your inquiries and requests.</li>
+                    <li>To provide quotations, consultations, demonstrations, and services.</li>
+                    <li>To communicate with you regarding our services and projects.</li>
+                    <li>To understand your business and software requirements.</li>
+                    <li>To provide customer and technical support.</li>
+                    <li>To improve our website, products, and services.</li>
+                    <li>To manage our relationships with customers, partners, and suppliers.</li>
+                    <li>To send relevant information about our services where permitted by applicable law.</li>
+                    <li>To comply with applicable legal and regulatory requirements.</li>
+                </ul>
+                <p>We do not sell or rent your personal information to third parties.</p>
+
+                <h3>3. Customer and Business Information</h3>
+                <p>As an ERP and software solutions provider, Dekad Software Solutions may process business and
+                    technical information on behalf of our customers when delivering our services.</p>
+                <p>This may include information contained within ERP systems, databases, websites, servers,
+                    applications, or other business systems that we are authorized to access as part of a project or
+                    support agreement.</p>
+                <p>We use such information only as reasonably necessary to provide, maintain, support, or improve
+                    the services we are contracted to deliver, and in accordance with our contractual obligations and
+                    applicable laws.</p>
+
+                <h3>4. Cookies and Website Technologies</h3>
+                <p>Our website may use cookies and similar technologies to improve functionality, understand how
+                    visitors use our website, and provide a better user experience.</p>
+                <p>Cookies may collect information such as pages visited, browser preferences, and general website
+                    activity.</p>
+                <p>You can control or disable cookies through your browser settings. Please note that disabling
+                    certain cookies may affect the functionality of some parts of our website.</p>
+
+                <h3>5. Sharing of Information</h3>
+                <p>We may share information with trusted third parties where reasonably necessary to provide our
+                    services, operate our business, or comply with legal obligations.</p>
+                <p>This may include:</p>
+                <ul>
+                    <li>Technology and service providers supporting our website and business operations.</li>
+                    <li>Hosting, cloud, infrastructure, and communication providers.</li>
+                    <li>Professional advisers and consultants where necessary.</li>
+                    <li>Government authorities or regulatory bodies where required by law.</li>
+                    <li>Relevant parties in connection with a merger, acquisition, restructuring, or sale of business
+                        assets.</li>
+                </ul>
+                <p>We take reasonable steps to ensure that third parties handling information on our behalf maintain
+                    appropriate safeguards.</p>
+
+                <h3>6. Data Security</h3>
+                <p>We take reasonable technical and organizational measures to protect information against
+                    unauthorized access, loss, misuse, alteration, or disclosure.</p>
+                <p>However, no method of transmitting or storing information electronically can be guaranteed to be
+                    completely secure. While we take reasonable measures to protect your information, we cannot
+                    guarantee absolute security.</p>
+
+                <h3>7. Data Retention</h3>
+                <p>We retain personal and business information only for as long as reasonably necessary to provide
+                    our services, maintain business records, fulfill contractual obligations, resolve disputes, or
+                    comply with applicable legal requirements.</p>
+                <p>When information is no longer required, we may securely delete, anonymize, or otherwise dispose
+                    of it where appropriate.</p>
+
+                <h3>8. Third-Party Websites and Services</h3>
+                <p>Our website may contain links to third-party websites, applications, or services.</p>
+                <p>We are not responsible for the privacy practices, content, or security of third-party websites or
+                    services. We recommend reviewing the privacy policies of any third-party service before providing
+                    them with personal information.</p>
+
+                <h3>9. Your Privacy Rights</h3>
+                <p>Depending on applicable laws and regulations, you may have certain rights regarding your personal
+                    information, including the right to request access to, correction of, or deletion of certain
+                    information.</p>
+                <p>If you would like to make a privacy-related request or have questions about how your information
+                    is handled, please <a href="/contact">contact us</a> using the information provided below.</p>
+
+                <h3>10. Contact Us</h3>
+                <p>If you have any questions, concerns, or requests regarding this Privacy Policy or the way we
+                    handle your information, please contact us:</p>
+                <p class="ve-privacy-contact-block">
+                    <strong>Dekad Software Solutions</strong><br/>
+                    <strong>Website:</strong> <a href="https://dekad.tech" target="_blank">dekad.tech</a><br/>
+                    <strong>Email:</strong> <a dir="ltr" href="mailto:info@dekad.tech">info@dekad.tech</a><br/>
+                    <strong>Phone:</strong> <a dir="ltr" href="tel:+971 56 955 9537">+971 56 955 9537</a>
+                </p>
+            </div>
+        </div>
+    </section>
+
+</t>
+    </template>
+
+</odoo>

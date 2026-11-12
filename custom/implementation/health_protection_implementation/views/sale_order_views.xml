@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_order_form_hp_batch_expiry" model="ir.ui.view">
+        <field name="name">sale.order.form.hp.batch.expiry</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='payment_term_id']" position="after">
+                <field name="hp_date"/>
+                <field name="hp_po_number"/>
+                <field name="hp_invoice_number" invisible="not hp_invoice_number"/>
+            </xpath>
+            <xpath expr="//field[@name='order_line']/list/field[@name='product_template_id']" position="before">
+                <field name="hp_item_code"/>
+            </xpath>
+            <xpath expr="//field[@name='order_line']/list/field[@name='product_uom_qty']" position="before">
+                <field name="hp_batch_number" optional="show"/>
+                <field name="hp_expiry_date" optional="show"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

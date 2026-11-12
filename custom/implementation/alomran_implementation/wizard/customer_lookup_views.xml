@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="alomran_customer_lookup_view_form" model="ir.ui.view">
+        <field name="name">alomran.customer.lookup.form</field>
+        <field name="model">alomran.customer.lookup</field>
+        <field name="arch" type="xml">
+            <form string="Customer Lookup" create="0" delete="0">
+                <sheet>
+                    <div class="oe_title">
+                        <h1>Customer / Lead Lookup</h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="search_term" placeholder="e.g. 0501234567 or +971 50 123 4567"/>
+                        </group>
+                        <group>
+                            <div class="d-flex gap-2">
+                                <button name="action_search" type="object" string="Search"
+                                        class="btn-primary" icon="fa-search"/>
+                                <button name="action_clear" type="object" string="Clear"
+                                        class="btn-secondary" invisible="not searched"/>
+                            </div>
+                        </group>
+                    </group>
+                    <field name="searched" invisible="1"/>
+                    <field name="validity_days" invisible="1"/>
+                    <field name="transfer_enabled" invisible="1"/>
+                    <div class="alert alert-info" role="status" invisible="searched">
+                        Search by phone/mobile number to find the opportunities and see the branch,
+                        the salesperson in charge, the last update and whether each opportunity is still active.
+                        <span invisible="not transfer_enabled">
+                            An opportunity expires after
+                            <field name="validity_days" class="oe_inline" readonly="1"/> full days without any update on it;
+                            the customer can be taken over when all its opportunities (won ones included) are expired.
+                        </span>
+                    </div>
+                    <div class="alert alert-warning" role="status"
+                         invisible="not searched or result_count">
+                        No opportunity found with this number.
+                    </div>
+                    <field name="line_ids" invisible="not searched or not result_count" readonly="1">
+                        <list create="0" delete="0" edit="0"
+                              decoration-success="status == 'active'"
+                              decoration-danger="status == 'expired'"
+                              decoration-info="status == 'won'">
+                            <field name="customer_name"/>
+                            <field name="phone"/>
+                            <field name="branch_name"/>
+                            <field name="salesperson_name"/>
+                            <field name="stage_name" optional="show"/>
+                            <field name="last_update_date"/>
+                            <field name="remaining_days"/>
+                            <field name="status" widget="badge"
+                                   decoration-success="status == 'active'"
+                                   decoration-danger="status == 'expired'"
+                                   decoration-info="status == 'won'"/>
+                            <field name="transfer_date" optional="hide"/>
+                            <field name="is_mine" column_invisible="1"/>
+                            <field name="transferable" column_invisible="1"/>
+                            <button name="action_takeover" type="object" string="Take Over"
+                                    icon="fa-exchange" class="btn-link"
+                                    invisible="not parent.transfer_enabled or not transferable"
+                                    confirm="This opportunity, its contact and all the customer's opportunities (won ones included) will be transferred to you. Continue?"/>
+                        </list>
+                    </field>
+                    <field name="result_count" invisible="1"/>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="alomran_customer_lookup_action" model="ir.actions.act_window">
+        <field name="name">Customer Lookup</field>
+        <field name="res_model">alomran.customer.lookup</field>
+        <field name="view_mode">form</field>
+        <field name="target">current</field>
+    </record>
+
+    <menuitem id="alomran_customer_lookup_menu"
+              name="Customer Lookup"
+              parent="crm.crm_menu_sales"
+              action="alomran_customer_lookup_action"
+              groups="sales_team.group_sale_salesman"
+              sequence="1"/>
+
+</odoo>

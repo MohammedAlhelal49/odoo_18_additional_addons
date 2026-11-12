@@ -1,0 +1,378 @@
+// Health Protection website — colours taken from the logo
+$hp-navy: #0b3768;
+$hp-navy-dark: #032754;
+$hp-blue: #1677c8;
+$hp-cyan: #12b3e1;
+$hp-sky: #2bcffa;
+$hp-ice: #eef8fd;
+$hp-text: #1d2b3e;
+$hp-muted: #5b6b80;
+$hp-border: #dcebf5;
+$hp-font: 'Plus Jakarta Sans', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+
+html { scroll-behavior: smooth; }
+// wide (g-5) row gutters need more side padding than Bootstrap's default container
+.hp-page .container-xl, .hp-footer .container-xl { padding-left: 1.5rem; padding-right: 1.5rem; }
+// anchors land below the sticky navbar
+#home, #about, #services, #why-us, #partners, #contact { scroll-margin-top: 88px; }
+
+.hp-c-cyan { color: $hp-cyan; }
+.hp-c-blue { color: $hp-blue; }
+.hp-gradient-text {
+    display: block;
+    background: linear-gradient(90deg, $hp-cyan, $hp-blue 60%, $hp-navy);
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+}
+
+// ---------------------------------------------------------------- buttons
+%hp-btn {
+    font-family: $hp-font; font-weight: 700; border-radius: 999px; padding: .7rem 1.5rem;
+    transition: transform .15s, box-shadow .15s, background .15s, color .15s;
+    &:hover { transform: translateY(-2px); }
+}
+.hp-btn-primary {
+    @extend %hp-btn;
+    color: #fff; border: 0; background: linear-gradient(90deg, $hp-cyan, $hp-blue);
+    box-shadow: 0 8px 22px rgba(22, 119, 200, .28);
+    &:hover, &:focus { color: #fff; box-shadow: 0 12px 28px rgba(22, 119, 200, .38); }
+}
+.hp-btn-outline {
+    @extend %hp-btn;
+    color: $hp-navy; background: #fff; border: 2px solid $hp-border;
+    &:hover, &:focus { color: $hp-blue; border-color: $hp-cyan; }
+}
+.hp-btn-white {
+    @extend %hp-btn;
+    color: $hp-navy; background: #fff; border: 0;
+    &:hover, &:focus { color: $hp-blue; box-shadow: 0 10px 24px rgba(0, 0, 0, .18); }
+}
+
+// ---------------------------------------------------------------- navbar
+.hp-navbar {
+    position: sticky; top: 0; z-index: 1030; background: rgba(255, 255, 255, .94);
+    backdrop-filter: blur(10px); border-bottom: 1px solid $hp-border; padding: .7rem 0;
+    font-family: $hp-font;
+    .hp-nav .nav-link {
+        color: $hp-text; font-weight: 600; padding: .5rem 1rem; border-radius: 999px; white-space: nowrap;
+        &:hover, &:focus, &.active { color: $hp-blue; background: $hp-ice; }
+    }
+    .hp-toggler { border: 0; color: $hp-navy; font-size: 1.4rem; box-shadow: none; }
+    .hp-btn-primary, .hp-btn-login { white-space: nowrap; }
+    .hp-nav-actions { display: flex; align-items: center; gap: .6rem; flex-wrap: wrap; }
+    @media (min-width: 1200px) {
+        .hp-nav-actions { flex-wrap: nowrap; }
+        .hp-brand-tagline { white-space: nowrap; }
+    }
+    @media (min-width: 1200px) and (max-width: 1499.98px) {
+        .hp-nav .nav-link { padding: .5rem .7rem; }
+        .hp-btn-primary, .hp-btn-login { padding: .55rem 1rem; font-size: .92rem; }
+    }
+    .hp-btn-login { padding: .6rem 1.2rem; }
+    @media (max-width: 1199.98px) {
+        .navbar-collapse { padding: 1rem 0; }
+        .hp-nav-actions { margin-top: .5rem; }
+    }
+}
+.hp-brand { display: flex; align-items: center; gap: .7rem; }
+.hp-brand-mark { height: 46px; width: auto; }
+.hp-brand-text { display: flex; flex-direction: column; line-height: 1.1; }
+.hp-brand-name { font-family: $hp-font; font-weight: 800; font-size: 1.25rem; color: $hp-navy; letter-spacing: -.01em; }
+.hp-brand-tagline { font-family: $hp-font; font-size: .72rem; font-weight: 600; color: $hp-muted; text-transform: uppercase; letter-spacing: .08em; }
+
+// ---------------------------------------------------------------- page
+.hp-page {
+    font-family: $hp-font; color: $hp-text; overflow-x: clip;
+    h1, h2, h3, h4, h5 { font-family: $hp-font; color: $hp-navy; }
+}
+.hp-eyebrow {
+    display: inline-flex; align-items: center; gap: .55rem; margin-bottom: 1rem;
+    padding: .35rem .9rem; border-radius: 999px; background: $hp-ice; color: $hp-blue;
+    font-size: .8rem; font-weight: 700; text-transform: uppercase; letter-spacing: .08em;
+}
+.hp-eyebrow-dot { width: 8px; height: 8px; border-radius: 50%; background: $hp-cyan; box-shadow: 0 0 0 4px rgba(18, 179, 225, .2); }
+.hp-section { padding: 6rem 0; }
+.hp-section-tinted { background: linear-gradient(180deg, $hp-ice, #fff); }
+.hp-section-head { max-width: 720px; margin: 0 auto 3rem; text-align: center; }
+.hp-section-title { font-size: clamp(1.8rem, 3vw, 2.6rem); font-weight: 800; line-height: 1.2; letter-spacing: -.02em; margin-bottom: 1.2rem; }
+.hp-text { color: $hp-muted; font-size: 1.05rem; line-height: 1.75; }
+
+// ---------------------------------------------------------------- hero
+.hp-hero {
+    position: relative; padding: 5.5rem 0 6rem; overflow-x: clip;
+    background: radial-gradient(1100px 500px at 85% 10%, rgba(43, 207, 250, .16), transparent 60%),
+                radial-gradient(800px 500px at 0% 100%, rgba(22, 119, 200, .10), transparent 60%), #fff;
+}
+.hp-hero-title { font-size: clamp(2.3rem, 4.6vw, 3.8rem); font-weight: 800; line-height: 1.1; letter-spacing: -.03em; margin-bottom: 1.4rem; }
+.hp-hero-lead { font-size: 1.15rem; line-height: 1.75; color: $hp-muted; max-width: 560px; margin-bottom: 2rem; }
+.hp-hero-actions { display: flex; flex-wrap: wrap; gap: 1rem; margin-bottom: 2rem; }
+.hp-hero-points {
+    display: flex; flex-wrap: wrap; gap: .6rem 1.6rem; color: $hp-navy; font-weight: 600; font-size: .95rem;
+    .fa { color: $hp-cyan; margin-inline-end: .45rem; }
+}
+.hp-hero-visual { position: relative; max-width: 520px; margin: 0 auto; aspect-ratio: 1 / 1; display: flex; align-items: center; justify-content: center; }
+.hp-hero-ring {
+    position: absolute; inset: 6%; border-radius: 50%;
+    background: radial-gradient(circle at 30% 30%, #fff, $hp-ice 70%);
+    border: 2px dashed rgba(18, 179, 225, .35);
+    animation: hp-spin 60s linear infinite;
+}
+.hp-hero-card {
+    position: relative; width: 66%; padding: 2rem; border-radius: 32px; background: #fff;
+    box-shadow: 0 30px 60px rgba(11, 55, 104, .14);
+    img { width: 100%; height: auto; display: block; }
+}
+.hp-float {
+    position: absolute; display: flex; align-items: center; gap: .75rem; padding: .7rem 1rem .7rem .7rem;
+    background: #fff; border-radius: 16px; box-shadow: 0 14px 34px rgba(11, 55, 104, .14);
+    animation: hp-float 6s ease-in-out infinite;
+    b { display: block; color: $hp-navy; font-size: .95rem; }
+    small { display: block; color: $hp-muted; font-size: .78rem; }
+}
+.hp-float-icon {
+    width: 40px; height: 40px; border-radius: 12px; display: inline-flex; align-items: center; justify-content: center;
+    color: #fff; background: linear-gradient(135deg, $hp-sky, $hp-blue); font-size: 1.1rem;
+}
+.hp-float-1 { top: 6%; left: -2%; }
+.hp-float-2 { top: 44%; right: -6%; animation-delay: -2s; }
+.hp-float-3 { bottom: 4%; left: 4%; animation-delay: -4s; }
+@media (max-width: 575.98px) {
+    .hp-float { transform: scale(.85); }
+    .hp-float-2 { right: -2%; }
+}
+@keyframes hp-float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+@keyframes hp-spin { to { transform: rotate(360deg); } }
+@media (prefers-reduced-motion: reduce) { .hp-float, .hp-hero-ring { animation: none; } }
+
+// ---------------------------------------------------------------- highlight strip
+.hp-strip { background: linear-gradient(90deg, $hp-navy-dark, $hp-navy 50%, $hp-blue); padding: 1.6rem 0; }
+.hp-strip-item {
+    display: flex; align-items: center; gap: .8rem; color: #fff; font-weight: 600; font-size: .95rem;
+    .fa { width: 42px; height: 42px; flex: 0 0 auto; border-radius: 12px; display: inline-flex; align-items: center; justify-content: center; background: rgba(255, 255, 255, .12); color: $hp-sky; font-size: 1.15rem; }
+}
+
+// ---------------------------------------------------------------- about
+.hp-about-visual { position: relative; padding-bottom: 2.5rem; }
+.hp-about-panel {
+    position: relative; overflow: hidden; border-radius: 28px; padding: 3rem 2.4rem; color: #fff;
+    background: linear-gradient(145deg, $hp-cyan, $hp-blue 55%, $hp-navy);
+    box-shadow: 0 30px 60px rgba(11, 55, 104, .22);
+    &::after {
+        content: ""; position: absolute; width: 260px; height: 260px; right: -80px; bottom: -80px;
+        border-radius: 50%; border: 40px solid rgba(255, 255, 255, .08);
+    }
+    > .fa { font-size: 2.6rem; color: #fff; opacity: .9; margin-bottom: 1.4rem; }
+    h3 { color: #fff; font-weight: 800; font-size: 1.7rem; line-height: 1.25; }
+    p { color: rgba(255, 255, 255, .85); font-size: 1.02rem; margin: 0; }
+}
+.hp-about-badge {
+    position: absolute; right: 1.5rem; bottom: 0; display: flex; align-items: center; gap: .75rem;
+    background: #fff; border-radius: 16px; padding: .9rem 1.2rem; box-shadow: 0 14px 34px rgba(11, 55, 104, .14);
+    > .fa { color: $hp-cyan; font-size: 1.5rem; }
+    b { display: block; color: $hp-navy; }
+    small { display: block; color: $hp-muted; font-size: .8rem; }
+}
+.hp-mini-card {
+    display: flex; gap: .9rem; height: 100%; padding: 1.2rem; border-radius: 18px; border: 1px solid $hp-border; background: #fff;
+    h4 { font-size: 1.05rem; font-weight: 700; margin-bottom: .3rem; }
+    p { color: $hp-muted; font-size: .92rem; margin: 0; }
+}
+.hp-mini-icon {
+    width: 42px; height: 42px; flex: 0 0 auto; border-radius: 12px; display: inline-flex; align-items: center; justify-content: center;
+    background: $hp-ice; color: $hp-blue; font-size: 1.15rem;
+}
+
+// ---------------------------------------------------------------- services
+.hp-card {
+    height: 100%; padding: 2rem; border-radius: 22px; background: #fff; border: 1px solid $hp-border;
+    transition: transform .2s, box-shadow .2s, border-color .2s;
+    &:hover { transform: translateY(-6px); border-color: rgba(18, 179, 225, .5); box-shadow: 0 24px 48px rgba(11, 55, 104, .12); }
+    h3 { font-size: 1.2rem; font-weight: 800; margin: 1.2rem 0 .6rem; }
+    p { color: $hp-muted; margin: 0; line-height: 1.7; }
+}
+.hp-card-icon {
+    width: 56px; height: 56px; border-radius: 16px; display: inline-flex; align-items: center; justify-content: center;
+    color: #fff; font-size: 1.4rem; background: linear-gradient(135deg, $hp-sky, $hp-blue);
+    box-shadow: 0 10px 22px rgba(22, 119, 200, .28);
+}
+
+// ---------------------------------------------------------------- why us
+.hp-why {
+    height: 100%; padding: 1.6rem; border-radius: 20px; background: $hp-ice; position: relative;
+    h4 { font-size: 1.1rem; font-weight: 800; margin: .6rem 0 .4rem; }
+    p { color: $hp-muted; margin: 0; font-size: .95rem; line-height: 1.65; }
+}
+.hp-why-num {
+    font-size: 2rem; font-weight: 800; line-height: 1;
+    background: linear-gradient(90deg, $hp-cyan, $hp-blue); -webkit-background-clip: text; background-clip: text; color: transparent;
+}
+
+// ---------------------------------------------------------------- steps
+.hp-steps {
+    display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1.5rem;
+    padding: 2.2rem; border-radius: 24px; background: #fff; border: 1px solid $hp-border;
+    @media (max-width: 991.98px) { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    @media (max-width: 575.98px) { grid-template-columns: 1fr; }
+}
+.hp-step {
+    text-align: center;
+    h5 { font-size: 1rem; font-weight: 800; margin: .9rem 0 .3rem; }
+    p { color: $hp-muted; font-size: .9rem; margin: 0; }
+}
+.hp-step-icon {
+    width: 52px; height: 52px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center;
+    background: $hp-ice; color: $hp-blue; font-size: 1.3rem; border: 2px solid rgba(18, 179, 225, .3);
+}
+
+// ---------------------------------------------------------------- contact / CTA
+.hp-cta {
+    position: relative; overflow: hidden; border-radius: 28px; padding: 3.2rem;
+    background: linear-gradient(120deg, $hp-navy-dark, $hp-navy 45%, $hp-blue);
+    color: #fff;
+    &::before {
+        content: ""; position: absolute; width: 380px; height: 380px; right: -120px; top: -160px;
+        border-radius: 50%; background: radial-gradient(circle, rgba(43, 207, 250, .35), transparent 70%);
+    }
+    h2 { color: #fff; font-weight: 800; font-size: clamp(1.6rem, 2.6vw, 2.2rem); line-height: 1.25; }
+    p { color: rgba(255, 255, 255, .82); font-size: 1.05rem; margin: 0; }
+    @media (max-width: 575.98px) { padding: 2rem 1.4rem; }
+}
+.hp-cta-contact {
+    position: relative; margin-bottom: 1.4rem;
+    li { display: flex; align-items: center; gap: .8rem; padding: .4rem 0; font-weight: 600; }
+    .fa { width: 36px; height: 36px; border-radius: 10px; display: inline-flex; align-items: center; justify-content: center; background: rgba(255, 255, 255, .12); color: $hp-sky; }
+    a { color: #fff; text-decoration: none; &:hover { color: $hp-sky; } }
+}
+
+// ---------------------------------------------------------------- footer
+.hp-footer {
+    font-family: $hp-font; background: $hp-navy-dark; color: rgba(255, 255, 255, .72); padding: 4rem 0 1.5rem;
+    .hp-brand-name { color: #fff; }
+}
+.hp-footer-brand { display: flex; align-items: center; gap: .8rem; }
+.hp-footer-logo {
+    width: 56px; height: 56px; border-radius: 14px; background: #fff; display: inline-flex; align-items: center; justify-content: center;
+    img { width: 42px; height: auto; }
+}
+.hp-footer-text { max-width: 380px; line-height: 1.7; }
+.hp-footer-title { color: #fff; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; font-size: .8rem; margin-bottom: 1rem; }
+.hp-footer-links {
+    li { padding: .3rem 0; }
+    a { color: rgba(255, 255, 255, .72); text-decoration: none; &:hover { color: $hp-sky; } }
+}
+.hp-footer-contact li { display: flex; gap: .6rem; align-items: baseline; .fa { color: $hp-sky; width: 16px; } }
+.hp-footer-bottom { margin-top: 3rem; padding-top: 1.5rem; border-top: 1px solid rgba(255, 255, 255, .1); font-size: .88rem; text-align: center; }
+
+.hp-footer-contact .hp-address { line-height: 1.6; }
+.hp-social {
+    display: flex; gap: .7rem;
+    a {
+        width: 42px; height: 42px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center;
+        color: #fff; font-size: 1.05rem; text-decoration: none; background: rgba(255, 255, 255, .08); border: 1px solid rgba(255, 255, 255, .14);
+        transition: background .2s, transform .2s, border-color .2s;
+        &:hover { color: #fff; transform: translateY(-3px); border-color: transparent; background: linear-gradient(135deg, $hp-sky, $hp-blue); }
+    }
+}
+
+// ---------------------------------------------------------------- products page
+$hp-fam: (
+    hematology: (#2bcffa, #1677c8),
+    chemistry: (#12b3e1, #0b3768),
+    controls: (#5dc8f0, #1d4f91),
+    consumables: (#7fd6f2, #1677c8),
+);
+.hp-prod-hero {
+    padding: 4.5rem 0 3rem;
+    background: radial-gradient(900px 400px at 90% 0%, rgba(43, 207, 250, .16), transparent 60%), $hp-ice;
+    border-bottom: 1px solid $hp-border;
+}
+.hp-prod-search {
+    position: relative; display: flex; gap: .6rem; max-width: 640px; padding: .45rem;
+    background: #fff; border-radius: 999px; border: 1px solid $hp-border; box-shadow: 0 10px 30px rgba(11, 55, 104, .08);
+    > .fa { position: absolute; left: 1.3rem; top: 50%; transform: translateY(-50%); color: $hp-muted; }
+    .form-control { border: 0; box-shadow: none; padding-left: 2.6rem; border-radius: 999px; background: transparent; }
+    .hp-btn-primary { padding: .55rem 1.4rem; }
+}
+.hp-prod-body { padding: 2.5rem 0 5rem; }
+.hp-prod-filters { display: flex; flex-wrap: wrap; gap: .6rem; margin-bottom: 1.4rem; }
+.hp-chip {
+    display: inline-flex; align-items: center; gap: .5rem; padding: .5rem 1rem; border-radius: 999px;
+    background: #fff; border: 1px solid $hp-border; color: $hp-navy; font-weight: 600; text-decoration: none;
+    transition: all .15s;
+    .fa { color: $hp-cyan; }
+    &:hover { border-color: $hp-cyan; color: $hp-blue; }
+    &.active {
+        color: #fff; border-color: transparent; background: linear-gradient(90deg, $hp-cyan, $hp-blue);
+        .fa { color: #fff; } .hp-chip-count { background: rgba(255, 255, 255, .25); color: #fff; }
+    }
+}
+.hp-chip-count { font-size: .75rem; font-weight: 700; padding: .1rem .5rem; border-radius: 999px; background: $hp-ice; color: $hp-blue; }
+.hp-prod-summary {
+    display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: .5rem;
+    color: $hp-muted; margin-bottom: 1.4rem; b { color: $hp-navy; }
+}
+.hp-prod-reset { color: $hp-blue; font-weight: 600; text-decoration: none; }
+.hp-prod-card {
+    --c1: #2bcffa; --c2: #1677c8;
+    position: relative; height: 100%; display: flex; flex-direction: column; padding: 1.4rem;
+    background: #fff; border: 1px solid $hp-border; border-radius: 20px; overflow: hidden;
+    transition: transform .2s, box-shadow .2s, border-color .2s;
+    &::before { content: ""; position: absolute; inset: 0 0 auto 0; height: 4px; background: linear-gradient(90deg, var(--c1), var(--c2)); }
+    &:hover { transform: translateY(-5px); border-color: rgba(18, 179, 225, .45); box-shadow: 0 20px 40px rgba(11, 55, 104, .12); }
+    @each $key, $pair in $hp-fam {
+        &.hp-fam-#{$key} { --c1: #{nth($pair, 1)}; --c2: #{nth($pair, 2)}; }
+    }
+}
+.hp-prod-top { display: flex; justify-content: space-between; align-items: flex-start; gap: .5rem; margin-bottom: 1rem; }
+.hp-prod-icon {
+    width: 48px; height: 48px; border-radius: 14px; display: inline-flex; align-items: center; justify-content: center;
+    color: #fff; font-size: 1.2rem; background: linear-gradient(135deg, var(--c1), var(--c2));
+    box-shadow: 0 8px 18px rgba(22, 119, 200, .22);
+}
+.hp-prod-code {
+    font-size: .75rem; font-weight: 700; color: $hp-muted; background: #f3f7fa; border-radius: 8px;
+    padding: .25rem .55rem; max-width: 60%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.hp-prod-family { font-size: .72rem; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; color: $hp-cyan; }
+.hp-page .hp-prod-name { font-size: 1.05rem; font-weight: 800; line-height: 1.35; margin: .35rem 0 1.2rem; flex: 1 1 auto; word-break: break-word; }
+.hp-prod-bottom {
+    display: flex; justify-content: flex-end; align-items: flex-end; gap: .5rem;
+    padding-top: 1rem; border-top: 1px dashed $hp-border;
+}
+.hp-prod-btn {
+    width: 40px; height: 40px; flex: 0 0 auto; border-radius: 12px; display: inline-flex; align-items: center; justify-content: center;
+    background: $hp-ice; color: $hp-blue; text-decoration: none; transition: all .15s;
+    &:hover { background: linear-gradient(135deg, $hp-cyan, $hp-blue); color: #fff; }
+}
+.hp-prod-empty {
+    text-align: center; padding: 4rem 1rem; color: $hp-muted;
+    > .fa { font-size: 2.5rem; color: $hp-cyan; margin-bottom: 1rem; }
+    a { color: $hp-blue; font-weight: 600; }
+}
+.hp-prod-pager {
+    display: flex; justify-content: center; margin-top: 3rem;
+    .pagination { gap: .4rem; }
+    .page-link {
+        border: 1px solid $hp-border; border-radius: 12px !important; color: $hp-navy; font-weight: 700;
+        min-width: 42px; text-align: center; padding: .5rem .8rem;
+        &:hover { background: $hp-ice; color: $hp-blue; }
+    }
+    .page-item.active .page-link { color: #fff; border-color: transparent; background: linear-gradient(135deg, $hp-cyan, $hp-blue); }
+    .page-item.disabled .page-link { color: #b4c2d0; }
+}
+
+// ---------------------------------------------------------------- partners
+.hp-partner {
+    height: 100%; display: flex; flex-direction: column; border-radius: 22px; background: #fff; border: 1px solid $hp-border;
+    overflow: hidden; transition: transform .2s, box-shadow .2s, border-color .2s;
+    &:hover { transform: translateY(-6px); border-color: rgba(18, 179, 225, .5); box-shadow: 0 24px 48px rgba(11, 55, 104, .12); }
+}
+.hp-partner-logo {
+    height: 180px; padding: 1.5rem 2rem; display: flex; align-items: center; justify-content: center;
+    background: #fff; border-bottom: 1px solid $hp-border;
+    img { max-width: 100%; max-height: 100%; object-fit: contain; }
+}
+.hp-partner-body {
+    padding: 1.6rem 1.8rem 1.9rem; flex: 1;
+    h3 { font-size: 1.15rem; font-weight: 800; margin: 0 0 .6rem; }
+    p { color: $hp-muted; margin: 0; font-size: .95rem; line-height: 1.7; }
+}

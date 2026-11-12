@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="crm_lead_view_form_alomran" model="ir.ui.view">
+        <field name="name">crm.lead.form.alomran</field>
+        <field name="model">crm.lead</field>
+        <field name="inherit_id" ref="crm.crm_lead_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='phone']" position="after">
+                <field name="x_source_type" widget="badge"/>
+            </xpath>
+            <xpath expr="//notebook" position="inside">
+                <page string="Website Information" name="website_info" invisible="x_source_type == 'other'">
+                    <group>
+                        <group>
+                            <field name="x_source_type_display" readonly="1"/>
+                            <field name="x_registration_date" readonly="1"/>
+                            <field name="x_course_interest"/>
+                            <field name="x_preferred_branch"/>
+                            <field name="x_emirate"/>
+                            <field name="x_training_mode"/>
+                            <field name="x_study_stage" invisible="not x_study_stage"/>
+                            <field name="x_subjects" invisible="not x_subjects"/>
+                        </group>
+                        <group>
+                            <field name="x_popup_offer_id" readonly="1"/>
+                            <field name="x_gclid" readonly="1"/>
+                        </group>
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="crm_lead_view_list_alomran" model="ir.ui.view">
+        <field name="name">crm.lead.list.alomran</field>
+        <field name="model">crm.lead</field>
+        <field name="inherit_id" ref="crm.crm_case_tree_view_leads"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='contact_name']" position="after">
+                <field name="x_source_type" widget="badge" optional="show"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="crm_lead_view_search_alomran" model="ir.ui.view">
+        <field name="name">crm.lead.search.alomran</field>
+        <field name="model">crm.lead</field>
+        <field name="inherit_id" ref="crm.view_crm_case_leads_filter"/>
+        <field name="arch" type="xml">
+            <xpath expr="//filter[@name='assigned_to_me']" position="before" optional="true">
+                <separator/>
+                <filter string="From Pop-up" name="filter_popup" domain="[('x_source_type', '=', 'popup')]"/>
+                <filter string="Course Registration" name="filter_course" domain="[('x_source_type', '=', 'course')]"/>
+                <filter string="English &amp; Tests Landing" name="filter_landing_english" domain="[('x_source_type', '=', 'landing_english')]"/>
+                <filter string="Private Tutoring Landing" name="filter_landing_tutoring" domain="[('x_source_type', '=', 'landing_tutoring')]"/>
+                <filter string="Women's Courses Landing" name="filter_landing_women" domain="[('x_source_type', '=', 'landing_women')]"/>
+                <filter string="From Google Ads" name="filter_google_ads" domain="[('x_gclid', '!=', False)]"/>
+                <filter string="From Website" name="filter_website" domain="[('x_source_type', 'in', ('popup', 'course', 'contact', 'landing_english', 'landing_tutoring', 'landing_women'))]"/>
+                <separator/>
+            </xpath>
+            <xpath expr="//filter[@name='salesperson']" position="after" optional="true">
+                <filter string="Registration Source" name="group_source" context="{'group_by': 'x_source_type'}"/>
+                <filter string="Emirate" name="group_emirate" context="{'group_by': 'x_emirate'}"/>
+                <filter string="Training Method" name="group_training_mode" context="{'group_by': 'x_training_mode'}"/>
+                <filter string="Study Stage" name="group_study_stage" context="{'group_by': 'x_study_stage'}"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="crm_lead_action_website" model="ir.actions.act_window">
+        <field name="name">Website Registrations</field>
+        <field name="res_model">crm.lead</field>
+        <field name="view_mode">list,kanban,form</field>
+        <field name="domain">[('x_source_type', 'in', ('popup', 'course', 'contact', 'landing_english', 'landing_tutoring', 'landing_women'))]</field>
+        <field name="context">{'search_default_filter_website': 1}</field>
+    </record>
+
+    <menuitem
+        id="menu_crm_website_leads"
+        name="Website Registrations"
+        parent="crm.crm_menu_root"
+        action="crm_lead_action_website"
+        sequence="5"/>
+</odoo>

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="purchase_order_form_customer_pricelist" model="ir.ui.view">
+        <field name="name">purchase.order.form.customer.pricelist</field>
+        <field name="model">purchase.order</field>
+        <field name="inherit_id" ref="purchase.purchase_order_form"/>
+        <field name="arch" type="xml">
+            <field name="partner_ref" position="after">
+                <field name="customer_id" context="{'res_partner_search_mode': 'customer'}"
+                       options="{'no_create': True}" readonly="state in ['cancel', 'done', 'purchase']"/>
+                <field name="pricelist_id" invisible="1"/>
+            </field>
+        </field>
+    </record>
+
+    <record id="purchase_order_list_customer" model="ir.ui.view">
+        <field name="name">purchase.order.list.customer</field>
+        <field name="model">purchase.order</field>
+        <field name="inherit_id" ref="purchase.purchase_order_kpis_tree"/>
+        <field name="arch" type="xml">
+            <field name="partner_id" position="after">
+                <field name="customer_id" optional="show"/>
+            </field>
+        </field>
+    </record>
+
+    <record id="purchase_order_tree_customer" model="ir.ui.view">
+        <field name="name">purchase.order.tree.customer</field>
+        <field name="model">purchase.order</field>
+        <field name="inherit_id" ref="purchase.purchase_order_view_tree"/>
+        <field name="arch" type="xml">
+            <field name="partner_id" position="after">
+                <field name="customer_id" optional="show"/>
+            </field>
+        </field>
+    </record>
+
+    <record id="purchase_order_search_customer" model="ir.ui.view">
+        <field name="name">purchase.order.search.customer</field>
+        <field name="model">purchase.order</field>
+        <field name="inherit_id" ref="purchase.purchase_order_view_search"/>
+        <field name="arch" type="xml">
+            <field name="partner_id" position="after">
+                <field name="customer_id"/>
+            </field>
+        </field>
+    </record>
+
+</odoo>

@@ -1,0 +1,758 @@
+{
+  "pricelists": [
+    {
+      "name": "Default",
+      "currency": "AED",
+      "rules": [
+        {
+          "product": "SOFACOVER SMALL",
+          "fixed_price": 2.0,
+          "min_quantity": 0.0
+        },
+        {
+          "product": "TOWEL LARGE",
+          "fixed_price": 2.5,
+          "min_quantity": 0.0
+        }
+      ]
+    },
+    {
+      "name": "Munich",
+      "currency": "AED",
+      "rules": [
+        {
+          "product": "CURTAINS SMALL",
+          "fixed_price": 5.0,
+          "min_quantity": 0.0
+        },
+        {
+          "product": "BEDSHEET SINGLE",
+          "fixed_price": 1.5,
+          "min_quantity": 0.0
+        },
+        {
+          "product": "TROUSER ",
+          "fixed_price": 3.0,
+          "min_quantity": 0.0
+        },
+        {
+          "product": "SOFACOVER SMALL",
+          "fixed_price": 2.0,
+          "min_quantity": 0.0
+        },
+        {
+          "product": "PILLOW CASE ",
+          "fixed_price": 1.3,
+          "min_quantity": 0.0
+        },
+        {
+          "product": "coat",
+          "fixed_price": 1.3,
+          "min_quantity": 0.0
+        },
+        {
+          "product": "BEDSHEET DOUBLE",
+          "fixed_price": 3.0,
+          "min_quantity": 0.0
+        },
+        {
+          "product": "SHIRT",
+          "fixed_price": 3.0,
+          "min_quantity": 0.0
+        },
+        {
+          "product": "DOCTOR`S COAT",
+          "fixed_price": 1.5,
+          "min_quantity": 0.0
+        },
+        {
+          "product": "TOWEL LARGE",
+          "fixed_price": 1.1,
+          "min_quantity": 0.0
+        }
+      ]
+    },
+    {
+      "name": "Truelife",
+      "currency": "AED",
+      "rules": [
+        {
+          "product": "CURTAINS SMALL",
+          "fixed_price": 5.0,
+          "min_quantity": 0.0
+        },
+        {
+          "product": "BEDSHEET SINGLE",
+          "fixed_price": 1.25,
+          "min_quantity": 0.0
+        },
+        {
+          "product": "PILLOW CASE ",
+          "fixed_price": 1.3,
+          "min_quantity": 0.0
+        },
+        {
+          "product": "coat",
+          "fixed_price": 1.25,
+          "min_quantity": 0.0
+        },
+        {
+          "product": "TOWEL SMALL",
+          "fixed_price": 0.5,
+          "min_quantity": 0.0
+        },
+        {
+          "product": "TOWEL LARGE",
+          "fixed_price": 1.0,
+          "min_quantity": 0.0
+        },
+        {
+          "product": "DOCTOR`S COAT",
+          "fixed_price": 1.5,
+          "min_quantity": 0.0
+        },
+        {
+          "product": "BEDSHEET DOUBLE",
+          "fixed_price": 1.85,
+          "min_quantity": 0.0
+        }
+      ]
+    },
+    {
+      "name": "Newlook Kabisi",
+      "currency": "AED",
+      "rules": [
+        {
+          "product": "BEDSHEET SINGLE",
+          "fixed_price": 2.0,
+          "min_quantity": 0.0
+        },
+        {
+          "product": "CURTAINS SMALL",
+          "fixed_price": 5.0,
+          "min_quantity": 0.0
+        },
+        {
+          "product": "coat",
+          "fixed_price": 1.3,
+          "min_quantity": 0.0
+        },
+        {
+          "product": "TOWEL SMALL",
+          "fixed_price": 0.5,
+          "min_quantity": 0.0
+        },
+        {
+          "product": "TOWEL LARGE",
+          "fixed_price": 1.0,
+          "min_quantity": 0.0
+        },
+        {
+          "product": "DOCTOR`S COAT",
+          "fixed_price": 1.5,
+          "min_quantity": 0.0
+        }
+      ]
+    },
+    {
+      "name": "Newlook Yaher",
+      "currency": "AED",
+      "rules": [
+        {
+          "product": "BEDSHEET SINGLE",
+          "fixed_price": 2.0,
+          "min_quantity": 0.0
+        },
+        {
+          "product": "CURTAINS SMALL",
+          "fixed_price": 5.0,
+          "min_quantity": 0.0
+        },
+        {
+          "product": "coat",
+          "fixed_price": 1.3,
+          "min_quantity": 0.0
+        },
+        {
+          "product": "TOWEL SMALL",
+          "fixed_price": 0.5,
+          "min_quantity": 0.0
+        },
+        {
+          "product": "TOWEL LARGE",
+          "fixed_price": 1.0,
+          "min_quantity": 0.0
+        },
+        {
+          "product": "DOCTOR`S COAT",
+          "fixed_price": 1.5,
+          "min_quantity": 0.0
+        }
+      ]
+    },
+    {
+      "name": "SPA",
+      "currency": "AED",
+      "rules": [
+        {
+          "product": "TOWEL SMALL",
+          "fixed_price": 2.0,
+          "min_quantity": 0.0
+        },
+        {
+          "product": "BEDSHEET SINGLE",
+          "fixed_price": 3.0,
+          "min_quantity": 0.0
+        },
+        {
+          "product": "PILLOW CASE ",
+          "fixed_price": 2.0,
+          "min_quantity": 0.0
+        },
+        {
+          "product": "coat",
+          "fixed_price": 4.0,
+          "min_quantity": 0.0
+        },
+        {
+          "product": "SHIRT",
+          "fixed_price": 2.0,
+          "min_quantity": 0.0
+        }
+      ]
+    },
+    {
+      "name": "Noubel",
+      "currency": "AED",
+      "rules": [
+        {
+          "product": "BEDSHEET SINGLE",
+          "fixed_price": 3.0,
+          "min_quantity": 0.0
+        },
+        {
+          "product": "TOWEL SMALL",
+          "fixed_price": 1.25,
+          "min_quantity": 0.0
+        },
+        {
+          "product": "coat",
+          "fixed_price": 2.0,
+          "min_quantity": 0.0
+        }
+      ]
+    },
+    {
+      "name": "Nazik",
+      "currency": "AED",
+      "rules": [
+        {
+          "product": "TOWEL SMALL",
+          "fixed_price": 0.5,
+          "min_quantity": 0.0
+        },
+        {
+          "product": "TOWEL LARGE",
+          "fixed_price": 2.0,
+          "min_quantity": 0.0
+        }
+      ]
+    },
+    {
+      "name": "Ivory",
+      "currency": "AED",
+      "rules": [
+        {
+          "product": "CURTAINS SMALL",
+          "fixed_price": 15.0,
+          "min_quantity": 0.0
+        },
+        {
+          "product": "PRAYER MAT SMALL",
+          "fixed_price": 5.0,
+          "min_quantity": 0.0
+        },
+        {
+          "product": "BEDSHEET SINGLE",
+          "fixed_price": 5.0,
+          "min_quantity": 0.0
+        },
+        {
+          "product": "TOWEL SMALL",
+          "fixed_price": 0.75,
+          "min_quantity": 0.0
+        },
+        {
+          "product": "TOWEL LARGE",
+          "fixed_price": 1.75,
+          "min_quantity": 0.0
+        }
+      ]
+    },
+    {
+      "name": "4U",
+      "currency": "AED",
+      "rules": [
+        {
+          "product": "TOWEL MEDUIM",
+          "fixed_price": 1.5,
+          "min_quantity": 0.0
+        },
+        {
+          "product": "DOCTOR`S COAT",
+          "fixed_price": 3.0,
+          "min_quantity": 0.0
+        },
+        {
+          "product": "TOWEL SMALL",
+          "fixed_price": 1.0,
+          "min_quantity": 0.0
+        },
+        {
+          "product": "BEDSHEET DOUBLE",
+          "fixed_price": 3.0,
+          "min_quantity": 0.0
+        },
+        {
+          "product": "TOWEL LARGE",
+          "fixed_price": 2.5,
+          "min_quantity": 0.0
+        }
+      ]
+    },
+    {
+      "name": "CMC",
+      "currency": "AED",
+      "rules": [
+        {
+          "product": "TOWEL SMALL",
+          "fixed_price": 0.5,
+          "min_quantity": 0.0
+        },
+        {
+          "product": "TOWEL MEDUIM",
+          "fixed_price": 1.0,
+          "min_quantity": 0.0
+        },
+        {
+          "product": "BEDSHEET DOUBLE",
+          "fixed_price": 2.0,
+          "min_quantity": 0.0
+        },
+        {
+          "product": "TOWEL LARGE",
+          "fixed_price": 2.5,
+          "min_quantity": 0.0
+        }
+      ]
+    },
+    {
+      "name": "Solaris",
+      "currency": "AED",
+      "rules": [
+        {
+          "product": "BEDSHEET SINGLE",
+          "fixed_price": 2.0,
+          "min_quantity": 0.0
+        },
+        {
+          "product": "coat",
+          "fixed_price": 3.0,
+          "min_quantity": 0.0
+        },
+        {
+          "product": "TOWEL SMALL",
+          "fixed_price": 1.0,
+          "min_quantity": 0.0
+        },
+        {
+          "product": "TOWEL LARGE",
+          "fixed_price": 1.75,
+          "min_quantity": 0.0
+        }
+      ]
+    },
+    {
+      "name": "Cure Arena",
+      "currency": "AED",
+      "rules": [
+        {
+          "product": "TOWEL SMALL",
+          "fixed_price": 2.0,
+          "min_quantity": 0.0
+        }
+      ]
+    },
+    {
+      "name": "Ajas spa",
+      "currency": "AED",
+      "rules": [
+        {
+          "product": "TOWEL SMALL",
+          "fixed_price": 2.0,
+          "min_quantity": 0.0
+        },
+        {
+          "product": "BEDSHEET SINGLE",
+          "fixed_price": 3.0,
+          "min_quantity": 0.0
+        },
+        {
+          "product": "SHIRT",
+          "fixed_price": 2.0,
+          "min_quantity": 0.0
+        },
+        {
+          "product": "PILLOW CASE ",
+          "fixed_price": 2.0,
+          "min_quantity": 0.0
+        },
+        {
+          "product": "coat",
+          "fixed_price": 4.0,
+          "min_quantity": 0.0
+        }
+      ]
+    },
+    {
+      "name": "Chanel botiqe",
+      "currency": "AED",
+      "rules": [
+        {
+          "product": "GLOVES",
+          "fixed_price": 2.0,
+          "min_quantity": 0.0
+        },
+        {
+          "product": "PILLOW CASE ",
+          "fixed_price": 3.0,
+          "min_quantity": 0.0
+        },
+        {
+          "product": "TOWEL SMALL",
+          "fixed_price": 2.0,
+          "min_quantity": 0.0
+        },
+        {
+          "product": "BEDSHEET DOUBLE",
+          "fixed_price": 7.0,
+          "min_quantity": 0.0
+        },
+        {
+          "product": "TOWEL LARGE",
+          "fixed_price": 4.0,
+          "min_quantity": 0.0
+        }
+      ]
+    },
+    {
+      "name": "paris spa",
+      "currency": "AED",
+      "rules": [
+        {
+          "product": "TOWEL SMALL",
+          "fixed_price": 2.0,
+          "min_quantity": 0.0
+        },
+        {
+          "product": "BEDSHEET SINGLE",
+          "fixed_price": 3.0,
+          "min_quantity": 0.0
+        },
+        {
+          "product": "SHIRT",
+          "fixed_price": 2.0,
+          "min_quantity": 0.0
+        },
+        {
+          "product": "PILLOW CASE ",
+          "fixed_price": 2.0,
+          "min_quantity": 0.0
+        },
+        {
+          "product": "coat",
+          "fixed_price": 4.0,
+          "min_quantity": 0.0
+        }
+      ]
+    },
+    {
+      "name": "paris salon",
+      "currency": "AED",
+      "rules": [
+        {
+          "product": "TOWEL SMALL",
+          "fixed_price": 2.0,
+          "min_quantity": 0.0
+        },
+        {
+          "product": "BEDSHEET SINGLE",
+          "fixed_price": 3.0,
+          "min_quantity": 0.0
+        },
+        {
+          "product": "SHIRT",
+          "fixed_price": 2.0,
+          "min_quantity": 0.0
+        },
+        {
+          "product": "PILLOW CASE ",
+          "fixed_price": 2.0,
+          "min_quantity": 0.0
+        },
+        {
+          "product": "coat",
+          "fixed_price": 4.0,
+          "min_quantity": 0.0
+        }
+      ]
+    },
+    {
+      "name": "rana",
+      "currency": "AED",
+      "rules": [
+        {
+          "product": "BEDSHEET DOUBLE",
+          "fixed_price": 4.0,
+          "min_quantity": 0.0
+        }
+      ]
+    },
+    {
+      "name": "barada",
+      "currency": "AED",
+      "rules": [
+        {
+          "product": "TOWEL SMALL",
+          "fixed_price": 1.5,
+          "min_quantity": 0.0
+        }
+      ]
+    },
+    {
+      "name": "new look bateen",
+      "currency": "AED",
+      "rules": [
+        {
+          "product": "BEDSHEET SINGLE",
+          "fixed_price": 2.0,
+          "min_quantity": 0.0
+        },
+        {
+          "product": "CURTAINS SMALL",
+          "fixed_price": 5.0,
+          "min_quantity": 0.0
+        },
+        {
+          "product": "coat",
+          "fixed_price": 1.3,
+          "min_quantity": 0.0
+        }
+      ]
+    },
+    {
+      "name": "Dewan",
+      "currency": "AED",
+      "rules": [
+        {
+          "product": "TABLECLOTH SMALL ",
+          "fixed_price": 4.0,
+          "min_quantity": 0.0
+        },
+        {
+          "product": "Napkin ",
+          "fixed_price": 0.5,
+          "min_quantity": 0.0
+        }
+      ]
+    },
+    {
+      "name": "Top Hotel",
+      "currency": "AED",
+      "rules": [
+        {
+          "product": "SOFACOVER BIG",
+          "fixed_price": 3.0,
+          "min_quantity": 0.0
+        },
+        {
+          "product": "PILLOW CASE ",
+          "fixed_price": 0.3,
+          "min_quantity": 0.0
+        },
+        {
+          "product": "PILLOW  ",
+          "fixed_price": 1.5,
+          "min_quantity": 0.0
+        },
+        {
+          "product": "CURTAINS SMALL",
+          "fixed_price": 12.0,
+          "min_quantity": 0.0
+        },
+        {
+          "product": "TOWEL SMALL",
+          "fixed_price": 0.4,
+          "min_quantity": 0.0
+        },
+        {
+          "product": "TOWEL LARGE",
+          "fixed_price": 1.0,
+          "min_quantity": 0.0
+        },
+        {
+          "product": "Towel - WC",
+          "fixed_price": 0.4,
+          "min_quantity": 0.0
+        },
+        {
+          "product": "BEDSHEET DOUBLE",
+          "fixed_price": 2.0,
+          "min_quantity": 0.0
+        },
+        {
+          "product": "BEDSHEET SINGLE",
+          "fixed_price": 1.5,
+          "min_quantity": 0.0
+        },
+        {
+          "product": "BLANKET SINGLE",
+          "fixed_price": 2.5,
+          "min_quantity": 0.0
+        },
+        {
+          "product": "BLANKET DOUBLE",
+          "fixed_price": 3.3,
+          "min_quantity": 0.0
+        }
+      ]
+    },
+    {
+      "name": "Saudi Crusine",
+      "currency": "AED",
+      "rules": [
+        {
+          "product": "Napkin ",
+          "fixed_price": 0.5,
+          "min_quantity": 0.0
+        },
+        {
+          "product": "TOWEL SMALL",
+          "fixed_price": 2.0,
+          "min_quantity": 0.0
+        }
+      ]
+    }
+  ],
+  "partners": [
+    {
+      "name": "4U MEDICAL CENTER",
+      "pricelist": "4U"
+    },
+    {
+      "name": "Ajas spa",
+      "pricelist": "Ajas spa"
+    },
+    {
+      "name": "Celesste Medical Center",
+      "pricelist": "CMC"
+    },
+    {
+      "name": "Chanel Botique",
+      "pricelist": "Chanel botiqe"
+    },
+    {
+      "name": "Cure Arena Medical Center",
+      "pricelist": "Cure Arena"
+    },
+    {
+      "name": "Dewan Resturant",
+      "pricelist": "Default"
+    },
+    {
+      "name": "Golden Barada Medical Center",
+      "pricelist": "Default"
+    },
+    {
+      "name": "Ivory Medical Center",
+      "pricelist": "Ivory"
+    },
+    {
+      "name": "Munich Medical Center",
+      "pricelist": "Munich"
+    },
+    {
+      "name": "Nazik Medical Center",
+      "pricelist": "Nazik"
+    },
+    {
+      "name": "New Look Medical Center Al Khabisi",
+      "pricelist": "Newlook Kabisi"
+    },
+    {
+      "name": "New Look Medical Center Al Yahar",
+      "pricelist": "Newlook Yaher"
+    },
+    {
+      "name": "Noubel Rehabilitation Center LLC",
+      "pricelist": "Noubel"
+    },
+    {
+      "name": "Omar",
+      "pricelist": "Default"
+    },
+    {
+      "name": "Paris Salon",
+      "pricelist": "paris salon"
+    },
+    {
+      "name": "Paris spa",
+      "pricelist": "paris spa"
+    },
+    {
+      "name": "Rana Medical Center",
+      "pricelist": "rana"
+    },
+    {
+      "name": "Real health medical center",
+      "pricelist": "Default"
+    },
+    {
+      "name": "Saudi Cuisine Resturant",
+      "pricelist": "Default"
+    },
+    {
+      "name": "Solaris Medical Center",
+      "pricelist": "Solaris"
+    },
+    {
+      "name": "SPA",
+      "pricelist": "SPA"
+    },
+    {
+      "name": "test",
+      "pricelist": "Default"
+    },
+    {
+      "name": "Top Hotel",
+      "pricelist": "Top Hotel"
+    },
+    {
+      "name": "True Life Primary Care Center",
+      "pricelist": "Truelife"
+    }
+  ],
+  "pos_configs": [
+    {
+      "name": "POS",
+      "use_pricelist": true,
+      "default": "Default",
+      "available": [
+        "Default",
+        "Munich",
+        "Truelife",
+        "Newlook Kabisi"
+      ]
+    }
+  ]
+}

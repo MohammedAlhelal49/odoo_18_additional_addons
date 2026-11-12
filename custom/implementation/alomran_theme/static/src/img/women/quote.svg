@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 420" role="img" aria-label="Line art woman">
+  <g fill="none" stroke="#8a6a5c" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+    <!-- profile line drawing -->
+    <path d="M250 60 Q190 50 165 100 Q150 130 158 160 Q150 172 142 186 Q150 192 158 192 Q156 206 162 214 Q158 222 166 228 Q164 246 176 252 Q200 258 214 250"/>
+    <path d="M250 60 Q320 70 330 150 Q338 220 300 270 Q280 300 290 340"/>
+    <path d="M214 250 Q220 290 200 330 Q180 360 140 380"/>
+    <path d="M255 300 Q300 330 340 340"/>
+    <path d="M240 95 Q280 110 290 160 Q296 200 270 235"/>
+    <path d="M178 150 Q186 146 194 150"/>
+  </g>
+  <!-- leaves -->
+  <g fill="none" stroke="#c9a15b" stroke-width="2.2">
+    <path d="M70 400 Q90 330 140 290"/>
+    <path d="M86 360 Q60 345 58 320 Q82 330 86 360 Z"/>
+    <path d="M100 335 Q126 330 136 306 Q110 310 100 335 Z"/>
+    <path d="M78 380 Q104 378 112 356 Q88 358 78 380 Z"/>
+  </g>
+</svg>

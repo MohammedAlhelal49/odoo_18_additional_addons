@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- ============================================================ -->
+    <!-- صفحة الفرع الواحد (/branch/<slug>) — تصميم جديد              -->
+    <!-- alh-/alb-/ald- classes بـ home_modern.scss                      -->
+    <!-- النصوص: branches_content.get_detail_content (المتغير d)        -->
+    <!-- ============================================================ -->
+    <template id="branch_detail_template" name="Branch Detail">
+        <t t-call="website.layout">
+            <t t-set="arrow_icon" t-value="'fa-arrow-right' if is_en else 'fa-arrow-left'"/>
+            <t t-set="back_icon" t-value="'fa-arrow-left' if is_en else 'fa-arrow-right'"/>
+            <div id="wrap" class="alh-page alb-page ald-page">
+
+                <script type="application/ld+json" t-out="schema_json"/>
+
+                <!-- ================= HERO ================= -->
+                <!-- الخلفية: صورة الفرع نفسه، وإذا ما إله صورة صورة المركز -->
+                <t t-set="hero_bg" t-value="branch['image_url'] or hero_photo"/>
+                <section t-attf-class="alh-hero ald-hero #{'has-photo' if hero_bg else ''}">
+                    <!-- صورة المركز بالخلفية: طبقة كحلية للوضوح + زووم بطيء (CSS بس) -->
+                    <div t-if="hero_bg" t-attf-class="alh-hero-photo " aria-hidden="true">
+                        <img t-att-src="hero_bg" alt="" fetchpriority="high" decoding="async"/>
+                    </div>
+                    <div class="alh-hero-deco" aria-hidden="true">
+                        <span class="alh-blob alh-blob-1"/>
+                        <span class="alh-blob alh-blob-2"/>
+                        <span class="alh-grid"/>
+                    </div>
+                    <div class="container position-relative">
+                        <nav class="ald-crumbs" aria-label="breadcrumb">
+                            <a href="/" t-out="d['home']"/>
+                            <i t-attf-class="fa #{arrow_icon}" aria-hidden="true"/>
+                            <a href="/branches" t-out="d['branches']"/>
+                            <i t-attf-class="fa #{arrow_icon}" aria-hidden="true"/>
+                            <span t-out="branch['title']"/>
+                        </nav>
+
+                        <div class="row align-items-center g-5">
+                            <div class="col-lg-8 col-xl-7">
+                                <span class="alh-badge">
+                                    <i class="fa fa-location-dot" aria-hidden="true"/>
+                                    <span t-out="branch['city']"/>
+                                </span>
+                                <p t-if="branch['prefix']" class="ald-prefix" t-out="branch['prefix']"/>
+                                <h1 class="alh-title ald-title" t-out="branch['title']"/>
+                                <p class="alh-lead ald-location">
+                                    <i class="fa fa-map-pin" aria-hidden="true"/>
+                                    <span t-out="branch['location']"/>
+                                </p>
+
+                                <div class="alh-actions">
+                                    <a t-attf-href="tel:+#{branch['phone_link']}" class="alh-btn alh-btn-accent">
+                                        <i class="fa fa-phone" aria-hidden="true"/>
+                                        <span t-out="d['call']"/>
+                                    </a>
+                                    <a t-att-href="wa_link" target="_blank" rel="noopener" class="alh-btn alh-btn-wa">
+                                        <i class="fab fa-whatsapp" aria-hidden="true"/>
+                                        <span t-out="d['whatsapp']"/>
+                                    </a>
+                                    <a t-if="branch.get('maps_link')" t-att-href="branch['maps_link']"
+                                       target="_blank" rel="noopener" class="alh-btn alh-btn-glass">
+                                        <i class="fa fa-diamond-turn-right" aria-hidden="true"/>
+                                        <span t-out="d['directions']"/>
+                                    </a>
+                                </div>
+
+                                <ul class="alh-trust list-unstyled">
+                                    <li t-if="branch.get('working_hours')">
+                                        <i class="fa fa-clock" aria-hidden="true"/>
+                                        <span t-out="branch['working_hours']"/>
+                                    </li>
+                                    <li>
+                                        <i class="fa fa-phone" aria-hidden="true"/>
+                                        <bdi dir="ltr" t-out="branch['phone']"/>
+                                    </li>
+                                </ul>
+                            </div>
+
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ================= INFO + MAP ================= -->
+                <section class="alh-section ald-main">
+                    <div class="container">
+                        <div class="row g-4 ald-row">
+                            <div class="col-lg-5">
+                                <div class="ald-card">
+                                    <h2 class="ald-card-title" t-out="d['info_title']"/>
+                                    <ul class="ald-info list-unstyled">
+                                        <li>
+                                            <span class="alh-feature-icon"><i class="fa fa-map-pin" aria-hidden="true"/></span>
+                                            <span>
+                                                <small t-out="d['address']"/>
+                                                <strong t-out="branch['location']"/>
+                                            </span>
+                                        </li>
+                                        <li>
+                                            <span class="alh-feature-icon"><i class="fa fa-phone" aria-hidden="true"/></span>
+                                            <span>
+                                                <small t-out="d['phone']"/>
+                                                <a t-attf-href="tel:+#{branch['phone_link']}"><bdi dir="ltr" t-out="branch['phone']"/></a>
+                                            </span>
+                                        </li>
+                                        <li t-if="branch.get('working_hours')">
+                                            <span class="alh-feature-icon"><i class="fa fa-clock" aria-hidden="true"/></span>
+                                            <span>
+                                                <small t-out="d['hours']"/>
+                                                <strong t-out="branch['working_hours']"/>
+                                            </span>
+                                        </li>
+                                        <li>
+                                            <span class="alh-feature-icon"><i class="fa fa-city" aria-hidden="true"/></span>
+                                            <span>
+                                                <small t-out="d['emirate']"/>
+                                                <strong t-out="branch['city']"/>
+                                            </span>
+                                        </li>
+                                    </ul>
+                                </div>
+
+                                <div class="ald-card ald-programs">
+                                    <h2 class="ald-card-title" t-out="d['programs_title']"/>
+                                    <t t-foreach="d['programs']" t-as="pg">
+                                        <a t-att-href="pg['link']" class="ald-program">
+                                            <span class="alh-feature-icon"><i t-attf-class="fa #{pg['icon']}" aria-hidden="true"/></span>
+                                            <span t-out="pg['title']"/>
+                                            <i t-attf-class="fa #{arrow_icon} ald-program-go" aria-hidden="true"/>
+                                        </a>
+                                    </t>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-7">
+                                <div class="ald-card ald-map-card">
+                                    <div class="ald-map-head">
+                                        <h2 class="ald-card-title mb-0" t-out="d['map_title']"/>
+                                        <a t-if="branch.get('maps_link')" t-att-href="branch['maps_link']"
+                                           target="_blank" rel="noopener" class="alb-act">
+                                            <i class="fa fa-up-right-from-square" aria-hidden="true"/>
+                                            <span t-out="d['map_open']"/>
+                                        </a>
+                                    </div>
+                                    <div class="ald-map">
+                                        <iframe t-if="branch.get('embed_link')"
+                                                t-att-src="branch['embed_link']"
+                                                t-att-title="d['map_title']"
+                                                allowfullscreen="allowfullscreen"
+                                                loading="lazy"
+                                                referrerpolicy="no-referrer-when-downgrade"/>
+                                        <a t-elif="branch.get('maps_link')" t-att-href="branch['maps_link']"
+                                           target="_blank" rel="noopener" class="ald-map-fallback">
+                                            <i class="fa fa-map-location-dot" aria-hidden="true"/>
+                                            <span t-out="d['map_open']"/>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ================= OTHER BRANCHES ================= -->
+                <section t-if="others" class="alh-section alh-section-soft ald-others">
+                    <div class="container">
+                        <div class="ald-others-head">
+                            <h2 class="alh-h2 mb-0" t-out="others_title"/>
+                            <a href="/branches" class="alh-btn alh-btn-outline">
+                                <i t-attf-class="fa #{back_icon}" aria-hidden="true"/>
+                                <span t-out="d['back']"/>
+                            </a>
+                        </div>
+                        <div class="row g-4">
+                            <t t-foreach="others" t-as="ob">
+                                <div class="col-lg-4 col-md-6">
+                                    <article class="alb-card">
+                                        <a t-attf-href="/branch/#{ob['slug']}" class="alb-card-media" tabindex="-1" aria-hidden="true">
+                                            <img t-if="ob['image_url']" t-att-src="ob['image_url']" t-att-alt="ob['name']" loading="lazy"/>
+                                            <span t-else="" class="alb-media-fallback"><i class="fa fa-building" aria-hidden="true"/></span>
+                                            <span class="alb-city-chip">
+                                                <i class="fa fa-location-dot" aria-hidden="true"/>
+                                                <span t-out="ob['city']"/>
+                                            </span>
+                                        </a>
+                                        <div class="alb-card-body">
+                                            <span t-if="ob['prefix']" class="alb-prefix" t-out="ob['prefix']"/>
+                                            <h3 class="alb-card-title">
+                                                <a t-attf-href="/branch/#{ob['slug']}" t-out="ob['title']"/>
+                                            </h3>
+                                            <ul class="alb-meta list-unstyled">
+                                                <li>
+                                                    <i class="fa fa-map-pin" aria-hidden="true"/>
+                                                    <span t-out="ob['location']"/>
+                                                </li>
+                                            </ul>
+                                            <div class="alb-actions">
+                                                <a t-attf-href="/branch/#{ob['slug']}" class="alb-act alb-act-main">
+                                                    <span t-out="d['details']"/>
+                                                    <i t-attf-class="fa #{arrow_icon}" aria-hidden="true"/>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </article>
+                                </div>
+                            </t>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ================= CTA ================= -->
+                <section class="alh-section alh-cta-section alb-cta-section">
+                    <div class="container">
+                        <div class="alh-cta">
+                            <div>
+                                <h2 class="alh-h2" t-out="d['cta_title']"/>
+                                <p t-out="d['cta_text']"/>
+                            </div>
+                            <div class="alh-actions">
+                                <a href="/contact" class="alh-btn alh-btn-accent">
+                                    <i class="fa fa-envelope" aria-hidden="true"/>
+                                    <span t-out="d['cta_contact']"/>
+                                </a>
+                                <a t-att-href="wa_link" target="_blank" rel="noopener" class="alh-btn alh-btn-wa">
+                                    <i class="fab fa-whatsapp" aria-hidden="true"/>
+                                    <span t-out="d['whatsapp']"/>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </t>
+    </template>
+</odoo>

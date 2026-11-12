@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- الموبايل إجباري بفورم جهة الاتصال (والقيد بالموديل بيقبل أي موبايل أو أرضي صحيح، والأجنبي مع رمز الدولة) -->
+    <record id="view_partner_form_laundry_mobile_required" model="ir.ui.view">
+        <field name="name">res.partner.form.laundry.mobile.required</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="(//field[@name='mobile'])[1]" position="attributes">
+                <attribute name="required">1</attribute>
+                <attribute name="placeholder">05XXXXXXXX / 04XXXXXXX / +963…</attribute>
+            </xpath>
+            <xpath expr="//field[@name='child_ids']/form//field[@name='mobile']" position="attributes">
+                <attribute name="required">1</attribute>
+                <attribute name="placeholder">05XXXXXXXX / 04XXXXXXX / +963…</attribute>
+            </xpath>
+        </field>
+    </record>
+</odoo>

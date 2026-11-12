@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Company name + stamp, shown directly above the footer of every external layout -->
+    <template id="company_stamp_block">
+        <t t-set="hp_sign_doc" t-value="o if o and (o._name == 'sale.order' or o._name == 'stock.picking' and o.picking_type_code == 'outgoing' or o._name == 'account.move' and o.move_type in ('out_invoice', 'out_refund')) else False"/>
+        <!-- deliveries: only "Checked by / Receiver Sign" (no payment terms / bank) -->
+        <t t-set="hp_sign_only" t-value="bool(o and o._name == 'stock.picking' and o.picking_type_code == 'outgoing')"/>
+        <!-- invoices + quotations / sales orders: extra room on top for the payment terms / sign block (hp_paperformat_invoice has more bottom margin) -->
+        <div class="o_hp_company_stamp text-end mb-2" t-attf-style="padding-top: {{hp_sign_doc and not hp_sign_only and '148px' or '22px'}}; position: relative;">
+            <!-- Customer invoice / credit note / quotation / sales order: payment terms + bank details + "Checked by / Receiver Sign" opposite the
+                 company name + stamp, last page only (PDF: hidden on the other pages by the script below, wkhtmltopdf
+                 passes sitepage / sitepages in the footer URL). Anchored at the bottom so it grows upwards. -->
+            <div t-if="hp_sign_doc" name="hp_receiver_sign" class="o_hp_last_page_only text-start"
+                 style="position: absolute; left: 0; bottom: 92px; width: 60%;">
+                <t t-call="health_protection_implementation.hp_terms_sign_block">
+                    <t t-set="payment_term" t-value="hp_sign_doc.payment_term_id if hp_sign_doc._name == 'sale.order' else hp_sign_doc.invoice_payment_term_id if hp_sign_doc._name == 'account.move' else False"/>
+                    <t t-set="hp_terms_margin_top" t-value="'0'"/>
+                </t>
+            </div>
+            <script t-if="hp_sign_doc and report_type == 'pdf'">
+                (function () {
+                    var vars = {};
+                    document.location.search.substring(1).split(String.fromCharCode(38)).forEach(function (part) {
+                        var kv = part.split('=', 2);
+                        vars[kv[0]] = decodeURIComponent(kv[1] || '');
+                    });
+                    if (vars.sitepage &amp;&amp; vars.sitepage !== vars.sitepages) {
+                        Array.prototype.forEach.call(document.getElementsByClassName('o_hp_last_page_only'), function (el) {
+                            el.style.visibility = 'hidden';
+                        });
+                    }
+                })();
+            </script>
+            <h5 class="mb-3" style="color: #000; font-weight: 600; font-size: 1.45rem;" t-out="company.name"/>
+            <img t-if="company.stamp" t-att-src="image_data_uri(company.stamp)"
+                 style="max-height: 115px; max-width: 280px;" alt="Stamp"/>
+        </div>
+    </template>
+
+    <template id="external_layout_striped_stamp" inherit_id="web.external_layout_striped">
+        <xpath expr="//div[hasclass('o_footer_content')]" position="before">
+            <t t-call="health_protection_implementation.company_stamp_block"/>
+        </xpath>
+    </template>
+    <template id="external_layout_boxed_stamp" inherit_id="web.external_layout_boxed">
+        <xpath expr="//div[hasclass('o_footer_content')]" position="before">
+            <t t-call="health_protection_implementation.company_stamp_block"/>
+        </xpath>
+    </template>
+    <template id="external_layout_bold_stamp" inherit_id="web.external_layout_bold">
+        <xpath expr="//div[hasclass('o_footer_content')]" position="before">
+            <t t-call="health_protection_implementation.company_stamp_block"/>
+        </xpath>
+    </template>
+    <template id="external_layout_standard_stamp" inherit_id="web.external_layout_standard">
+        <xpath expr="//div[hasclass('o_footer_content')]" position="before">
+            <t t-call="health_protection_implementation.company_stamp_block"/>
+        </xpath>
+    </template>
+    <template id="external_layout_folder_stamp" inherit_id="web.external_layout_folder">
+        <xpath expr="//div[hasclass('o_footer_content')]" position="before">
+            <t t-call="health_protection_implementation.company_stamp_block"/>
+        </xpath>
+    </template>
+    <template id="external_layout_wave_stamp" inherit_id="web.external_layout_wave">
+        <xpath expr="//div[contains(@t-attf-class, 'o_footer_content')]" position="before">
+            <t t-call="health_protection_implementation.company_stamp_block"/>
+        </xpath>
+    </template>
+    <template id="external_layout_bubble_stamp" inherit_id="web.external_layout_bubble">
+        <!-- Keep the document content (address + title) away from the header bubble -->
+        <xpath expr="//div[contains(@t-attf-class, 'o_report_layout_bubble')]/div[1]" position="attributes">
+            <attribute name="style">padding-top: 10px;</attribute>
+        </xpath>
+        <!-- Logo ~33% bigger than the default o_company_logo (6rem x 12rem) -->
+        <xpath expr="//img[hasclass('o_company_logo')]" position="attributes">
+            <attribute name="style">max-height: 8rem; max-width: 16rem;</attribute>
+        </xpath>
+        <!-- Company details in the header: bold, coloured company name (HEALTH / MEDICAL SUPPLY blue, PROTECTION dark, one line kept inside the bubble) + TRN; phone removed (already in the footer) -->
+        <xpath expr="//div[@name='company_address']" position="attributes">
+            <attribute name="style">color: #000; font-weight: bold;</attribute>
+        </xpath>
+        <xpath expr="//ul[@name='company_address_list']" position="replace">
+            <div style="display: table; margin: 0 0 1rem auto;">
+                <div style="text-transform: uppercase; font-size: 1.25rem; white-space: nowrap;"><span style="color: #3a7796;">Health</span> <span style="color: #22384d;">Protection</span> <span style="color: #3a7796;">Medical Supply</span></div>
+                <!-- Tapered underline like the one under the logo wordmark, ~80% of the title width (PNG: wkhtmltopdf does not print CSS backgrounds in the header) -->
+                <img alt="" style="display: block; width: 80%; height: 4px; margin: 4px auto 0;" src="data:image/png;base64,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"/>
+            </div>
+            <p t-if="company.vat">TRN : <span t-out="company.vat"/></p>
+        </xpath>
+        <!-- QR code in the footer, under the phone number (far left), on every document: the document's portal link
+             (quotation / order, customer invoice, purchase order, delivery -> its invoice or order), else the website -->
+        <xpath expr="//div[contains(@t-attf-class, 'o_footer_content')]/div[@t-field='company.report_footer']" position="after">
+            <t t-set="hp_qr_doc" t-value="o if o and len(o) == 1 else company"/>
+            <div name="hp_portal_qr" style="position: relative; height: 0;">
+                <img t-att-src="hp_qr_doc.hp_footer_qr_data_uri()" style="position: absolute; left: 0; top: -4mm; width: 11mm; height: 11mm;" alt="QR Code"/>
+            </div>
+        </xpath>
+        <!-- No bottom bubble: only the top one is kept -->
+        <xpath expr="//div[contains(@t-attf-class, 'footer o_company_')]/*[local-name()='svg']" position="replace"/>
+        <!-- PDF: stamp sits above the fixed footer -->
+        <xpath expr="//div[contains(@t-attf-class, 'o_footer_content')]" position="before">
+            <t t-if="report_type == 'pdf'" t-call="health_protection_implementation.company_stamp_block"/>
+        </xpath>
+        <!-- HTML (portal / preview): the footer content is absolutely positioned at the bottom,
+             so put the stamp inside it and give the footer enough height for both -->
+        <xpath expr="//div[contains(@t-attf-class, 'o_footer_content')]/div[1]" position="before">
+            <t t-if="report_type != 'pdf'" t-call="health_protection_implementation.company_stamp_block"/>
+        </xpath>
+        <xpath expr="//div[contains(@t-attf-class, 'footer o_company_')]" position="attributes">
+            <attribute name="t-attf-style">{{report_type != 'pdf' and 'min-height: 430px;' or ''}}</attribute>
+        </xpath>
+    </template>
+
+    <!-- Make room for the stamp block in the PDF footer area -->
+    <function model="report.paperformat" name="write">
+        <value eval="[ref('base.paperformat_euro')]"/>
+        <value eval="{'margin_top': 57, 'header_spacing': 57, 'margin_bottom': 78}"/>
+    </function>
+</odoo>

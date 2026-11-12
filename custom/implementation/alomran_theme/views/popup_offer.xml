@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- ============================================================ -->
+    <!-- CSRF META TAG - إضافة للـ header -->
+    <!-- ============================================================ -->
+    <template id="csrf_meta_tag" inherit_id="website.layout" name="CSRF Meta Tag">
+        <xpath expr="//head" position="inside">
+            <!-- ✅ CSRF Token Meta Tag للـ JavaScript -->
+            <meta name="csrf-token" t-att-content="request.csrf_token()"/>
+        </xpath>
+    </template>
+
+    <!-- ============================================================ -->
+    <!-- POP-UP OFFER (عرض عام لكل الصفحات / عرض خاص بصفحة كورس)       -->
+    <!-- المحتوى بيعبّيه popup_offer.js من /popup/settings (textContent) -->
+    <!-- التواصل مباشرة عبر واتساب — بلا فورم                           -->
+    <!-- ============================================================ -->
+    <template id="popup_offer_modal" name="Pop-up Offer Modal">
+        <div id="offerPopup" class="ao-popup" hidden="hidden"
+             role="dialog" aria-modal="true" aria-labelledby="aoPopupHighlight">
+            <div class="ao-popup-backdrop" data-ao-close="1"></div>
+            <div class="ao-popup-card" tabindex="-1">
+                <button type="button" class="ao-popup-x" data-ao-close="1"
+                        t-att-aria-label="'إغلاق' if (request.env.lang or '').startswith('ar') else 'Close'">
+                    <i class="fa fa-times" aria-hidden="true"></i>
+                </button>
+
+                <div class="ao-popup-head">
+                    <span class="ao-popup-badge" hidden="hidden">
+                        <i class="fa fa-fire" aria-hidden="true"></i>
+                        <span class="ao-popup-badge-text"></span>
+                    </span>
+                    <div class="ao-popup-icon" aria-hidden="true"><i class="fa fa-gift"></i></div>
+                    <h2 id="aoPopupHighlight" class="ao-popup-highlight"></h2>
+                    <p class="ao-popup-title" hidden="hidden"></p>
+                    <p class="ao-popup-subtitle" hidden="hidden"></p>
+                    <p class="ao-popup-desc" hidden="hidden"></p>
+
+                    <div class="ao-popup-countdown" hidden="hidden">
+                        <p class="ao-popup-countdown-title"></p>
+                        <div class="ao-popup-countdown-boxes">
+                            <div><strong data-ao-cd="days">00</strong><small data-ao-label="days"></small></div>
+                            <div><strong data-ao-cd="hours">00</strong><small data-ao-label="hours"></small></div>
+                            <div><strong data-ao-cd="mins">00</strong><small data-ao-label="mins"></small></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="ao-popup-body">
+                    <p class="ao-popup-terms" hidden="hidden">
+                        <i class="fa fa-info-circle" aria-hidden="true"></i>
+                        <span></span>
+                    </p>
+                    <a class="ao-popup-wa" href="#" target="_blank" rel="noopener">
+                        <i class="fab fa-whatsapp" aria-hidden="true"></i>
+                        <span class="ao-popup-wa-text"></span>
+                    </a>
+                    <button type="button" class="ao-popup-later" data-ao-close="1"></button>
+                    <p class="ao-popup-proof" hidden="hidden">
+                        <i class="fa fa-users" aria-hidden="true"></i>
+                        <span></span>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <!-- ============================================================ -->
+    <!-- INCLUDE POP-UP IN ALL PAGES -->
+    <!-- ============================================================ -->
+    <template id="popup_include" inherit_id="website.layout" name="Include Pop-up">
+        <xpath expr="//body" position="inside">
+            <t t-call="alomran_theme.popup_offer_modal"/>
+        </xpath>
+    </template>
+</odoo>

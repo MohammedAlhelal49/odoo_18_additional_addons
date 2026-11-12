@@ -1,0 +1,7 @@
+<odoo>
+    <record id="group_laundry_dashboard" model="res.groups">
+        <field name="name">Laundry Dashboard</field>
+        <field name="category_id" ref="base.module_category_sales_point_of_sale"/>
+        <field name="users" eval="[(4, ref('base.user_admin'))]"/>
+    </record>
+</odoo>

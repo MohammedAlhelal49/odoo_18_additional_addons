@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <menuitem name="E-Invoicing" id="menu_E-invoicing" web_icon="orchida_uae_e_invoicing/static/description/icon.png">
+        <menuitem id="menu_sent_invoice_parent" name="Invoices">
+            <menuitem id="menu_invoices_to_send" name="To Submit" action="action_orchida_invoices_to_send" groups="account.group_account_user"/>
+            <menuitem id="menu_sent_invoice" name="Submission History" action="action_api_sent_invoice"/>
+        </menuitem>
+
+        <menuitem id="menu_E_invoicing_settings" name="Orchida-E_invoicing_settings">
+            <menuitem id="menu_E_invoicing_company_api" name="Company" action="action_einv_company_list"/>
+            <menuitem id="menu_E_invoicing_customer_api" name="Customer" action="action_einv_customer_list"/>
+            <menuitem id="menu_orchida_uom_api_map" name="UoM Unit Code Mapping" action="action_orchida_uom_api_map"/>
+            <menuitem id="menu_orchida_tax_configuration" name="Tax Configuration" action="action_orchida_tax_configuration"/>
+        </menuitem>
+    </menuitem>
+</odoo>

@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_dekad_contact_submission_user,dekad.contact.submission.user,model_dekad_contact_submission,base.group_user,1,1,1,1
+access_dekad_client_user,dekad.client.user,model_dekad_client,base.group_user,1,1,1,1
+access_dekad_client_public,dekad.client.public,model_dekad_client,base.group_public,1,0,0,0
+access_dekad_client_import_wizard_user,dekad.client.import.wizard.user,model_dekad_client_import_wizard,base.group_user,1,1,1,1

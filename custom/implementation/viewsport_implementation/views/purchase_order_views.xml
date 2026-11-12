@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <record id="purchase_order_form_inherit_payment_term" model="ir.ui.view">
+        <field name="name">purchase.order.form.inherit.payment.term</field>
+        <field name="model">purchase.order</field>
+        <field name="inherit_id" ref="purchase.purchase_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='date_order']" position="after">
+                <field name="payment_term_id" options="{'no_create': True}"/>
+            </xpath>
+
+            <xpath expr="//notebook" position="inside">
+                <page string="Shipping &amp; Contact Details" name="shipping_contact_details">
+                    <group>
+                        <group string="PO Info">
+                            <field name="po_enclose" placeholder="e.g. The supplier quote"/>
+                            <field name="po_no_of_pages" placeholder="e.g. 1 include cover letter"/>
+                            <field name="po_revision"/>
+                            <field name="partner_ref_date"/>
+                            <field name="delivery_plan_type"/>
+                            <label for="delivery_days" invisible="delivery_plan_type != 'period'"/>
+                            <div class="o_row" invisible="delivery_plan_type != 'period'">
+                                <field name="delivery_days"/>
+                                <field name="delivery_period_unit"/>
+                            </div>
+                            <field name="ex_emirate"/>
+                            <field name="rfq_delivery_location"/>
+                        </group>
+                        <group string="Shipping &amp; Contact">
+                            <field name="ship_to_info" placeholder="e.g. Site code or delivery location"/>
+                            <field name="contact_person_id" options="{'no_create': True}"/>
+                            <field name="contact_number" placeholder="e.g. +971 547064647"/>
+                        </group>
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+</odoo>

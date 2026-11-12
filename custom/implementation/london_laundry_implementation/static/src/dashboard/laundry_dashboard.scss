@@ -1,0 +1,125 @@
+.o_ld_dashboard {
+    overflow: auto;
+    background-color: $o-webclient-background-color;
+
+    .o_ld_filters {
+        position: sticky;
+        top: 0;
+        z-index: 10;
+        padding: 0.75rem 1rem;
+        background-color: $o-view-background-color;
+    }
+
+    .o_ld_body {
+        padding: 1rem;
+        transition: opacity 0.2s;
+
+        &.o_ld_loading {
+            opacity: 0.55;
+            pointer-events: none;
+        }
+    }
+
+    // Direction-neutral spacing: logical properties are not mirrored by Odoo's RTL build,
+    // so they behave the same in LTR and in the dir="rtl" dashboard.
+    .o_ld_title {
+        margin-inline-end: 1rem;
+    }
+    .o_ld_push_end {
+        margin-inline-start: auto;
+    }
+    .o_ld_gap_start {
+        margin-inline-start: 0.35rem;
+    }
+    .o_ld_inline {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: baseline;
+        column-gap: 0.4rem;
+    }
+
+    .o_ld_date {
+        width: 9.5rem;
+    }
+
+    .o_ld_kpi {
+        .o_ld_kpi_label {
+            font-size: 0.8rem;
+        }
+        .o_ld_kpi_value {
+            font-size: 1.35rem;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+    }
+
+    .o_ld_clickable {
+        cursor: pointer;
+    }
+
+    .card.o_ld_clickable:hover {
+        box-shadow: 0 0.25rem 0.75rem rgba(0, 0, 0, 0.08);
+    }
+
+    .o_ld_chart {
+        position: relative;
+        height: 280px;
+    }
+
+    .o_ld_heatmap {
+        border-collapse: separate;
+        border-spacing: 2px;
+        font-size: 0.72rem;
+
+        th {
+            font-weight: 500;
+            text-align: center;
+            color: $text-muted;
+        }
+
+        td {
+            min-width: 1.9rem;
+            height: 1.7rem;
+            text-align: center;
+            border-radius: 3px;
+            cursor: pointer;
+            background-color: rgba(0, 0, 0, 0.03);
+        }
+    }
+
+    .o_ld_presets {
+        flex-wrap: wrap;
+    }
+
+    @include media-breakpoint-down(md) {
+        .o_ld_presets {
+            flex-wrap: nowrap;
+            overflow-x: auto;
+            max-width: 100%;
+            .btn {
+                white-space: nowrap;
+            }
+        }
+        .o_ld_body {
+            padding: 0.5rem;
+        }
+        .o_ld_kpi .o_ld_kpi_value {
+            font-size: 1.1rem;
+        }
+        .o_ld_chart {
+            height: 220px;
+        }
+    }
+}
+
+// Odoo's layout sets `overflow: hidden` (and hides the scrollbar) on
+// .o_web_client > .o_action_manager > .o_action, which beats the plain .o_ld_dashboard rule above:
+// re-enable scrolling with a more specific selector.
+.o_web_client > .o_action_manager > .o_action.o_ld_dashboard {
+    overflow-y: auto;
+    scrollbar-width: auto;
+
+    &::-webkit-scrollbar {
+        display: initial;
+    }
+}

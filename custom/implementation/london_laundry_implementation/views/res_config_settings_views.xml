@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="res_config_settings_view_form_laundry_daily_report" model="ir.ui.view">
+        <field name="name">res.config.settings.view.form.laundry.daily.report</field>
+        <field name="model">res.config.settings</field>
+        <field name="inherit_id" ref="point_of_sale.res_config_settings_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//block[@id='pos_bills_and_receipts_section']" position="after">
+                <block title="Laundry Cash Control" id="laundry_cash_control_section">
+                    <setting string="Auto-close Sessions"
+                             help="At this time the POS opens the Close Register screen by itself and the cashier must count the cash and close (cashiers who are not managers do not see the expected amounts). If the register is still open after the delay, the server closes it without a cash count; it is flagged in the daily e-mail.">
+                        <field name="pos_laundry_auto_close"/>
+                        <div class="mt-2" invisible="not pos_laundry_auto_close">
+                            <span class="me-2">At</span>
+                            <field name="pos_laundry_auto_close_time" widget="float_time" class="oe_inline"/>
+                            <span class="ms-2 text-muted">(<field name="pos_laundry_tz" class="oe_inline"/> time)</span>
+                        </div>
+                        <div class="mt-2" invisible="not pos_laundry_auto_close">
+                            <span class="me-2">Server closes it after</span>
+                            <field name="pos_laundry_auto_close_grace" class="oe_inline" style="width: 4rem;"/>
+                            <span class="ms-1">minutes if still open</span>
+                        </div>
+                    </setting>
+                </block>
+                <block title="Laundry Delivery" id="laundry_delivery_section">
+                    <setting string="Delivery Charge Product"
+                             help="Service added to the order when the cashier chooses a delivery method with a charge (e.g. Home Delivery). The cashier enters its price, VAT included.">
+                        <field name="pos_laundry_delivery_product_id"/>
+                    </setting>
+                    <setting string="Free Delivery From"
+                             help="Orders of this amount or more (VAT included) are delivered for free. Below it, the order with delivery cannot exceed this amount (the delivery charge is reduced). 0 = no rule.">
+                        <field name="pos_laundry_free_delivery_from" class="oe_inline"/>
+                    </setting>
+                </block>
+                <block title="Daily Report" id="laundry_daily_report_section">
+                    <setting string="Daily Report by E-mail"
+                             help="A summary of this point of sale (sales, payments, cashiers, sessions and deliveries) is e-mailed every night after midnight for the previous day. Separate several addresses with commas.">
+                        <field name="pos_laundry_report_emails" placeholder="manager@example.com, owner@example.com"/>
+                        <div class="mt-2">
+                            <button name="action_send_laundry_daily_report_now" type="object" string="Send yesterday's report now"
+                                    class="btn-link" icon="oi-arrow-right" invisible="not pos_laundry_report_emails"/>
+                        </div>
+                    </setting>
+                </block>
+                <block title="Order Ready (WhatsApp)" id="laundry_ready_whatsapp_section">
+                    <setting string="Order Ready WhatsApp Message"
+                             help="Opened by the WhatsApp Ready button (POS Orders screen, POS order and invoice). Placeholders: {{partner_name}}, {{order}}, {{amount}}, {{balance}}, {{invoice_link}}, {{company}}. Leave empty to use the default Arabic/English message.">
+                        <field name="laundry_ready_whatsapp_message" widget="text"
+                               placeholder="Dear {{partner_name}}, your laundry job {{order}} ({{amount}} AED) is ready..."/>
+                    </setting>
+                </block>
+                <block title="Customer Statement" id="laundry_statement_section">
+                    <setting string="Statement WhatsApp Message"
+                             help="Sent with the customer statement (Laundry Dashboard > Reports > Customer Statement). Leave empty to use the default bilingual message.">
+                        <field name="laundry_statement_whatsapp_message" widget="text"
+                               placeholder="Hello {{partner_name}}, your balance with {{company}} is {{total_due}}: {{statement_link}}"/>
+                    </setting>
+                </block>
+            </xpath>
+        </field>
+    </record>
+</odoo>

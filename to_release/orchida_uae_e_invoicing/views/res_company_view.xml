@@ -1,0 +1,44 @@
+<odoo>
+    <record id="view_company_einvoice_form" model="ir.ui.view">
+        <field name="name">res.company.form.custom</field>
+        <field name="model">res.company</field>
+        <field name="inherit_id" ref="base.view_company_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//notebook" position="inside">
+                <page string="E-Invoice Info">
+                    <group>
+                        <group>
+                            <field name="orchida_connector_enabled"/>
+                            <field name="trn_tin"/>
+                            <field name="orchida_doc_allowance_product_id"/>
+                            <field name="orchida_doc_charge_product_id"/>
+                        </group>
+                        <group>
+                            <field name="last_ap_sync_date" readonly="1"/>
+                            <field name="last_ar_sync_date" readonly="1"/>
+                        </group>
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_res_company_tree_custom" model="ir.ui.view">
+        <field name="name">res.company.tree.custom</field>
+        <field name="model">res.company</field>
+        <field name="inherit_id" ref="base.view_company_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//list" position="inside">
+                <field name="trn_tin"/>
+                <field name="last_ap_sync_date" readonly="1"/>
+                <field name="last_ar_sync_date" readonly="1"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="action_einv_company_list" model="ir.actions.act_window">
+        <field name="name">Companies</field>
+        <field name="res_model">res.company</field>
+        <field name="view_mode">list,form</field>
+    </record>
+</odoo>

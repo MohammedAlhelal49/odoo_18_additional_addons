@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Website wraps /web/login with website.login_layout, which itself
+         calls website.layout. We swap that one call for our own branded
+         layout so the login page gets our header/footer/fonts/colors -
+         nothing else about the login form/logic is touched. -->
+    <template id="login_layout_theme" inherit_id="website.login_layout" name="Dekad Login Layout">
+        <xpath expr="//t[@t-call='website.layout']" position="attributes">
+            <attribute name="t-call">dekad_website.layout</attribute>
+        </xpath>
+    </template>
+
+</odoo>

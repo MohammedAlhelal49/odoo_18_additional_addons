@@ -1,0 +1,1450 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* alarab_laundry_dashboard
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 18.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-11-07 18:36+0000\n"
+"PO-Revision-Date: 2026-11-07 18:36+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: alarab_laundry_dashboard
+#. odoo-javascript
+#: code:addons/alarab_laundry_dashboard/static/src/dashboard/laundry_dashboard.js:0
+msgid "%(day)s %(hour)s:00 — %(count)s orders"
+msgstr ""
+
+#. module: alarab_laundry_dashboard
+#. odoo-javascript
+#: code:addons/alarab_laundry_dashboard/static/src/dashboard/laundry_dashboard.js:0
+msgid "%(new)s new · %(returning)s returning"
+msgstr ""
+
+#. module: alarab_laundry_dashboard
+#. odoo-python
+#: code:addons/alarab_laundry_dashboard/models/report.py:0
+msgid "%(open)s of %(count)s open"
+msgstr ""
+
+#. module: alarab_laundry_dashboard
+#. odoo-javascript
+#: code:addons/alarab_laundry_dashboard/static/src/dashboard/laundry_dashboard.js:0
+msgid "%(overdue)s overdue · %(count)s customers"
+msgstr ""
+
+#. module: alarab_laundry_dashboard
+#. odoo-javascript
+#: code:addons/alarab_laundry_dashboard/static/src/dashboard/laundry_dashboard.js:0
+msgid "%s days"
+msgstr ""
+
+#. module: alarab_laundry_dashboard
+#. odoo-javascript
+#: code:addons/alarab_laundry_dashboard/static/src/dashboard/laundry_dashboard.js:0
+msgid "%s of collected"
+msgstr ""
+
+#. module: alarab_laundry_dashboard
+#. odoo-javascript
+#: code:addons/alarab_laundry_dashboard/static/src/dashboard/laundry_dashboard.js:0
+msgid "%s of payments"
+msgstr ""
+
+#. module: alarab_laundry_dashboard
+#. odoo-javascript
+#: code:addons/alarab_laundry_dashboard/static/src/dashboard/laundry_dashboard.js:0
+msgid "%s open"
+msgstr ""
+
+#. module: alarab_laundry_dashboard
+#. odoo-javascript
+#: code:addons/alarab_laundry_dashboard/static/src/dashboard/laundry_dashboard.js:0
+msgid "%s refund(s)"
+msgstr ""
+
+#. module: alarab_laundry_dashboard
+#. odoo-javascript
+#: code:addons/alarab_laundry_dashboard/static/src/reports/laundry_report.js:0
+msgid "%s selected"
+msgstr ""
+
+#. module: alarab_laundry_dashboard
+#. odoo-javascript
+#: code:addons/alarab_laundry_dashboard/static/src/dashboard/laundry_dashboard.js:0
+msgid "%s session(s) with a difference"
+msgstr ""
+
+#. module: alarab_laundry_dashboard
+#: model:ir.actions.report,print_report_name:alarab_laundry_dashboard.action_report_customer_statement
+msgid "'Statement - %s' % object.name"
+msgstr ""
+
+#. module: alarab_laundry_dashboard
+#. odoo-javascript
+#: code:addons/alarab_laundry_dashboard/static/src/dashboard/laundry_dashboard.xml:0
+msgid "(all)"
+msgstr ""
+
+#. module: alarab_laundry_dashboard
+#. odoo-javascript
+#: code:addons/alarab_laundry_dashboard/static/src/dashboard/laundry_dashboard.xml:0
+msgid "(number of orders)"
+msgstr ""
+
+#. module: alarab_laundry_dashboard
+#. odoo-python
+#: code:addons/alarab_laundry_dashboard/models/report.py:0
+msgid "1-30 days"
+msgstr ""
+
+#. module: alarab_laundry_dashboard
+#. odoo-python
+#: code:addons/alarab_laundry_dashboard/models/report.py:0
+msgid "31-60 days"
+msgstr ""
+
+#. module: alarab_laundry_dashboard
+#. odoo-python
+#: code:addons/alarab_laundry_dashboard/models/report.py:0
+msgid "61-90 days"
+msgstr ""
+
+#. module: alarab_laundry_dashboard
+#: model_terms:ir.ui.view,arch_db:alarab_laundry_dashboard.report_customer_statement
+msgid "<span class=\"text-danger\">Not paid</span>"
+msgstr ""
+
+#. module: alarab_laundry_dashboard
+#: model_terms:ir.ui.view,arch_db:alarab_laundry_dashboard.report_customer_statement
+msgid "<span class=\"text-muted\">Reversed</span>"
+msgstr ""
+
+#. module: alarab_laundry_dashboard
+#: model_terms:ir.ui.view,arch_db:alarab_laundry_dashboard.report_customer_statement
+msgid "<span class=\"text-success\">Paid</span>"
+msgstr ""
+
+#. module: alarab_laundry_dashboard
+#: model_terms:ir.ui.view,arch_db:alarab_laundry_dashboard.report_customer_statement
+msgid "<span class=\"text-warning\">Partially paid</span>"
+msgstr ""
+
+#. module: alarab_laundry_dashboard
+#: model_terms:ir.ui.view,arch_db:alarab_laundry_dashboard.report_customer_statement
+msgid "<span>Customer Statement</span>"
+msgstr ""
+
+#. module: alarab_laundry_dashboard
+#: model_terms:ir.ui.view,arch_db:alarab_laundry_dashboard.report_customer_statement
+msgid "<strong>Contact / الهاتف:</strong>"
+msgstr ""
+
+#. module: alarab_laundry_dashboard
+#: model_terms:ir.ui.view,arch_db:alarab_laundry_dashboard.report_customer_statement
+msgid "<strong>Customer / الزبون:</strong>"
+msgstr ""
+
+#. module: alarab_laundry_dashboard
+#: model_terms:ir.ui.view,arch_db:alarab_laundry_dashboard.report_customer_statement
+msgid "<strong>Period / الفترة</strong>"
+msgstr ""
+
+#. module: alarab_laundry_dashboard
+#: model_terms:ir.ui.view,arch_db:alarab_laundry_dashboard.report_customer_statement
+msgid "<strong>Plate info / رقم اللوحة:</strong>"
+msgstr ""
+
+#. module: alarab_laundry_dashboard
+#. odoo-python
+#: code:addons/alarab_laundry_dashboard/models/report.py:0
+msgid "All branches"
+msgstr ""
+
+#. module: alarab_laundry_dashboard
+#. odoo-python
+#: code:addons/alarab_laundry_dashboard/models/report.py:0
+msgid "All cashiers"
+msgstr ""
+
+#. module: alarab_laundry_dashboard
+#. odoo-python
+#: code:addons/alarab_laundry_dashboard/models/report.py:0
+msgid "All customers"
+msgstr ""
+
+#. module: alarab_laundry_dashboard
+#. odoo-python
+#: code:addons/alarab_laundry_dashboard/models/report.py:0
+msgid "All invoices"
+msgstr ""
+
+#. module: alarab_laundry_dashboard
+#. odoo-python
+#: code:addons/alarab_laundry_dashboard/models/report.py:0
+msgid "All payment methods"
+msgstr ""
+
+#. module: alarab_laundry_dashboard
+#. odoo-python
+#: code:addons/alarab_laundry_dashboard/models/report.py:0
+msgid "All points of sale"
+msgstr ""
+
+#. module: alarab_laundry_dashboard
+#. odoo-python
+#: code:addons/alarab_laundry_dashboard/models/report.py:0
+msgid "All services"
+msgstr ""
+
+#. module: alarab_laundry_dashboard
+#. odoo-javascript
+#. odoo-python
+#: code:addons/alarab_laundry_dashboard/models/report.py:0
+#: code:addons/alarab_laundry_dashboard/static/src/dashboard/laundry_dashboard.xml:0
+msgid "Amount"
+msgstr ""
+
+#. module: alarab_laundry_dashboard
+#. odoo-python
+#: code:addons/alarab_laundry_dashboard/models/report.py:0
+#: model_terms:ir.ui.view,arch_db:alarab_laundry_dashboard.report_customer_statement
+msgid "Amount excl. VAT"
+msgstr ""
+
+#. module: alarab_laundry_dashboard
+#. odoo-python
+#: code:addons/alarab_laundry_dashboard/models/report.py:0
+#: model_terms:ir.ui.view,arch_db:alarab_laundry_dashboard.report_customer_statement
+msgid "Amount incl. VAT"
+msgstr ""
+
+#. module: alarab_laundry_dashboard
+#. odoo-python
+#: code:addons/alarab_laundry_dashboard/models/report.py:0
+msgid "As of %s"
+msgstr ""
+
+#. module: alarab_laundry_dashboard
+#. odoo-javascript
+#. odoo-python
+#: code:addons/alarab_laundry_dashboard/models/report.py:0
+#: code:addons/alarab_laundry_dashboard/static/src/dashboard/laundry_dashboard.js:0
+msgid "Average order"
+msgstr ""
+
+#. module: alarab_laundry_dashboard
+#. odoo-python
+#: code:addons/alarab_laundry_dashboard/models/report.py:0
+msgid "Balance"
+msgstr ""
+
+#. module: alarab_laundry_dashboard
+#. odoo-javascript
+#. odoo-python
+#: code:addons/alarab_laundry_dashboard/models/report.py:0
+#: code:addons/alarab_laundry_dashboard/static/src/dashboard/laundry_dashboard.js:0
+msgid "Bank"
+msgstr ""
+
+#. module: alarab_laundry_dashboard
+#. odoo-javascript
+#: code:addons/alarab_laundry_dashboard/static/src/dashboard/laundry_dashboard.js:0
+msgid "Bank collected"
+msgstr ""
+
+#. module: alarab_laundry_dashboard
+#. odoo-javascript
+#: code:addons/alarab_laundry_dashboard/static/src/dashboard/laundry_dashboard.xml:0
+msgid "Best-selling items"
+msgstr ""
+
+#. module: alarab_laundry_dashboard
+#. odoo-python
+#: code:addons/alarab_laundry_dashboard/models/report.py:0
+msgid "Branch"
+msgstr ""
+
+#. module: alarab_laundry_dashboard
+#. odoo-javascript
+#: code:addons/alarab_laundry_dashboard/static/src/dashboard/laundry_dashboard.xml:0
+msgid "Busy hours"
+msgstr ""
+
+#. module: alarab_laundry_dashboard
+#. odoo-javascript
+#. odoo-python
+#: code:addons/alarab_laundry_dashboard/models/report.py:0
+#: code:addons/alarab_laundry_dashboard/static/src/dashboard/laundry_dashboard.js:0
+msgid "Cash"
+msgstr ""
+
+#. module: alarab_laundry_dashboard
+#. odoo-python
+#: code:addons/alarab_laundry_dashboard/models/report.py:0
+#: model:ir.actions.client,name:alarab_laundry_dashboard.action_report_sessions
+#: model:ir.ui.menu,name:alarab_laundry_dashboard.menu_report_sessions
+msgid "Cash Register Sessions"
+msgstr ""
+
+#. module: alarab_laundry_dashboard
+#. odoo-javascript
+#: code:addons/alarab_laundry_dashboard/static/src/dashboard/laundry_dashboard.xml:0
+msgid "Cash and bank collection"
+msgstr ""
+
+#. module: alarab_laundry_dashboard
+#. odoo-javascript
+#: code:addons/alarab_laundry_dashboard/static/src/dashboard/laundry_dashboard.js:0
+msgid "Cash collected"
+msgstr ""
+
+#. module: alarab_laundry_dashboard
+#. odoo-javascript
+#: code:addons/alarab_laundry_dashboard/static/src/dashboard/laundry_dashboard.js:0
+msgid "Cash difference"
+msgstr ""
+
+#. module: alarab_laundry_dashboard
+#. odoo-javascript
+#: code:addons/alarab_laundry_dashboard/static/src/dashboard/laundry_dashboard.xml:0
+msgid "Cash register sessions"
+msgstr ""
+
+#. module: alarab_laundry_dashboard
+#. odoo-javascript
+#. odoo-python
+#: code:addons/alarab_laundry_dashboard/models/report.py:0
+#: code:addons/alarab_laundry_dashboard/static/src/dashboard/laundry_dashboard.xml:0
+msgid "Cashier"
+msgstr ""
+
+#. module: alarab_laundry_dashboard
+#. odoo-python
+#: code:addons/alarab_laundry_dashboard/models/report.py:0
+#: model:ir.actions.client,name:alarab_laundry_dashboard.action_report_cashiers
+#: model:ir.ui.menu,name:alarab_laundry_dashboard.menu_report_cashiers
+msgid "Cashier Performance"
+msgstr ""
+
+#. module: alarab_laundry_dashboard
+#. odoo-javascript
+#: code:addons/alarab_laundry_dashboard/static/src/dashboard/laundry_dashboard.xml:0
+msgid "Cashiers"
+msgstr ""
+
+#. module: alarab_laundry_dashboard
+#. odoo-python
+#: code:addons/alarab_laundry_dashboard/models/report.py:0
+msgid "Change %"
+msgstr ""
+
+#. module: alarab_laundry_dashboard
+#. odoo-javascript
+#. odoo-python
+#: code:addons/alarab_laundry_dashboard/models/report.py:0
+#: code:addons/alarab_laundry_dashboard/static/src/dashboard/laundry_dashboard.xml:0
+msgid "Closed"
+msgstr ""
+
+#. module: alarab_laundry_dashboard
+#. odoo-python
+#: code:addons/alarab_laundry_dashboard/models/report.py:0
+msgid "Collected %"
+msgstr ""
+
+#. module: alarab_laundry_dashboard
+#. odoo-python
+#: code:addons/alarab_laundry_dashboard/models/report.py:0
+#: model:ir.actions.client,name:alarab_laundry_dashboard.action_report_collection
+#: model:ir.ui.menu,name:alarab_laundry_dashboard.menu_report_collection
+msgid "Collection by Payment Method"
+msgstr ""
+
+#. module: alarab_laundry_dashboard
+#. odoo-python
+#: code:addons/alarab_laundry_dashboard/models/report.py:0
+msgid "Compared with"
+msgstr ""
+
+#. module: alarab_laundry_dashboard
+#. odoo-python
+#: code:addons/alarab_laundry_dashboard/models/report.py:0
+msgid "Compared with: %s"
+msgstr ""
+
+#. module: alarab_laundry_dashboard
+#. odoo-python
+#: code:addons/alarab_laundry_dashboard/models/report.py:0
+msgid "Comparison (%s)"
+msgstr ""
+
+#. module: alarab_laundry_dashboard
+#. odoo-javascript
+#. odoo-python
+#: code:addons/alarab_laundry_dashboard/models/report.py:0
+#: code:addons/alarab_laundry_dashboard/static/src/dashboard/laundry_dashboard.xml:0
+msgid "Counted cash"
+msgstr ""
+
+#. module: alarab_laundry_dashboard
+#. odoo-python
+#: code:addons/alarab_laundry_dashboard/models/report.py:0
+msgid "Currency"
+msgstr ""
+
+#. module: alarab_laundry_dashboard
+#. odoo-python
+#: code:addons/alarab_laundry_dashboard/models/report.py:0
+msgid "Currency: %s"
+msgstr ""
+
+#. module: alarab_laundry_dashboard
+#. odoo-python
+#: code:addons/alarab_laundry_dashboard/models/dashboard.py:0
+msgid "Custom"
+msgstr ""
+
+#. module: alarab_laundry_dashboard
+#. odoo-javascript
+#. odoo-python
+#: code:addons/alarab_laundry_dashboard/models/report.py:0
+#: code:addons/alarab_laundry_dashboard/static/src/dashboard/laundry_dashboard.xml:0
+msgid "Customer"
+msgstr ""
+
+#. module: alarab_laundry_dashboard
+#. odoo-python
+#: code:addons/alarab_laundry_dashboard/models/report.py:0
+#: model:ir.actions.client,name:alarab_laundry_dashboard.action_report_receivables
+#: model:ir.ui.menu,name:alarab_laundry_dashboard.menu_report_receivables
+msgid "Customer Balances (Receivables)"
+msgstr ""
+
+#. module: alarab_laundry_dashboard
+#. odoo-python
+#: code:addons/alarab_laundry_dashboard/models/report.py:0
+#: model:ir.actions.client,name:alarab_laundry_dashboard.action_report_statement
+#: model:ir.actions.report,name:alarab_laundry_dashboard.action_report_customer_statement
+#: model:ir.ui.menu,name:alarab_laundry_dashboard.menu_report_statement
+msgid "Customer Statement"
+msgstr ""
+
+#. module: alarab_laundry_dashboard
+#: model:ir.model,name:alarab_laundry_dashboard.model_report_alarab_laundry_dashboard_report_customer_statement
+msgid "Customer Statement PDF"
+msgstr ""
+
+#. module: alarab_laundry_dashboard
+#. odoo-python
+#: code:addons/alarab_laundry_dashboard/models/report.py:0
+msgid "Customer account (pay later)"
+msgstr ""
+
+#. module: alarab_laundry_dashboard
+#. odoo-javascript
+#: code:addons/alarab_laundry_dashboard/static/src/dashboard/laundry_dashboard.js:0
+msgid "Customer balances"
+msgstr ""
+
+#. module: alarab_laundry_dashboard
+#. odoo-python
+#: code:addons/alarab_laundry_dashboard/models/report.py:0
+msgid ""
+"Customer invoices by month. Paid and remaining amounts are as of today; open"
+" a month to see the customers who still owe from it."
+msgstr ""
+
+#. module: alarab_laundry_dashboard
+#. odoo-python
+#: code:addons/alarab_laundry_dashboard/models/report.py:0
+msgid ""
+"Customer invoices dated in the period. Paid and remaining amounts are as of "
+"today. Previous balance: what is still open from before the period."
+msgstr ""
+
+#. module: alarab_laundry_dashboard
+#. odoo-javascript
+#: code:addons/alarab_laundry_dashboard/static/src/reports/laundry_report.xml:0
+msgid "Customer name, phone or reference"
+msgstr ""
+
+#. module: alarab_laundry_dashboard
+#. odoo-python
+#: code:addons/alarab_laundry_dashboard/models/report.py:0
+msgid "Customer payments"
+msgstr ""
+
+#. module: alarab_laundry_dashboard
+#. odoo-javascript
+#: code:addons/alarab_laundry_dashboard/static/src/reports/laundry_report.xml:0
+msgid "Customer statement (PDF)"
+msgstr ""
+
+#. module: alarab_laundry_dashboard
+#. odoo-javascript
+#. odoo-python
+#: code:addons/alarab_laundry_dashboard/models/report.py:0
+#: code:addons/alarab_laundry_dashboard/static/src/dashboard/laundry_dashboard.js:0
+#: model:ir.actions.client,name:alarab_laundry_dashboard.action_report_customers
+#: model:ir.ui.menu,name:alarab_laundry_dashboard.menu_report_customers
+msgid "Customers"
+msgstr ""
+
+#. module: alarab_laundry_dashboard
+#. odoo-javascript
+#: code:addons/alarab_laundry_dashboard/static/src/dashboard/laundry_dashboard.xml:0
+msgid "Customers who stopped coming"
+msgstr ""
+
+#. module: alarab_laundry_dashboard
+#. odoo-python
+#: code:addons/alarab_laundry_dashboard/models/report.py:0
+msgid "Customers with a balance"
+msgstr ""
+
+#. module: alarab_laundry_dashboard
+#. odoo-python
+#: code:addons/alarab_laundry_dashboard/models/report.py:0
+#: model:ir.actions.client,name:alarab_laundry_dashboard.action_report_daily
+#: model:ir.ui.menu,name:alarab_laundry_dashboard.menu_report_daily
+msgid "Daily Sales"
+msgstr ""
+
+#. module: alarab_laundry_dashboard
+#: model:ir.ui.menu,name:alarab_laundry_dashboard.menu_laundry_dashboard
+msgid "Dashboard"
+msgstr ""
+
+#. module: alarab_laundry_dashboard
+#: model_terms:ir.ui.view,arch_db:alarab_laundry_dashboard.report_customer_statement
+msgid "Date"
+msgstr ""
+
+#. module: alarab_laundry_dashboard
+#. odoo-javascript
+#. odoo-python
+#: code:addons/alarab_laundry_dashboard/models/report.py:0
+#: code:addons/alarab_laundry_dashboard/static/src/dashboard/laundry_dashboard.xml:0
+msgid "Difference"
+msgstr ""
+
+#. module: alarab_laundry_dashboard
+#. odoo-javascript
+#. odoo-python
+#: code:addons/alarab_laundry_dashboard/models/report.py:0
+#: code:addons/alarab_laundry_dashboard/static/src/dashboard/laundry_dashboard.xml:0
+msgid "Discounts"
+msgstr ""
+
+#. module: alarab_laundry_dashboard
+#. odoo-javascript
+#: code:addons/alarab_laundry_dashboard/static/src/dashboard/laundry_dashboard.js:0
+msgid "Discounts given"
+msgstr ""
+
+#. module: alarab_laundry_dashboard
+#: model:ir.model.fields,field_description:alarab_laundry_dashboard.field_alarab_laundry_dashboard__dynamic_duplicate_warning
+#: model:ir.model.fields,field_description:alarab_laundry_dashboard.field_alarab_laundry_report__dynamic_duplicate_warning
+#: model:ir.model.fields,field_description:alarab_laundry_dashboard.field_pos_order__dynamic_duplicate_warning
+#: model:ir.model.fields,field_description:alarab_laundry_dashboard.field_report_alarab_laundry_dashboard_report_customer_statement__dynamic_duplicate_warning
+#: model:ir.model.fields,field_description:alarab_laundry_dashboard.field_report_alarab_laundry_dashboard_report_laundry_document__dynamic_duplicate_warning
+msgid "Duplicate Warning"
+msgstr ""
+
+#. module: alarab_laundry_dashboard
+#. odoo-javascript
+#: code:addons/alarab_laundry_dashboard/static/src/reports/laundry_report.xml:0
+msgid "Excel"
+msgstr ""
+
+#. module: alarab_laundry_dashboard
+#. odoo-python
+#: code:addons/alarab_laundry_dashboard/models/report.py:0
+msgid "Excl. VAT"
+msgstr ""
+
+#. module: alarab_laundry_dashboard
+#. odoo-javascript
+#. odoo-python
+#: code:addons/alarab_laundry_dashboard/models/report.py:0
+#: code:addons/alarab_laundry_dashboard/static/src/dashboard/laundry_dashboard.xml:0
+msgid "Expected cash"
+msgstr ""
+
+#. module: alarab_laundry_dashboard
+#. odoo-javascript
+#: code:addons/alarab_laundry_dashboard/static/src/reports/laundry_report.xml:0
+msgid "Fold all"
+msgstr ""
+
+#. module: alarab_laundry_dashboard
+#: model_terms:ir.ui.view,arch_db:alarab_laundry_dashboard.report_customer_statement
+msgid "Invoice"
+msgstr ""
+
+#. module: alarab_laundry_dashboard
+#. odoo-python
+#: code:addons/alarab_laundry_dashboard/models/report.py:0
+msgid "Invoiced"
+msgstr ""
+
+#. module: alarab_laundry_dashboard
+#: model_terms:ir.ui.view,arch_db:alarab_laundry_dashboard.report_customer_statement
+msgid "Invoiced in the period"
+msgstr ""
+
+#. module: alarab_laundry_dashboard
+#. odoo-python
+#: code:addons/alarab_laundry_dashboard/models/report.py:0
+msgid "Invoices"
+msgstr ""
+
+#. module: alarab_laundry_dashboard
+#. odoo-javascript
+#: code:addons/alarab_laundry_dashboard/static/src/dashboard/laundry_dashboard.xml:0
+msgid "Item"
+msgstr ""
+
+#. module: alarab_laundry_dashboard
+#. odoo-python
+#: code:addons/alarab_laundry_dashboard/models/dashboard.py:0
+msgid "Last 7 days"
+msgstr ""
+
+#. module: alarab_laundry_dashboard
+#. odoo-python
+#: code:addons/alarab_laundry_dashboard/models/dashboard.py:0
+msgid "Last month"
+msgstr ""
+
+#. module: alarab_laundry_dashboard
+#. odoo-javascript
+#: code:addons/alarab_laundry_dashboard/static/src/dashboard/laundry_dashboard.xml:0
+msgid "Last order"
+msgstr ""
+
+#. module: alarab_laundry_dashboard
+#. odoo-python
+#: code:addons/alarab_laundry_dashboard/models/report.py:0
+msgid "Last visit"
+msgstr ""
+
+#. module: alarab_laundry_dashboard
+#. odoo-javascript
+#: code:addons/alarab_laundry_dashboard/static/src/dashboard/laundry_dashboard.xml:0
+#: model:ir.actions.client,name:alarab_laundry_dashboard.action_laundry_dashboard
+#: model:ir.ui.menu,name:alarab_laundry_dashboard.menu_laundry_dashboard_root
+#: model:res.groups,name:alarab_laundry_dashboard.group_laundry_dashboard
+msgid "Laundry Dashboard"
+msgstr ""
+
+#. module: alarab_laundry_dashboard
+#: model:ir.model,name:alarab_laundry_dashboard.model_alarab_laundry_dashboard
+msgid "Laundry Manager Dashboard"
+msgstr ""
+
+#. module: alarab_laundry_dashboard
+#: model:ir.actions.report,name:alarab_laundry_dashboard.action_report_laundry
+msgid "Laundry Report"
+msgstr ""
+
+#. module: alarab_laundry_dashboard
+#: model:ir.model,name:alarab_laundry_dashboard.model_report_alarab_laundry_dashboard_report_laundry_document
+msgid "Laundry Report PDF"
+msgstr ""
+
+#. module: alarab_laundry_dashboard
+#: model:ir.model,name:alarab_laundry_dashboard.model_alarab_laundry_report
+msgid "Laundry Reports"
+msgstr ""
+
+#. module: alarab_laundry_dashboard
+#: model_terms:ir.ui.view,arch_db:alarab_laundry_dashboard.view_pos_order_form_laundry_tracking
+msgid "Mark Ready"
+msgstr ""
+
+#. module: alarab_laundry_dashboard
+#. odoo-javascript
+#. odoo-python
+#: code:addons/alarab_laundry_dashboard/models/report.py:0
+#: code:addons/alarab_laundry_dashboard/static/src/reports/laundry_report.xml:0
+msgid "Minimum due"
+msgstr ""
+
+#. module: alarab_laundry_dashboard
+#. odoo-javascript
+#: code:addons/alarab_laundry_dashboard/static/src/dashboard/laundry_dashboard.xml:0
+msgid "Missing or invalid phone number"
+msgstr ""
+
+#. module: alarab_laundry_dashboard
+#. odoo-python
+#: code:addons/alarab_laundry_dashboard/models/report.py:0
+#: model:ir.actions.client,name:alarab_laundry_dashboard.action_report_monthly_receivables
+#: model:ir.ui.menu,name:alarab_laundry_dashboard.menu_report_monthly_receivables
+msgid "Monthly Receivables"
+msgstr ""
+
+#. module: alarab_laundry_dashboard
+#. odoo-python
+#: code:addons/alarab_laundry_dashboard/models/report.py:0
+msgid "Net excl. VAT"
+msgstr ""
+
+#. module: alarab_laundry_dashboard
+#. odoo-python
+#: code:addons/alarab_laundry_dashboard/models/report.py:0
+msgid "Net sales"
+msgstr ""
+
+#. module: alarab_laundry_dashboard
+#. odoo-javascript
+#: code:addons/alarab_laundry_dashboard/static/src/dashboard/laundry_dashboard.js:0
+msgid "New"
+msgstr ""
+
+#. module: alarab_laundry_dashboard
+#. odoo-python
+#: code:addons/alarab_laundry_dashboard/models/report.py:0
+msgid "No comparison"
+msgstr ""
+
+#. module: alarab_laundry_dashboard
+#. odoo-javascript
+#: code:addons/alarab_laundry_dashboard/static/src/dashboard/laundry_dashboard.xml:0
+msgid "No customers to win back"
+msgstr ""
+
+#. module: alarab_laundry_dashboard
+#. odoo-javascript
+#: code:addons/alarab_laundry_dashboard/static/src/reports/laundry_report.xml:0
+msgid "No data for this period"
+msgstr ""
+
+#. module: alarab_laundry_dashboard
+#. odoo-javascript
+#: code:addons/alarab_laundry_dashboard/static/src/dashboard/laundry_dashboard.xml:0
+msgid "No identified customers in this period"
+msgstr ""
+
+#. module: alarab_laundry_dashboard
+#: model_terms:ir.ui.view,arch_db:alarab_laundry_dashboard.report_customer_statement
+msgid "No invoices in this period / لا توجد فواتير في هذه الفترة"
+msgstr ""
+
+#. module: alarab_laundry_dashboard
+#. odoo-javascript
+#: code:addons/alarab_laundry_dashboard/static/src/dashboard/laundry_dashboard.xml:0
+msgid "No sales in this period"
+msgstr ""
+
+#. module: alarab_laundry_dashboard
+#. odoo-javascript
+#: code:addons/alarab_laundry_dashboard/static/src/dashboard/laundry_dashboard.xml:0
+msgid "No sessions in this period"
+msgstr ""
+
+#. module: alarab_laundry_dashboard
+#. odoo-javascript
+#: code:addons/alarab_laundry_dashboard/static/src/dashboard/laundry_dashboard.js:0
+msgid "No visit for %s+ days"
+msgstr ""
+
+#. module: alarab_laundry_dashboard
+#. odoo-python
+#: code:addons/alarab_laundry_dashboard/models/report.py:0
+msgid "Not due"
+msgstr ""
+
+#. module: alarab_laundry_dashboard
+#. odoo-python
+#: code:addons/alarab_laundry_dashboard/models/report.py:0
+msgid "Not paid"
+msgstr ""
+
+#. module: alarab_laundry_dashboard
+#. odoo-python
+#: code:addons/alarab_laundry_dashboard/models/report.py:0
+msgid "Note"
+msgstr ""
+
+#. module: alarab_laundry_dashboard
+#. odoo-python
+#: code:addons/alarab_laundry_dashboard/models/report.py:0
+msgid "Older"
+msgstr ""
+
+#. module: alarab_laundry_dashboard
+#. odoo-python
+#: code:addons/alarab_laundry_dashboard/models/report.py:0
+msgid "Oldest due"
+msgstr ""
+
+#. module: alarab_laundry_dashboard
+#. odoo-javascript
+#: code:addons/alarab_laundry_dashboard/static/src/reports/laundry_report.xml:0
+msgid ""
+"Open balances from accounting: unpaid invoices and customer-account sales, "
+"minus payments not yet matched."
+msgstr ""
+
+#. module: alarab_laundry_dashboard
+#. odoo-python
+#: code:addons/alarab_laundry_dashboard/models/report.py:0
+msgid "Open invoices"
+msgstr ""
+
+#. module: alarab_laundry_dashboard
+#. odoo-python
+#: code:addons/alarab_laundry_dashboard/models/report.py:0
+msgid "Opened"
+msgstr ""
+
+#. module: alarab_laundry_dashboard
+#. odoo-javascript
+#. odoo-python
+#: code:addons/alarab_laundry_dashboard/models/report.py:0
+#: code:addons/alarab_laundry_dashboard/static/src/dashboard/laundry_dashboard.xml:0
+msgid "Opened by"
+msgstr ""
+
+#. module: alarab_laundry_dashboard
+#. odoo-python
+#: code:addons/alarab_laundry_dashboard/models/pos_order.py:0
+msgid "Order %s is already marked as picked up."
+msgstr ""
+
+#. module: alarab_laundry_dashboard
+#. odoo-javascript
+#. odoo-python
+#: code:addons/alarab_laundry_dashboard/models/report.py:0
+#: code:addons/alarab_laundry_dashboard/static/src/dashboard/laundry_dashboard.js:0
+#: code:addons/alarab_laundry_dashboard/static/src/dashboard/laundry_dashboard.xml:0
+msgid "Orders"
+msgstr ""
+
+#. module: alarab_laundry_dashboard
+#. odoo-javascript
+#: code:addons/alarab_laundry_dashboard/static/src/dashboard/laundry_dashboard.js:0
+msgid "Other"
+msgstr ""
+
+#. module: alarab_laundry_dashboard
+#. odoo-javascript
+#: code:addons/alarab_laundry_dashboard/static/src/reports/laundry_report.xml:0
+msgid "PDF"
+msgstr ""
+
+#. module: alarab_laundry_dashboard
+#. odoo-python
+#: code:addons/alarab_laundry_dashboard/models/report.py:0
+msgid "POS"
+msgstr ""
+
+#. module: alarab_laundry_dashboard
+#. odoo-python
+#: code:addons/alarab_laundry_dashboard/models/report.py:0
+#: model_terms:ir.ui.view,arch_db:alarab_laundry_dashboard.report_customer_statement
+msgid "Paid"
+msgstr ""
+
+#. module: alarab_laundry_dashboard
+#: model_terms:ir.ui.view,arch_db:alarab_laundry_dashboard.report_customer_statement
+msgid ""
+"Paid and remaining amounts are as of the print date.\n"
+"                            <span lang=\"ar\" dir=\"rtl\" class=\"d-block\">المبالغ المدفوعة والمتبقية حسب تاريخ الطباعة.</span>"
+msgstr ""
+
+#. module: alarab_laundry_dashboard
+#. odoo-python
+#: code:addons/alarab_laundry_dashboard/models/report.py:0
+msgid "Partially paid"
+msgstr ""
+
+#. module: alarab_laundry_dashboard
+#. odoo-python
+#: code:addons/alarab_laundry_dashboard/models/report.py:0
+msgid "Payment"
+msgstr ""
+
+#. module: alarab_laundry_dashboard
+#. odoo-javascript
+#. odoo-python
+#: code:addons/alarab_laundry_dashboard/models/report.py:0
+#: code:addons/alarab_laundry_dashboard/static/src/dashboard/laundry_dashboard.js:0
+msgid "Payments"
+msgstr ""
+
+#. module: alarab_laundry_dashboard
+#: model_terms:ir.ui.view,arch_db:alarab_laundry_dashboard.report_customer_statement
+msgid "Payments not yet allocated"
+msgstr ""
+
+#. module: alarab_laundry_dashboard
+#. odoo-python
+#: code:addons/alarab_laundry_dashboard/models/report.py:0
+msgid "Period"
+msgstr ""
+
+#. module: alarab_laundry_dashboard
+#. odoo-python
+#: code:addons/alarab_laundry_dashboard/models/report.py:0
+msgid "Period: %s"
+msgstr ""
+
+#. module: alarab_laundry_dashboard
+#. odoo-python
+#: code:addons/alarab_laundry_dashboard/models/report.py:0
+msgid "Phone"
+msgstr ""
+
+#. module: alarab_laundry_dashboard
+#: model_terms:ir.ui.view,arch_db:alarab_laundry_dashboard.view_pos_order_form_laundry_tracking
+msgid "Picked Up"
+msgstr ""
+
+#. module: alarab_laundry_dashboard
+#: model:ir.model.fields,field_description:alarab_laundry_dashboard.field_pos_order__laundry_picked_up_date
+msgid "Picked Up On"
+msgstr ""
+
+#. module: alarab_laundry_dashboard
+#. odoo-python
+#: code:addons/alarab_laundry_dashboard/models/dashboard.py:0
+msgid "Please choose a period of 3 years or less."
+msgstr ""
+
+#. module: alarab_laundry_dashboard
+#. odoo-python
+#: code:addons/alarab_laundry_dashboard/models/dashboard.py:0
+msgid "Please choose both dates."
+msgstr ""
+
+#. module: alarab_laundry_dashboard
+#. odoo-javascript
+#. odoo-python
+#: code:addons/alarab_laundry_dashboard/models/report.py:0
+#: code:addons/alarab_laundry_dashboard/static/src/dashboard/laundry_dashboard.xml:0
+msgid "Point of Sale"
+msgstr ""
+
+#. module: alarab_laundry_dashboard
+#: model:ir.model,name:alarab_laundry_dashboard.model_pos_order
+msgid "Point of Sale Orders"
+msgstr ""
+
+#. module: alarab_laundry_dashboard
+#. odoo-javascript
+#: code:addons/alarab_laundry_dashboard/static/src/dashboard/laundry_dashboard.xml:0
+msgid "Point of Sale:"
+msgstr ""
+
+#. module: alarab_laundry_dashboard
+#. odoo-python
+#: code:addons/alarab_laundry_dashboard/models/report.py:0
+#: model_terms:ir.ui.view,arch_db:alarab_laundry_dashboard.report_customer_statement
+msgid "Previous balance"
+msgstr ""
+
+#. module: alarab_laundry_dashboard
+#. odoo-javascript
+#. odoo-python
+#: code:addons/alarab_laundry_dashboard/models/report.py:0
+#: code:addons/alarab_laundry_dashboard/static/src/dashboard/laundry_dashboard.js:0
+msgid "Previous period"
+msgstr ""
+
+#. module: alarab_laundry_dashboard
+#. odoo-python
+#: code:addons/alarab_laundry_dashboard/models/report.py:0
+msgid "Printed on"
+msgstr ""
+
+#. module: alarab_laundry_dashboard
+#: model_terms:ir.ui.view,arch_db:alarab_laundry_dashboard.report_customer_statement
+msgid "Printed on / تاريخ الطباعة:"
+msgstr ""
+
+#. module: alarab_laundry_dashboard
+#. odoo-javascript
+#: code:addons/alarab_laundry_dashboard/static/src/dashboard/laundry_dashboard.xml:0
+msgid "Qty"
+msgstr ""
+
+#. module: alarab_laundry_dashboard
+#. odoo-python
+#: code:addons/alarab_laundry_dashboard/models/report.py:0
+msgid "Quantity"
+msgstr ""
+
+#. module: alarab_laundry_dashboard
+#: model:ir.model.fields,field_description:alarab_laundry_dashboard.field_pos_order__laundry_ready_date
+msgid "Ready On"
+msgstr ""
+
+#. module: alarab_laundry_dashboard
+#. odoo-javascript
+#: code:addons/alarab_laundry_dashboard/static/src/dashboard/laundry_dashboard.xml:0
+msgid "Refresh"
+msgstr ""
+
+#. module: alarab_laundry_dashboard
+#. odoo-python
+#: code:addons/alarab_laundry_dashboard/models/report.py:0
+msgid "Refunded amount"
+msgstr ""
+
+#. module: alarab_laundry_dashboard
+#. odoo-javascript
+#. odoo-python
+#: code:addons/alarab_laundry_dashboard/models/report.py:0
+#: code:addons/alarab_laundry_dashboard/static/src/dashboard/laundry_dashboard.js:0
+#: code:addons/alarab_laundry_dashboard/static/src/dashboard/laundry_dashboard.xml:0
+msgid "Refunds"
+msgstr ""
+
+#. module: alarab_laundry_dashboard
+#. odoo-javascript
+#: code:addons/alarab_laundry_dashboard/static/src/dashboard/laundry_dashboard.xml:0
+msgid ""
+"Regular customers (2+ orders) who have not ordered recently, sorted by total"
+" spent. Not affected by the period filter."
+msgstr ""
+
+#. module: alarab_laundry_dashboard
+#. odoo-python
+#: code:addons/alarab_laundry_dashboard/models/report.py:0
+#: model_terms:ir.ui.view,arch_db:alarab_laundry_dashboard.report_customer_statement
+msgid "Remaining"
+msgstr ""
+
+#. module: alarab_laundry_dashboard
+#: model_terms:ir.ui.view,arch_db:alarab_laundry_dashboard.report_customer_statement
+msgid "Remaining from the period"
+msgstr ""
+
+#. module: alarab_laundry_dashboard
+#: model:ir.ui.menu,name:alarab_laundry_dashboard.menu_laundry_reports
+msgid "Reports"
+msgstr ""
+
+#. module: alarab_laundry_dashboard
+#. odoo-python
+#: code:addons/alarab_laundry_dashboard/models/report.py:0
+msgid "Reversed"
+msgstr ""
+
+#. module: alarab_laundry_dashboard
+#. odoo-javascript
+#. odoo-python
+#: code:addons/alarab_laundry_dashboard/models/report.py:0
+#: code:addons/alarab_laundry_dashboard/static/src/dashboard/laundry_dashboard.js:0
+#: code:addons/alarab_laundry_dashboard/static/src/dashboard/laundry_dashboard.xml:0
+msgid "Sales"
+msgstr ""
+
+#. module: alarab_laundry_dashboard
+#. odoo-python
+#: code:addons/alarab_laundry_dashboard/models/report.py:0
+#: model:ir.actions.client,name:alarab_laundry_dashboard.action_report_category
+#: model:ir.ui.menu,name:alarab_laundry_dashboard.menu_report_category
+msgid "Sales by Service and Item"
+msgstr ""
+
+#. module: alarab_laundry_dashboard
+#. odoo-javascript
+#: code:addons/alarab_laundry_dashboard/static/src/dashboard/laundry_dashboard.xml:0
+msgid "Sales trend"
+msgstr ""
+
+#. module: alarab_laundry_dashboard
+#. odoo-python
+#: code:addons/alarab_laundry_dashboard/models/report.py:0
+msgid "Same period last year"
+msgstr ""
+
+#. module: alarab_laundry_dashboard
+#. odoo-javascript
+#: code:addons/alarab_laundry_dashboard/static/src/dashboard/laundry_dashboard.xml:0
+msgid "Send WhatsApp"
+msgstr ""
+
+#. module: alarab_laundry_dashboard
+#. odoo-javascript
+#: code:addons/alarab_laundry_dashboard/static/src/reports/laundry_report.xml:0
+msgid "Send payment reminder"
+msgstr ""
+
+#. module: alarab_laundry_dashboard
+#. odoo-python
+#: code:addons/alarab_laundry_dashboard/models/report.py:0
+msgid "Service"
+msgstr ""
+
+#. module: alarab_laundry_dashboard
+#. odoo-javascript
+#: code:addons/alarab_laundry_dashboard/static/src/dashboard/laundry_dashboard.xml:0
+msgid "Service mix"
+msgstr ""
+
+#. module: alarab_laundry_dashboard
+#. odoo-javascript
+#: code:addons/alarab_laundry_dashboard/static/src/dashboard/laundry_dashboard.xml:0
+msgid "Session"
+msgstr ""
+
+#. module: alarab_laundry_dashboard
+#. odoo-python
+#: code:addons/alarab_laundry_dashboard/models/report.py:0
+msgid "Share %"
+msgstr ""
+
+#. module: alarab_laundry_dashboard
+#. odoo-python
+#: code:addons/alarab_laundry_dashboard/models/report.py:0
+msgid "Show"
+msgstr ""
+
+#. module: alarab_laundry_dashboard
+#. odoo-javascript
+#: code:addons/alarab_laundry_dashboard/static/src/dashboard/laundry_dashboard.js:0
+msgid "Sold on account"
+msgstr ""
+
+#. module: alarab_laundry_dashboard
+#. odoo-python
+#: code:addons/alarab_laundry_dashboard/models/report.py:0
+msgid "Sold on customer account"
+msgstr ""
+
+#. module: alarab_laundry_dashboard
+#. odoo-python
+#: code:addons/alarab_laundry_dashboard/models/report.py:0
+msgid "Specific month"
+msgstr ""
+
+#. module: alarab_laundry_dashboard
+#. odoo-python
+#: code:addons/alarab_laundry_dashboard/models/report.py:0
+msgid "Specific year"
+msgstr ""
+
+#. module: alarab_laundry_dashboard
+#. odoo-javascript
+#. odoo-python
+#: code:addons/alarab_laundry_dashboard/models/report.py:0
+#: code:addons/alarab_laundry_dashboard/static/src/dashboard/laundry_dashboard.xml:0
+msgid "Spent"
+msgstr ""
+
+#. module: alarab_laundry_dashboard
+#. odoo-python
+#: code:addons/alarab_laundry_dashboard/models/report.py:0
+#: model_terms:ir.ui.view,arch_db:alarab_laundry_dashboard.report_customer_statement
+msgid "Status"
+msgstr ""
+
+#. module: alarab_laundry_dashboard
+#. odoo-python
+#: code:addons/alarab_laundry_dashboard/models/dashboard.py:0
+msgid "The start date must be before the end date."
+msgstr ""
+
+#. module: alarab_laundry_dashboard
+#. odoo-python
+#: code:addons/alarab_laundry_dashboard/models/dashboard.py:0
+msgid "This month"
+msgstr ""
+
+#. module: alarab_laundry_dashboard
+#. odoo-javascript
+#: code:addons/alarab_laundry_dashboard/static/src/dashboard/laundry_dashboard.js:0
+msgid "This period"
+msgstr ""
+
+#. module: alarab_laundry_dashboard
+#. odoo-python
+#: code:addons/alarab_laundry_dashboard/models/dashboard.py:0
+msgid "This year"
+msgstr ""
+
+#. module: alarab_laundry_dashboard
+#. odoo-javascript
+#: code:addons/alarab_laundry_dashboard/static/src/dashboard/laundry_dashboard.js:0
+msgid ""
+"Times are shown in your user timezone (%(user)s), which differs from this "
+"device (%(device)s). You can change it in your preferences."
+msgstr ""
+
+#. module: alarab_laundry_dashboard
+#. odoo-javascript
+#: code:addons/alarab_laundry_dashboard/static/src/dashboard/laundry_dashboard.js:0
+msgid "Times in %s"
+msgstr ""
+
+#. module: alarab_laundry_dashboard
+#. odoo-python
+#: code:addons/alarab_laundry_dashboard/models/dashboard.py:0
+msgid "Today"
+msgstr ""
+
+#. module: alarab_laundry_dashboard
+#. odoo-python
+#: code:addons/alarab_laundry_dashboard/models/report.py:0
+msgid "Top 10 debtors"
+msgstr ""
+
+#. module: alarab_laundry_dashboard
+#. odoo-python
+#: code:addons/alarab_laundry_dashboard/models/report.py:0
+msgid "Top 20 debtors"
+msgstr ""
+
+#. module: alarab_laundry_dashboard
+#. odoo-python
+#: code:addons/alarab_laundry_dashboard/models/report.py:0
+msgid "Top 50 debtors"
+msgstr ""
+
+#. module: alarab_laundry_dashboard
+#. odoo-javascript
+#: code:addons/alarab_laundry_dashboard/static/src/dashboard/laundry_dashboard.xml:0
+msgid "Top customers"
+msgstr ""
+
+#. module: alarab_laundry_dashboard
+#. odoo-python
+#: code:addons/alarab_laundry_dashboard/models/report.py:0
+msgid "Top debtor"
+msgstr ""
+
+#. module: alarab_laundry_dashboard
+#. odoo-javascript
+#. odoo-python
+#: code:addons/alarab_laundry_dashboard/models/report.py:0
+#: code:addons/alarab_laundry_dashboard/static/src/reports/laundry_report.xml:0
+#: model_terms:ir.ui.view,arch_db:alarab_laundry_dashboard.report_customer_statement
+#: model_terms:ir.ui.view,arch_db:alarab_laundry_dashboard.report_laundry_document
+msgid "Total"
+msgstr ""
+
+#. module: alarab_laundry_dashboard
+#. odoo-python
+#: code:addons/alarab_laundry_dashboard/models/report.py:0
+#: model_terms:ir.ui.view,arch_db:alarab_laundry_dashboard.report_customer_statement
+msgid "Total due"
+msgstr ""
+
+#. module: alarab_laundry_dashboard
+#. odoo-python
+#: code:addons/alarab_laundry_dashboard/models/report.py:0
+msgid "Unallocated payments"
+msgstr ""
+
+#. module: alarab_laundry_dashboard
+#. odoo-python
+#: code:addons/alarab_laundry_dashboard/models/dashboard.py:0
+#: code:addons/alarab_laundry_dashboard/models/report.py:0
+msgid "Uncategorized"
+msgstr ""
+
+#. module: alarab_laundry_dashboard
+#. odoo-javascript
+#: code:addons/alarab_laundry_dashboard/static/src/reports/laundry_report.xml:0
+msgid "Unfold all"
+msgstr ""
+
+#. module: alarab_laundry_dashboard
+#. odoo-python
+#: code:addons/alarab_laundry_dashboard/models/dashboard.py:0
+msgid "Unknown"
+msgstr ""
+
+#. module: alarab_laundry_dashboard
+#. odoo-python
+#: code:addons/alarab_laundry_dashboard/models/dashboard.py:0
+msgid "Unknown period."
+msgstr ""
+
+#. module: alarab_laundry_dashboard
+#. odoo-python
+#: code:addons/alarab_laundry_dashboard/models/report.py:0
+msgid "Unknown report."
+msgstr ""
+
+#. module: alarab_laundry_dashboard
+#. odoo-python
+#: code:addons/alarab_laundry_dashboard/models/report.py:0
+#: model_terms:ir.ui.view,arch_db:alarab_laundry_dashboard.report_customer_statement
+msgid "VAT"
+msgstr ""
+
+#. module: alarab_laundry_dashboard
+#. odoo-python
+#: code:addons/alarab_laundry_dashboard/models/report.py:0
+msgid "Walk-in customers"
+msgstr ""
+
+#. module: alarab_laundry_dashboard
+#. odoo-python
+#: code:addons/alarab_laundry_dashboard/models/report.py:0
+msgid "Walk-in customers (no name)"
+msgstr ""
+
+#. module: alarab_laundry_dashboard
+#. odoo-python
+#: code:addons/alarab_laundry_dashboard/models/report.py:0
+msgid "Without customer"
+msgstr ""
+
+#. module: alarab_laundry_dashboard
+#. odoo-python
+#: code:addons/alarab_laundry_dashboard/models/dashboard.py:0
+msgid "Yesterday"
+msgstr ""
+
+#. module: alarab_laundry_dashboard
+#. odoo-python
+#: code:addons/alarab_laundry_dashboard/models/dashboard.py:0
+msgid "You are not allowed to open the laundry dashboard."
+msgstr ""
+
+#. module: alarab_laundry_dashboard
+#. odoo-javascript
+#: code:addons/alarab_laundry_dashboard/static/src/dashboard/laundry_dashboard.js:0
+msgid "compared with %s"
+msgstr ""
+
+#. module: alarab_laundry_dashboard
+#. odoo-python
+#: code:addons/alarab_laundry_dashboard/models/report.py:0
+msgid ""
+"customer payments made outside the POS are not linked to a branch or "
+"cashier, so they are only included when all points of sale are selected"
+msgstr ""
+
+#. module: alarab_laundry_dashboard
+#. odoo-javascript
+#: code:addons/alarab_laundry_dashboard/static/src/dashboard/laundry_dashboard.js:0
+msgid "excl. VAT %s"
+msgstr ""
+
+#. module: alarab_laundry_dashboard
+#. odoo-javascript
+#: code:addons/alarab_laundry_dashboard/static/src/dashboard/laundry_dashboard.js:0
+msgid "incl. %s paid outside the POS"
+msgstr ""
+
+#. module: alarab_laundry_dashboard
+#. odoo-python
+#: code:addons/alarab_laundry_dashboard/models/report.py:0
+msgid "not collected yet"
+msgstr ""
+
+#. module: alarab_laundry_dashboard
+#. odoo-javascript
+#: code:addons/alarab_laundry_dashboard/static/src/dashboard/laundry_dashboard.js:0
+msgid "to be collected later"
+msgstr ""
+
+#. module: alarab_laundry_dashboard
+#: model_terms:ir.ui.view,arch_db:alarab_laundry_dashboard.report_customer_statement
+msgid "إجمالي المستحق"
+msgstr ""
+
+#. module: alarab_laundry_dashboard
+#: model_terms:ir.ui.view,arch_db:alarab_laundry_dashboard.report_customer_statement
+msgid "الإجمالي"
+msgstr ""
+
+#. module: alarab_laundry_dashboard
+#: model_terms:ir.ui.view,arch_db:alarab_laundry_dashboard.report_customer_statement
+msgid "التاريخ"
+msgstr ""
+
+#. module: alarab_laundry_dashboard
+#: model_terms:ir.ui.view,arch_db:alarab_laundry_dashboard.report_customer_statement
+msgid "الحالة"
+msgstr ""
+
+#. module: alarab_laundry_dashboard
+#: model_terms:ir.ui.view,arch_db:alarab_laundry_dashboard.report_customer_statement
+msgid "الضريبة"
+msgstr ""
+
+#. module: alarab_laundry_dashboard
+#: model_terms:ir.ui.view,arch_db:alarab_laundry_dashboard.report_customer_statement
+msgid "الفاتورة"
+msgstr ""
+
+#. module: alarab_laundry_dashboard
+#: model_terms:ir.ui.view,arch_db:alarab_laundry_dashboard.report_customer_statement
+msgid "المبلغ بدون ضريبة"
+msgstr ""
+
+#. module: alarab_laundry_dashboard
+#: model_terms:ir.ui.view,arch_db:alarab_laundry_dashboard.report_customer_statement
+msgid "المبلغ مع الضريبة"
+msgstr ""
+
+#. module: alarab_laundry_dashboard
+#: model_terms:ir.ui.view,arch_db:alarab_laundry_dashboard.report_customer_statement
+msgid "المتبقي"
+msgstr ""
+
+#. module: alarab_laundry_dashboard
+#: model_terms:ir.ui.view,arch_db:alarab_laundry_dashboard.report_customer_statement
+msgid "المتبقي من الفترة"
+msgstr ""
+
+#. module: alarab_laundry_dashboard
+#: model_terms:ir.ui.view,arch_db:alarab_laundry_dashboard.report_customer_statement
+msgid "المدفوع"
+msgstr ""
+
+#. module: alarab_laundry_dashboard
+#: model_terms:ir.ui.view,arch_db:alarab_laundry_dashboard.report_customer_statement
+msgid "دفعات غير مخصصة لفواتير"
+msgstr ""
+
+#. module: alarab_laundry_dashboard
+#: model_terms:ir.ui.view,arch_db:alarab_laundry_dashboard.report_customer_statement
+msgid "رصيد سابق"
+msgstr ""
+
+#. module: alarab_laundry_dashboard
+#: model_terms:ir.ui.view,arch_db:alarab_laundry_dashboard.report_customer_statement
+msgid "غير مدفوعة"
+msgstr ""
+
+#. module: alarab_laundry_dashboard
+#: model_terms:ir.ui.view,arch_db:alarab_laundry_dashboard.report_customer_statement
+msgid "فواتير الفترة"
+msgstr ""
+
+#. module: alarab_laundry_dashboard
+#: model_terms:ir.ui.view,arch_db:alarab_laundry_dashboard.report_customer_statement
+msgid "كشف حساب زبون"
+msgstr ""
+
+#. module: alarab_laundry_dashboard
+#: model_terms:ir.ui.view,arch_db:alarab_laundry_dashboard.report_customer_statement
+msgid "مدفوعة"
+msgstr ""
+
+#. module: alarab_laundry_dashboard
+#: model_terms:ir.ui.view,arch_db:alarab_laundry_dashboard.report_customer_statement
+msgid "مدفوعة جزئياً"
+msgstr ""
+
+#. module: alarab_laundry_dashboard
+#: model_terms:ir.ui.view,arch_db:alarab_laundry_dashboard.report_customer_statement
+msgid "ملغاة"
+msgstr ""

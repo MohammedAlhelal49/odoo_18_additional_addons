@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+
+    <t t-name="london_laundry_implementation.CollectPaymentPopup">
+        <Dialog title.translate="Collect Payment" size="'lg'">
+            <div class="mb-2 fw-bold" t-esc="props.partner.name"/>
+            <table class="table table-sm align-middle lry-collect-table">
+                <thead>
+                    <tr>
+                        <th><input type="checkbox" class="form-check-input" t-on-change="toggleAll"
+                                   t-att-checked="selectedRows.length === state.rows.length"/></th>
+                        <th>Order</th>
+                        <th>Date</th>
+                        <th class="text-end">Total</th>
+                        <th class="text-end">Remaining</th>
+                        <th class="text-end">Collect</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr t-foreach="state.rows" t-as="row" t-key="row.id" t-att-class="{'table-active': row.selected}">
+                        <td><input type="checkbox" class="form-check-input" t-model="row.selected"/></td>
+                        <td>
+                            <div t-esc="row.name"/>
+                            <div class="small text-muted" t-esc="row.invoice"/>
+                        </td>
+                        <td class="small" t-esc="formatDate(row.date_order)"/>
+                        <td class="text-end" t-esc="formatCurrency(row.amount_total)"/>
+                        <td class="text-end fw-bold" t-esc="formatCurrency(row.remaining)"/>
+                        <td class="text-end lry-collect-amount">
+                            <input type="number" step="any" min="0" class="form-control text-end"
+                                   t-model.number="row.amount" t-att-disabled="!row.selected"/>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="d-flex justify-content-between fs-4 fw-bold">
+                <span>Total to collect</span>
+                <span t-esc="formatCurrency(total)"/>
+            </div>
+            <div t-if="props.withoutInvoice" class="small text-muted mt-2">
+                <t t-esc="props.withoutInvoice"/> older On Credit order(s) without invoice are not listed.
+            </div>
+            <div t-if="state.error" class="alert alert-danger mt-2 mb-0" t-esc="state.error"/>
+            <t t-set-slot="footer">
+                <button class="btn btn-primary btn-lg lh-lg o-default-button" t-on-click="confirm">Collect</button>
+                <button class="btn btn-secondary btn-lg lh-lg o-default-button" t-on-click="props.close">Discard</button>
+            </t>
+        </Dialog>
+    </t>
+
+</templates>

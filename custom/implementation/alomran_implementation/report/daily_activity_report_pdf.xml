@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="paperformat_daily_activity_landscape" model="report.paperformat">
+        <field name="name">Daily Activity Report (A4 Landscape)</field>
+        <field name="format">A4</field>
+        <field name="orientation">Landscape</field>
+        <field name="margin_top">30</field>
+        <field name="margin_bottom">20</field>
+        <field name="margin_left">7</field>
+        <field name="margin_right">7</field>
+        <field name="header_line" eval="False"/>
+        <field name="header_spacing">25</field>
+        <field name="dpi">90</field>
+    </record>
+
+    <record id="action_report_daily_activity" model="ir.actions.report">
+        <field name="name">Daily Activity Report</field>
+        <field name="model">alomran.daily.activity.report</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">alomran_implementation.report_daily_activity</field>
+        <field name="report_file">alomran_implementation.report_daily_activity</field>
+        <field name="print_report_name">'Daily Activity Report'</field>
+        <field name="paperformat_id" ref="paperformat_daily_activity_landscape"/>
+    </record>
+
+    <template id="report_daily_activity">
+        <t t-call="web.html_container">
+            <t t-set="o" t-value="company"/>
+            <t t-call="web.external_layout">
+                <div class="page" style="font-size: 12px;">
+                    <h3 class="mb-1">Daily Activity Report</h3>
+                    <div class="d-flex justify-content-between mb-3 text-muted">
+                        <div>
+                            <strong>Period:</strong>
+                            <span t-out="report['options']['date_from']"/> →
+                            <span t-out="report['options']['date_to']"/>
+                            <br/>
+                            <strong>Branches:</strong>
+                            <span t-out="', '.join(companies.mapped('name'))"/>
+                        </div>
+                        <div class="text-end">
+                            <strong>Printed on:</strong>
+                            <span t-out="print_date.strftime('%Y-%m-%d %H:%M')"/>
+                            <br/>
+                            <strong>By:</strong> <span t-out="user.name"/>
+                        </div>
+                    </div>
+
+                    <t t-if="not report['lines']">
+                        <p class="text-center text-muted">No activity recorded for the selected period.</p>
+                    </t>
+                    <table t-else="" class="table table-sm table-bordered o_main_table">
+                        <thead style="background-color: #e9ecef;">
+                            <tr>
+                                <th>Employee / Day</th>
+                                <th t-foreach="report['columns']" t-as="col" class="text-center">
+                                    <span t-out="col['label']"/>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <t t-foreach="report['lines']" t-as="line">
+                                <tr style="background-color: #f8f9fa; font-weight: bold;">
+                                    <td t-out="line['name']"/>
+                                    <td t-foreach="report['columns']" t-as="col" class="text-center"
+                                        t-att-style="'color: #dc3545;' if col['field'] == 'activities_overdue' and line['values'][col['field']] else None">
+                                        <t t-if="col['field'] == 'contracts_amount'">
+                                            <t t-out="'{:,.2f}'.format(line['values'][col['field']])"/>
+                                        </t>
+                                        <t t-else="" t-out="line['values'][col['field']]"/>
+                                    </td>
+                                </tr>
+                                <tr t-foreach="line['days']" t-as="day" style="color: #555;">
+                                    <td style="padding-inline-start: 20px;" t-out="day['date']"/>
+                                    <td t-foreach="report['columns']" t-as="col" class="text-center">
+                                        <t t-if="col['field'] == 'contracts_amount'">
+                                            <t t-out="'{:,.2f}'.format(day['values'][col['field']])"/>
+                                        </t>
+                                        <t t-else="" t-out="day['values'][col['field']]"/>
+                                    </td>
+                                </tr>
+                            </t>
+                        </tbody>
+                        <tfoot>
+                            <tr style="font-weight: bold; border-top: 2px solid #333;">
+                                <td>Total</td>
+                                <td t-foreach="report['columns']" t-as="col" class="text-center">
+                                    <t t-if="col['field'] == 'contracts_amount'">
+                                        <t t-out="'{:,.2f}'.format(report['totals'][col['field']])"/>
+                                    </t>
+                                    <t t-else="" t-out="report['totals'][col['field']]"/>
+                                </td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </t>
+        </t>
+    </template>
+
+</odoo>

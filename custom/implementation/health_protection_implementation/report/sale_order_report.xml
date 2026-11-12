@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="report_saleorder_document_hp" inherit_id="sale.report_saleorder_document">
+        <!-- Title shows only the document number: drop the "Quotation # " / "Order # " labels -->
+        <xpath expr="//t[@t-set='layout_document_title']/span[contains(text(), 'Quotation #')]" position="replace"/>
+        <xpath expr="//t[@t-set='layout_document_title']/span[contains(text(), 'Order #')]" position="replace"/>
+        <!-- One manual "Date" (hp_date) instead of Quotation/Order/Issued date + Expiration -->
+        <xpath expr="//div[@name='informations_date']" position="replace">
+            <div t-if="doc.hp_date" class="col" name="informations_date">
+                <strong>Date</strong>
+                <div t-field="doc.hp_date">2023-12-31</div>
+            </div>
+            <div t-if="doc.hp_po_number" class="col" name="informations_hp_po_number">
+                <strong>PO No</strong>
+                <div t-field="doc.hp_po_number">PO0001</div>
+            </div>
+            <div t-if="doc.hp_invoice_number" class="col" name="informations_hp_invoice_number">
+                <strong>Invoice No</strong>
+                <div t-out="doc.hp_invoice_number">INV/2026/00001</div>
+            </div>
+        </xpath>
+        <xpath expr="//div[@name='expiration_date']" position="replace"/>
+        <!-- Information box: only Date / PO No / Invoice No (no Your Reference, no Salesperson) -->
+        <xpath expr="//div[@name='informations_reference']" position="replace"/>
+        <xpath expr="//div[@id='informations']/div[@t-if='doc.user_id.name']" position="replace"/>
+        <!-- Payment terms are printed in hp_terms_sign_block: drop the standard payment term note (avoids printing it twice) -->
+        <xpath expr="//p[span[@t-field='doc.payment_term_id.note']]" position="replace"/>
+        <!-- payment terms / bank / sign: printed above the footer, next to the stamp, on the last page (company_stamp_block) -->
+        <!-- "To:" customer name, then "TRN:" and "Address:" lines (Country, State, City, Street) - same as the invoice.
+             Address max 80mm wide so a long address wraps instead of pushing the title off the page -->
+        <xpath expr="//t[@t-set='address']/div[@t-field='doc.partner_id']" position="replace">
+            <div class="d-flex">
+                <strong class="me-2 text-nowrap" style="font-size: 1.3rem; line-height: 1.1;">To:</strong>
+                <div t-field="doc.partner_id" t-options='{"widget": "contact", "fields": ["name"], "no_marker": True}'/>
+            </div>
+            <div t-if="doc.partner_id.vat" style="margin-top: 7px;">
+                <strong style="font-size: 1.1rem;">TRN:</strong> <span t-field="doc.partner_id.vat"/>
+            </div>
+            <t t-set="hp_address_line" t-value="doc.hp_partner_address_line()"/>
+            <div t-if="hp_address_line" style="margin-top: 7px; max-width: 80mm;">
+                <strong style="font-size: 1.1rem;">Address:</strong> <span t-out="hp_address_line"/>
+            </div>
+        </xpath>
+        <!-- Customer tax ID is shown above as "TRN:", aligned with the name -->
+        <xpath expr="//t[@t-set='address']/p[@t-if='doc.partner_id.vat']" position="replace"/>
+        <!-- Serial number (1, 2, 3...) for product lines, before the Code column -->
+        <xpath expr="//table[hasclass('o_main_table')]" position="before">
+            <t t-set="hp_seq" t-value="0"/>
+        </xpath>
+        <xpath expr="//th[@name='th_description']" position="before">
+            <th name="th_hp_seq" class="text-center"><span>#</span></th>
+            <th name="th_hp_code" class="text-start"><span>Code</span></th>
+        </xpath>
+        <xpath expr="//th[@name='th_description']" position="after">
+            <th t-if="doc.order_line.filtered('hp_batch_number')" name="th_hp_batch" class="text-start"><span>Batch No.</span></th>
+            <th t-if="doc.order_line.filtered('hp_expiry_date')" name="th_hp_expiry" class="text-start"><span>Expiry Date</span></th>
+        </xpath>
+        <xpath expr="//td[@name='td_name']" position="before">
+            <td name="td_hp_seq" class="text-center">
+                <t t-set="hp_seq" t-value="hp_seq + 1"/>
+                <span t-out="hp_seq"/>
+            </td>
+            <td name="td_hp_code"><span t-field="line.hp_item_code"/></td>
+        </xpath>
+        <xpath expr="//td[@name='td_name']/span" position="replace">
+            <span t-out="line.hp_name_without_code()"/>
+        </xpath>
+        <xpath expr="//td[@name='td_name']" position="after">
+            <td t-if="doc.order_line.filtered('hp_batch_number')" name="td_hp_batch"><span t-field="line.hp_batch_number"/></td>
+            <td t-if="doc.order_line.filtered('hp_expiry_date')" name="td_hp_expiry"><span t-field="line.hp_expiry_date"/></td>
+        </xpath>
+    </template>
+</odoo>

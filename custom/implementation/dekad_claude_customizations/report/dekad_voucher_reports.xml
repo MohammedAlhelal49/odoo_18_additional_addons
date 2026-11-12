@@ -1,0 +1,274 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- ================= Report actions ================= -->
+    <record id="action_report_dekad_cheque_receipt" model="ir.actions.report">
+        <field name="name">Cheque Receipt Voucher (CRV)</field>
+        <field name="model">pdc.wizard</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">dekad_claude_customizations.report_dekad_cheque_receipt</field>
+        <field name="report_file">dekad_claude_customizations.report_dekad_cheque_receipt</field>
+        <field name="print_report_name">'Cheque Receipt Voucher - %s' % (object.name or '')</field>
+        <field name="binding_model_id" ref="sh_pdc.model_pdc_wizard"/>
+        <field name="binding_type">report</field>
+    </record>
+
+    <record id="action_report_dekad_cheque_payment" model="ir.actions.report">
+        <field name="name">Cheque Payment Voucher (CPV)</field>
+        <field name="model">pdc.wizard</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">dekad_claude_customizations.report_dekad_cheque_payment</field>
+        <field name="report_file">dekad_claude_customizations.report_dekad_cheque_payment</field>
+        <field name="print_report_name">'Cheque Payment Voucher - %s' % (object.name or '')</field>
+        <field name="binding_model_id" ref="sh_pdc.model_pdc_wizard"/>
+        <field name="binding_type">report</field>
+    </record>
+
+    <!-- Hide the old "PDC Payment" print option; the cheque voucher replaces it -->
+    <record id="sh_pdc.action_report_pdc_payment" model="ir.actions.report">
+        <field name="binding_model_id" eval="False"/>
+    </record>
+
+    <!-- ================= Shared signature block ================= -->
+    <template id="dekad_voucher_signatures">
+        <table style="width:100%; margin-top:30px; border-collapse:separate; border-spacing:8px 0;">
+            <tr>
+                <t t-foreach="boxes" t-as="box">
+                    <td t-attf-style="width:#{100 // len(boxes)}%; border:1px solid #999; padding:8px 10px; vertical-align:top; height:90px;">
+                        <div style="overflow:hidden; font-weight:bold;"
+                             t-attf-style="color:#{sc};">
+                            <span style="float:left; white-space:nowrap;" t-out="box[0]"/>
+                            <span style="float:right; white-space:nowrap;" dir="rtl" t-out="box[1]"/>
+                        </div>
+                        <div style="margin-top:28px;">Name / الاسم: ____________________</div>
+                        <div style="margin-top:8px;">Date / التاريخ: ____________________</div>
+                    </td>
+                </t>
+            </tr>
+        </table>
+        <t t-set="stamp_co" t-value="o.company_id"/>
+        <t t-call="dekad_claude_customizations.dekad_company_stamp"/>
+    </template>
+
+    <!-- ================= Received-by box (receipt vouchers): one full-width row ================= -->
+    <template id="dekad_received_by_box">
+        <table style="width:100%; margin-top:14px; border:1px solid #999; border-collapse:collapse; font-size:15px; page-break-inside:avoid;">
+            <tr>
+                <td colspan="3" t-attf-style="padding:8px 12px; color:#{sc}; font-weight:bold; font-size:17px; border-bottom:1px solid #999; overflow:hidden;">
+                    <span style="float:left; white-space:nowrap;">Received By</span>
+                    <span style="float:right; white-space:nowrap;" dir="rtl">المستلم</span>
+                </td>
+            </tr>
+            <tr>
+                <td style="width:34%; padding:8px 12px; vertical-align:top; border-right:1px solid #999;">
+                    <div t-attf-style="color:#{sc}; font-size:15px;">Name / الاسم</div>
+                    <div style="font-weight:bold; font-size:16px; margin-top:6px;" t-out="rb_user.name"/>
+                </td>
+                <td style="width:26%; padding:8px 12px; vertical-align:top; border-right:1px solid #999;">
+                    <div t-attf-style="color:#{sc}; font-size:15px;">Date / التاريخ</div>
+                    <div style="font-weight:bold; font-size:16px; margin-top:6px;" t-out="rb_date" t-options='{"widget": "date", "format": "dd/MM/yyyy"}'/>
+                </td>
+                <td style="width:40%; padding:8px 12px; vertical-align:top; height:78px;">
+                    <div t-attf-style="color:#{sc}; font-size:15px;">Signature / التوقيع</div>
+                    <img t-if="rb_user.dekad_signature" t-att-src="image_data_uri(rb_user.dekad_signature)" style="max-height:60px; max-width:75%; margin-top:6px;"/>
+                </td>
+            </tr>
+        </table>
+        <t t-set="stamp_co" t-value="o.company_id"/>
+        <t t-call="dekad_claude_customizations.dekad_company_stamp"/>
+    </template>
+
+    <!-- ================= Cheque voucher (CRV / CPV) ================= -->
+    <template id="dekad_cheque_voucher_doc">
+                <t t-set="company" t-value="o.company_id"/>
+                <t t-set="pc" t-value="company.dekad_bar_color()"/>
+                <t t-set="sc" t-value="company.secondary_color or '#222222'"/>
+                <t t-call="web.external_layout">
+                    <div class="page" style="font-size:12px; font-family:Arial, sans-serif;">
+                        <style>span[dir=rtl], td[dir=rtl] { font-size: 14px; }</style>
+
+                        <!-- Title bar -->
+                        <table style="width:100%; margin-bottom:12px;">
+                            <tr>
+                                <td t-attf-style="background:#{pc}; color:#fff; padding:8px 12px; font-size:16px; font-weight:bold; white-space:nowrap;">
+                                    <span style="float:left; white-space:nowrap;" t-out="'CHEQUE RECEIPT VOUCHER' if is_receipt else 'CHEQUE PAYMENT VOUCHER'"/>
+                                    <span style="float:right; white-space:nowrap; font-size:21px;" dir="rtl" t-out="'سند قبض شيك' if is_receipt else 'سند دفع شيك'"/>
+                                </td>
+                            </tr>
+                        </table>
+
+                        <!-- Header info -->
+                        <table style="width:100%; border:1px solid #999; margin-bottom:12px;">
+                            <tr>
+                                <td style="padding:6px 10px; width:40%;">
+                                    <div t-attf-style="color:#{sc}; font-size:11.5px;">VOUCHER NO. / رقم السند</div>
+                                    <strong t-out="o.name"/>
+                                </td>
+                                <td style="padding:6px 10px; width:30%;">
+                                    <div t-attf-style="color:#{sc}; font-size:11.5px;">VOUCHER DATE / التاريخ</div>
+                                    <strong t-out="o.payment_date" t-options='{"widget": "date", "format": "dd/MM/yyyy"}'/>
+                                </td>
+                                                                <td style="padding:6px 10px; width:30%;">
+                                    <div t-attf-style="color:#{sc}; font-size:11.5px;">CURRENCY / العملة</div>
+                                    <strong t-out="o.currency_id.name"/>
+                                </td>
+                            </tr>
+                        </table>
+
+                        <!-- Party and amount -->
+                        <table style="width:100%; margin-bottom:12px; border-collapse:separate; border-spacing:0;">
+                            <tr>
+                                <td style="width:58%; border:1px solid #999; padding:8px 10px; vertical-align:top;">
+                                    <div t-attf-style="color:#{sc}; font-weight:bold; overflow:hidden;">
+                                        <span style="float:left; white-space:nowrap;" t-out="'RECEIVED FROM' if is_receipt else 'PAID TO'"/>
+                                        <span style="float:right; white-space:nowrap;" dir="rtl" t-out="'استلمنا من' if is_receipt else 'دفعنا إلى'"/>
+                                    </div>
+                                    <div style="font-size:14px; font-weight:bold; margin-top:4px;" t-out="o.partner_id.name"/>
+                                    <div t-if="o.partner_id.ref">Code / الرمز: <span t-out="o.partner_id.ref"/></div>
+                                    <div>TRN / الرقم الضريبي: <span t-out="o.partner_id.vat or '-'"/></div>
+                                </td>
+                                <td t-attf-style="width:42%; border:1px solid #{pc}; padding:8px 10px; vertical-align:top;">
+                                    <div t-attf-style="color:#{sc}; font-weight:bold; overflow:hidden;">
+                                        <span style="float:left; white-space:nowrap;" t-out="'AMOUNT RECEIVED' if is_receipt else 'AMOUNT PAID'"/>
+                                        <span style="float:right; white-space:nowrap;" dir="rtl" t-out="'المبلغ المستلم' if is_receipt else 'المبلغ المدفوع'"/>
+                                    </div>
+                                    <div t-attf-style="font-size:20px; font-weight:bold; color:#{sc}; margin-top:4px;">
+                                        <span t-out="o.currency_id.name"/>
+                                        <span t-out="o.payment_amount" t-options='{"widget": "float", "precision": 2}'/>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+
+                        <!-- Amount in words -->
+                        <table style="width:100%; margin-bottom:12px; border:1px solid #999;">
+                            <tr>
+                                <td style="padding:6px 10px;" t-out="o.dekad_amount_words('en')"/>
+                                <td style="padding:6px 10px; text-align:right;" dir="rtl" t-out="o.dekad_amount_words('ar')"/>
+                            </tr>
+                        </table>
+
+                        <!-- Cheque details -->
+                        <div t-attf-style="background:#{pc}; color:#fff; padding:5px 10px; font-weight:bold; overflow:hidden;">
+                            <span style="float:left; white-space:nowrap;">CHEQUE DETAILS</span>
+                            <span style="float:right; white-space:nowrap;" dir="rtl">بيانات الشيك</span>
+                        </div>
+                        <table style="width:100%; border:1px solid #999; border-top:none; margin-bottom:12px;">
+                            <tr>
+                                <td style="padding:6px 10px; width:25%;">
+                                    <div t-attf-style="color:#{sc}; font-size:11.5px;">Cheque No. / رقم الشيك</div>
+                                    <strong t-out="o.reference or '-'"/>
+                                </td>
+                                <td style="padding:6px 10px; width:25%;">
+                                    <div t-attf-style="color:#{sc}; font-size:11.5px;">Bank / البنك</div>
+                                    <strong t-out="o.bank_id.name or '-'"/>
+                                </td>
+                                <td style="padding:6px 10px; width:25%;">
+                                    <div t-attf-style="color:#{sc}; font-size:11.5px;">Cheque Date / تاريخ الشيك</div>
+                                    <strong t-out="o.payment_date" t-options='{"widget": "date", "format": "dd/MM/yyyy"}'/>
+                                </td>
+                                <td style="padding:6px 10px; width:25%;">
+                                    <div t-attf-style="color:#{sc}; font-size:11.5px;">Due Date / تاريخ الاستحقاق</div>
+                                    <strong t-out="o.due_date" t-options='{"widget": "date", "format": "dd/MM/yyyy"}'/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="3" style="padding:6px 10px; border-top:1px solid #999; text-align:right;">
+                                    <strong>TOTAL / الإجمالي</strong>
+                                </td>
+                                <td t-attf-style="padding:6px 10px; border-top:1px solid #999; font-weight:bold; color:#{sc};">
+                                    <span t-out="o.currency_id.name"/>
+                                    <span t-out="o.payment_amount" t-options='{"widget": "float", "precision": 2}'/>
+                                </td>
+                            </tr>
+                        </table>
+
+                        <!-- Linked invoices / bills: same look as the receipt voucher invoices table -->
+                        <t t-foreach="o.dekad_invoice_lines()" t-as="il">
+                            <t t-set="inv" t-value="il['invoice']"/>
+                            <table style="width:100%; margin-bottom:10px; border-collapse:collapse; font-size:12px;">
+                                <thead>
+                                    <tr t-attf-style="background:#{pc}; color:#fff;">
+                                        <th style="padding:6px 8px; width:18%; border:1px solid #bbb;">Date / التاريخ</th>
+                                        <th style="padding:6px 8px; width:27%; border:1px solid #bbb;">Number / الرقم</th>
+                                        <th style="padding:6px 8px; width:30%; border:1px solid #bbb;">Reference / المرجع</th>
+                                        <th style="padding:6px 8px; width:25%; text-align:right; border:1px solid #bbb;">Amount / المبلغ</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td style="padding:4px 8px; border:1px solid #bbb;" t-out="inv.invoice_date or inv.date" t-options='{"widget": "date", "format": "dd/MM/yyyy"}'/>
+                                        <td style="padding:4px 8px; border:1px solid #bbb;"><strong t-out="inv.name"/></td>
+                                        <td style="padding:4px 8px; border:1px solid #bbb;" t-out="inv.ref or ''"/>
+                                        <td style="padding:4px 8px; border:1px solid #bbb; text-align:right;" t-out="inv.amount_total" t-options="{'widget': 'monetary', 'display_currency': inv.currency_id}"/>
+                                    </tr>
+                                    <tr t-foreach="il['rows']" t-as="r">
+                                        <td style="padding:4px 8px; border:1px solid #bbb;" t-out="r['date']" t-options='{"widget": "date", "format": "dd/MM/yyyy"}'/>
+                                        <td style="padding:4px 8px; border:1px solid #bbb;">
+                                            <span t-out="r['name']"/>
+                                            <strong t-if="r['cheque']"> (this cheque / هذا الشيك)</strong>
+                                        </td>
+                                        <td style="padding:4px 8px; border:1px solid #bbb;" t-out="r['ref']"/>
+                                        <td style="padding:4px 8px; border:1px solid #bbb; text-align:right;" t-out="-r['amount']" t-options="{'widget': 'monetary', 'display_currency': inv.currency_id}"/>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding:4px 8px; border:1px solid #bbb;"/>
+                                        <td colspan="2" style="padding:4px 8px; border:1px solid #bbb;">
+                                            <strong>Balance Due for / المتبقي للفاتورة <span t-out="inv.name"/></strong>
+                                        </td>
+                                        <td t-attf-style="padding:4px 8px; border:1px solid #bbb; text-align:right; color:#{sc};">
+                                            <strong t-out="il['balance']" t-options="{'widget': 'monetary', 'display_currency': inv.currency_id}"/>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </t>
+
+                        <!-- Cheque copy: the PDC Image (if a picture), else the first image in Cheque Attachments -->
+                        <t t-set="cheque_img" t-value="o.dekad_cheque_copy()"/>
+                        <div t-if="cheque_img" style="margin-bottom:10px; page-break-inside:avoid;">
+                            <div t-attf-style="background:#{pc}; color:#fff; padding:5px 10px; font-weight:bold; overflow:hidden;">
+                                <span style="float:left; white-space:nowrap;">CHEQUE COPY</span>
+                                <span style="float:right; white-space:nowrap;" dir="rtl">صورة الشيك</span>
+                            </div>
+                            <div style="border:1px solid #999; border-top:none; padding:8px; text-align:center;">
+                                <img t-att-src="image_data_uri(cheque_img)" style="max-height:100px; max-width:100%;"/>
+                            </div>
+                        </div>
+
+                        <p t-if="is_receipt" style="font-size:11.5px; color:#555;">
+                            Receipt of this cheque is subject to successful bank clearance.
+                            <span dir="rtl" style="float:right; white-space:nowrap;">استلام الشيك لا يعني التسوية النهائية إلا بعد التحصيل البنكي.</span>
+                        </p>
+
+                        <t t-if="is_receipt">
+                    <t t-set="rb_user" t-value="(o.dekad_received_by_id or o.create_uid).sudo()"/>
+                    <t t-set="rb_date" t-value="o.payment_date"/>
+                    <t t-call="dekad_claude_customizations.dekad_received_by_box"/>
+                </t>
+                <t t-else="">
+                    <t t-set="boxes" t-value="[('Prepared By', 'أُعدّ بواسطة'), ('Approved By', 'الاعتماد'), ('Receiver', 'المستلم')]"/>
+                    <t t-call="dekad_claude_customizations.dekad_voucher_signatures"/>
+                </t>
+                    </div>
+                </t>
+    </template>
+
+    <template id="report_dekad_cheque_receipt">
+        <t t-call="web.html_container">
+            <t t-foreach="docs.filtered(lambda d: d.payment_type == 'receive_money')" t-as="o">
+                <t t-set="is_receipt" t-value="True"/>
+                <t t-call="dekad_claude_customizations.dekad_cheque_voucher_doc"/>
+            </t>
+        </t>
+    </template>
+
+    <template id="report_dekad_cheque_payment">
+        <t t-call="web.html_container">
+            <t t-foreach="docs.filtered(lambda d: d.payment_type != 'receive_money')" t-as="o">
+                <t t-set="is_receipt" t-value="False"/>
+                <t t-call="dekad_claude_customizations.dekad_cheque_voucher_doc"/>
+            </t>
+        </t>
+    </template>
+</odoo>

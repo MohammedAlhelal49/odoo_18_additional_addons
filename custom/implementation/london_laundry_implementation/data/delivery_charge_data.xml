@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+    <!-- أجرة التوصيل: خدمة بسعر صفر، الكاشير بيحط سعرها لكل طلب (Home Delivery).
+         الضريبة = ضريبة البيع الافتراضية للشركة، متل باقي خدمات المغسلة -->
+    <record id="product_laundry_delivery" model="product.product">
+        <field name="name">Delivery / توصيل</field>
+        <field name="type">service</field>
+        <field name="list_price">0</field>
+        <field name="available_in_pos" eval="True"/>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+
+    <!-- تثبيت جديد: نقاط البيع الموجودة بتاخد منتج التوصيل -->
+    <function model="pos.config" name="_laundry_set_delivery_product"/>
+</odoo>

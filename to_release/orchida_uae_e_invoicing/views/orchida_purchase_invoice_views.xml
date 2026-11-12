@@ -1,0 +1,87 @@
+<odoo>
+
+    <record id="view_orchida_purchase_invoice_tree" model="ir.ui.view">
+        <field name="name">orchida.purchase.invoice.tree</field>
+        <field name="model">orchida.purchase.invoice</field>
+        <field name="arch" type="xml">
+            <list string="Orchida Purchase Invoices">
+                <field name="company_id"/>
+                <field name="invoice_number"/>
+                <field name="status"/>
+                <field name="vendor_bill_id"/>
+                <field name="issue_date"/>
+                <field name="currency"/>
+                <field name="supplier_name"/>
+                <field name="total_amount"/>
+
+
+            </list>
+        </field>
+    </record>
+
+
+
+<record id="view_orchida_purchase_invoice_form" model="ir.ui.view">
+        <field name="name">orchida.purchase.invoice.form</field>
+        <field name="model">orchida.purchase.invoice</field>
+        <field name="arch" type="xml">
+            <form string="Orchida Purchase Invoice" create="false" edit="false">
+                <header>
+                <button name="action_view_pdf"
+                        type="object"
+                        string="View XML PDF"
+                        class="btn-primary"/>
+
+                    <button name="action_view_ubl_pdf"
+                        type="object"
+                        string="View PDF Invoice"
+                        class="btn-primary"/>
+
+                </header>
+
+
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="company_id"/>
+                            <field name="invoice_number"/>
+                            <field name="status"/>
+                            <field name="vendor_bill_id"/>
+                        </group>
+                        <group>
+                            <field name="issue_date"/>
+                            <field name="currency"/>
+                            <field name="supplier_name"/>
+                            <field name="total_amount"/>
+
+                        </group>
+                    </group>
+
+                    <group>
+                        <field name="import_error" readonly="1"/>
+                    </group>
+
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+
+
+
+
+<record id="action_orchida_purchase_invoice" model="ir.actions.act_window">
+        <field name="name">Purchase Invoices (Orchida)</field>
+        <field name="res_model">orchida.purchase.invoice</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+
+
+<menuitem id="menu_orchida_purchase_invoice"
+              name="Purchase Invoices"
+              parent="orchida_uae_e_invoicing.menu_sent_invoice_parent"
+              action="action_orchida_purchase_invoice"
+              sequence="10"/>
+
+</odoo>

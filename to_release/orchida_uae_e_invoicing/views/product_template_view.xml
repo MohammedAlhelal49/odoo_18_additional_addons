@@ -1,0 +1,21 @@
+<odoo>
+    <record id="view_product_template_orchida_einvoice" model="ir.ui.view">
+        <field name="name">product.template.form.orchida.einvoice</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_only_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='barcode']" position="after">
+                <group string="RCM Fallback Data">
+                    <field name="orchida_rcm_item_type"/>
+                    <field name="orchida_hs_code"/>
+                    <field name="orchida_hs_list_version"/>
+                    <field name="orchida_sac_code"/>
+                    <field name="orchida_sac_scheme_version"/>
+                </group>
+                <group string="Document Allowance / Charge" invisible="not orchida_doc_ac_reason_code">
+                    <field name="orchida_doc_ac_reason_code"/>
+                </group>
+            </xpath>
+        </field>
+    </record>
+</odoo>

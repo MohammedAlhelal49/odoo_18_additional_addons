@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_order_form_inherit_proposal" model="ir.ui.view">
+        <field name="name">sale.order.form.inherit.proposal</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//group[@name='sale_header']" position="after">
+                <group string="Proposal Details" name="custom_proposal_details">
+                    <group>
+                        <field name="x_implementation_period"/>
+                        <field name="x_training_period"/>
+                        <field name="x_testing_period"/>
+                    </group>
+                    <group>
+                        <field name="x_hosting_payment"/>
+                    </group>
+                </group>
+            </xpath>
+
+            <xpath expr="//notebook" position="inside">
+                <page string="Contract Terms &amp; Details" name="contract_details">
+                    <group>
+                        <group string="Basic Contract Information">
+                            <field name="x_contract_date"/>
+                            <field name="x_target_company_name" placeholder="Leave blank to use Partner Name"/>
+                            <field name="x_documentary_cycle"/>
+                            <field name="x_minimum_documentary_cycle"/>
+                            <field name="x_maximum_documentary_cycle"/>
+                        </group>
+                        <group string="Software Platform Details">
+                            <field name="x_odoo_edition" widget="radio" options="{'horizontal': true}"/>
+                            <field name="x_odoo_version"/>
+                            <field name="x_number_of_trainees"/>
+                            <field name="x_hosting_location"/>
+                        </group>
+                        <group string="Payment Schedule &amp; Details">
+                            <field name="x_down_payment_details"/>
+                            <field name="x_second_payment_details"/>
+                            <field name="x_payment_method_text"/>
+                            <field name="x_payment_period"/>
+                            <field name="x_first_payment_period_limit"/>
+                        </group>
+                    </group>
+                    <group string="Digital Signatures &amp; Stamps (PNG)">
+                        <group string="First Party (DAEM)">
+                            <field name="x_daem_logo" widget="image" options="{'size': [150, 120]}"/>
+                            <field name="x_daem_signature" widget="image" options="{'size': [150, 80]}"/>
+                            <field name="x_daem_stamp" widget="image" options="{'size': [120, 120]}"/>
+                        </group>
+                        <!--group string="Second Party (Client)">
+                            <field name="x_client_logo" widget="image" options="{'size': [150, 120]}"/>
+                            <field name="x_client_signature" widget="image" options="{'size': [150, 80]}"/>
+                            <field name="x_client_stamp" widget="image" options="{'size': [120, 120]}"/>
+                        </group-->
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+</odoo>

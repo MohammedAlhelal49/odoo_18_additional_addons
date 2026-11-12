@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+    <record id="delivery_method_pickup" model="london.delivery.method">
+        <field name="name">Store Pickup</field>
+        <field name="sequence">1</field>
+    </record>
+    <record id="delivery_method_home" model="london.delivery.method">
+        <field name="name">Home Delivery</field>
+        <field name="laundry_with_charge" eval="True"/>
+        <field name="sequence">2</field>
+    </record>
+</odoo>

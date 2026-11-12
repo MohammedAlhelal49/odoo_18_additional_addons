@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <template id="homepage" inherit_id="website.homepage" name="Health Protection One-Page Home">
+        <xpath expr="//div[@id='wrap']" position="replace">
+            <div id="wrap" class="hp-page">
+
+                <!-- ========================= HERO ========================= -->
+                <section class="hp-hero" id="home">
+                    <div class="hp-hero-glow"/>
+                    <div class="container-xl">
+                        <div class="row align-items-center g-5">
+                            <div class="col-lg-6">
+                                <div class="hp-eyebrow"><span class="hp-eyebrow-dot"/>Laboratory &amp; Medical Supplies · UAE</div>
+                                <h1 class="hp-hero-title">
+                                    Reliable supplies for
+                                    <span class="hp-gradient-text">accurate diagnostics.</span>
+                                </h1>
+                                <p class="hp-hero-lead">
+                                    Health Protection supplies hospitals, clinics and medical laboratories with quality
+                                    reagents, calibrators, controls and consumables, delivered on time and backed by
+                                    responsive technical support.
+                                </p>
+                                <div class="hp-hero-actions">
+                                    <a href="#services" class="btn hp-btn-primary btn-lg">
+                                        Explore Our Solutions<i class="fa fa-long-arrow-right ms-3"/>
+                                    </a>
+                                    <a href="#contact" class="btn hp-btn-outline btn-lg">Contact Us</a>
+                                </div>
+                                <div class="hp-hero-points">
+                                    <span><i class="fa fa-check-circle"/>Quality-assured products</span>
+                                    <span><i class="fa fa-check-circle"/>Fast UAE-wide delivery</span>
+                                    <span><i class="fa fa-check-circle"/>Expert support</span>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="hp-hero-visual">
+                                    <div class="hp-hero-ring"/>
+                                    <div class="hp-hero-card">
+                                        <img src="/healthcare_website/static/src/img/logo_full.png" alt="Health Protection"/>
+                                    </div>
+                                    <div class="hp-float hp-float-1">
+                                        <span class="hp-float-icon"><i class="fa fa-tint"/></span>
+                                        <span><b>Hematology</b><small>Reagents &amp; controls</small></span>
+                                    </div>
+                                    <div class="hp-float hp-float-2">
+                                        <span class="hp-float-icon"><i class="fa fa-flask"/></span>
+                                        <span><b>Clinical Chemistry</b><small>Routine &amp; special tests</small></span>
+                                    </div>
+                                    <div class="hp-float hp-float-3">
+                                        <span class="hp-float-icon"><i class="fa fa-shield"/></span>
+                                        <span><b>Quality Control</b><small>Calibrators &amp; QC materials</small></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ========================= HIGHLIGHTS ========================= -->
+                <section class="hp-strip">
+                    <div class="container-xl">
+                        <div class="row g-3">
+                            <div class="col-6 col-lg-3">
+                                <div class="hp-strip-item"><i class="fa fa-certificate"/><span>Certified, traceable products</span></div>
+                            </div>
+                            <div class="col-6 col-lg-3">
+                                <div class="hp-strip-item"><i class="fa fa-truck"/><span>Reliable stock &amp; delivery</span></div>
+                            </div>
+                            <div class="col-6 col-lg-3">
+                                <div class="hp-strip-item"><i class="fa fa-thermometer-half"/><span>Cold-chain handling</span></div>
+                            </div>
+                            <div class="col-6 col-lg-3">
+                                <div class="hp-strip-item"><i class="fa fa-headphones"/><span>Technical &amp; application support</span></div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ========================= ABOUT ========================= -->
+                <section class="hp-section" id="about">
+                    <div class="container-xl">
+                        <div class="row align-items-center g-5">
+                            <div class="col-lg-5">
+                                <div class="hp-about-visual">
+                                    <div class="hp-about-panel">
+                                        <i class="fa fa-heartbeat"/>
+                                        <h3>Protecting health starts in the laboratory.</h3>
+                                        <p>Every accurate result depends on the right reagent, the right control and the right partner.</p>
+                                    </div>
+                                    <div class="hp-about-badge">
+                                        <i class="fa fa-map-marker"/>
+                                        <span><b>Based in the UAE</b><small>Serving labs across the Emirates</small></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-7">
+                                <div class="hp-eyebrow"><span class="hp-eyebrow-dot"/>About Us</div>
+                                <h2 class="hp-section-title">A dependable partner for <span class="hp-c-blue">laboratories and healthcare providers.</span></h2>
+                                <p class="hp-text">
+                                    Health Protection is a UAE-based supplier of laboratory diagnostics and medical supplies.
+                                    We work with hospitals, polyclinics, private laboratories and diagnostic centers to keep
+                                    their analyzers running and their results reliable.
+                                </p>
+                                <p class="hp-text">
+                                    From hematology and clinical chemistry reagents to calibrators, quality controls and daily
+                                    consumables, we focus on products that laboratories can trust, with careful storage,
+                                    on-time delivery and a team that understands laboratory work.
+                                </p>
+                                <div class="row g-3 mt-2">
+                                    <div class="col-sm-6">
+                                        <div class="hp-mini-card">
+                                            <span class="hp-mini-icon"><i class="fa fa-bullseye"/></span>
+                                            <div><h4>Our Mission</h4><p>Deliver quality laboratory products and service that help healthcare providers produce accurate results.</p></div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="hp-mini-card">
+                                            <span class="hp-mini-icon"><i class="fa fa-eye"/></span>
+                                            <div><h4>Our Vision</h4><p>To be the first choice for laboratory and medical supplies in the UAE and the region.</p></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ========================= SERVICES ========================= -->
+                <section class="hp-section hp-section-tinted" id="services">
+                    <div class="container-xl">
+                        <div class="hp-section-head">
+                            <div class="hp-eyebrow"><span class="hp-eyebrow-dot"/>Our Services</div>
+                            <h2 class="hp-section-title">Everything your laboratory needs, <span class="hp-c-blue">from one supplier.</span></h2>
+                            <p class="hp-text">A focused range of diagnostics products and services for routine and specialized testing.</p>
+                        </div>
+                        <div class="row g-4">
+                            <div class="col-md-6 col-lg-4">
+                                <div class="hp-card">
+                                    <span class="hp-card-icon"><i class="fa fa-tint"/></span>
+                                    <h3>Hematology Reagents</h3>
+                                    <p>Diluents, lysing reagents and cleaners for hematology analyzers, plus hematology controls at low, normal and high levels.</p>
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-lg-4">
+                                <div class="hp-card">
+                                    <span class="hp-card-icon"><i class="fa fa-flask"/></span>
+                                    <h3>Clinical Chemistry Reagents</h3>
+                                    <p>Reagents for glucose, kidney and liver function, enzymes, proteins, electrolytes and minerals for routine chemistry panels.</p>
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-lg-4">
+                                <div class="hp-card">
+                                    <span class="hp-card-icon"><i class="fa fa-sliders"/></span>
+                                    <h3>Calibrators &amp; Quality Controls</h3>
+                                    <p>Multi-level calibrators and assayed controls, including cardiac markers, to keep every run accurate and compliant.</p>
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-lg-4">
+                                <div class="hp-card">
+                                    <span class="hp-card-icon"><i class="fa fa-cubes"/></span>
+                                    <h3>Laboratory Consumables</h3>
+                                    <p>Cuvettes, sample cups, wash and maintenance solutions that keep analyzers clean and workflows uninterrupted.</p>
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-lg-4">
+                                <div class="hp-card">
+                                    <span class="hp-card-icon"><i class="fa fa-wrench"/></span>
+                                    <h3>Technical &amp; Application Support</h3>
+                                    <p>Guidance on product selection, set-up and troubleshooting from a team that speaks the language of the lab.</p>
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-lg-4">
+                                <div class="hp-card">
+                                    <span class="hp-card-icon"><i class="fa fa-truck"/></span>
+                                    <h3>Supply &amp; Logistics</h3>
+                                    <p>Planned stock, temperature-controlled storage and dependable delivery so you never run short of critical items.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="text-center mt-5">
+                            <a href="/products" class="btn hp-btn-primary btn-lg">View All Products<i class="fa fa-long-arrow-right ms-3"/></a>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ========================= WHY US ========================= -->
+                <section class="hp-section" id="why-us">
+                    <div class="container-xl">
+                        <div class="row g-5 align-items-center">
+                            <div class="col-lg-5">
+                                <div class="hp-eyebrow"><span class="hp-eyebrow-dot"/>Why Choose Us</div>
+                                <h2 class="hp-section-title">Quality you can measure, <span class="hp-c-blue">service you can count on.</span></h2>
+                                <p class="hp-text">We know that a missing reagent or an unreliable control means delayed results for patients. That is why we built our work around four simple commitments.</p>
+                                <a href="#contact" class="btn hp-btn-primary mt-3">Talk to Our Team<i class="fa fa-long-arrow-right ms-2"/></a>
+                            </div>
+                            <div class="col-lg-7">
+                                <div class="row g-4">
+                                    <div class="col-sm-6">
+                                        <div class="hp-why"><span class="hp-why-num">01</span><h4>Trusted Quality</h4><p>Products from reliable manufacturers, with full documentation and lot traceability.</p></div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="hp-why"><span class="hp-why-num">02</span><h4>Always Available</h4><p>Stock planned around your consumption so critical items are ready when you need them.</p></div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="hp-why"><span class="hp-why-num">03</span><h4>Proper Handling</h4><p>Temperature-sensitive reagents stored and delivered under the right conditions.</p></div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="hp-why"><span class="hp-why-num">04</span><h4>Real Support</h4><p>Fast answers and on-site help from people who understand laboratory workflows.</p></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ========================= HOW WE WORK ========================= -->
+                <section class="hp-section hp-section-tinted pt-0 pt-lg-0" id="how-we-work">
+                    <div class="container-xl">
+                        <div class="hp-steps">
+                            <div class="hp-step"><span class="hp-step-icon"><i class="fa fa-comments-o"/></span><h5>1. Tell us your needs</h5><p>Analyzers, tests and monthly volumes.</p></div>
+                            <div class="hp-step"><span class="hp-step-icon"><i class="fa fa-file-text-o"/></span><h5>2. Get a tailored quote</h5><p>The right products at the right price.</p></div>
+                            <div class="hp-step"><span class="hp-step-icon"><i class="fa fa-truck"/></span><h5>3. Fast delivery</h5><p>Stored and shipped with care.</p></div>
+                            <div class="hp-step"><span class="hp-step-icon"><i class="fa fa-life-ring"/></span><h5>4. Ongoing support</h5><p>We stay with you after delivery.</p></div>
+                        </div>
+                    </div>
+                </section>
+
+            </div>
+        </xpath>
+    </template>
+
+</odoo>

@@ -1,0 +1,81 @@
+<odoo>
+
+
+<record id="report_orchida_invoice_pdf" model="ir.actions.report">
+    <field name="name">Orchida Invoice</field>
+    <field name="model">orchida.purchase.invoice</field>
+    <field name="report_type">qweb-pdf</field>
+    <field name="report_name">orchida_uae_e_invoicing.orchida_invoice_pdf_template</field>
+        <field name="report_file">orchida_uae_e_invoicing.orchida_invoice_pdf_template</field>
+</record>
+
+<template id="orchida_invoice_pdf_template">
+
+<t t-call="web.external_layout">
+
+<main>
+
+<t t-foreach="docs" t-as="doc">
+
+<div class="page">
+
+<h2 style="text-align:center;">Orchida Purchase Invoice</h2>
+
+<table style="width:100%; border-collapse: collapse; margin-bottom:20px;">
+
+<tr>
+<td style="padding:6px;"><strong>Invoice Number</strong></td>
+<td style="padding:6px;"><t t-esc="doc.invoice_number"/></td>
+</tr>
+
+<tr>
+<td style="padding:6px;"><strong>Supplier</strong></td>
+<td style="padding:6px;"><t t-esc="doc.supplier_name"/></td>
+</tr>
+
+<tr>
+<td style="padding:6px;"><strong>Issue Date</strong></td>
+<td style="padding:6px;"><t t-esc="doc.issue_date"/></td>
+</tr>
+
+<tr>
+<td style="padding:6px;"><strong>Currency</strong></td>
+<td style="padding:6px;"><t t-esc="doc.currency"/></td>
+</tr>
+
+<tr>
+<td style="padding:6px;"><strong>Total Amount</strong></td>
+<td style="padding:6px;"><t t-esc="doc.total_amount"/></td>
+</tr>
+
+</table>
+
+<hr/>
+
+<h3>Original XML</h3>
+
+<div style="
+    background:#f6f6f6;
+    border:1px solid #ddd;
+    padding:10px;
+    font-family:monospace;
+    font-size:8px;
+">
+
+<pre style="white-space:pre-wrap;">
+<t t-esc="doc.invoice_xml"/>
+</pre>
+
+</div>
+
+</div>
+
+</t>
+
+</main>
+
+</t>
+
+</template>
+
+        </odoo>

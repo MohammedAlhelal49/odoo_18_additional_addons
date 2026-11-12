@@ -1,0 +1,500 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Report Action -->
+    <record id="action_report_daem_contract_arabic" model="ir.actions.report">
+        <field name="name">عقد تنفيذ نظام Odoo</field>
+        <field name="model">sale.order</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">dekad_company.report_daem_contract_document_arabic</field>
+        <field name="report_file">dekad_company.report_daem_contract_document_arabic</field>
+        <field name="binding_model_id" ref="sale.model_sale_order"/>
+        <field name="binding_type">report</field>
+    </record>
+
+    <!-- QWeb Template -->
+    <template id="report_daem_contract_document_arabic">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="doc">
+                <t t-call="web.external_layout">
+
+                    <style>
+                        @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&amp;display=swap');
+
+                        .daem-contract-container {
+                        font-family: 'Cairo', Arial, sans-serif;
+                        font-size: 14px;
+                        line-height: 1.8;
+                        direction: rtl;
+                        text-align: right;
+                        }
+                        .daem-header {
+                        color: #496A92;
+                        font-weight: bold;
+                        }
+                        .contract-title {
+                        color: #496A92;
+                        font-weight: 700;
+                        border-bottom: 2px solid #496A92;
+                        padding-bottom: 8px;
+                        margin-bottom: 20px;
+                        }
+                        .section-box {
+                        background-color: #f8f9fa;
+                        border-right: 4px solid #496A92;
+                        padding: 12px 15px;
+                        margin-bottom: 15px;
+                        }
+                        .page-break {
+                        page-break-before: always;
+                        }
+                        .stamp-img {
+                        max-height: 110px;
+                        max-width: 110px;
+                        object-fit: contain;
+                        }
+                        .signature-img {
+                        max-height: 70px;
+                        max-width: 180px;
+                        object-fit: contain;
+                        }
+                    </style>
+
+                    <div class="daem-contract-container">
+                        <div class="page">
+                            <!-- Document Title -->
+                            <div class="text-center mb-4">
+                                <h2 class="contract-title d-inline-block">عقد تنفيذ نظام تخطيط موارد المؤسسات (ERP)</h2>
+                                <h5 class="text-muted">قائم على منصة Odoo</h5>
+                            </div>
+
+                            <p>
+                                إنه في يوم
+                                <strong>
+                                    <span t-field="doc.x_contract_date"
+                                          t-options='{"widget": "date", "format": "EEEE dd/MM/yyyy"}'/>
+                                </strong>
+                                تم الاتفاق والتراضي بين كل من:
+                            </p>
+
+                            <!-- Parties Section -->
+                            <div class="section-box mb-3">
+                                <h5 class="daem-header mb-1">الطرف الأول (الشركة المنفذة):</h5>
+                                <div>
+                                    <strong>الاسم / الشركة:</strong>
+                                    شركة دعم لإدارة المشاريع والحلول التكنولوجية – شركة الشخص الواحد ذ م م
+                                </div>
+                                <div>
+                                    <strong>السجل التجاري / الرقم الضريبي:</strong>
+                                    <span t-out="doc.company_id.vat or 'لا يوجد'"/>
+                                </div>
+                                <div>
+                                    <strong>العنوان:</strong>
+                                    أبو ظبي – مدينة العين – شارع حصة بنت محمد بناء رقم 18
+                                </div>
+                                <div class="text-muted small">ويشار إليه فيما بعد بـ "الطرف الأول" أو "الشركة
+                                    المنفذة".
+                                </div>
+                            </div>
+
+                            <div class="section-box mb-4">
+                                <h5 class="daem-header mb-1">الطرف الثاني (العميل):</h5>
+                                <div>
+                                    <strong>الاسم:</strong>
+                                    <span t-field="doc.partner_id.name"/>
+                                </div>
+                                <div>
+                                    <strong>السجل التجاري / الرقم الضريبي:</strong>
+                                    <span t-out="doc.partner_id.vat or 'غير محدد'"/>
+                                </div>
+                                <div>
+                                    <strong>العنوان:</strong>
+                                    <span t-field="doc.partner_id.street"/>
+                                    <span t-field="doc.partner_id.street2"/>
+                                    <span t-field="doc.partner_id.city"/>
+                                </div>
+                                <div class="text-muted small">ويشار إليه فيما بعد بـ "الطرف الثاني" أو "العميل".</div>
+                            </div>
+
+                            <p>ويشار إلى الطرف الأول والطرف الثاني مجتمعين بـ "الطرفين" ومنفردين بـ "الطرف".</p>
+
+                            <!-- Preamble -->
+                            <h4 class="daem-header">تمهيد</h4>
+                            <p>
+                                حيث إن الطرف الأول شركة متخصصة في تقديم خدمات الاستشارات وتنفيذ وتخصيص أنظمة تخطيط موارد
+                                المؤسسات (ERP) القائمة على منصتي Odoo و ERPNext مفتوحتي المصدر، ولديه الخبرة والكفاءات
+                                الفنية اللازمة لذلك.
+                                <br/>
+                                وحيث إن الطرف الثاني يرغب في الاستعانة بالطرف الأول لتنفيذ وتهيئة وتخصيص نظام ERP يتناسب
+                                مع طبيعة أعماله ومتطلباته التشغيلية، وفقاً للنطاق والشروط الموضحة في هذا العقد وملحقاته.
+                                <br/>
+                                فقد اتفق الطرفان، وهما بكامل الأهلية المعتبرة شرعاً ونظاماً، على ما يلي:
+                            </p>
+
+                            <!-- Clause 1 -->
+                            <h4 class="daem-header mt-3">1. التعريفات</h4>
+                            <p>تكون للكلمات والعبارات التالية، حيثما وردت في هذا العقد، المعاني المبينة قرين كل منها، ما
+                                لم يقتض السياق خلاف ذلك:
+                            </p>
+                            <ul>
+                                <li>
+                                    <strong>"العقد":</strong>
+                                    يقصد به هذا العقد وجميع ملاحقه ومرفقاته ووثائق نطاق العمل المرفقة به.
+                                </li>
+                                <li>
+                                    <strong>"النظام":</strong>
+                                    يقصد به نظام تخطيط موارد المؤسسات المراد تنفيذه القائم على منصة (Odoo Community
+                                    Version 18) وفق ما يتم الاتفاق عليه في ملحق نطاق العمل.
+                                </li>
+                                <li>
+                                    <strong>"نطاق العمل":</strong>
+                                    الوثيقة المرفقة (ملحق رقم 1) التي تحدد الوحدات (Modules) والمتطلبات والتخصيصات
+                                    المتفق على
+                                    تنفيذها.
+                                </li>
+                                <li>
+                                    <strong>"التخصيص" (Customization):</strong>
+                                    أي تطوير أو تعديل برمجي يُجرى على النظام الأساسي بما يتجاوز إعدادات التهيئة
+                                    الافتراضية (Configuration).
+                                </li>
+                                <li>
+                                    <strong>"تاريخ الإطلاق" (Go-Live):</strong>
+                                    التاريخ الذي يبدأ فيه العميل استخدام النظام فعلياً في بيئة الإنتاج (Production).
+                                </li>
+                                <li>
+                                    <strong>"فترة الضمان":</strong>
+                                    الفترة المحددة التي يلتزم الطرف الأول خلالها بإصلاح الأعطال الناتجة عن
+                                    التخصيصات دون مقابل إضافي.
+                                </li>
+                                <li>
+                                    <strong>"طلب التغيير" (Change Request):</strong>
+                                    أي طلب من العميل لإضافة أو تعديل متطلبات خارج نطاق العمل المتفق عليه في الملحق رقم
+                                    1.
+                                </li>
+                            </ul>
+
+                            <!-- Clause 2 -->
+                            <h4 class="daem-header mt-3">2. موضوع العقد ونطاق العمل</h4>
+                            <p>يلتزم الطرف الأول بتقديم خدمات تنفيذ وتهيئة وتخصيص نظام ERP للطرف الثاني، وفقاً للتفاصيل
+                                التالية:
+                            </p>
+                            <ul>
+                                <li>
+                                    <strong>2/1 المنصة البرمجية:</strong>
+                                    يتم تنفيذ النظام باستخدام منصة:
+                                    <strong>
+                                        <span t-out="dict(doc._fields['x_odoo_edition'].selection).get(doc.x_odoo_edition)"/>
+                                    </strong>
+                                    ،
+                                    الإصدار رقم:
+                                    <strong>
+                                        <span t-field="doc.x_odoo_version"/>
+                                    </strong>
+                                    .
+                                </li>
+                                <li>
+                                    <strong>2/2 الوحدات المشمولة بالتنفيذ:</strong>
+                                    يشمل نطاق العمل تهيئة وتخصيص الوحدات التالية:
+                                    <ul>
+                                        <t t-foreach="doc.order_line" t-as="line">
+                                            <t t-if="not line.display_type">
+                                                <li>
+                                                    <span t-field="line.product_id.name"/>
+                                                </li>
+                                            </t>
+                                        </t>
+                                    </ul>
+                                </li>
+                                <li>
+                                    <strong>2/3 عدد المستخدمين وبيئة الاستضافة:</strong>
+                                    <ul>
+                                        <li>عدد المستخدمين (Users / Licenses) المشمولين:
+                                            <span t-field="doc.x_number_of_trainees"/>
+                                            مستخدمين.
+                                        </li>
+                                        <li>بيئة الاستضافة:<span t-field="doc.x_hosting_location"/>.
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    <strong>2/4 ما لا يشمله العقد:</strong>
+                                    <ul>
+                                        <li>أعمال تطوير غير واردة في ملحق نطاق العمل (تُعامل كطلبات تغيير).</li>
+                                        <li>صيانة ودعم ما بعد فترة الضمان المتمثلة بـ 3 أشهر (تُنظَّم بعقد دعم وصيانة
+                                            مستقل).
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+
+                            <!-- Clause 3 -->
+                            <h4 class="daem-header">3. مدة التنفيذ والجدول الزمني</h4>
+                            <p>
+                                تبلغ المدة حتى البدء وتشغيل النظام حسب متطلبات الطرف الثاني بما يتعلق بـ دورة مستندية
+                                <strong>(<span t-field="doc.x_documentary_cycle"/>)
+                                </strong>
+                                من
+                                <span t-field="doc.x_minimum_documentary_cycle"/>
+                                وحتى<span t-field="doc.x_maximum_documentary_cycle"/>، حيث تشمل المدة تجهيز الموقع
+                                المستضيف وقاعدة البيانات وتدريب
+                                المستخدمين.
+                            </p>
+
+                            <!-- Clause 4 -->
+                            <h4 class="daem-header mt-3">4. التزامات الطرف الأول (الشركة المنفذة)</h4>
+                            <ul>
+                                <li>إنشاء الموقع وإعداد قاعدة البيانات الخاصة بـ
+                                    <strong>
+                                        <span t-esc="doc.x_target_company_name or doc.partner_id.name"/>
+                                    </strong>
+                                    .
+                                </li>
+                                <li>إعداد وتنفيذ (
+                                    <strong>
+                                        <span t-out="' – '.join(doc.order_line.filtered(lambda l: not l.display_type).mapped('product_id.name'))"/>
+                                    </strong>
+                                    ).
+                                </li>
+                                <li>تدريب عدد (
+                                    <strong>
+                                        <span t-field="doc.x_number_of_trainees"/>
+                                    </strong>
+                                    ) مستخدمين على النظام.
+                                </li>
+                                <li>إعداد تصميم الطباعة الخاصة بحجوزات العملاء الخاص بشركة
+                                    <strong>
+                                        <span t-esc="doc.x_target_company_name or doc.partner_id.name"/>
+                                    </strong>
+                                    .
+                                </li>
+                            </ul>
+
+                            <!-- Clause 5 -->
+                            <h4 class="daem-header mt-3">5. قيمة العقد وشروط الدفع</h4>
+                            <p>
+                                تبلغ القيمة الإجمالية لهذا العقد (مقابل أعمال التنفيذ) مبلغاً وقدره
+                                <strong>
+                                    <span t-field="doc.amount_total"
+                                          t-options='{"widget": "monetary", "display_currency": doc.currency_id}'/>
+                                </strong>
+                                شامل ضريبة القيمة المضافة.
+                            </p>
+
+                            <table dir="ltr" class="table table-bordered table-sm mt-2 text-center">
+                                <thead style="background-color: #496A92; color: white;">
+                                    <tr>
+                                        <th>تُسدد عند</th>
+                                        <th>النسبة / المبلغ</th>
+                                        <th>الدفعة</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>توقيع العقد</td>
+                                        <td>
+                                            <span t-field="doc.x_down_payment_details"/>
+                                        </td>
+                                        <td>الدفعة الأولى (مقدماً)</td>
+                                    </tr>
+                                    <tr>
+                                        <td>شيك مستحق بعد
+                                            <span t-field="doc.x_payment_period"/>
+                                            من تاريخ العقد
+                                        </td>
+                                        <td>
+                                            <span t-field="doc.x_second_payment_details"/>
+                                        </td>
+                                        <td>الدفعة الثانية</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+
+                            <ul>
+                                <li>
+                                    تُسدد جميع الدفعات حسب الجدول أعلاه، عن طريق
+                                    <strong>(<span t-field="doc.x_payment_method_text"/>)
+                                    </strong>
+                                    .
+                                </li>
+                                <li>في حال تأخر الدفعة الأولى بعد توقيع العقد لمدة تصل إلى
+                                    <span t-field="doc.x_first_payment_period_limit"/>
+                                    عمل يحق للطرف الأول
+                                    فسخ العقد ويعاد تقديم عرض سعر آخر ولا يشترط بأن يكون بنفس قيمة العرض المالي الأول.
+                                </li>
+                                <li>يتم استلام شيك بالمبلغ المتبقي (الدفعة الثانية) حال توقيع العقد يُستحق بعد
+                                    <span t-field="doc.x_payment_period"/>
+                                    من
+                                    تاريخ التوقيع.
+                                </li>
+                                <li>لا تشمل القيمة الإجمالية أعمال التغيير الإضافية (Change Requests) أو الدعم والصيانة
+                                    بعد فترة الضمان، وتُحتسب هذه البنود بشكل منفصل عند طلبها.
+                                </li>
+                            </ul>
+
+                            <!-- Clause 6 -->
+                            <h4 class="daem-header mt-3">6. طلبات التغيير (Change Requests)</h4>
+                            <ul>
+                                <li>أي طلب من العميل لإضافة متطلبات أو وحدات أو تخصيصات غير واردة في ملحق نطاق العمل
+                                    يُعامل كـ "طلب تغيير"، ولا يلتزم الطرف الأول بتنفيذه إلا بعد الاتفاق الكتابي على
+                                    نطاقه وتكلفته وأثره على الجدول الزمني.
+                                </li>
+                                <li>يقوم الطرف الأول، عند استلام طلب التغيير، بتزويد العميل بعرض فني ومالي
+                                    (Quotation)، يوضح التكلفة الإضافية والمدة الزمنية لتنفيذ المتطلبات الإضافية التي تم
+                                    تزويدنا بها.
+                                </li>
+                                <li>لا يُعد سكوت العميل أو عدم رده على عرض التغيير موافقة على تنفيذه، ولا يبدأ الطرف
+                                    الأول في تنفيذ أي طلب تغيير إلا بعد التوقيع على عقد الصيانة من الطرفين.
+                                </li>
+                            </ul>
+
+                            <!-- Clause 7 -->
+                            <h4 class="daem-header mt-3">7. السرية وحماية البيانات</h4>
+                            <ul>
+                                <li>لا يعتبر الطرف الأول مسؤولاً عن سوء استخدام البيانات من قبل المستخدمين، وتقتصر
+                                    مسؤوليته على النسخ الاحتياطية (Data Backups).
+                                </li>
+                                <li>لا يعد الطرف الأول مسؤولاً عن حذف بيانات عمداً من قبل أي مستخدم لدى الطرف الثاني.
+                                </li>
+                                <li>يلتزم الطرف الأول بإجراء صيانات دورية لسيرفرات الاستضافة في حال كانت من طرفه، وتشمل
+                                    (إنشاء نسخ احتياطية دورية – استعادة أي نسخة احتياطية بطلب مباشر من الطرف الثاني –
+                                    الحفاظ على قاعدة البيانات من التلف أو الوصول غير المصرح به).
+                                </li>
+                            </ul>
+
+                            <!-- Clause 8 -->
+                            <h4 class="daem-header mt-3">8. القوة القاهرة</h4>
+                            <p>لا يُعد أي طرف مخالفاً لالتزاماته بموجب هذا العقد إذا كان عدم التنفيذ أو التأخير ناتجاً
+                                عن ظروف قوة قاهرة خارجة عن إرادته ولا يمكن توقعها أو تفاديها، مثل الكوارث الطبيعية،
+                                الحروب، الأوبئة، انقطاع الخدمات الأساسية (الإنترنت/الكهرباء) على نطاق واسع، أو القرارات
+                                الحكومية الطارئة. ويلتزم الطرف المتأثر بإشعار الطرف الآخر كتابياً بذلك في أقرب وقت ممكن،
+                                وتُمدَّد الالتزامات المتأثرة بما يعادل مدة استمرار القوة القاهرة.
+                            </p>
+
+                            <!-- Clause 9 -->
+                            <h4 class="daem-header mt-3">9. إنهاء العقد</h4>
+                            <ul>
+                                <li>
+                                    <strong>1. يجوز للطرف الأول إنهاء العقد المبرم مع الطرف الثاني بعد التوقيع في
+                                        الحالات التالية:
+                                    </strong>
+                                    <ul>
+                                        <li>عدم الامتثال بالدفع بشروط الدفع الواردة أعلاه ببند قيمة العقد وشروط
+                                            الدفع.
+                                        </li>
+                                        <li>عدم التزام الطرف الثاني بالقوانين داخل دولة الإمارات العربية المتحدة.</li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    <strong>2. يجوز للطرف الثاني إنهاء العقد المبرم مع الطرف الأول بعد التوقيع في
+                                        الحالات التالية:
+                                    </strong>
+                                    <ul>
+                                        <li>عدم التزام الطرف الأول بتنفيذ وحدات المشروع المشمولة في التنفيذ.
+                                        </li>
+                                        <li>عدم تدريب جميع المستخدمين لدى الطرف الثاني.</li>
+                                    </ul>
+                                </li>
+                            </ul>
+
+                            <div style="border: 2px solid #e50000; color: #e50000; font-weight: bold; text-align: center; padding: 12px 15px; margin: 15px 0; direction: rtl;">
+                                في حال رغبة الطرف الثاني في إنهاء أو فسخ التعاقد من طرف واحد في مدة أقصاها 15 يوم عمل من
+                                توقيع العقد ، تكون الدفعة الأولى غير مستردة ويتم إرجاع شيك الدفعة الثانية.
+                            </div>
+
+                            <!-- Clause 10 -->
+                            <h4 class="daem-header mt-3">10. أحكام عامة</h4>
+                            <ul>
+                                <li>يُشكِّل هذا العقد الاتفاق الكامل بين الطرفين، ويحل محل أي مفاوضات أو اتفاقات أو
+                                    تفاهمات سابقة، شفهية أو كتابية، تتعلق بموضوعه.
+                                </li>
+                                <li>لا يجوز تعديل أي بند من بنود هذا العقد إلا بموافقة كتابية موقعة من الطرفين.</li>
+                                <li>لا يجوز لأي طرف التنازل عن هذا العقد أو أي من حقوقه أو التزاماته بموجبه لطرف ثالث
+                                    دون موافقة كتابية مسبقة من الطرف الآخر.
+                                </li>
+                                <li>في حال تبين أن أحد بنود هذا العقد غير قابل للتنفيذ أو مخالف للنظام، يبقى باقي
+                                    بنود العقد سارياً ونافذاً بكامل قوته.
+                                </li>
+                                <li>تُعتمد وسائل التواصل التالية للإشعارات الرسمية بين الطرفين: البريد الإلكتروني
+                                    الموضح في بيانات كل طرف في مقدمة هذا العقد، أو أي وسيلة أخرى يتفق عليها الطرفان
+                                    كتابياً.
+                                </li>
+                                <li>حُرر هذا العقد من نسختين أصليتين بنفس النص والتاريخ، استلم كل طرف نسخة منهما
+                                    للعمل بموجبها.
+                                </li>
+                            </ul>
+
+                            <!-- SIGNATURES & STAMPS SECTION -->
+                            <h4 class="daem-header mt-4 mb-3 text-center">التوقيعات واعتماد العقد</h4>
+
+                            <div class="row mt-3 p-3"
+                                 style="border: 1px solid #496A92; border-radius: 6px; background-color: #fff;">
+                                <!-- FIRST PARTY (DAEM) -->
+                                <div class="col-6" style="border-left: 1px solid #dee2e6;">
+                                    <h5 class="daem-header text-center mb-3">الطرف الأول (الشركة المنفذة)</h5>
+                                    <div>
+                                        <strong>الشركة:</strong>
+                                        شركة دعم لإدارة المشاريع والحلول التكنولوجية
+                                    </div>
+                                    <div>
+                                        <strong>التاريخ:</strong>
+                                        <span t-field="doc.x_contract_date"/>
+                                    </div>
+
+                                    <div class="row text-center mt-3">
+                                        <!-- Logo Placeholder -->
+                                        <div class="col-4">
+                                            <small class="text-muted d-block mb-1">الشعار</small>
+                                            <img t-if="doc.x_daem_logo"
+                                                 t-att-src="image_data_uri(doc.x_daem_logo)"
+                                                 class="signature-img"/>
+                                        </div>
+                                        <!-- Signature Placeholder -->
+                                        <div class="col-4">
+                                            <small class="text-muted d-block mb-1">التوقيع</small>
+                                            <img t-if="doc.x_daem_signature"
+                                                 t-att-src="image_data_uri(doc.x_daem_signature)"
+                                                 class="signature-img"/>
+                                        </div>
+                                        <!-- Stamp Placeholder -->
+                                        <div class="col-4">
+                                            <small class="text-muted d-block mb-1">الخاتم</small>
+                                            <img t-if="doc.x_daem_stamp"
+                                                 t-att-src="image_data_uri(doc.x_daem_stamp)"
+                                                 class="stamp-img"/>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- SECOND PARTY (CLIENT) -->
+                                <div class="col-6 pr-4">
+                                    <h5 class="daem-header text-center mb-3">الطرف الثاني (العميل)</h5>
+                                    <div>
+                                        <strong>الاسم:</strong>
+                                        <span t-field="doc.partner_id.name"/>
+                                    </div>
+                                    <div>
+                                        <strong>التاريخ:</strong>
+                                        <span t-field="doc.x_contract_date"/>
+                                    </div>
+
+                                    <div class="text-center mt-3">
+                                        <small class="text-muted d-block mb-1">التوقيع والاعتماد</small>
+                                        <!--img t-if="doc.x_client_signature"
+                                             t-att-src="image_data_uri(doc.x_client_signature)"
+                                             class="signature-img"/>
+                                        <div t-if="not doc.x_client_signature"
+                                             style="height: 70px; border: 1px dashed #ccc; margin-top: 5px;"
+                                             class="d-flex align-items-center justify-content-center text-muted small">
+                                            مكان التوقيع
+                                        </div-->
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>

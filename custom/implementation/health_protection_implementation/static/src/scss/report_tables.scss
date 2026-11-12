@@ -1,0 +1,38 @@
+/* wkhtmltopdf cuts the table outline (one absolute ::before box) at page breaks,
+   leaving stray line stubs at the bottom/top of pages: draw the outline on the cells instead. */
+.o_table_boxed table:not(.o_ignore_layout_styling)::before,
+.o_table_boxed-rounded table:not(.o_ignore_layout_styling)::before {
+    display: none;
+}
+.o_table_boxed table:not(.o_ignore_layout_styling) th:first-child,
+.o_table_boxed table:not(.o_ignore_layout_styling) td:first-child,
+.o_table_boxed-rounded table:not(.o_ignore_layout_styling) th:first-child,
+.o_table_boxed-rounded table:not(.o_ignore_layout_styling) td:first-child {
+    border-left: 1px solid #495057;
+}
+.o_table_boxed table:not(.o_ignore_layout_styling) th:last-child,
+.o_table_boxed table:not(.o_ignore_layout_styling) td:last-child,
+.o_table_boxed-rounded table:not(.o_ignore_layout_styling) th:last-child,
+.o_table_boxed-rounded table:not(.o_ignore_layout_styling) td:last-child {
+    border-right: 1px solid #495057;
+}
+.o_table_boxed table:not(.o_ignore_layout_styling) tbody tr:last-child td,
+.o_table_boxed-rounded table:not(.o_ignore_layout_styling) tbody tr:last-child td {
+    border-bottom: 1px solid #495057;
+}
+/* a row is never split between two pages */
+.o_table_boxed table:not(.o_ignore_layout_styling) tr,
+.o_table_boxed-rounded table:not(.o_ignore_layout_styling) tr {
+    page-break-inside: avoid;
+}
+/* totals box: closed on top (it may start a new page), dark "Total" row keeps its own rounded shape */
+.o_table_boxed .o_total_table:not(.o_ignore_layout_styling) tr:first-child td,
+.o_table_boxed-rounded .o_total_table:not(.o_ignore_layout_styling) tr:first-child td {
+    border-top: 1px solid #495057;
+}
+.o_table_boxed .o_total_table:not(.o_ignore_layout_styling) tr:last-child td,
+.o_table_boxed-rounded .o_total_table:not(.o_ignore_layout_styling) tr:last-child td {
+    border-left: none;
+    border-right: none;
+    border-bottom: none;
+}

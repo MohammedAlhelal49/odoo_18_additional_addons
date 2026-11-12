@@ -1,0 +1,37 @@
+<odoo>
+    <record id="view_orchida_uom_api_map_tree" model="ir.ui.view">
+        <field name="name">orchida.uom.api.map.tree</field>
+        <field name="model">orchida.uom.api.map</field>
+        <field name="arch" type="xml">
+            <list string="UoM UnitCode Mapping" editable="bottom">
+                <field name="company_id"/>
+                <field name="uom_id"/>
+                <field name="unit_code_id"/>
+                <field name="active"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_orchida_uom_api_map_form" model="ir.ui.view">
+        <field name="name">orchida.uom.api.map.form</field>
+        <field name="model">orchida.uom.api.map</field>
+        <field name="arch" type="xml">
+            <form string="UoM UnitCode Mapping">
+                <sheet>
+                    <group>
+                        <field name="company_id"/>
+                        <field name="uom_id"/>
+                        <field name="unit_code_id" options="{'no_create_edit': False}"/>
+                        <field name="active"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_orchida_uom_api_map" model="ir.actions.act_window">
+        <field name="name">UoM UnitCode Mapping</field>
+        <field name="res_model">orchida.uom.api.map</field>
+        <field name="view_mode">list,form</field>
+    </record>
+</odoo>

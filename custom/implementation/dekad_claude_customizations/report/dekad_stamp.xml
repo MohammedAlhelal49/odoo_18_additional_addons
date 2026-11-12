@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Company name + company stamp, printed at the end of invoices, quotations and vouchers.
+         Variable: stamp_co (res.company). The stamp image is the company's "Company Stamp" field. -->
+    <template id="dekad_company_stamp">
+        <t t-set="stamp_info" t-value="stamp_co.ct_info()"/>
+        <div style="text-align:right; margin-top:12px; page-break-inside:avoid; font-family:Arial, sans-serif;">
+            <div style="display:inline-block; text-align:center; max-width:110mm;">
+                <div t-attf-style="font-weight:bold; font-size:#{'10px' if stamp_co.id == 1 else '11px'};"><t t-out="stamp_info['name']"/></div>
+                <img t-if="stamp_co.dekad_stamp" t-att-src="image_data_uri(stamp_co.dekad_stamp)" style="max-height:50mm; max-width:56mm; margin-top:3px;"/>
+            </div>
+        </div>
+    </template>
+
+    <!-- Quotation / sales order -->
+    <template id="dekad_saleorder_stamp" inherit_id="sale.report_saleorder_document" priority="99">
+        <xpath expr="//div[hasclass('page')]" position="inside">
+            <t t-set="stamp_co" t-value="doc.company_id"/>
+            <t t-call="dekad_claude_customizations.dekad_company_stamp"/>
+        </xpath>
+    </template>
+
+    <!-- Invoices (standard and Dekad custom layout) -->
+    <template id="dekad_invoice_stamp" inherit_id="account.report_invoice_document" priority="99">
+        <xpath expr="//div[hasclass('page')]" position="inside">
+            <t t-set="stamp_co" t-value="o.company_id"/>
+            <t t-call="dekad_claude_customizations.dekad_company_stamp"/>
+        </xpath>
+    </template>
+    <template id="dekad_custom_invoice_stamp" inherit_id="dekad_account_enhancement.report_custom_invoice_document" priority="99">
+        <xpath expr="//div[hasclass('page')]" position="inside">
+            <t t-set="stamp_co" t-value="o.company_id"/>
+            <t t-call="dekad_claude_customizations.dekad_company_stamp"/>
+        </xpath>
+    </template>
+</odoo>

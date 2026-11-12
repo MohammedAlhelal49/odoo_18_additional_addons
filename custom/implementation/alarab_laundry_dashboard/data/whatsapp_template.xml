@@ -1,0 +1,36 @@
+<odoo noupdate="1">
+    <record id="whatsapp_winback_template" model="whatsapp.template">
+        <field name="name">We Miss You (Dashboard)</field>
+        <field name="message">مرحباً {{partner_name}}،
+
+اشتقنا لكم في مصبغة بيت العرب الأوتوماتيكي! يسعدنا خدمتكم من جديد.
+We miss you at Bait Al Arab Automatic Laundry! We'd be happy to serve you again.</field>
+    </record>
+    <record id="whatsapp_payment_reminder_template" model="whatsapp.template">
+        <field name="name">Payment Reminder (Reports)</field>
+        <field name="message">مرحباً {{partner_name}}،
+
+نود تذكيركم بأن الرصيد المستحق على حسابكم لدى مصبغة بيت العرب الأوتوماتيكي هو {{amount_due}}.
+This is a friendly reminder that your balance with Bait Al Arab Automatic Laundry is {{amount_due}}.
+
+شكراً لكم / Thank you</field>
+    </record>
+    <record id="whatsapp_statement_template" model="whatsapp.template">
+        <field name="name">Customer Statement (Reports)</field>
+        <field name="message">مرحباً {{partner_name}}،
+
+كشف حسابكم لدى مصبغة بيت العرب الأوتوماتيكي للفترة من {{date_from}} إلى {{date_to}}:
+Your statement with Bait Al Arab Automatic Laundry from {{date_from}} to {{date_to}}:
+
+• رصيد سابق | Previous balance: {{previous_balance}}
+• فواتير الفترة | Invoiced: {{invoiced}} ({{invoice_count}})
+• المدفوع | Paid: {{paid}}
+• المتبقي | Remaining: {{remaining}}
+• إجمالي المستحق | Total due: {{total_due}}
+
+📄 كشف الحساب التفصيلي | Detailed statement:
+{{statement_link}}
+
+شكراً لكم / Thank you</field>
+    </record>
+</odoo>

@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- ============================================================ -->
+    <!-- صفحة "من نحن" (/about) — تصميم جديد                            -->
+    <!-- alh-/ala- classes بـ home_modern.scss                            -->
+    <!-- النصوص: controllers/about_content.py (المتغير a)                 -->
+    <!-- ============================================================ -->
+    <template id="about_template" name="About Page">
+        <t t-call="website.layout">
+            <t t-set="arrow_icon" t-value="'fa-arrow-right' if is_en else 'fa-arrow-left'"/>
+            <div id="wrap" class="alh-page ala-page">
+
+                <!-- ================= HERO ================= -->
+                <section t-attf-class="alh-hero ala-hero #{'has-photo' if hero_photo else ''}">
+                    <div t-if="hero_photo" class="alh-hero-photo is-center" aria-hidden="true">
+                        <img t-att-src="hero_photo" alt="" fetchpriority="high" decoding="async"/>
+                    </div>
+                    <div class="alh-hero-deco" aria-hidden="true">
+                        <span class="alh-blob alh-blob-1"/>
+                        <span class="alh-blob alh-blob-2"/>
+                        <span class="alh-grid"/>
+                    </div>
+                    <div class="container position-relative">
+                        <div class="col-lg-9 mx-auto text-center alh-hero-center">
+                            <span class="alh-badge">
+                                <i class="fa fa-award" aria-hidden="true"/>
+                                <span t-out="a['hero']['badge']"/>
+                            </span>
+                            <h1 class="alh-title">
+                                <span class="alh-title-accent" t-out="a['hero']['title_1']"/>
+                                <span class="d-block" t-out="a['hero']['title_2']"/>
+                            </h1>
+                            <p class="alh-lead" t-out="a['hero']['lead']"/>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ================= STATS ================= -->
+                <div class="container alh-stats-wrap">
+                    <ul class="alh-stats list-unstyled">
+                        <t t-foreach="a['stats']" t-as="st">
+                            <li>
+                                <i t-attf-class="fa #{st['icon']}" aria-hidden="true"/>
+                                <strong dir="ltr" t-out="st['value']"/>
+                                <span t-out="st['label']"/>
+                            </li>
+                        </t>
+                    </ul>
+                </div>
+
+                <!-- ================= STORY ================= -->
+                <section class="alh-section" id="about-story">
+                    <div class="container">
+                        <div class="row g-5 align-items-center">
+                            <div class="col-lg-5">
+                                <div class="ala-story-visual" data-aos="fade-up">
+                                    <div class="ala-story-frame">
+                                        <img t-if="story_image" t-att-src="story_image"
+                                             t-att-alt="a['story']['image_alt']" loading="lazy"/>
+                                        <span t-else="" class="ala-story-fallback" aria-hidden="true">
+                                            <i class="fa fa-graduation-cap"/>
+                                        </span>
+                                    </div>
+                                    <div class="ala-years">
+                                        <strong dir="ltr" t-out="a['years']"/>
+                                        <span t-out="a['story']['years_label']"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-7">
+                                <span class="alh-eyebrow" t-out="a['story']['eyebrow']"/>
+                                <h2 class="alh-h2" t-out="a['story']['title']"/>
+                                <p class="ala-subtitle" t-out="a['story']['subtitle']"/>
+                                <p class="ala-text" t-out="a['story']['p1']"/>
+                                <p class="ala-text" t-out="a['story']['p2']"/>
+                                <ul class="ala-points list-unstyled">
+                                    <t t-foreach="a['story']['points']" t-as="pt">
+                                        <li>
+                                            <i class="fa fa-circle-check" aria-hidden="true"/>
+                                            <span t-out="pt"/>
+                                        </li>
+                                    </t>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ================= VISION & MISSION ================= -->
+                <section class="alh-section alh-section-soft">
+                    <div class="container">
+                        <div class="alh-head">
+                            <span class="alh-eyebrow" t-out="a['vm']['eyebrow']"/>
+                            <h2 class="alh-h2" t-out="a['vm']['title']"/>
+                            <p t-out="a['vm']['subtitle']"/>
+                        </div>
+                        <div class="row g-4">
+                            <t t-foreach="a['vm']['items']" t-as="vm">
+                                <div class="col-lg-6" data-aos="fade-up" t-att-data-aos-delay="vm_index * 100 or None">
+                                    <article t-attf-class="ala-vm ala-vm-#{vm['key']}">
+                                        <div class="ala-vm-head">
+                                            <span class="ala-vm-icon"><i t-attf-class="fa #{vm['icon']}" aria-hidden="true"/></span>
+                                            <span>
+                                                <small t-out="vm['tag']"/>
+                                                <h3 t-out="vm['title']"/>
+                                            </span>
+                                        </div>
+                                        <p t-out="vm['text']"/>
+                                    </article>
+                                </div>
+                            </t>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ================= GOALS ================= -->
+                <section class="alh-section">
+                    <div class="container">
+                        <div class="row g-5 align-items-center">
+                            <div class="col-lg-5">
+                                <span class="alh-eyebrow" t-out="a['goals']['eyebrow']"/>
+                                <h2 class="alh-h2" t-out="a['goals']['title']"/>
+                                <p class="ala-subtitle" t-out="a['goals']['subtitle']"/>
+                                <p class="ala-text" t-out="a['goals']['intro']"/>
+                            </div>
+                            <div class="col-lg-7">
+                                <div class="row g-3">
+                                    <t t-foreach="a['goals']['items']" t-as="g">
+                                        <div class="col-sm-6" data-aos="fade-up" t-att-data-aos-delay="(g_index % 2) * 100 or None">
+                                            <div class="ala-goal">
+                                                <span class="ala-goal-num" t-out="'0%s' % (g_index + 1)"/>
+                                                <span class="alh-feature-icon"><i t-attf-class="fa #{g['icon']}" aria-hidden="true"/></span>
+                                                <strong t-out="g['title']"/>
+                                                <small t-out="g['text']"/>
+                                            </div>
+                                        </div>
+                                    </t>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ================= VALUES ================= -->
+                <section class="alh-section ala-values">
+                    <div class="container position-relative">
+                        <div class="alh-head alh-head-light">
+                            <span class="alh-eyebrow" t-out="a['values']['eyebrow']"/>
+                            <h2 class="alh-h2" t-out="a['values']['title']"/>
+                            <p t-out="a['values']['subtitle']"/>
+                        </div>
+                        <div class="row g-4">
+                            <t t-foreach="a['values']['items']" t-as="v">
+                                <div class="col-lg-3 col-sm-6" data-aos="zoom-in" t-att-data-aos-delay="v_index * 100 or None">
+                                    <div class="ala-value">
+                                        <span class="alh-branch-icon"><i t-attf-class="fa #{v['icon']}" aria-hidden="true"/></span>
+                                        <h3 t-out="v['title']"/>
+                                        <p t-out="v['text']"/>
+                                    </div>
+                                </div>
+                            </t>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ================= CTA ================= -->
+                <section class="alh-section alh-cta-section">
+                    <div class="container">
+                        <div class="alh-cta">
+                            <div>
+                                <h2 class="alh-h2" t-out="a['cta']['title']"/>
+                                <p t-out="a['cta']['text']"/>
+                            </div>
+                            <div class="alh-actions">
+                                <a href="/courses" class="alh-btn alh-btn-accent">
+                                    <span t-out="a['cta']['courses']"/>
+                                    <i t-attf-class="fa #{arrow_icon}" aria-hidden="true"/>
+                                </a>
+                                <a href="/contact" class="alh-btn alh-btn-outline">
+                                    <i class="fa fa-envelope" aria-hidden="true"/>
+                                    <span t-out="a['cta']['contact']"/>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </t>
+    </template>
+</odoo>

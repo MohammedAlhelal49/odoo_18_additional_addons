@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Payment terms, static notes + bank details and "Checked by / Receiver Sign" line (quotation / sales order / invoice only).
+         payment_term: the document's payment term; "30 Days" when none is set.
+         hp_terms_margin_top: space above the block (default 6mm).
+         hp_sign_only: only the "Checked by / Receiver Sign" line (deliveries). -->
+    <template id="hp_terms_sign_block">
+        <div name="hp_terms_sign_block" t-attf-style="margin-top: {{hp_terms_margin_top or '6mm'}}; page-break-inside: avoid;">
+            <t t-if="not hp_sign_only">
+                <div style="margin-bottom: 10px;"><strong>Payment Terms:</strong> <span t-out="payment_term.name if payment_term else '30 Days'">30 Days</span></div>
+                <div style="margin-bottom: 10px;"><strong>BANK Acc No:</strong> 0086440149</div>
+                <div style="margin-bottom: 10px;"><strong>IBAN No:</strong> AE770420000000086440149 / NBQ BANK</div>
+                <div>Received goods in good conditions.</div>
+            </t>
+            <div t-attf-style="margin-top: {{'0' if hp_sign_only else '20px'}}; width: 75mm;">
+                <strong>Checked by / Receiver Sign</strong>
+                <div style="height: 10mm; border-bottom: 1px solid #000;"/>
+            </div>
+        </div>
+    </template>
+
+    <!-- Invoices + quotations / sales orders / pro-forma: same A4 as the company default but more footer room, so the
+         payment terms / bank / sign block fits above the footer next to the stamp (last page) -->
+    <record id="hp_paperformat_invoice" model="report.paperformat">
+        <field name="name">Health Protection A4 Invoice</field>
+        <field name="format">A4</field>
+        <field name="orientation">Portrait</field>
+        <field name="margin_top">57</field>
+        <field name="header_spacing">57</field>
+        <field name="margin_bottom">108</field>
+        <field name="margin_left">0</field>
+        <field name="margin_right">0</field>
+        <field name="header_line" eval="False"/>
+        <field name="dpi">90</field>
+        <field name="css_margins" eval="True"/>
+    </record>
+    <function model="ir.actions.report" name="write">
+        <value eval="[ref('account.account_invoices'), ref('account.account_invoices_without_payment'), ref('sale.action_report_saleorder'), ref('sale.action_report_pro_forma_invoice')]"/>
+        <value eval="{'paperformat_id': ref('health_protection_implementation.hp_paperformat_invoice')}"/>
+    </function>
+    <!-- PDF Quote Builder (sale_pdf_quote_builder) renders the quotation body with its own "raw" report: same paperformat
+         (looked up by name, so nothing breaks when that module is not installed) -->
+    <function model="ir.actions.report" name="hp_set_paperformat">
+        <value eval="['sale.report_saleorder_raw']"/>
+        <value>health_protection_implementation.hp_paperformat_invoice</value>
+    </function>
+
+    <template id="report_invoice_document_hp" inherit_id="account.report_invoice_document">
+        <!-- Serial number (1, 2, 3...) for product lines, before the Code column (same as the quotation) -->
+        <xpath expr="//table[@name='invoice_line_table']" position="before">
+            <t t-set="hp_seq" t-value="0"/>
+        </xpath>
+        <xpath expr="//th[@name='th_description']" position="before">
+            <th name="th_hp_seq" class="text-center"><span>#</span></th>
+            <th name="th_hp_code" class="text-start"><span>Code</span></th>
+        </xpath>
+        <xpath expr="//th[@name='th_description']" position="after">
+            <th t-if="o.invoice_line_ids.filtered('hp_batch_number')" name="th_hp_batch" class="text-start"><span>Batch No.</span></th>
+            <th t-if="o.invoice_line_ids.filtered('hp_expiry_date')" name="th_hp_expiry" class="text-start"><span>Expiry Date</span></th>
+        </xpath>
+        <xpath expr="//td[@name='account_invoice_line_name']" position="before">
+            <td name="td_hp_seq" class="text-center">
+                <t t-set="hp_seq" t-value="hp_seq + 1"/>
+                <span t-out="hp_seq"/>
+            </td>
+            <td name="td_hp_code"><span t-field="line.hp_item_code"/></td>
+        </xpath>
+        <xpath expr="//td[@name='account_invoice_line_name']/span" position="replace">
+            <span t-if="line.name" t-out="line.hp_name_without_code()" t-options="{'widget': 'text'}"/>
+        </xpath>
+        <xpath expr="//td[@name='account_invoice_line_name']" position="after">
+            <td t-if="o.invoice_line_ids.filtered('hp_batch_number')" name="td_hp_batch"><span t-field="line.hp_batch_number"/></td>
+            <td t-if="o.invoice_line_ids.filtered('hp_expiry_date')" name="td_hp_expiry"><span t-field="line.hp_expiry_date"/></td>
+        </xpath>
+        <!-- "To:" label in front of the customer name (same as on the quotation) -->
+        <xpath expr="//div[@name='address_not_same_as_shipping']/t[@t-set='address']/address" position="replace">
+            <div class="d-flex">
+                <strong class="me-2 text-nowrap" style="font-size: 1.3rem; line-height: 1.1;">To:</strong>
+                <address class="mb-0" t-field="o.partner_id" t-options='{"widget": "contact", "fields": ["name"], "no_marker": True}'/>
+            </div>
+        </xpath>
+        <xpath expr="//div[@name='address_same_as_shipping']/t[@t-set='address']/address" position="replace">
+            <div class="d-flex">
+                <strong class="me-2 text-nowrap" style="font-size: 1.3rem; line-height: 1.1;">To:</strong>
+                <address class="mb-0" t-field="o.partner_id" t-options='{"widget": "contact", "fields": ["name"], "no_marker": True}'/>
+            </div>
+        </xpath>
+        <xpath expr="//div[@name='no_shipping']/t[@t-set='address']/address" position="replace">
+            <div class="d-flex">
+                <strong class="me-2 text-nowrap" style="font-size: 1.3rem; line-height: 1.1;">To:</strong>
+                <address class="mb-0" t-field="o.partner_id" t-options='{"widget": "contact", "fields": ["name"], "no_marker": True}'/>
+            </div>
+        </xpath>
+        <!-- Customer TRN line + "Address:" line (Country, State, City, Street) under the customer name;
+             address max 85mm wide so a long address wraps instead of pushing the "TAX INVOICE / ..." title off the page -->
+        <xpath expr="//div[@id='partner_vat_address_not_same_as_shipping']" position="replace">
+            <div t-if="o.partner_id.vat" id="partner_vat_address_not_same_as_shipping" style="margin-top: 7px;">
+                <strong style="font-size: 1.1rem;">TRN:</strong> <span t-field="o.partner_id.vat"/>
+            </div>
+            <t t-set="hp_address_line" t-value="o.hp_partner_address_line()"/>
+            <div t-if="hp_address_line" id="hp_partner_address_address_not_same_as_shipping" style="margin-top: 7px; max-width: 80mm;">
+                <strong style="font-size: 1.1rem;">Address:</strong> <span t-out="hp_address_line"/>
+            </div>
+        </xpath>
+        <xpath expr="//div[@id='partner_vat_address_same_as_shipping']" position="replace">
+            <div t-if="o.partner_id.vat" id="partner_vat_address_same_as_shipping" style="margin-top: 7px;">
+                <strong style="font-size: 1.1rem;">TRN:</strong> <span t-field="o.partner_id.vat"/>
+            </div>
+            <t t-set="hp_address_line" t-value="o.hp_partner_address_line()"/>
+            <div t-if="hp_address_line" id="hp_partner_address_address_same_as_shipping" style="margin-top: 7px; max-width: 80mm;">
+                <strong style="font-size: 1.1rem;">Address:</strong> <span t-out="hp_address_line"/>
+            </div>
+        </xpath>
+        <xpath expr="//div[@id='partner_vat_no_shipping']" position="replace">
+            <div t-if="o.partner_id.vat" id="partner_vat_no_shipping" style="margin-top: 7px;">
+                <strong style="font-size: 1.1rem;">TRN:</strong> <span t-field="o.partner_id.vat"/>
+            </div>
+            <t t-set="hp_address_line" t-value="o.hp_partner_address_line()"/>
+            <div t-if="hp_address_line" id="hp_partner_address_no_shipping" style="margin-top: 7px; max-width: 80mm;">
+                <strong style="font-size: 1.1rem;">Address:</strong> <span t-out="hp_address_line"/>
+            </div>
+        </xpath>
+        <!-- Separate the title label from the number: "TAX INVOICE  /  INV417-2026" -->
+        <xpath expr="//t[@t-set='layout_document_title']/span[@t-field='o.name']" position="before">
+            <span t-if="o.name != '/'" style="margin: 0 10px 0 15px;">/</span>
+        </xpath>
+        <!-- Title fully in capitals ("TAX INVOICE ...") -->
+        <xpath expr="//t[@t-set='layout_document_title']" position="after">
+            <t t-set="layout_document_title"><span style="text-transform: uppercase;" t-out="layout_document_title"/></t>
+        </xpath>
+        <!-- Only the invoice date in the information box: no Due Date / Source -->
+        <xpath expr="//div[@name='invoice_date']" position="after">
+            <div class="col" t-if="o.hp_po_number" name="hp_po_number">
+                <strong>PO No</strong>
+                <div t-field="o.hp_po_number">PO0001</div>
+            </div>
+        </xpath>
+        <xpath expr="//div[@name='due_date']" position="replace"/>
+        <xpath expr="//div[@name='origin']" position="replace"/>
+        <!-- No "Payment Communication" line on the invoice -->
+        <xpath expr="//div[p[@name='payment_communication']]" position="replace"/>
+        <!-- the payment term is printed in our own block below -->
+        <xpath expr="//span[@id='payment_terms_note_id']" position="replace"/>
+        <!-- payment terms / bank / sign: printed above the footer, next to the stamp, on the last page (company_stamp_block) -->
+    </template>
+</odoo>

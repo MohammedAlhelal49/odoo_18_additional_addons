@@ -1,0 +1,22 @@
+<odoo>
+    <record id="api_sent_invoice_company_rule" model="ir.rule">
+        <field name="name">API Sent Invoice company access</field>
+        <field name="model_id" ref="orchida_uae_e_invoicing.model_api_sent_invoice"/>
+        <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+        <field name="groups" eval="[(4, ref('base.group_user'))]"/>
+    </record>
+
+    <record id="orchida_purchase_invoice_company_rule" model="ir.rule">
+        <field name="name">Orchida Purchase Invoice company access</field>
+        <field name="model_id" ref="orchida_uae_e_invoicing.model_orchida_purchase_invoice"/>
+        <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+        <field name="groups" eval="[(4, ref('base.group_user'))]"/>
+    </record>
+
+    <record id="orchida_uom_api_map_company_rule" model="ir.rule">
+        <field name="name">Orchida UoM API mapping company access</field>
+        <field name="model_id" ref="orchida_uae_e_invoicing.model_orchida_uom_api_map"/>
+        <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+        <field name="groups" eval="[(4, ref('base.group_user'))]"/>
+    </record>
+</odoo>

@@ -1,0 +1,8 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_api.sent.invoice,access_api.sent.invoice,orchida_uae_e_invoicing.model_api_sent_invoice,base.group_user,1,0,0,0
+access_orchida.purchase.invoice,access_orchida.purchase.invoice,orchida_uae_e_invoicing.model_orchida_purchase_invoice,base.group_user,1,0,0,0
+access_orchida_unit_code_read,access_orchida_unit_code_read,orchida_uae_e_invoicing.model_orchida_unit_code,base.group_user,1,0,0,0
+access_orchida_unit_code_admin,access_orchida_unit_code_admin,orchida_uae_e_invoicing.model_orchida_unit_code,base.group_system,1,1,1,1
+access_orchida_uom_api_map_read,access_orchida_uom_api_map_read,orchida_uae_e_invoicing.model_orchida_uom_api_map,base.group_user,1,0,0,0
+access_orchida_uom_api_map,access_orchida_uom_api_map,orchida_uae_e_invoicing.model_orchida_uom_api_map,base.group_system,1,1,1,1
+access_orchida_document_ac_wizard,access_orchida_document_ac_wizard,orchida_uae_e_invoicing.model_orchida_document_ac_wizard,base.group_user,1,1,1,0

@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- ===== SERVICE DETAIL PAGE (Hero + Process Timeline) ===== -->
+    <template id="master_service_template" name="Dekad Service Detail">
+        <t t-call="dekad_website.layout">
+
+            <!-- Hero -->
+            <section class="ve-app-hero bg-img" t-attf-style="background-image:url('#{page.get('hero_bg_image', '')}');">
+                <div class="ve-app-hero-overlay"/>
+                <div class="container ve-app-hero-content">
+                    <h1><t t-esc="page.get('hero_title')"/></h1>
+                    <p class="ve-app-hero-subtitle"><t t-esc="page.get('hero_desc')"/></p>
+                    <a href="/contact" class="ve-btn-primary mt-3">Contact Us</a>
+                </div>
+            </section>
+
+            <!-- Timeline -->
+            <section class="ve-section ve-timeline-section" t-if="page.get('timeline_steps')">
+                <div class="container">
+                    <div class="ve-section-header text-center">
+                        <h2><t t-esc="page.get('timeline_title')"/></h2>
+                        <p><t t-esc="page.get('timeline_subtitle')"/></p>
+                    </div>
+
+                    <div class="ve-timeline">
+                        <t t-foreach="page.get('timeline_steps', [])" t-as="step">
+                            <div t-attf-class="ve-timeline-row #{step_index % 2 == 0 and 've-timeline-left' or 've-timeline-right'}">
+                                <div class="ve-timeline-dot">
+                                    <span><t t-esc="step_index + 1"/></span>
+                                </div>
+                                <div class="ve-timeline-card">
+                                    <h4><t t-esc="step.get('title')"/></h4>
+                                    <p><t t-esc="step.get('desc')"/></p>
+                                </div>
+                            </div>
+                        </t>
+                    </div>
+                </div>
+            </section>
+
+        </t>
+    </template>
+
+    <!-- ===== SERVICES INDEX (/services with no slug) ===== -->
+    <template id="services_index_template" name="Dekad Services Index">
+        <t t-call="dekad_website.layout">
+            <section class="ve-page-hero" style="background-image:url(/dekad_website/static/src/img/bg-img/20.jpg);">
+                <div class="ve-page-hero-overlay"></div>
+                <div class="container ve-page-hero-content">
+                    <span class="ve-section-tag">What We Offer</span>
+                    <h1>Our <span>Services</span></h1>
+                    <nav aria-label="breadcrumb"><ol class="ve-breadcrumb"><li><a href="/">Home</a></li><li class="active">Services</li></ol></nav>
+                </div>
+            </section>
+            <section class="ve-section ve-apps-index-section">
+                <div class="container">
+                    <div class="ve-services-grid">
+                        <t t-foreach="services.items()" t-as="entry">
+                            <t t-set="slug" t-value="entry[0]"/>
+                            <t t-set="service" t-value="entry[1]"/>
+                            <a t-attf-href="/services/#{slug}" class="ve-service-card ve-app-index-card">
+                                <h4><t t-esc="service.get('hero_title')"/></h4>
+                                <p><t t-esc="service.get('hero_desc')"/></p>
+                                <span class="ve-card-link">Learn more <i class="fa fa-long-arrow-right"/></span>
+                            </a>
+                        </t>
+                    </div>
+                </div>
+            </section>
+        </t>
+    </template>
+
+</odoo>

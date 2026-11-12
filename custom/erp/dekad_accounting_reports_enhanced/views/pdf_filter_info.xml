@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="pdf_export_filters_custom"
+              inherit_id="account_reports.pdf_export_filters">
+        <xpath expr="//t[@t-if=&quot;options.get(&apos;company_currency&apos;)&quot;]" position="after">
+            <t t-set="dekad_filter_labels" t-value="options.get('custom_filter_labels') or []"/>
+            <t t-if="dekad_filter_labels">
+                <t t-foreach="dekad_filter_labels" t-as="label">
+                    <div class="row">
+                        <div class="col-12 o_text_muted">
+                            <t t-out="label"/>
+                        </div>
+                    </div>
+                </t>
+            </t>
+        </xpath>
+    </template>
+
+    <!--
+        Show used accounts in the PDF header, below the Partners line.
+        account_info is set on options by get_report_information override.
+    -->
+    <template id="pdf_export_partner_account_info"
+              inherit_id="account_reports.pdf_export_filters">
+        <xpath expr="//t[@t-if=&quot;options.get('partner_ids') != None&quot;]" position="after">
+            <t t-if="options.get('pdf_partner_accounts')">
+                <div class="row">
+                    <div class="col-3">Accounts:</div>
+                    <div class="col-9 o_text_muted" t-out="options['pdf_partner_accounts']"/>
+                </div>
+            </t>
+        </xpath>
+    </template>
+
+</odoo>

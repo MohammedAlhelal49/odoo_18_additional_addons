@@ -1,0 +1,318 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="report_purchaseorder_viewsport_document">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="web.basic_layout">
+                    <t t-set="cur" t-value="o.currency_id"/>
+                    <t t-set="fmt" t-value="lambda v: '{:,.2f}'.format(v or 0.0)"/>
+                    <t t-set="fmt_cur" t-value="lambda v: '%s %s' % (cur.name, '{:,.2f}'.format(v or 0.0))"/>
+                    <t t-set="company_name" t-value="o.company_id.vs_short_legal_name or o.company_id.name"/>
+                    <t t-set="company_trn" t-value="o.company_id.vat or ''"/>
+                    <t t-call="viewsport_implementation.vs_report_fonts"/>
+                    <style>
+                        body.o_body_pdf, body.container { padding-left: 0 !important; padding-right: 0 !important; }
+                        .vs-po { font-family: 'VS Sans', 'VS Arabic', Arial, sans-serif; font-size: 14.1px; color: #000; line-height: 1.25; }
+                        .vs-po table, .vs-po tr, .vs-po td, .vs-po th { border: 0 none; border-color: transparent; }
+                        .vs-po table { border-collapse: collapse; width: 100%; }
+                        .vs-po .vs-box td { border: 1px solid #c0c0c0 !important; font-size: 13.2px; line-height: 1.2; padding: 3px 6px; vertical-align: middle; }
+                        .vs-po .vs-lbl { background-color: #dddddd; font-weight: bold; text-align: right; white-space: nowrap; }
+                        .vs-po .vs-val { color: #000; font-weight: bold; }
+                        .vs-po .vs-red { color: #d0021b; font-weight: bold; }
+                        .vs-po .vs-blue { color: #1a7fd6; font-weight: bold; }
+                        .vs-po .vs-sec-title { font-weight: bold; font-size: 16.5px; padding: 0 0 4.7px 2.4px; }
+                        .vs-po .vs-items th { background-color: #40baec; color: #000; border: 1px solid #000 !important; text-align: center; font-weight: bold; padding: 4.7px; font-size: 15.3px; line-height: 1.15; }
+                        .vs-po .vs-items th small { font-size: 12.4px; font-weight: normal; display: block; }
+                        .vs-po .vs-items td { border: 1px solid #c0c0c0 !important; padding: 4.7px 7.1px; vertical-align: middle; }
+                        .vs-po .vs-items tr.vs-alt td { background-color: #f0f0f0; }
+                        .vs-po .vs-tot td { padding: 1px 4.7px; vertical-align: middle; }
+                        .vs-po .vs-tot .vs-tot-lbl { text-align: right; font-weight: bold; line-height: 1.05; font-size: 13.5px; white-space: nowrap; border-bottom: 1px solid #000 !important; }
+                        .vs-po .vs-tot .vs-tot-val { text-align: center; font-weight: bold; font-size: 14px; border: 1px solid #000 !important; }
+                        .vs-po .vs-terms p { margin: 0 0 5px 0; }
+                        .vs-po .vs-muted { color: #9b9b9b; }
+                        .vs-po .vs-dash { border-top: 1px dashed #000; }
+                        .vs-po .vs-tot small { font-size: 11px; font-weight: bold; }
+                    </style>
+                    <div class="page vs-po">
+
+                        <!-- 1. HEADER: logo + PO title block -->
+                        <table style="border: 1px solid #c0c0c0; margin-bottom: 11.8px;">
+                            <tr>
+                                <td style="width: 61%; padding: 11.8px; vertical-align: middle; border-right: 1px solid #c0c0c0;">
+                                    <img t-if="o.company_id.vs_report_logo" t-att-src="image_data_uri(o.company_id.vs_report_logo)" style="max-height: 86px; max-width: 100%;" alt="Viewsport Pitches"/><img t-else="" src="/viewsport_implementation/static/src/img/viewsport_logo.png" style="max-height: 86px; max-width: 100%;" alt="Viewsport Pitches"/>
+                                </td>
+                                <td style="width: 39%; padding: 0; vertical-align: top;">
+                                    <table class="vs-box">
+                                        <tr>
+                                            <td colspan="2" style="text-align: center; font-weight: bold; font-size: 23px; line-height: 1.1; padding: 4.7px;">
+                                                PURCHASE ORDER<br/>
+                                                <span style="font-size: 17px; font-weight: normal;"><span class="vs-ar">أمــــــــــــر شـــــــــــراء</span></span>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="vs-lbl" style="width: 45%;">PO Number:</td>
+                                            <td style="font-weight: bold;"><span t-field="o.name"/> <t t-esc="o._get_revision_label()"/></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="vs-lbl">PO Date:</td>
+                                            <td style="font-weight: bold;" t-esc="(o.date_order and o.date_order.strftime('%d/%m/%Y')) or ''"/>
+                                        </tr>
+                                        <tr>
+                                            <td class="vs-lbl">Project Code:</td>
+                                            <td class="vs-blue">
+                                                <t t-set="analytic_account" t-value="o._get_project_analytic_account()"/>
+                                                <t t-if="analytic_account and analytic_account.custom_project_code"># <t t-esc="analytic_account.custom_project_code"/></t>
+                                                <t t-elif="analytic_account and analytic_account.code"># <t t-esc="analytic_account.code"/></t>
+                                                <t t-elif="analytic_account"><t t-esc="analytic_account.name"/></t>
+                                                <t t-else="">-</t>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                        </table>
+
+                        <!-- 2. PO TO / BUYER (widths measured on the original template) -->
+                        <table>
+                            <tr>
+                                <td style="width: 56.7%; vertical-align: top;">
+                                    <div class="vs-sec-title">PO To <span style="font-size: 15.3px;"><span class="vs-ar">أمر الشراء إلي</span></span></div>
+                                    <table class="vs-box">
+                                        <tr>
+                                            <td class="vs-lbl" style="width: 35%;">Vendor:</td>
+                                            <td class="vs-val" t-esc="o.partner_id.commercial_partner_id.name or '-'"/>
+                                        </tr>
+                                        <tr>
+                                            <td class="vs-lbl">Vendor Address:</td>
+                                            <td class="vs-val">
+                                                <t t-set="p" t-value="o.partner_id"/>
+                                                <t t-esc="', '.join(x for x in [p.street, p.street2, p.city, p.country_id.name] if x) or '-'"/>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="vs-lbl">Vendor TRN No.:</td>
+                                            <td class="vs-val" t-esc="o.partner_id.vat or '-'"/>
+                                        </tr>
+                                        <tr>
+                                            <td class="vs-lbl">Vendor Code:</td>
+                                            <td class="vs-val" t-esc="o.partner_id.ref or o.partner_id.commercial_partner_id.ref or '-'"/>
+                                        </tr>
+                                        <tr>
+                                            <td class="vs-lbl">Vendor Ref:</td>
+                                            <td class="vs-val"><t t-esc="o.partner_ref or '-'"/><t t-if="o.partner_ref_date"> Dated: <t t-esc="o.partner_ref_date.strftime('%d.%m.%Y')"/></t></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="vs-lbl">Vendor Email:</td>
+                                            <td class="vs-val" t-esc="o.partner_id.email or o.partner_id.commercial_partner_id.email or '-'"/>
+                                        </tr>
+                                    </table>
+                                </td>
+                                <td style="width: 5.5%;"/>
+                                <td style="width: 37.8%; vertical-align: top;">
+                                    <div class="vs-sec-title">Buyer <span style="font-size: 15.3px;"><span class="vs-ar">تفاصيل المشتري</span></span></div>
+                                    <table class="vs-box">
+                                        <tr>
+                                            <td class="vs-lbl" style="width: 39%;">Deliver To:</td>
+                                            <td style="font-weight: bold; white-space: nowrap;" t-esc="company_name"/>
+                                        </tr>
+                                        <tr>
+                                            <td class="vs-lbl">TAX Registration:</td>
+                                            <td class="vs-red" style="white-space: nowrap;">#TRN <t t-esc="company_trn"/></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="vs-lbl">Delivery Term:</td>
+                                            <td style="font-weight: bold;" t-esc="o._get_delivery_term_short()"/>
+                                        </tr>
+                                        <tr>
+                                            <td class="vs-lbl">Payment Plan:</td>
+                                            <td style="font-weight: bold;" t-esc="o.payment_term_id.name or '-'"/>
+                                        </tr>
+                                        <tr>
+                                            <td class="vs-lbl">PO Enclose:</td>
+                                            <td style="font-weight: bold;" t-esc="o.po_enclose or '-'"/>
+                                        </tr>
+                                        <tr>
+                                            <td class="vs-lbl">Pages No. of PO:</td>
+                                            <td style="font-weight: bold;" t-esc="o.po_no_of_pages or '-'"/>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                        </table>
+
+                        <p style="margin: 11.3px 0 1.9px 1.9px; font-size: 14.9px;">
+                            Proceed with the supply the following items description and serial numbers must appear on
+                            all invoices, bills of lading, and acknowledgements relating to this PO:
+                        </p>
+
+                        <!-- 3. ITEMS: same column grid is reused by totals -->
+                        <t t-set="disc_lines" t-value="o.order_line.filtered(lambda l: not l.display_type and l.product_id.default_code == 'DISC')"/>
+                        <t t-set="special_discount" t-value="abs(sum(disc_lines.mapped('price_subtotal')))"/>
+                        <table class="vs-items">
+                            <thead>
+                                <tr>
+                                    <th style="width: 9.7%;">Ser. No.<small><span class="vs-ar">التسلسل</span></small></th>
+                                    <th style="width: 9.9%;">Code<small><span class="vs-ar">الكود</span></small></th>
+                                    <th style="width: 42.4%;">PO Description<small><span class="vs-ar">الوصــــــــــف</span></small></th>
+                                    <th style="width: 7.1%;">UOM<small><span class="vs-ar">الوحدة</span></small></th>
+                                    <th style="width: 7.6%;">QTY<small><span class="vs-ar">الكمية</span></small></th>
+                                    <th style="width: 10.4%;">Unit Price<small><span class="vs-ar">سعر الوحدة</span></small></th>
+                                    <th style="width: 12.9%;">Taxable Amount<small><span class="vs-ar">الإجمالي</span></small></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <t t-set="item_index" t-value="1"/>
+                                <t t-foreach="o.order_line - disc_lines" t-as="line">
+                                    <tr t-if="line.display_type == 'line_section'">
+                                        <td colspan="7" style="font-weight: bold; background-color: #f7f7f7;" t-esc="line.name"/>
+                                    </tr>
+                                    <tr t-elif="line.display_type == 'line_note'">
+                                        <td colspan="7" style="font-style: italic;" t-esc="line.name"/>
+                                    </tr>
+                                    <tr t-else="" t-att-class="'vs-alt' if item_index % 2 == 0 else ''">
+                                        <t t-set="desc_lines" t-value="(line.name or '').split('\n')"/>
+                                        <t t-set="has_title" t-value="line.product_id and desc_lines[0].strip() in (line.product_id.display_name, line.product_id.name)"/>
+                                        <td style="text-align: center; font-weight: bold; height: 27px;" t-esc="'%.2f' % item_index"/>
+                                        <td style="text-align: center;" t-esc="line.product_id.default_code or ''"/>
+                                        <td>
+                                            <strong t-esc="line.product_id.name if line.product_id else desc_lines[0]"/>
+                                            <t t-foreach="desc_lines[1:] if (has_title or not line.product_id) else desc_lines" t-as="dl">
+                                                <br/><t t-esc="dl"/>
+                                            </t>
+                                        </td>
+                                        <td style="text-align: center;" t-esc="line.product_uom._vs_label()"/>
+                                        <td style="text-align: center;" t-esc="fmt(line.product_qty)"/>
+                                        <td style="text-align: center;"><t t-esc="fmt(line.price_unit)"/><div t-if="line.discount" style="font-size: 10px; color: #c00000; white-space: nowrap;">-<t t-esc="'{:g}'.format(line.discount)"/>% disc.</div></td>
+                                        <td style="text-align: center; font-weight: bold;" t-esc="fmt_cur(line.price_subtotal)"/>
+                                        <t t-set="item_index" t-value="item_index + 1"/>
+                                    </tr>
+                                </t>
+                            </tbody>
+                        </table>
+
+                        <!-- 4. TOTALS: label = QTY + Unit Price columns, value = Taxable Amount column -->
+                        <table style="page-break-inside: avoid;">
+                            <tr>
+                                <td style="width: 69.1%; vertical-align: top; padding: 9.4px 0 0 0;">
+                                    <table>
+                                        <tr>
+                                            <td style="width: 82%; text-align: right; font-weight: bold; font-size: 15.3px; line-height: 1.4; padding-right: 6.6px;">
+                                                Please notify us immediately if this order cannot be shipped<br/>
+                                                complete on or before:
+                                            </td>
+                                            <td class="vs-red" style="font-size: 15.3px; white-space: nowrap; vertical-align: middle;"
+                                                t-esc="(o.date_planned and o.date_planned.strftime('%d-%b-%y')) or ''"/>
+                                        </tr>
+                                    </table>
+                                </td>
+                                <td style="width: 30.9%; vertical-align: top; padding: 0;">
+                                    <table class="vs-tot">
+                                        <tr>
+                                            <td class="vs-tot-lbl" style="width: 58.3%;">
+                                                SubTotal<br/><small>&gt;&gt;&gt; <span dir="rtl" style="unicode-bidi: embed;"><span class="vs-ar">الاجمالي قبل الضريبة</span></span></small>
+                                            </td>
+                                            <td class="vs-tot-val" t-esc="fmt_cur(o.amount_untaxed + special_discount)"/>
+                                        </tr>
+                                        <tr t-if="special_discount">
+                                            <td class="vs-tot-lbl">Special Discount &gt;&gt;&gt;</td>
+                                            <td class="vs-tot-val" t-esc="fmt_cur(-special_discount)"/>
+                                        </tr>
+                                        <tr>
+                                            <td class="vs-tot-lbl" style="height: 26px;">VAT <span dir="rtl" style="unicode-bidi: embed;"><span class="vs-ar">الضريبة</span></span>&#8206;<t t-if="o._vs_vat_label()"> (<t t-esc="o._vs_vat_label()"/>)</t> &gt;&gt;&gt;</td>
+                                            <td class="vs-tot-val" t-esc="fmt_cur(o.amount_tax)"/>
+                                        </tr>
+                                        <tr>
+                                            <td class="vs-tot-lbl">
+                                                Total With VAT<br/><small>&gt;&gt;&gt; <span dir="rtl" style="unicode-bidi: embed;"><span class="vs-ar">الإجمالي شامل الضريبة</span></span></small>
+                                            </td>
+                                            <td class="vs-tot-val" t-esc="fmt_cur(o.amount_total)"/>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                        </table>
+
+                        <div class="vs-dash" style="margin-top: 7.5px;"></div>
+                        <div style="padding: 6.6px 0 6.6px 66px; font-weight: bold; font-size: 15.3px;">
+                            Total Amount: <img t-if="cur.name == 'AED'" src="/viewsport_implementation/static/src/img/dirham_symbol.svg" style="height: 14px; width: 14px; vertical-align: -1px; margin-left: 3px;"/> <span t-esc="o._get_amount_in_words()"/>
+                        </div>
+                        <div class="vs-dash" style="margin-bottom: 11.3px;"></div>
+
+                        <!-- 5. DELIVERY LOCATION / CONTACT -->
+                        <t t-set="wh_partner" t-value="o.picking_type_id.warehouse_id.partner_id"/>
+                        <table class="vs-box vs-deliv" style="margin-bottom: 16px;">
+                            <tr>
+                                <td class="vs-lbl" style="width: 22.8%; height: 35.8px;">Delivery location:</td>
+                                <td class="vs-val" style="width: 33.9%;">
+                                    <t t-if="o.ship_to_info" t-esc="o.ship_to_info"/>
+                                    <t t-elif="wh_partner" t-esc="', '.join(x for x in [wh_partner.name, wh_partner.street, wh_partner.city] if x)"/>
+                                    <t t-else="">-</t>
+                                </td>
+                                <td class="vs-lbl" style="width: 12.4%; font-size: 12.7px;">Contact Person:</td>
+                                <td style="width: 7.6%; font-weight: bold; font-size: 15.3px; padding-left: 3.8px; padding-right: 1.9px;" t-esc="o.contact_person_id.name or '-'"/>
+                                <td class="vs-lbl" style="width: 10.6%; font-size: 12.7px;">Contact No:</td>
+                                <td style="width: 12.7%; font-weight: bold; font-size: 12.7px; padding-left: 3.8px;"
+                                    t-esc="o.contact_number or o.contact_person_id.phone or o.contact_person_id.mobile or '-'"/>
+                            </tr>
+                        </table>
+
+                        <!-- 6. TERMS & CONDITIONS -->
+                        <div class="vs-terms" style="page-break-inside: avoid; padding-left: 1.9px;">
+                            <p style="font-weight: bold; font-size: 15.3px; text-decoration: underline; margin-bottom: 9.4px;">TERMS &amp; CONDITION</p>
+                            <p style="margin-bottom: 6.6px;"><strong>1- Payment Terms:</strong></p>
+                            <p style="margin-bottom: 7.5px;" t-esc="o.payment_term_id.name or '-'"/>
+                            <p style="margin-bottom: 0;"><strong>2- <t t-esc="o._get_delivery_plan_label()"/> :</strong></p>
+                            <p t-esc="o._get_delivery_plan_text()"/>
+                            <t t-out="o.company_id._vs_po_terms(o.ex_emirate or 'Dubai', o.partner_id.commercial_partner_id.name)"/>
+                        </div>
+
+                        <!-- 7. SIGNATURES (columns measured on the original template) -->
+                        <table style="margin-top: 14px; page-break-inside: avoid;">
+                            <tr>
+                                <td style="width: 25.5%; vertical-align: top; padding-top: 11.3px; font-weight: bold;">BUYER</td>
+                                <td style="width: 28.7%; vertical-align: top; padding-top: 11.3px; text-align: center;">
+                                    <strong>Name:</strong>
+                                    <t t-if="o.company_id.procurement_manager_id" t-esc="o.company_id.procurement_manager_id.name"/>
+                                    <span t-else="" class="vs-muted">........................</span>
+                                </td>
+                                <td rowspan="2" style="width: 13%; vertical-align: middle; text-align: center;">
+                                    <div style="width: 99px; height: 99px; border: 1px solid #ececec; border-radius: 50%; margin: 0 auto; text-align: left; font-size: 10.4px; color: #c4c4c4; line-height: 1;">
+                                        <div style="padding: 58.5px 0 0 20.7px;">VSP Stamp,</div>
+                                    </div>
+                                </td>
+                                <td style="width: 32.8%; vertical-align: top;">
+                                    <table>
+                                        <tr>
+                                            <td style="font-weight: bold; white-space: nowrap; width: 1%; padding-right: 5.7px;">Authorized By :</td>
+                                            <td style="border-bottom: 1px solid #000 !important;"/>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="vertical-align: top; padding-top: 13.2px;">….................................<br/>Hand Signature,</td>
+                                <td style="vertical-align: top; padding-top: 13.2px; text-align: center;"><strong>PROCUREMENT MANAGER</strong><br/>Approval by Cost Control</td>
+                                <td/>
+                            </tr>
+                            <tr>
+                                <td style="font-weight: bold; font-size: 12.7px; padding-top: 13.2px;">Date:</td>
+                                <td style="font-weight: bold; font-size: 12.7px; padding-top: 13.2px;">Date:</td>
+                                <td/>
+                                <td style="font-weight: bold; font-size: 12.7px; padding-top: 13.2px;">Date:</td>
+                            </tr>
+                        </table>
+                    </div>
+
+                    <!-- 8. FOOTER (every page) -->
+                    <div class="footer" style="font-family: 'VS Sans', 'VS Arabic', Arial, sans-serif; text-align: center; font-weight: bold; font-size: 15.9px; line-height: 1.35; border-top: 1.5px solid #000; padding-top: 4.7px;">
+                        <style>body.o_body_pdf, body.container { padding-left: 0 !important; padding-right: 0 !important; }</style><t t-call="viewsport_implementation.vs_report_fonts"/>
+                        <t t-foreach="o.company_id._vs_footer_lines()" t-as="fl">
+                            <div t-if="fl[1]" dir="rtl" style="font-size: 14px;" t-esc="fl[0]"/>
+                            <div t-else="" t-esc="fl[0]"/>
+                        </t>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>

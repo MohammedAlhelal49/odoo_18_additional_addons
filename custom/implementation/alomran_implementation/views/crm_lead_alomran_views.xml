@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Validity info on the lead / opportunity form -->
+    <record id="crm_lead_view_form_alomran_validity" model="ir.ui.view">
+        <field name="name">crm.lead.form.alomran.validity</field>
+        <field name="model">crm.lead</field>
+        <field name="inherit_id" ref="crm.crm_lead_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[@name='button_box']" position="after">
+                <div class="alert alert-info d-flex flex-wrap gap-3 py-2 mb-2" role="status"
+                     invisible="not id or alomran_validity_status != 'active'">
+                    <span><strong>Lead Status:</strong> <field name="alomran_validity_status" class="oe_inline" readonly="1"/></span>
+                    <span><strong>Last Update:</strong> <field name="alomran_last_update_date" class="oe_inline" readonly="1"/></span>
+                    <span><strong>Remaining Days:</strong> <field name="alomran_remaining_days" class="oe_inline" readonly="1"/></span>
+                </div>
+                <div class="alert alert-danger d-flex flex-wrap gap-3 py-2 mb-2" role="status"
+                     invisible="not id or alomran_validity_status != 'expired'">
+                    <span><strong>Lead Status:</strong> <field name="alomran_validity_status" class="oe_inline" readonly="1"/></span>
+                    <span><strong>Last Update:</strong> <field name="alomran_last_update_date" class="oe_inline" readonly="1"/></span>
+                    <span>No update was recorded during the validity period - this lead can be transferred.</span>
+                </div>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Opportunities list (also used by "My Activities") -->
+    <record id="crm_case_tree_view_oppor_alomran" model="ir.ui.view">
+        <field name="name">crm.lead.list.opportunity.alomran</field>
+        <field name="model">crm.lead</field>
+        <field name="inherit_id" ref="crm.crm_case_tree_view_oppor"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='user_id']" position="after">
+                <field name="alomran_last_update_date" optional="show"/>
+                <field name="alomran_remaining_days" optional="show"/>
+                <field name="alomran_validity_status" optional="show" widget="badge"
+                       decoration-success="alomran_validity_status == 'active'"
+                       decoration-danger="alomran_validity_status == 'expired'"
+                       decoration-info="alomran_validity_status == 'won'"/>
+            </xpath>
+            <xpath expr="//list" position="inside">
+                <widget name="open_in_new_tab"/>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Active / Expired filters -->
+    <record id="view_crm_case_opportunities_filter_alomran_validity" model="ir.ui.view">
+        <field name="name">crm.lead.search.opportunity.alomran.validity</field>
+        <field name="model">crm.lead</field>
+        <field name="inherit_id" ref="crm.view_crm_case_opportunities_filter"/>
+        <field name="arch" type="xml">
+            <xpath expr="//filter[@name='unassigned']" position="after">
+                <separator/>
+                <filter string="Active Leads" name="alomran_validity_active"
+                        domain="[('alomran_validity_status', '=', 'active')]"/>
+                <filter string="Expired Leads" name="alomran_validity_expired"
+                        domain="[('alomran_validity_status', '=', 'expired')]"/>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Leads list -->
+    <record id="crm_case_tree_view_leads_alomran" model="ir.ui.view">
+        <field name="name">crm.lead.list.lead.alomran</field>
+        <field name="model">crm.lead</field>
+        <field name="inherit_id" ref="crm.crm_case_tree_view_leads"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='user_id']" position="after">
+                <field name="alomran_last_update_date" optional="show"/>
+                <field name="alomran_remaining_days" optional="show"/>
+                <field name="alomran_validity_status" optional="show" widget="badge"
+                       decoration-success="alomran_validity_status == 'active'"
+                       decoration-danger="alomran_validity_status == 'expired'"
+                       decoration-info="alomran_validity_status == 'won'"/>
+            </xpath>
+            <xpath expr="//list" position="inside">
+                <widget name="open_in_new_tab"/>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Kanban quick create: Source + Notes are mandatory for opportunities -->
+    <record id="quick_create_opportunity_form_alomran" model="ir.ui.view">
+        <field name="name">crm.lead.form.quick_create.alomran</field>
+        <field name="model">crm.lead</field>
+        <field name="inherit_id" ref="crm.quick_create_opportunity_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='name']" position="after">
+                <field name="source_id" required="type == 'opportunity'"
+                       options="{'no_create': True}"/>
+                <field name="description" widget="text" required="type == 'opportunity'"
+                       placeholder="Opportunity details (minimum 50 characters)..."/>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

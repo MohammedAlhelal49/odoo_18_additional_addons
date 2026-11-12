@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <record id="view_company_form_inherit_viewsport" model="ir.ui.view">
+        <field name="name">res.company.form.inherit.viewsport</field>
+        <field name="model">res.company</field>
+        <field name="inherit_id" ref="base.view_company_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//page[@name='general_info']" position="after">
+                <page string="Viewsport Reports" name="viewsport_reports">
+                    <group>
+                        <group string="Company">
+                            <field name="vs_legal_name"/>
+                            <field name="vs_short_legal_name"/>
+                            <field name="vs_report_logo" widget="image" class="oe_avatar" options="{'size': [240, 60]}"/>
+                        </group>
+                        <group string="Signatures">
+                            <field name="procurement_manager_id" options="{'no_create': True}"/>
+                            <field name="accountant_id" options="{'no_create': True}"/>
+                        </group>
+                        <group string="Tax Invoice - Bill From">
+                            <field name="vs_bill_from_dept"/>
+                            <field name="vs_bill_from_address"/>
+                            <field name="vs_bill_from_phone"/>
+                            <field name="vs_bill_from_email"/>
+                        </group>
+                    </group>
+                    <group string="Report Footer">
+                        <field name="vs_report_footer" nolabel="1" colspan="2"/>
+                    </group>
+                    <group string="Purchase Order Terms &amp; Conditions (from term 3)">
+                        <field name="vs_po_terms" nolabel="1" colspan="2"/>
+                    </group>
+                    <group string="Sales Quotation Terms &amp; Conditions (from term 3)">
+                        <field name="vs_quotation_terms" nolabel="1" colspan="2"/>
+                    </group>
+                    <group string="Request for Quotation Terms &amp; Conditions (from term 3)">
+                        <field name="vs_rfq_terms" nolabel="1" colspan="2"/>
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+</odoo>

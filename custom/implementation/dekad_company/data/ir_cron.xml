@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <record id="ir_cron_check_inactive_crm_leads" model="ir.cron">
+            <field name="name">CRM: Check Inactive Leads</field>
+            <field name="model_id" ref="crm.model_crm_lead"/>
+            <field name="user_id" ref="base.user_root"/>
+            <field name="code">model._cron_check_inactive_leads()</field>
+            <field name="interval_number">1</field>
+            <field name="interval_type">days</field>
+            <field name="active" eval="True"/>
+        </record>
+
+        <record id="ir_cron_notify_task_deadlines" model="ir.cron">
+            <field name="name">Project: Task Deadline Notifications</field>
+            <field name="model_id" ref="project.model_project_task"/>
+            <field name="user_id" ref="base.user_root"/>
+            <field name="code">model._cron_notify_task_deadlines()</field>
+            <field name="interval_number">1</field>
+            <field name="interval_type">days</field>
+            <field name="active" eval="True"/>
+        </record>
+
+        <record id="ir_cron_check_inactive_helpdesk_tickets" model="ir.cron">
+            <field name="name">Helpdesk: Check Inactive Tickets</field>
+            <field name="model_id" ref="helpdesk.model_helpdesk_ticket"/>
+            <field name="user_id" ref="base.user_root"/>
+            <field name="code">model._cron_check_inactive_tickets()</field>
+            <field name="interval_number">1</field>
+            <field name="interval_type">days</field>
+            <field name="active" eval="True"/>
+        </record>
+    </data>
+</odoo>

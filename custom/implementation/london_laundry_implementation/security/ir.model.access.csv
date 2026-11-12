@@ -1,0 +1,6 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_london_delivery_method_user,london.delivery.method user,model_london_delivery_method,base.group_user,1,0,0,0
+access_london_delivery_method_manager,london.delivery.method manager,model_london_delivery_method,point_of_sale.group_pos_manager,1,1,1,1
+access_london_delivery_person_user,london.delivery.person user,model_london_delivery_person,base.group_user,1,0,0,0
+access_london_delivery_person_manager,london.delivery.person manager,model_london_delivery_person,point_of_sale.group_pos_manager,1,1,1,1
+access_london_delivery_person_invoice,london.delivery.person invoicing,model_london_delivery_person,account.group_account_invoice,1,1,1,0

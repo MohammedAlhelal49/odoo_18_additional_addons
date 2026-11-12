@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="alomran_implementation.DailyActivityReport">
+        <div class="o_action o_alomran_dar d-flex flex-column h-100">
+            <!-- Control panel -->
+            <div class="o_control_panel d-flex flex-column gap-2 px-3 pt-2 pb-3 border-bottom">
+                <div class="d-flex flex-wrap justify-content-between align-items-center gap-2">
+                    <div class="d-flex align-items-center gap-2">
+                        <button class="btn btn-primary" t-on-click="printPdf">
+                            <i class="fa fa-print me-1"/>PDF
+                        </button>
+                        <button class="btn btn-secondary" t-on-click="exportXlsx">
+                            <i class="fa fa-file-excel-o me-1"/>XLSX
+                        </button>
+                        <span class="fs-4 ms-2 text-truncate">Daily Activity Report</span>
+                    </div>
+                    <button class="btn btn-link" t-on-click="openAnalysis">
+                        <i class="fa fa-table me-1"/>Pivot / Graph Analysis
+                    </button>
+                </div>
+
+                <div t-if="state.data" class="d-flex flex-wrap align-items-center gap-2">
+                    <!-- Period -->
+                    <Dropdown>
+                        <button class="btn btn-secondary">
+                            <i class="fa fa-calendar me-1"/>
+                            <t t-out="presetLabel"/>: <t t-out="periodLabel"/>
+                        </button>
+                        <t t-set-slot="content">
+                            <DropdownItem t-foreach="presets" t-as="preset" t-key="preset.key"
+                                          class="{ 'selected fw-bold': state.options.preset === preset.key }"
+                                          onSelected="() => this.selectPreset(preset.key)">
+                                <t t-out="preset.label"/>
+                            </DropdownItem>
+                            <div class="dropdown-divider"/>
+                            <div class="px-3 py-2 d-flex flex-column gap-2" style="min-width: 240px;">
+                                <label class="small text-muted mb-0">From</label>
+                                <input type="date" class="form-control form-control-sm"
+                                       t-att-value="state.options.date_from"
+                                       t-on-change="(ev) => this.onDateChange('date_from', ev)"/>
+                                <label class="small text-muted mb-0">To</label>
+                                <input type="date" class="form-control form-control-sm"
+                                       t-att-value="state.options.date_to"
+                                       t-on-change="(ev) => this.onDateChange('date_to', ev)"/>
+                            </div>
+                        </t>
+                    </Dropdown>
+
+                    <!-- Employees (managers / All Documents only) -->
+                    <Dropdown t-if="state.data.can_see_all">
+                        <button class="btn btn-secondary">
+                            <i class="fa fa-user me-1"/><t t-out="userLabel"/>
+                        </button>
+                        <t t-set-slot="content">
+                            <DropdownItem closingMode="'none'" onSelected="() => this.clearFilter('user_ids')"
+                                          class="{ 'fw-bold': !state.options.user_ids.length }">
+                                All Employees
+                            </DropdownItem>
+                            <div class="dropdown-divider"/>
+                            <div style="max-height: 320px; overflow-y: auto;">
+                                <DropdownItem t-foreach="state.data.filters.users" t-as="u" t-key="u.id"
+                                              closingMode="'none'"
+                                              onSelected="() => this.toggleFilter('user_ids', u.id)">
+                                    <i t-attf-class="fa fa-fw me-1 #{isSelected('user_ids', u.id) ? 'fa-check-square-o' : 'fa-square-o'}"/>
+                                    <t t-out="u.name"/>
+                                </DropdownItem>
+                            </div>
+                        </t>
+                    </Dropdown>
+
+                    <!-- Branches -->
+                    <Dropdown t-if="state.data.filters.companies.length > 1">
+                        <button class="btn btn-secondary">
+                            <i class="fa fa-building me-1"/><t t-out="companyLabel"/>
+                        </button>
+                        <t t-set-slot="content">
+                            <DropdownItem t-foreach="state.data.filters.companies" t-as="c" t-key="c.id"
+                                          closingMode="'none'"
+                                          onSelected="() => this.toggleFilter('company_ids', c.id)">
+                                <i t-attf-class="fa fa-fw me-1 #{isSelected('company_ids', c.id) ? 'fa-check-square-o' : 'fa-square-o'}"/>
+                                <t t-out="c.name"/>
+                            </DropdownItem>
+                        </t>
+                    </Dropdown>
+
+                    <i t-if="state.loading" class="fa fa-spinner fa-spin text-muted ms-2"/>
+                </div>
+            </div>
+
+            <!-- Content -->
+            <div class="o_content flex-grow-1 overflow-auto p-3">
+                <t t-if="state.data">
+                    <div t-if="!state.data.lines.length" class="text-center text-muted py-5">
+                        <i class="fa fa-folder-open-o fa-3x mb-3 d-block"/>
+                        No activity recorded for the selected period.
+                    </div>
+                    <div t-else="" class="table-responsive bg-view border rounded">
+                        <table class="table table-sm table-hover align-middle mb-0 o_alomran_dar_table">
+                            <thead>
+                                <tr>
+                                    <th class="o_alomran_dar_first">
+                                        <a href="#" class="text-reset" t-on-click.prevent="toggleAll">
+                                            <i t-attf-class="fa fa-fw #{allExpanded ? 'fa-caret-down' : (isRtl ? 'fa-caret-left' : 'fa-caret-right')}"/>
+                                            Employee / Day
+                                        </a>
+                                    </th>
+                                    <th t-foreach="state.data.columns" t-as="col" t-key="col.field" class="text-center">
+                                        <t t-out="col.label"/>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <t t-foreach="state.data.lines" t-as="line" t-key="line.user_id">
+                                    <tr class="o_alomran_dar_user fw-bold">
+                                        <td class="o_alomran_dar_first" t-on-click="() => this.toggleLine(line.user_id)" role="button">
+                                            <i t-attf-class="fa fa-fw #{state.expanded[line.user_id] ? 'fa-caret-down' : (isRtl ? 'fa-caret-left' : 'fa-caret-right')}"/>
+                                            <t t-out="line.name"/>
+                                        </td>
+                                        <td t-foreach="state.data.columns" t-as="col" t-key="col.field"
+                                            t-att-class="cellClass(col.field, line.values[col.field])"
+                                            t-on-click="() => this.openRecords(col.field, line.values[col.field], line.user_id)">
+                                            <t t-out="formatValue(col.field, line.values[col.field])"/>
+                                        </td>
+                                    </tr>
+                                    <t t-if="state.expanded[line.user_id]">
+                                        <tr t-foreach="line.days" t-as="day" t-key="day.date" class="o_alomran_dar_day">
+                                            <td class="o_alomran_dar_first ps-5 text-muted" t-out="formatDay(day.date)"/>
+                                            <td t-foreach="state.data.columns" t-as="col" t-key="col.field"
+                                                t-att-class="cellClass(col.field, day.values[col.field])"
+                                                t-on-click="() => this.openRecords(col.field, day.values[col.field], line.user_id, day.date)">
+                                                <t t-out="formatValue(col.field, day.values[col.field])"/>
+                                            </td>
+                                        </tr>
+                                    </t>
+                                </t>
+                            </tbody>
+                            <tfoot>
+                                <tr class="fw-bold o_alomran_dar_total">
+                                    <td class="o_alomran_dar_first">Total</td>
+                                    <td t-foreach="state.data.columns" t-as="col" t-key="col.field"
+                                        t-att-class="cellClass(col.field, state.data.totals[col.field])"
+                                        t-on-click="() => this.openRecords(col.field, state.data.totals[col.field])">
+                                        <t t-out="formatValue(col.field, state.data.totals[col.field])"/>
+                                    </td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                    <div class="text-muted small mt-2">
+                        <i class="fa fa-info-circle me-1"/>
+                        Click on any number to open the related records.
+                    </div>
+                </t>
+            </div>
+        </div>
+    </t>
+</templates>

@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Payment Receipt: new title bar + payment info section.
+         The invoices table and the signature / stamp blocks are left as they are. -->
+    <template id="report_payment_receipt_document_dekad"
+              inherit_id="account.report_payment_receipt_document"
+              priority="99">
+
+        <xpath expr="//div[hasclass('page')]/h3" position="replace">
+            <t t-set="pc" t-value="o.company_id.dekad_bar_color()"/>
+            <t t-set="sc" t-value="o.company_id.secondary_color or '#222222'"/>
+            <t t-set="is_receipt" t-value="o.partner_type == 'customer'"/>
+            <style>
+                span[dir=rtl], td[dir=rtl] { font-size: 14px; }
+                table[name=invoices] thead th { color: #fff !important; padding: 6px 8px; }
+                table[name=invoices] td { border: 1px solid #bbb; padding: 4px 8px; }
+            </style>
+            <style><t t-out="'table[name=invoices] thead th { background-color: %s !important; }' % pc"/></style>
+            <table style="width:100%; margin-bottom:12px; font-family:Arial, sans-serif;">
+                <tr>
+                    <td t-attf-style="background:#{pc}; color:#fff; padding:8px 12px; font-size:16px; font-weight:bold; white-space:nowrap;">
+                        <span style="float:left; white-space:nowrap;" t-out="'RECEIPT VOUCHER' if is_receipt else 'PAYMENT VOUCHER'"/>
+                        <span style="float:right; white-space:nowrap; font-size:21px;" dir="rtl" t-out="'سند القبض' if is_receipt else 'سند الدفع'"/>
+                    </td>
+                </tr>
+            </table>
+        </xpath>
+
+        <xpath expr="//div[hasclass('mb-4')]" position="replace">
+            <div class="mb-4" style="font-size:12px; font-family:Arial, sans-serif;">
+                <!-- 1. Party (left) and voucher details (right) -->
+                <table style="width:100%; margin-bottom:12px; border-collapse:separate; border-spacing:0;">
+                    <tr>
+                        <td style="width:55%; border:1px solid #999; padding:10px 12px; vertical-align:top;">
+                            <div t-attf-style="color:#{sc}; font-weight:bold; overflow:hidden;">
+                                <span style="float:left; white-space:nowrap;" t-out="'RECEIVED FROM' if is_receipt else 'PAID TO'"/>
+                                <span style="float:right; white-space:nowrap;" dir="rtl" t-out="'استلمنا من' if is_receipt else 'دفعنا إلى'"/>
+                            </div>
+                            <div style="font-size:15px; font-weight:bold; margin-top:6px;" t-out="o.partner_id.name"/>
+                            <div t-if="o.partner_id.ref" style="margin-top:3px;">Code / الرمز: <span t-out="o.partner_id.ref"/></div>
+                            <div style="margin-top:3px;">TRN / الرقم الضريبي: <span t-out="o.partner_id.vat or '-'"/></div>
+                        </td>
+                        <td style="width:45%; border:1px solid #999; border-left:none; padding:0; vertical-align:top;">
+                            <table style="width:100%; border-collapse:collapse;">
+                                <tr>
+                                    <td t-attf-style="padding:5px 12px; color:#{sc}; width:50%;">Voucher No. / رقم السند</td>
+                                    <td style="padding:5px 12px; font-weight:bold;" t-out="o.name or 'Draft'"/>
+                                </tr>
+                                <tr>
+                                    <td t-attf-style="padding:5px 12px; color:#{sc}; border-top:1px solid #ddd;">Date / التاريخ</td>
+                                    <td style="padding:5px 12px; font-weight:bold; border-top:1px solid #ddd;" t-out="o.date" t-options='{"widget": "date", "format": "dd/MM/yyyy"}'/>
+                                </tr>
+                                <tr>
+                                    <td t-attf-style="padding:5px 12px; color:#{sc}; border-top:1px solid #ddd;">Payment Method / طريقة الدفع</td>
+                                    <td style="padding:5px 12px; font-weight:bold; border-top:1px solid #ddd;" t-out="o.payment_method_line_id.name or o.payment_method_id.name or '-'"/>
+                                </tr>
+                                <tr t-if="o.memo">
+                                    <td t-attf-style="padding:5px 12px; color:#{sc}; border-top:1px solid #ddd;">Memo / ملاحظات</td>
+                                    <td style="padding:5px 12px; border-top:1px solid #ddd;" t-out="o.memo"/>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+
+                <!-- 2. Amount band with the amount in words -->
+                <table style="width:100%; margin-bottom:14px; border:1px solid #999; border-collapse:collapse;">
+                    <tr>
+                        <td t-attf-style="background:#{pc}; color:#fff; padding:8px 12px; width:34%; font-weight:bold;">
+                            <span style="float:left; white-space:nowrap;" t-out="'AMOUNT RECEIVED' if is_receipt else 'AMOUNT PAID'"/>
+                            <span style="float:right; white-space:nowrap;" dir="rtl" t-out="'المبلغ المستلم' if is_receipt else 'المبلغ المدفوع'"/>
+                        </td>
+                        <td t-attf-style="padding:8px 14px; font-size:20px; font-weight:bold; color:#{sc};">
+                            <span t-out="o.currency_id.name"/>
+                            <span t-out="o.amount" t-options='{"widget": "float", "precision": 2}'/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" style="padding:6px 12px; border-top:1px solid #ddd;">
+                            <span style="float:left;" t-out="o.dekad_amount_words('en')"/>
+                            <span style="float:right;" dir="rtl" t-out="o.dekad_amount_words('ar')"/>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </xpath>
+
+        <!-- Invoice section: same columns and data, only the look follows the voucher design -->
+        <xpath expr="//table[@name='invoices']" position="attributes">
+            <attribute name="class" add="table-bordered" remove="table-borderless" separator=" "/>
+        </xpath>
+        <xpath expr="//table[@name='invoices']/thead/tr" position="attributes">
+            <attribute name="t-attf-style">background:#{pc}; color:#fff;</attribute>
+        </xpath>
+
+        <!-- Signature boxes like the cheque voucher (added after the invoices table) -->
+        <xpath expr="//table[@name='invoices']" position="after">
+            <div style="font-family:Arial, sans-serif; font-size:12px;">
+                <t t-if="is_receipt">
+                    <t t-set="rb_user" t-value="(o.dekad_received_by_id or o.create_uid).sudo()"/>
+                    <t t-set="rb_date" t-value="o.date"/>
+                    <t t-call="dekad_claude_customizations.dekad_received_by_box"/>
+                </t>
+                <t t-else="">
+                    <t t-set="boxes" t-value="[('Prepared By', 'أُعدّ بواسطة'), ('Approved By', 'الاعتماد'), ('Receiver', 'المستلم')]"/>
+                    <t t-call="dekad_claude_customizations.dekad_voucher_signatures"/>
+                </t>
+            </div>
+        </xpath>
+    </template>
+</odoo>

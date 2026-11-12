@@ -1,0 +1,59 @@
+<odoo>
+    <record id="view_move_form_orchida_unit_mapping" model="ir.ui.view">
+        <field name="name">account.move.form.orchida.unit.mapping</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_move_form"/>
+        <field name="arch" type="xml">
+            <!-- Line tree: row decoration for AC lines -->
+            <xpath expr="//field[@name='invoice_line_ids']/list" position="attributes">
+                <attribute name="decoration-info">orchida_ac_indicator == 'allowance'</attribute>
+                <attribute name="decoration-warning">orchida_ac_indicator == 'charge'</attribute>
+            </xpath>
+
+            <!-- Line popup form: add UCode after the native UoM field -->
+            <xpath expr="//field[@name='invoice_line_ids']/form//field[@name='product_uom_id'][1]" position="after">
+                <field name="mapped_unit_code" string="UCode" readonly="1"/>
+            </xpath>
+
+            <xpath expr="//field[@name='invoice_line_ids']/form//group[last()]" position="after">
+                <group string="E-Invoicing (Optional)">
+                    <field name="orchida_line_note"/>
+                    <field name="orchida_buyer_item_code"/>
+                </group>
+            </xpath>
+
+            <!-- Document-level AC buttons were removed: users add allowance/charge as normal
+                 lines with the company default Allowance/Charge products configured on the
+                 company E-Invoice Info page. -->
+            <xpath expr="//field[@name='tax_totals']" position="after">
+                <div class="mt-2 pt-2 border-top" invisible="amount_orchida_allowance_total == 0 and amount_orchida_charge_total == 0">
+                    <div class="d-flex align-items-baseline mb-1 text-info fw-bold" style="white-space: nowrap; gap: 12px;" invisible="amount_orchida_allowance_total == 0">
+                        <span class="flex-grow-1">Doc Allowances</span>
+                        <div class="text-end d-flex justify-content-end align-items-baseline" style="min-width: 130px;">
+                            <field name="amount_orchida_allowance_total" nolabel="1" class="text-end"/>
+                        </div>
+                    </div>
+                    <div class="d-flex align-items-baseline mb-1 text-warning fw-bold" style="white-space: nowrap; gap: 12px;" invisible="amount_orchida_charge_total == 0">
+                        <span class="flex-grow-1">Doc Charges</span>
+                        <div class="text-end d-flex justify-content-end align-items-baseline" style="min-width: 130px;">
+                            <field name="amount_orchida_charge_total" nolabel="1" class="text-end"/>
+                        </div>
+                    </div>
+                </div>
+            </xpath>
+
+            <!-- Line popup form: AC fields section -->
+            <xpath expr="//field[@name='invoice_line_ids']/form//group[last()]" position="after">
+                <group string="Document Allowance / Charge" invisible="not orchida_is_document_ac">
+                    <field name="orchida_is_document_ac" invisible="1"/>
+                    <field name="orchida_ac_indicator" readonly="parent.state == 'posted'"/>
+                    <field name="orchida_ac_amount" readonly="parent.state == 'posted'"/>
+                    <field name="orchida_allowance_reason_code" invisible="orchida_ac_indicator != 'allowance'" readonly="parent.state == 'posted'"/>
+                    <field name="orchida_charge_reason_code" invisible="orchida_ac_indicator != 'charge'" readonly="parent.state == 'posted'"/>
+                    <field name="orchida_ac_reason" readonly="parent.state == 'posted'"/>
+                </group>
+            </xpath>
+
+        </field>
+    </record>
+</odoo>

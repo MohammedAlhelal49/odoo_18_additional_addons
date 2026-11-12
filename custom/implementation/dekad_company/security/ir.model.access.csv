@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_module_translation_wizard,module.translation.wizard,model_module_translation_wizard,base.group_system,1,1,1,1
+access_module_translation_wizard_line,module.translation.wizard.line,model_module_translation_wizard_line,base.group_system,1,1,1,1

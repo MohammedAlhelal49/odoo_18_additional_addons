@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+
+    <t t-name="london_laundry_implementation.InlineCharField">
+        <span t-if="props.readonly" t-esc="value"/>
+        <input t-else="" type="text" class="o_input o_laundry_inline_char"
+               t-att-value="value"
+               t-on-click="onClick"
+               t-on-keydown="onKeydown"
+               t-on-change="onChange"/>
+    </t>
+
+</templates>

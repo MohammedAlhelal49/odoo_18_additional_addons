@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- "Open in New Tab" on the tasks (activities) list & kanban -->
+    <record id="mail_activity_view_tree_open_target_new_tab" model="ir.ui.view">
+        <field name="name">mail.activity.list.open.target.new.tab</field>
+        <field name="model">mail.activity</field>
+        <field name="inherit_id" ref="mail.mail_activity_view_tree_open_target"/>
+        <field name="arch" type="xml">
+            <xpath expr="//list" position="inside">
+                <field name="res_model" column_invisible="1"/>
+                <field name="res_id" column_invisible="1"/>
+                <widget name="open_in_new_tab" options="{'model_field': 'res_model', 'id_field': 'res_id'}"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="mail_activity_view_kanban_open_target_new_tab" model="ir.ui.view">
+        <field name="name">mail.activity.kanban.open.target.new.tab</field>
+        <field name="model">mail.activity</field>
+        <field name="inherit_id" ref="mail.mail_activity_view_kanban_open_target"/>
+        <field name="arch" type="xml">
+            <xpath expr="//templates" position="before">
+                <field name="res_model"/>
+                <field name="res_id"/>
+            </xpath>
+            <xpath expr="//footer" position="inside">
+                <widget name="open_in_new_tab" options="{'model_field': 'res_model', 'id_field': 'res_id'}"/>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- My Tasks in CRM: activities on opportunities of the selected branches only
+         (the standard "My Activities" lists every model / branch and opening a
+         record of a branch that is not selected raises an access error) -->
+    <record id="alomran_my_tasks_action" model="ir.actions.act_window">
+        <field name="name">My Tasks</field>
+        <field name="res_model">mail.activity</field>
+        <field name="view_mode">list,kanban</field>
+        <field name="domain">[('res_model', '=', 'crm.lead'), ('alomran_in_active_company', '=', True)]</field>
+        <field name="search_view_id" ref="mail.mail_activity_view_search"/>
+        <field name="context">{
+            'search_default_filter_user_id_uid': 1,
+            'search_default_filter_date_deadline_past': 1,
+            'search_default_filter_date_deadline_today': 1,
+        }</field>
+    </record>
+
+    <record id="alomran_my_tasks_action_view_list" model="ir.actions.act_window.view">
+        <field name="sequence" eval="1"/>
+        <field name="view_mode">list</field>
+        <field name="act_window_id" ref="alomran_my_tasks_action"/>
+        <field name="view_id" ref="mail.mail_activity_view_tree_open_target"/>
+    </record>
+
+    <record id="alomran_my_tasks_action_view_kanban" model="ir.actions.act_window.view">
+        <field name="sequence" eval="2"/>
+        <field name="view_mode">kanban</field>
+        <field name="act_window_id" ref="alomran_my_tasks_action"/>
+        <field name="view_id" ref="mail.mail_activity_view_kanban_open_target"/>
+    </record>
+
+    <menuitem id="alomran_my_tasks_menu"
+              name="My Tasks"
+              parent="crm.crm_menu_sales"
+              action="alomran_my_tasks_action"
+              sequence="3"/>
+</odoo>

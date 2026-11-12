@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_dekad_cp_support_plan_list" model="ir.ui.view">
+        <field name="name">dekad.cp.support.plan.list</field>
+        <field name="model">dekad.cp.support.plan</field>
+        <field name="arch" type="xml">
+            <list editable="bottom">
+                <field name="sequence" widget="handle"/>
+                <field name="name"/>
+                <field name="hours_per_year"/>
+                <field name="active" column_invisible="True"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="action_dekad_cp_support_plan" model="ir.actions.act_window">
+        <field name="name">Annual Support Plans</field>
+        <field name="res_model">dekad.cp.support.plan</field>
+        <field name="view_mode">list</field>
+    </record>
+
+    <menuitem id="menu_dekad_cp_support_plan" name="Annual Support Plans"
+              parent="sale.menu_sale_config" action="action_dekad_cp_support_plan"
+              groups="sales_team.group_sale_manager" sequence="95"/>
+
+    <record id="view_product_template_form_cp_scope" model="ir.ui.view">
+        <field name="name">product.template.form.cp.scope</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='categ_id']" position="after">
+                <field name="cp_scope" invisible="type != 'service'"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_partner_form_dekad_trade_license" model="ir.ui.view">
+        <field name="name">res.partner.form.dekad.trade.license</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='vat']" position="after">
+                <field name="dekad_trade_license"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_order_form_dekad_contract_proposal" model="ir.ui.view">
+        <field name="name">sale.order.form.dekad.contract.proposal</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//page[@name='other_information']" position="after">
+                <page string="Technical Proposal &amp; Contract | المقترح الفني والعقد" name="dekad_contract_proposal">
+                    <group>
+                        <group string="Project | المشروع">
+                            <field name="cp_project_en"/>
+                            <field name="cp_project_ar"/>
+                            <field name="cp_edition"/>
+                            <field name="cp_version"/>
+                            <field name="cp_revision"/>
+                        </group>
+                    </group>
+                    <group string="1. Functional modules | الوحدات الوظيفية">
+                        <field name="cp_module_ids" nolabel="1" colspan="2">
+                            <list editable="bottom">
+                                <field name="sequence" widget="handle"/>
+                                <field name="product_id" domain="[('categ_id', '=', %(dekad_claude_customizations.cp_categ_modules)d)]" options="{'no_create': True}"/>
+                                <field name="name_en"/>
+                                <field name="name_ar"/>
+                                <field name="scope_en"/>
+                                <field name="scope_ar"/>
+                            </list>
+                        </field>
+                        <field name="cp_note_modules"/>
+                    </group>
+                    <group string="2. Delivery plan | الجدول التقديري للتنفيذ">
+                        <button name="action_cp_add_phases" type="object" string="Add standard phases"
+                                class="btn-secondary" colspan="2"/>
+                        <field name="cp_phase_ids" nolabel="1" colspan="2">
+                            <list editable="bottom">
+                                <field name="sequence" widget="handle"/>
+                                <field name="name_en"/>
+                                <field name="name_ar"/>
+                                <field name="duration"/>
+                            </list>
+                        </field>
+                        <field name="cp_duration_en"/>
+                        <field name="cp_duration_ar"/>
+                        <field name="cp_note_delivery"/>
+                    </group>
+                    <group string="3. Training | التدريب">
+                        <group>
+                            <field name="cp_training_from"/>
+                            <field name="cp_training_to"/>
+                            <field name="cp_training_hours"/>
+                        </group>
+                        <field name="cp_note_training"/>
+                    </group>
+                    <group string="4. Data, responsibilities and acceptance | البيانات والقبول">
+                        <field name="cp_note_data"/>
+                    </group>
+                    <group string="5. Support | الدعم">
+                        <group>
+                            <field name="cp_support_months"/>
+                            <field name="cp_support_from"/>
+                            <field name="cp_support_to"/>
+                        </group>
+                        <field name="cp_note_support"/>
+                    </group>
+                    <group string="6. Hosting and licences | الاستضافة والتراخيص">
+                        <group>
+                            <field name="cp_include_hosting"/>
+                            <field name="cp_hosting_users" invisible="not cp_include_hosting"/>
+                            <field name="cp_hosting_price" invisible="not cp_include_hosting"/>
+                        </group>
+                        <field name="cp_note_hosting" invisible="not cp_include_hosting"/>
+                    </group>
+                    <group string="7. Approval | الاعتماد">
+                        <field name="cp_cust_signer_name"/>
+                        <field name="cp_cust_signer_title"/>
+                    </group>
+                    <group string="9. Implementation contract | العقد">
+                        <group>
+                            <field name="ct_date"/>
+                            <field name="ct_payment_method"/>
+                            <field name="ct_has_tax_flag" invisible="1"/>
+                            <field name="ct_tax_mode" invisible="not ct_has_tax_flag"/>
+                        </group>
+                        <group>
+                            <field name="ct_late_days"/>
+                            <field name="ct_notice_days"/>
+                            <field name="ct_suspend_days"/>
+                            <field name="ct_terminate_days"/>
+                            <field name="ct_withdraw_days"/>
+                        </group>
+                        <field name="ct_payment_ids" nolabel="1" colspan="2">
+                            <list editable="bottom">
+                                <field name="sequence" widget="handle"/>
+                                <field name="name_en"/>
+                                <field name="name_ar"/>
+                                <field name="percent"/>
+                                <field name="method"/>
+                            </list>
+                        </field>
+                        <field name="ct_note" colspan="2"/>
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+</odoo>

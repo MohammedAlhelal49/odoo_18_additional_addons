@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="alomran_implementation.DailyActivityDashboard">
+        <div class="o_action o_alomran_dar o_alomran_dashboard d-flex flex-column h-100">
+            <!-- Control panel -->
+            <div class="o_control_panel d-flex flex-column gap-2 px-3 pt-2 pb-3 border-bottom">
+                <div class="d-flex flex-wrap justify-content-between align-items-center gap-2">
+                    <span class="fs-4 text-truncate">
+                        Activity Dashboard
+                        <small t-if="state.data and !state.data.can_see_all" class="text-muted fs-6 ms-1">(My Activity)</small>
+                    </span>
+                    <button class="btn btn-secondary" t-on-click="openDetailedReport">
+                        <i class="fa fa-table me-1"/>Detailed Report
+                    </button>
+                </div>
+
+                <div t-if="state.data" class="d-flex flex-wrap align-items-center gap-2">
+                    <!-- Period -->
+                    <Dropdown>
+                        <button class="btn btn-secondary">
+                            <i class="fa fa-calendar me-1"/>
+                            <t t-out="presetLabel"/>: <t t-out="periodLabel"/>
+                        </button>
+                        <t t-set-slot="content">
+                            <DropdownItem t-foreach="presets" t-as="preset" t-key="preset.key"
+                                          class="{ 'selected fw-bold': state.options.preset === preset.key }"
+                                          onSelected="() => this.selectPreset(preset.key)">
+                                <t t-out="preset.label"/>
+                            </DropdownItem>
+                            <div class="dropdown-divider"/>
+                            <div class="px-3 py-2 d-flex flex-column gap-2" style="min-width: 240px;">
+                                <label class="small text-muted mb-0">From</label>
+                                <input type="date" class="form-control form-control-sm"
+                                       t-att-value="state.options.date_from"
+                                       t-on-change="(ev) => this.onDateChange('date_from', ev)"/>
+                                <label class="small text-muted mb-0">To</label>
+                                <input type="date" class="form-control form-control-sm"
+                                       t-att-value="state.options.date_to"
+                                       t-on-change="(ev) => this.onDateChange('date_to', ev)"/>
+                            </div>
+                        </t>
+                    </Dropdown>
+
+                    <!-- Employees (managers / All Documents only) -->
+                    <Dropdown t-if="state.data.can_see_all">
+                        <button class="btn btn-secondary">
+                            <i class="fa fa-user me-1"/><t t-out="userLabel"/>
+                        </button>
+                        <t t-set-slot="content">
+                            <DropdownItem closingMode="'none'" onSelected="() => this.clearFilter('user_ids')"
+                                          class="{ 'fw-bold': !state.options.user_ids.length }">
+                                All Employees
+                            </DropdownItem>
+                            <div class="dropdown-divider"/>
+                            <div style="max-height: 320px; overflow-y: auto;">
+                                <DropdownItem t-foreach="state.data.filters.users" t-as="u" t-key="u.id"
+                                              closingMode="'none'"
+                                              onSelected="() => this.toggleFilter('user_ids', u.id)">
+                                    <i t-attf-class="fa fa-fw me-1 #{isSelected('user_ids', u.id) ? 'fa-check-square-o' : 'fa-square-o'}"/>
+                                    <t t-out="u.name"/>
+                                </DropdownItem>
+                            </div>
+                        </t>
+                    </Dropdown>
+
+                    <!-- Branches -->
+                    <Dropdown t-if="state.data.filters.companies.length > 1">
+                        <button class="btn btn-secondary">
+                            <i class="fa fa-building me-1"/><t t-out="companyLabel"/>
+                        </button>
+                        <t t-set-slot="content">
+                            <DropdownItem t-foreach="state.data.filters.companies" t-as="c" t-key="c.id"
+                                          closingMode="'none'"
+                                          onSelected="() => this.toggleFilter('company_ids', c.id)">
+                                <i t-attf-class="fa fa-fw me-1 #{isSelected('company_ids', c.id) ? 'fa-check-square-o' : 'fa-square-o'}"/>
+                                <t t-out="c.name"/>
+                            </DropdownItem>
+                        </t>
+                    </Dropdown>
+
+                    <i t-if="state.loading" class="fa fa-spinner fa-spin text-muted ms-2"/>
+                </div>
+            </div>
+
+            <!-- Content -->
+            <div class="o_content flex-grow-1 overflow-auto p-3" t-if="state.data">
+                <!-- KPI cards -->
+                <div class="row g-3 mb-3">
+                    <div t-foreach="kpis" t-as="kpi" t-key="kpi.field" class="col-6 col-md-4 col-xl-3">
+                        <div t-attf-class="card h-100 o_alomran_kpi #{kpi.value and kpi.field !== 'contracts_amount' ? 'o_alomran_dar_clickable' : ''}"
+                             t-on-click="() => this.openRecords(kpi.field, kpi.value)">
+                            <div class="card-body d-flex align-items-center gap-3">
+                                <i t-attf-class="fa #{kpi.icon} fa-2x #{kpi.danger ? 'text-danger' : 'text-primary'}"/>
+                                <div class="text-truncate">
+                                    <div t-attf-class="fs-3 fw-bold #{kpi.danger ? 'text-danger' : ''}">
+                                        <t t-out="formatValue(kpi.field, kpi.value)"/>
+                                        <small t-if="kpi.field === 'contracts_amount'" class="fs-6 text-muted"
+                                               t-out="state.data.currency_symbol"/>
+                                    </div>
+                                    <div class="text-muted small text-truncate" t-out="kpi.label"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Charts -->
+                <div class="row g-3 mb-3">
+                    <div class="col-12 col-xl-8">
+                        <div class="card h-100">
+                            <div class="card-header fw-bold">Daily Trend</div>
+                            <div class="card-body"><div class="o_alomran_chart"><canvas t-ref="trend"/></div></div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-6 col-xl-4">
+                        <div class="card h-100">
+                            <div class="card-header fw-bold">Tasks Status</div>
+                            <div class="card-body"><div class="o_alomran_chart"><canvas t-ref="tasks"/></div></div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-6 col-xl-8">
+                        <div class="card h-100">
+                            <div class="card-header fw-bold">Open Opportunities by Stage</div>
+                            <div class="card-body">
+                                <div t-if="!state.data.pipeline.length" class="text-muted text-center py-5">No open opportunities.</div>
+                                <div t-else="" class="o_alomran_chart"><canvas t-ref="pipeline"/></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-6 col-xl-4">
+                        <div class="card h-100">
+                            <div class="card-header fw-bold">Leads Validity</div>
+                            <div class="card-body">
+                                <div t-if="!state.validity" class="text-muted text-center py-5">
+                                    <i class="fa fa-spinner fa-spin me-1"/>Calculating...
+                                </div>
+                                <div t-att-class="state.validity ? 'o_alomran_chart' : 'd-none'"><canvas t-ref="validity"/></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div t-if="state.data.can_see_all and state.data.employees.length" class="col-12">
+                        <div class="card">
+                            <div class="card-header fw-bold">Employees Comparison</div>
+                            <div class="card-body"><div class="o_alomran_chart o_alomran_chart_tall"><canvas t-ref="employees"/></div></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Follow-up lists -->
+                <div class="row g-3">
+                    <div class="col-12 col-xl-6">
+                        <div class="card h-100">
+                            <div class="card-header fw-bold text-danger">
+                                <i class="fa fa-exclamation-triangle me-1"/>Overdue Tasks
+                            </div>
+                            <div t-if="!state.data.overdue.length" class="card-body text-muted text-center">No overdue tasks.</div>
+                            <table t-else="" class="table table-sm table-hover mb-0">
+                                <thead><tr><th>Opportunity</th><th>Task</th><th t-if="state.data.can_see_all">Employee</th><th class="text-center">Days Late</th></tr></thead>
+                                <tbody>
+                                    <tr t-foreach="state.data.overdue" t-as="act" t-key="act.id" class="o_alomran_dar_clickable"
+                                        t-on-click="() => this.openDocument(act.res_model, act.res_id)">
+                                        <td class="text-truncate" style="max-width: 220px;" t-out="act.name"/>
+                                        <td class="text-truncate" style="max-width: 180px;" t-out="act.summary"/>
+                                        <td t-if="state.data.can_see_all" t-out="act.user"/>
+                                        <td class="text-center text-danger fw-bold" t-out="act.late"/>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="col-12 col-xl-6">
+                        <div class="card h-100">
+                            <div class="card-header fw-bold text-warning">
+                                <i class="fa fa-hourglass-half me-1"/>Leads Expiring Soon
+                                <small class="text-muted fw-normal">(<t t-out="state.data.expiring_days"/> days or less)</small>
+                            </div>
+                            <div t-if="!state.validity" class="card-body text-muted text-center">
+                                <i class="fa fa-spinner fa-spin me-1"/>Calculating...
+                            </div>
+                            <div t-elif="!state.validity.expiring.length" class="card-body text-muted text-center">No lead is about to expire.</div>
+                            <table t-else="" class="table table-sm table-hover mb-0">
+                                <thead><tr><th>Opportunity</th><th>Customer</th><th t-if="state.data.can_see_all">Salesperson</th><th class="text-center">Days Left</th></tr></thead>
+                                <tbody>
+                                    <tr t-foreach="state.validity.expiring" t-as="lead" t-key="lead.id" class="o_alomran_dar_clickable"
+                                        t-on-click="() => this.openDocument('crm.lead', lead.id)">
+                                        <td class="text-truncate" style="max-width: 220px;" t-out="lead.name"/>
+                                        <td class="text-truncate" style="max-width: 180px;" t-out="lead.customer"/>
+                                        <td t-if="state.data.can_see_all" t-out="lead.user"/>
+                                        <td class="text-center fw-bold" t-out="lead.remaining"/>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </t>
+</templates>

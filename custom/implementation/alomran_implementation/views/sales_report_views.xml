@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="action_sales_report_daily" model="ir.actions.client">
+        <field name="name">Daily Sales</field>
+        <field name="tag">alomran_sales_report</field>
+        <field name="params" eval="{'report': 'daily'}"/>
+    </record>
+    <record id="action_sales_report_course" model="ir.actions.client">
+        <field name="name">Sales by Course</field>
+        <field name="tag">alomran_sales_report</field>
+        <field name="params" eval="{'report': 'course'}"/>
+    </record>
+    <record id="action_sales_report_salesperson" model="ir.actions.client">
+        <field name="name">Salesperson Performance</field>
+        <field name="tag">alomran_sales_report</field>
+        <field name="params" eval="{'report': 'salesperson'}"/>
+    </record>
+    <record id="action_sales_report_branch" model="ir.actions.client">
+        <field name="name">Sales by Branch</field>
+        <field name="tag">alomran_sales_report</field>
+        <field name="params" eval="{'report': 'branch'}"/>
+    </record>
+    <record id="action_sales_report_payment" model="ir.actions.client">
+        <field name="name">Sales by Payment Method</field>
+        <field name="tag">alomran_sales_report</field>
+        <field name="params" eval="{'report': 'payment'}"/>
+    </record>
+    <record id="action_sales_report_source" model="ir.actions.client">
+        <field name="name">Sales by Customer Source</field>
+        <field name="tag">alomran_sales_report</field>
+        <field name="params" eval="{'report': 'source'}"/>
+    </record>
+    <record id="action_sales_report_remaining" model="ir.actions.client">
+        <field name="name">Remaining to Invoice</field>
+        <field name="tag">alomran_sales_report</field>
+        <field name="params" eval="{'report': 'remaining'}"/>
+    </record>
+
+    <menuitem id="menu_sales_reports" name="Sales Reports" parent="sale.menu_sale_report"
+              groups="sales_team.group_sale_salesman" sequence="2"/>
+    <menuitem id="menu_sales_report_daily" name="Daily Sales" parent="menu_sales_reports"
+              action="action_sales_report_daily" sequence="1"/>
+    <menuitem id="menu_sales_report_course" name="Sales by Course" parent="menu_sales_reports"
+              action="action_sales_report_course" sequence="2"/>
+    <menuitem id="menu_sales_report_salesperson" name="Salesperson Performance" parent="menu_sales_reports"
+              action="action_sales_report_salesperson" sequence="3"/>
+    <menuitem id="menu_sales_report_branch" name="Sales by Branch" parent="menu_sales_reports"
+              action="action_sales_report_branch" sequence="4"/>
+    <menuitem id="menu_sales_report_payment" name="Sales by Payment Method" parent="menu_sales_reports"
+              action="action_sales_report_payment" sequence="5"/>
+    <menuitem id="menu_sales_report_source" name="Sales by Customer Source" parent="menu_sales_reports"
+              action="action_sales_report_source" sequence="6"/>
+    <menuitem id="menu_sales_report_remaining" name="Remaining to Invoice" parent="menu_sales_reports"
+              action="action_sales_report_remaining" sequence="7"/>
+</odoo>

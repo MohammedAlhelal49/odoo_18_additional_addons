@@ -1,0 +1,8 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_schedule_day_user,schedule.day user,model_schedule_day,,1,0,0,0
+access_course_duration_units_user,access.course.duration.units.user,model_course_duration_units,,1,0,0,0
+access_transfer_company_wizard,transfer.company.wizard,model_transfer_company_wizard,base.group_system,1,1,1,1
+access_alomran_customer_lookup_salesman,alomran.customer.lookup salesman,model_alomran_customer_lookup,sales_team.group_sale_salesman,1,1,1,1
+access_alomran_customer_lookup_line_salesman,alomran.customer.lookup.line salesman,model_alomran_customer_lookup_line,sales_team.group_sale_salesman,1,1,1,1
+access_alomran_daily_activity_report_manager,alomran.daily.activity.report salesman,model_alomran_daily_activity_report,sales_team.group_sale_salesman,1,0,0,0
+access_alomran_takeover_log_manager,alomran.takeover.log manager,model_alomran_takeover_log,sales_team.group_sale_manager,1,0,0,0

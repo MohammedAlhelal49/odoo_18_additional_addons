@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="project_task_view_todo_form_inherit_related" model="ir.ui.view">
+        <field name="name">project.task.view.todo.form.inherit.related</field>
+        <field name="model">project.task</field>
+        <field name="inherit_id" ref="project_todo.project_task_view_todo_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='user_ids']/.." position="inside">
+                <field name="related_customer_id"/>
+                <field name="related_project_id"/>
+            </xpath>
+            <xpath expr="//field[@name='tag_ids']/.." position="inside">
+                <field name="related_date"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="project_task_view_todo_kanban_inherit_related" model="ir.ui.view">
+        <field name="name">project.task.kanban.inherit.related</field>
+        <field name="model">project.task</field>
+        <field name="inherit_id" ref="project_todo.project_task_view_todo_kanban"/>
+        <field name="arch" type="xml">
+            <xpath expr="//t[@t-name='card']//field[@name='tag_ids']" position="after">
+                <div class="text-muted small" t-if="record.related_customer_id.raw_value">
+                    <i class="fa fa-user me-1" title="Related Customer"/>
+                    <field name="related_customer_id"/>
+                </div>
+                <div class="text-muted small" t-if="record.related_project_id.raw_value">
+                    <i class="fa fa-folder me-1" title="Related Project"/>
+                    <field name="related_project_id"/>
+                </div>
+                <div class="text-muted small" t-if="record.related_date.raw_value">
+                    <i class="fa fa-calendar me-1" title="Date"/>
+                    <field name="related_date"/>
+                </div>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="project_task_view_todo_tree_inherit_related" model="ir.ui.view">
+        <field name="name">project.task.todo.list.inherit.related</field>
+        <field name="model">project.task</field>
+        <field name="inherit_id" ref="project_todo.project_task_view_todo_tree"/>
+        <field name="arch" type="xml">
+            <field name="tag_ids" position="after">
+                <field name="related_customer_id" optional="show"/>
+                <field name="related_project_id" optional="show"/>
+                <field name="related_date" optional="show"/>
+            </field>
+        </field>
+    </record>
+    
+    
+        <!-- Users 2 and 16 see all To-dos, everyone else only their own -->
+    <record id="project_todo.project_task_action_todo" model="ir.actions.act_window">
+        <field name="domain">[('project_id', '=', False), ('parent_id', '=', False), (1, '=', 1) if uid in [2, 16] else ('user_ids', 'in', [uid])]</field>
+    </record>
+
+</odoo>

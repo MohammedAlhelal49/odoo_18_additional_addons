@@ -1,0 +1,80 @@
+.o_sr_report {
+    overflow: auto;
+    background-color: $o-webclient-background-color;
+
+    // direction-neutral spacing (not mirrored by Odoo's RTL build)
+    .o_sr_gap { gap: 0.4rem; }
+    .o_sr_push_end { margin-inline-start: auto; }
+    .o_sr_gap_start { margin-inline-start: 0.35rem; }
+    .o_sr_filter_text { margin-inline-start: 0.35rem; }
+
+    .o_sr_report_bar {
+        position: sticky;
+        top: 0;
+        z-index: 10;
+        padding: 0.75rem 1rem;
+        background-color: $o-view-background-color;
+    }
+
+    .o_sr_report_title { margin-inline-end: 1rem; }
+    .o_sr_date { width: 9.5rem; }
+    .o_sr_active_filter { box-shadow: inset 0 -2px 0 $o-action; }
+
+    .o_sr_report_body {
+        padding: 1rem;
+        transition: opacity 0.2s;
+        &.o_sr_loading { opacity: 0.55; pointer-events: none; }
+    }
+
+    .o_sr_report_sheet {
+        background-color: $o-view-background-color;
+        border: 1px solid $border-color;
+        border-radius: 0.25rem;
+        padding: 1.25rem;
+        max-width: 1400px;
+        margin-inline: auto;
+    }
+
+    .o_sr_report_table {
+        thead th {
+            background-color: $gray-200;
+            white-space: nowrap;
+            font-weight: 600;
+        }
+        .o_sr_label { white-space: nowrap; }
+        .o_sr_caret {
+            display: inline-block;
+            width: 1.25rem;
+            cursor: pointer;
+        }
+        .o_sr_parent > td { font-weight: 600; }
+        .o_sr_level_1 > td:first-child { padding-inline-start: 2.25rem; }
+        .o_sr_level_1 { color: $gray-700; }
+        .o_sr_line_link {
+            color: inherit;
+            &:hover { color: $o-action; text-decoration: underline; }
+        }
+        .o_sr_total td {
+            font-weight: 700;
+            border-top: 2px solid $gray-700;
+            background-color: $gray-100;
+        }
+    }
+
+    @include media-breakpoint-down(md) {
+        .o_sr_report_body { padding: 0.5rem; }
+        .o_sr_report_sheet { padding: 0.75rem; }
+    }
+}
+
+// Odoo's layout sets `overflow: hidden` (and hides the scrollbar) on
+// .o_web_client > .o_action_manager > .o_action, which beats the plain .o_sr_report rule above:
+// re-enable scrolling with a more specific selector.
+.o_web_client > .o_action_manager > .o_action.o_sr_report {
+    overflow-y: auto;
+    scrollbar-width: auto;
+
+    &::-webkit-scrollbar {
+        display: initial;
+    }
+}

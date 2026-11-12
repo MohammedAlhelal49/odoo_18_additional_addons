@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- ========================= OUR VALUED PARTNERS ========================= -->
+    <template id="homepage_partners" inherit_id="healthcare_website.homepage" name="Health Protection Home: Partners">
+        <xpath expr="//section[@id='how-we-work']" position="after">
+            <section class="hp-section" id="partners">
+                <div class="container-xl">
+                    <div class="hp-section-head">
+                        <div class="hp-eyebrow"><span class="hp-eyebrow-dot"/>Our Partners</div>
+                        <h2 class="hp-section-title">Our Valued <span class="hp-c-blue">Partners</span></h2>
+                        <p class="hp-text">We are proud to work with leading healthcare, diagnostics and veterinary organizations across the UAE.</p>
+                    </div>
+                    <div class="row g-4 justify-content-center">
+                        <t t-foreach="[
+                            ('one_health', 'One Health', 'One Health, a PureHealth subsidiary, is an authorised distributor of leading brands in laboratory diagnostics, critical care, radiology, oncology, renal and surgical solutions, backed by central warehousing in Dubai and a team of trained biomedical engineers.'),
+                            ('purehealth', 'PureHealth', 'Headquartered in Abu Dhabi, PureHealth is the largest healthcare group in the UAE, spanning hospitals, clinics, diagnostics, pharmacies, insurance and healthcare procurement, with a network that includes SEHA, PureLab and Daman.'),
+                            ('al_mazroui', 'Al Mazroui Medical &amp; Chemical Supplies', 'A long-established UAE company that imports and distributes medical, dental and laboratory equipment, consumables and chemicals, with offices in Dubai, Abu Dhabi and Al Ain and services covering turnkey projects and biomedical maintenance.'),
+                            ('al_yasat', 'Al Yasat Veterinary', 'Al Yasat Veterinary provides veterinary care in the UAE with a focus on horses and camels. We are proud to support their work with quality laboratory supplies.'),
+                            ('vet_lab_blue', 'Veterinary Laboratory', 'A veterinary diagnostic laboratory serving the equine and camel sector in the UAE, relying on accurate testing to protect animal health and performance.'),
+                            ('visole', 'viSole Pharma &amp; Medical Trading', 'Based in Dubai, viSole supplies pharmaceuticals, point-of-care testing, molecular diagnostics and clinical products to healthcare providers across the UAE, representing brands such as Hologic and Molbio.'),
+                            ('dekad', 'Dekad Technical Solutions', 'A UAE-based ERP consultancy specializing in Odoo, delivering consultancy, implementation, integration, migration, ongoing support and web design. Dekad is the technology partner behind the Health Protection ERP system and website.'),
+                        ]" t-as="partner">
+                            <div class="col-md-6 col-lg-4">
+                                <div class="hp-partner">
+                                    <div class="hp-partner-logo">
+                                        <img t-att-src="'/healthcare_website/static/src/img/partners/%s.jpg' % partner[0]"
+                                             t-att-alt="partner[1]" loading="lazy"/>
+                                    </div>
+                                    <div class="hp-partner-body">
+                                        <h3 t-out="partner[1]"/>
+                                        <p t-out="partner[2]"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </t>
+                    </div>
+                </div>
+            </section>
+        </xpath>
+    </template>
+
+</odoo>

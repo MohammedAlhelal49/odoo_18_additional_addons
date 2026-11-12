@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="action_report_hp_delivery_note" model="ir.actions.report">
+        <field name="name">Delivery Note (Health Protection)</field>
+        <field name="model">stock.picking</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">health_protection_implementation.report_hp_delivery_note</field>
+        <field name="report_file">health_protection_implementation.report_hp_delivery_note</field>
+        <field name="print_report_name">'Delivery Note - %s' % (object.name)</field>
+        <field name="binding_model_id" ref="stock.model_stock_picking"/>
+        <field name="binding_type">report</field>
+    </record>
+
+    <template id="report_hp_delivery_note">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-set="company" t-value="o.company_id"/>
+                <t t-set="pc" t-value="company.primary_color or '#2d5a7b'"/>
+                <t t-set="sc" t-value="company.secondary_color or '#222222'"/>
+                <t t-set="so" t-value="o.sale_id"/>
+                <t t-set="moves" t-value="o.move_ids.filtered(lambda m: m.state != 'cancel')"/>
+                <t t-set="show_batch" t-value="any(m.sale_line_id.hp_batch_number or m.move_line_ids.lot_id for m in moves)"/>
+                <t t-set="show_expiry" t-value="any(m.sale_line_id.hp_expiry_date for m in moves)"/>
+                <t t-call="web.external_layout">
+                    <div class="page" style="font-size:12px; font-family:Arial, sans-serif;">
+                        <style>span[dir=rtl], td[dir=rtl] { font-size: 14px; }</style>
+
+                        <!-- Title bar -->
+                        <table style="width:100%; margin-bottom:12px;">
+                            <tr>
+                                <td t-attf-style="background:#{pc}; color:#fff; padding:8px 12px; font-size:16px; font-weight:bold; white-space:nowrap;">
+                                    <span style="float:left; white-space:nowrap;">DELIVERY NOTE</span>
+                                    <span style="float:right; white-space:nowrap; font-size:21px;" dir="rtl">سند تسليم</span>
+                                </td>
+                            </tr>
+                        </table>
+
+                        <!-- Parties and document info -->
+                        <table style="width:100%; margin-bottom:12px; border-collapse:separate; border-spacing:0;">
+                            <tr>
+                                <td style="width:30%; border:1px solid #999; padding:10px 12px; vertical-align:top;">
+                                    <div t-attf-style="color:#{sc}; font-weight:bold;">BILL TO</div>
+                                    <div style="font-weight:bold; margin-top:4px;" t-out="(so.partner_invoice_id or o.partner_id).display_name"/>
+                                    <div t-if="(so.partner_invoice_id or o.partner_id).phone">Tel: <span t-out="(so.partner_invoice_id or o.partner_id).phone"/></div>
+                                    <div>TRN: <span t-out="(so.partner_invoice_id or o.partner_id).vat or '-'"/></div>
+                                </td>
+                                <td style="width:30%; border:1px solid #999; border-left:none; padding:10px 12px; vertical-align:top;">
+                                    <div t-attf-style="color:#{sc}; font-weight:bold;">SHIP TO</div>
+                                    <div style="font-weight:bold; margin-top:4px;" t-out="o.partner_id.display_name"/>
+                                    <div t-if="o.partner_id.contact_address_complete" t-out="o.partner_id.contact_address_complete"/>
+                                </td>
+                                <td style="width:40%; border:1px solid #999; border-left:none; padding:0; vertical-align:top;">
+                                    <table style="width:100%; border-collapse:collapse;">
+                                        <tr>
+                                            <td t-attf-style="padding:5px 12px; color:#{sc}; width:45%;">Delivery Note No.</td>
+                                            <td style="padding:5px 12px; font-weight:bold;" t-out="o.name"/>
+                                        </tr>
+                                        <tr>
+                                            <td t-attf-style="padding:5px 12px; color:#{sc}; border-top:1px solid #ddd;">Delivery Date</td>
+                                            <td style="padding:5px 12px; font-weight:bold; border-top:1px solid #ddd;" t-out="o.date_done or o.scheduled_date" t-options='{"widget": "date", "format": "dd/MM/yyyy"}'/>
+                                        </tr>
+                                        <tr>
+                                            <td t-attf-style="padding:5px 12px; color:#{sc}; border-top:1px solid #ddd;">SO No.</td>
+                                            <td style="padding:5px 12px; font-weight:bold; border-top:1px solid #ddd;" t-out="so.name or o.origin or '-'"/>
+                                        </tr>
+                                        <tr>
+                                            <td t-attf-style="padding:5px 12px; color:#{sc}; border-top:1px solid #ddd;">PO No.</td>
+                                            <td style="padding:5px 12px; font-weight:bold; border-top:1px solid #ddd;" t-out="so.client_order_ref or '-'"/>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                        </table>
+
+                        <!-- Lines -->
+                        <table style="width:100%; border-collapse:collapse;">
+                            <thead>
+                                <tr t-attf-style="background:#{pc}; color:#fff;">
+                                    <th style="padding:6px; border:1px solid #999; width:5%;">S.No<br/>م</th>
+                                    <th style="padding:6px; border:1px solid #999; width:15%;">Code<br/>الكود</th>
+                                    <th style="padding:6px; border:1px solid #999;">Description<br/>الوصف</th>
+                                    <th style="padding:6px; border:1px solid #999; width:10%;">Qty<br/>الكمية</th>
+                                    <th t-if="show_batch" style="padding:6px; border:1px solid #999; width:15%;">Batch No.<br/>رقم التشغيلة</th>
+                                    <th t-if="show_expiry" style="padding:6px; border:1px solid #999; width:14%;">Expiry Date<br/>تاريخ الانتهاء</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <t t-set="idx" t-value="0"/>
+                                <t t-foreach="moves" t-as="move">
+                                    <t t-set="idx" t-value="idx + 1"/>
+                                    <t t-set="sline" t-value="move.sale_line_id"/>
+                                    <tr>
+                                        <td style="padding:5px; border:1px solid #bbb; text-align:center;" t-out="idx"/>
+                                        <td style="padding:5px; border:1px solid #bbb;" t-out="move.product_id.default_code"/>
+                                        <td style="padding:5px; border:1px solid #bbb;" t-out="move.product_id.name"/>
+                                        <td style="padding:5px; border:1px solid #bbb; text-align:center;"><span t-out="move.quantity" t-options='{"widget": "float", "precision": 0}'/> <span t-out="move.product_uom.name"/></td>
+                                        <td t-if="show_batch" style="padding:5px; border:1px solid #bbb; text-align:center;" t-out="sline.hp_batch_number or ', '.join(move.move_line_ids.lot_id.mapped('name'))"/>
+                                        <td t-if="show_expiry" style="padding:5px; border:1px solid #bbb; text-align:center;" t-out="sline.hp_expiry_date"/>
+                                    </tr>
+                                </t>
+                            </tbody>
+                        </table>
+
+                        <!-- Customer acknowledgement -->
+                        <table style="width:100%; margin-top:40px; border-collapse:collapse; page-break-inside:avoid;">
+                            <tr><td colspan="2" t-attf-style="background:#{pc}; color:#fff; text-align:center; font-weight:bold; border:1px solid #999; padding:4px;">CUSTOMER ACKNOWLEDGEMENT / إقرار العميل</td></tr>
+                            <tr>
+                                <td style="width:50%; border:1px solid #999; padding:4px; font-weight:bold;">Recipient / المستلم</td>
+                                <td style="border:1px solid #999; padding:4px; font-weight:bold;">Date / التاريخ</td>
+                            </tr>
+                            <tr><td style="border:1px solid #999; height:80px;"></td><td style="border:1px solid #999;"></td></tr>
+                        </table>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>

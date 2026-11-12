@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Customer invoice print: remove the "Payment Communication" line and add a small gap
+         between the Bank Details block and the Terms & Conditions block of the narration. -->
+
+    <template id="report_invoice_document_dekad" inherit_id="account.report_invoice_document" priority="99">
+        <xpath expr="//p[@name='payment_communication']/.." position="attributes">
+            <attribute name="t-if">False</attribute>
+        </xpath>
+        <xpath expr="//div[@name='comment']" position="before">
+            <style>[name="comment"] span &gt; p + p { margin-top: 12px; }</style>
+        </xpath>
+    </template>
+
+    <template id="report_custom_invoice_document_dekad" inherit_id="dekad_account_enhancement.report_custom_invoice_document" priority="99">
+        <!-- Title: "Tax Invoice" only when the company has a tax start date and the invoice is dated on/after it;
+             otherwise "Sales Invoice". -->
+        <xpath expr="//h3[normalize-space()='Tax Invoice']/.." position="replace">
+            <div class="text-center mb-4">
+                <t t-set="dekad_inv_date" t-value="o.invoice_date or o.date"/>
+                <t t-if="o.company_id.dekad_tax_start_date and dekad_inv_date and dekad_inv_date &gt;= o.company_id.dekad_tax_start_date">
+                    <h3 class="mb-0" style="direction:rtl;">فاتورة ضريبية</h3>
+                    <h3 class="mt-0">Tax Invoice</h3>
+                </t>
+                <t t-else="">
+                    <h3 class="mb-0" style="direction:rtl;">فاتورة مبيعات</h3>
+                    <h3 class="mt-0">Sales Invoice</h3>
+                </t>
+            </div>
+        </xpath>
+        <xpath expr="//p[@name='payment_communication']/.." position="attributes">
+            <attribute name="t-if">False</attribute>
+        </xpath>
+        <xpath expr="//div[@name='comment']" position="before">
+            <style>[name="comment"] span &gt; p + p { margin-top: 12px; }</style>
+        </xpath>
+    </template>
+</odoo>

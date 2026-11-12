@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Replace the standard website header/footer on every page with the Health Protection ones. -->
+    <template id="layout_header_footer" inherit_id="website.layout" name="Health Protection Header &amp; Footer" priority="99">
+        <xpath expr="//header" position="before">
+            <t t-set="no_header" t-value="True"/>
+            <t t-call="healthcare_website.site_header"/>
+        </xpath>
+        <xpath expr="//footer" position="before">
+            <t t-set="no_footer" t-value="True"/>
+            <t t-call="healthcare_website.site_footer"/>
+        </xpath>
+    </template>
+
+    <template id="brand" name="Health Protection Brand">
+        <a href="/#home" class="hp-brand text-decoration-none">
+            <img src="/healthcare_website/static/src/img/logo_mark.png" alt="Health Protection" class="hp-brand-mark"/>
+            <span class="hp-brand-text">
+                <span class="hp-brand-name"><span class="hp-c-cyan">Health</span> Protection</span>
+                <span class="hp-brand-tagline">Laboratory &amp; Medical Supplies</span>
+            </span>
+        </a>
+    </template>
+
+    <template id="site_header" name="Health Protection Header">
+        <link rel="preconnect" href="https://fonts.googleapis.com"/>
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin=""/>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap"/>
+        <header class="hp-navbar navbar navbar-expand-xl" role="navigation" aria-label="Main navigation">
+            <div class="container-xl">
+                <t t-call="healthcare_website.brand"/>
+                <button class="navbar-toggler hp-toggler" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#hp_main_nav" aria-controls="hp_main_nav" aria-expanded="false" aria-label="Toggle navigation">
+                    <i class="fa fa-bars"/>
+                </button>
+                <div class="collapse navbar-collapse" id="hp_main_nav">
+                    <ul class="navbar-nav ms-auto hp-nav">
+                        <li class="nav-item"><a class="nav-link" href="/#home">Home</a></li>
+                        <li class="nav-item"><a class="nav-link" href="/#about">About Us</a></li>
+                        <li class="nav-item"><a class="nav-link" href="/#services">Services</a></li>
+                        <li class="nav-item"><a class="nav-link" href="/#why-us">Why Us</a></li>
+                        <li class="nav-item">
+                            <a t-attf-class="nav-link #{'active' if request.httprequest.path.startswith('/products') else ''}" href="/products">Products</a>
+                        </li>
+                        <li class="nav-item"><a class="nav-link" href="/#partners">Partners</a></li>
+                        <li class="nav-item"><a class="nav-link" href="/#contact">Contact</a></li>
+                    </ul>
+                    <div class="hp-nav-actions ms-xl-3">
+                        <!-- Login (public visitors) / back to the system (logged-in users) -->
+                        <a t-if="request.env.user._is_public()" href="/web/login" class="btn hp-btn-outline hp-btn-login">
+                            <i class="fa fa-sign-in me-2"/>Login
+                        </a>
+                        <a t-else="" href="/odoo" class="btn hp-btn-outline hp-btn-login">
+                            <i class="fa fa-user-circle-o me-2"/><t t-out="request.env.user.name"/>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </header>
+    </template>
+
+    <template id="site_footer" name="Health Protection Footer">
+        <footer class="hp-footer">
+            <div class="container-xl">
+                <div class="row g-5">
+                    <div class="col-lg-5">
+                        <div class="hp-footer-brand">
+                            <span class="hp-footer-logo">
+                                <img src="/healthcare_website/static/src/img/logo_mark.png" alt="Health Protection"/>
+                            </span>
+                            <span class="hp-brand-name">Health Protection</span>
+                        </div>
+                        <p class="hp-footer-text mt-3">
+                            Your trusted partner for laboratory reagents, quality controls and medical supplies
+                            across the United Arab Emirates.
+                        </p>
+                        <div class="hp-social mt-4">
+                            <a t-att-href="website.social_facebook or '#'" target="_blank" rel="noopener" aria-label="Facebook"><i class="fa fa-facebook"/></a>
+                            <a t-att-href="website.social_instagram or '#'" target="_blank" rel="noopener" aria-label="Instagram"><i class="fa fa-instagram"/></a>
+                            <a t-att-href="website.social_linkedin or '#'" target="_blank" rel="noopener" aria-label="LinkedIn"><i class="fa fa-linkedin"/></a>
+                        </div>
+                    </div>
+                    <div class="col-6 col-lg-2">
+                        <h6 class="hp-footer-title">Company</h6>
+                        <ul class="list-unstyled hp-footer-links">
+                            <li><a href="/#home">Home</a></li>
+                            <li><a href="/#about">About Us</a></li>
+                            <li><a href="/#why-us">Why Us</a></li>
+                            <li><a href="/products">Products</a></li>
+                            <li><a href="/#partners">Partners</a></li>
+                            <li><a href="/#contact">Contact</a></li>
+                        </ul>
+                    </div>
+                    <div class="col-6 col-lg-2">
+                        <h6 class="hp-footer-title">Solutions</h6>
+                        <ul class="list-unstyled hp-footer-links">
+                            <li><a href="/products?family=hematology">Hematology</a></li>
+                            <li><a href="/products?family=chemistry">Clinical Chemistry</a></li>
+                            <li><a href="/products?family=controls">Calibrators &amp; Controls</a></li>
+                            <li><a href="/products?family=consumables">Lab Consumables</a></li>
+                        </ul>
+                    </div>
+                    <div class="col-lg-3" id="contact">
+                        <h6 class="hp-footer-title">Contact</h6>
+                        <ul class="list-unstyled hp-footer-links hp-footer-contact">
+                            <li>
+                                <i class="fa fa-map-marker"/>
+                                <a href="https://www.google.com/maps/search/?api=1&amp;query=NMC+Specialty+Hospital+Al+Ain" target="_blank" rel="noopener" class="hp-address">Near NMC Hospital<br/>Al Ain, Abu Dhabi, United Arab Emirates</a>
+                            </li>
+                            <li t-if="res_company.phone">
+                                <i class="fa fa-phone"/><a t-attf-href="tel:#{res_company.phone}" t-out="res_company.phone"/>
+                            </li>
+                            <li t-if="res_company.email">
+                                <i class="fa fa-envelope-o"/><a t-attf-href="mailto:#{res_company.email}" t-out="res_company.email"/>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="hp-footer-bottom">
+                    <span>© <t t-out="datetime.date.today().year"/> <t t-out="res_company.name"/>. All rights reserved.</span>
+                </div>
+            </div>
+        </footer>
+    </template>
+
+</odoo>

@@ -1,0 +1,275 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+
+    <t t-name="london_laundry_implementation.OrderReceipt">
+        <div class="pos-receipt laundry-receipt">
+
+            <!-- ====== HEADER ====== -->
+            <div class="lry-header">
+                <img t-attf-src="/web/image?model=res.company&amp;id={{props.data.headerData.company.id}}&amp;field=logo"
+                     class="lry-logo" alt="Logo"/>
+                <div class="lry-company-name">
+                    <t t-esc="props.data.headerData.company.name"/>
+                </div>
+                <t t-if="props.data.headerData.company.phone">
+                    <div class="lry-phone">
+                        &#128222; <t t-esc="props.data.headerData.company.phone"/>
+                    </div>
+                </t>
+            </div>
+
+            <!-- ====== TRN + TAX INVOICE ====== -->
+            <t t-if="props.data.headerData.company.vat">
+                <div class="lry-trn">
+                    TRN: <t t-esc="props.data.headerData.company.vat"/>
+                </div>
+            </t>
+            <t t-if="props.data.is_collection_reversal">
+                <div class="lry-tax-invoice">COLLECTION CANCELLED &#160;&#160; إلغاء تحصيل</div>
+            </t>
+            <t t-elif="props.data.is_collection">
+                <div class="lry-tax-invoice">PAYMENT RECEIPT &#160;&#160; إيصال تحصيل</div>
+            </t>
+            <t t-else="">
+                <div class="lry-tax-invoice">TAX INVOICE &#160;&#160; فاتورة ضريبية</div>
+                <div t-if="props.data.packing === 'hanger'" class="lry-fold">HANGER &#160; <span class="lry-ar">تعليق</span></div>
+                <div t-elif="props.data.packing === 'fold'" class="lry-fold">FOLD &#160; <span class="lry-ar">طي</span></div>
+            </t>
+
+            <!-- ====== DATE ====== -->
+            <div class="lry-datetime">
+                <span class="lry-ar">التاريخ والوقت</span>
+                &#160; Date &amp; Time &#160;
+                <t t-esc="props.data.date"/>
+            </div>
+
+            <!-- ====== ORDER NUMBER ====== -->
+            <!-- إيصال التحصيل: الرقم هو رقم الإيصال، مو رقم طلب ملابس -->
+            <div t-if="props.data.is_collection" class="lry-receipt-no-label">
+                Receipt No. &#160; <span class="lry-ar">رقم الإيصال</span>
+            </div>
+            <div class="lry-order-number">
+                <t t-esc="props.data.headerData.trackingNumber"/>
+            </div>
+
+            <!-- ====== CUSTOMER ====== -->
+            <t t-if="props.data.partner_name">
+                <div class="lry-customer-name">NAME: <t t-esc="props.data.partner_name"/></div>
+            </t>
+            <t t-if="props.data.partner_mobile">
+                <div class="lry-customer-mobile">MOBILE: <t t-esc="props.data.partner_mobile"/></div>
+            </t>
+            <t t-if="props.data.expected_delivery">
+                <div class="lry-customer-mobile">
+                    EXPECTED DELIVERY: <t t-esc="props.data.expected_delivery"/>
+                    &#160; <span class="lry-ar">التسليم المتوقع</span>
+                </div>
+            </t>
+
+            <!-- ====== COLLECTION CANCELLED (إلغاء تحصيل) ====== -->
+            <t t-if="props.data.is_collection_reversal">
+                <div t-if="props.data.reversed_order_name" class="lry-employee-line">
+                    Cancels receipt &#160; <span class="lry-ar">إلغاء الإيصال</span> &#160;
+                    <t t-esc="props.data.reversed_order_name"/>
+                </div>
+                <div class="lry-divider"/>
+                <t t-foreach="props.data.collections" t-as="col" t-key="col_index">
+                    <div class="lry-tax-row">
+                        <span>* <t t-esc="col.name"/></span>
+                        <span><t t-esc="props.formatCurrency(-col.paid)"/></span>
+                    </div>
+                    <t t-if="col.details">
+                        <div class="lry-col-details">
+                            <div t-if="col.details.date" class="lry-col-date">Date <span class="lry-ar">التاريخ</span>: <t t-esc="col.details.date"/></div>
+                            <t t-foreach="col.details.lines" t-as="dl" t-key="dl_index">
+                                <div class="lry-col-line">
+                                    <span class="lry-col-line-name"><t t-esc="dl.name"/></span>
+                                    <span class="lry-col-line-calc"><t t-esc="dl.qtyPlain"/> × <t t-esc="dl.unitPricePlain"/> = <t t-esc="dl.pricePlain"/></span>
+                                </div>
+                            </t>
+                            <div class="lry-col-line lry-col-total">
+                                <span>Order Total <span class="lry-ar">مجموع الطلب</span></span>
+                                <span><t t-esc="props.formatCurrency(col.details.total)"/></span>
+                            </div>
+                        </div>
+                    </t>
+                </t>
+                <div class="lry-divider"/>
+                <div class="lry-tax-row lry-net-amount">
+                    <span>Total Refunded &#160; <span class="lry-ar">إجمالي المسترد</span></span>
+                    <span><t t-esc="props.formatCurrency(-props.data.collected_total)"/></span>
+                </div>
+                <t t-foreach="props.data.collection_payments" t-as="cp" t-key="cp_index">
+                    <div class="lry-tax-row">
+                        <span><t t-esc="cp.name"/></span>
+                        <span><t t-esc="props.formatCurrency(-cp.amount)"/></span>
+                    </div>
+                </t>
+            </t>
+
+            <t t-elif="props.data.is_collection">
+                <!-- ====== COLLECTION (إيصال تحصيل) ====== -->
+                <div class="lry-table-header">
+                    <span>ORDER <span class="lry-ar">الطلب</span></span>
+                    <span>DUE / PAID / REMAINING <span class="lry-ar">المستحق / المدفوع / المتبقي</span></span>
+                </div>
+                <div class="lry-divider"/>
+                <t t-foreach="props.data.collections" t-as="col" t-key="col_index">
+                    <div class="lry-item">
+                        <div class="lry-item-name">* <t t-esc="col.name"/></div>
+                        <t t-if="col.details">
+                        <div class="lry-col-details">
+                            <div t-if="col.details.date" class="lry-col-date">Date <span class="lry-ar">التاريخ</span>: <t t-esc="col.details.date"/></div>
+                            <t t-foreach="col.details.lines" t-as="dl" t-key="dl_index">
+                                <div class="lry-col-line">
+                                    <span class="lry-col-line-name"><t t-esc="dl.name"/></span>
+                                    <span class="lry-col-line-calc"><t t-esc="dl.qtyPlain"/> × <t t-esc="dl.unitPricePlain"/> = <t t-esc="dl.pricePlain"/></span>
+                                </div>
+                            </t>
+                            <div class="lry-col-line lry-col-total">
+                                <span>Order Total <span class="lry-ar">مجموع الطلب</span></span>
+                                <span><t t-esc="props.formatCurrency(col.details.total)"/></span>
+                            </div>
+                        </div>
+                    </t>
+                        <div class="lry-tax-row">
+                            <span>Due &#160; <span class="lry-ar">المستحق</span></span>
+                            <span><t t-esc="props.formatCurrency(col.due)"/></span>
+                        </div>
+                        <div class="lry-tax-row">
+                            <span>Paid &#160; <span class="lry-ar">المدفوع</span></span>
+                            <span><t t-esc="props.formatCurrency(col.paid)"/></span>
+                        </div>
+                        <div t-attf-class="lry-tax-row {{ col.remaining ? 'lry-credit-row' : '' }}">
+                            <span>Remaining &#160; <span class="lry-ar">المتبقي</span></span>
+                            <span><t t-esc="props.formatCurrency(col.remaining)"/></span>
+                        </div>
+                    </div>
+                </t>
+                <div class="lry-divider"/>
+                <div class="lry-tax-row lry-net-amount">
+                    <span>Total Paid &#160; <span class="lry-ar">إجمالي المدفوع</span></span>
+                    <span><t t-esc="props.formatCurrency(props.data.collected_total)"/></span>
+                </div>
+                <t t-foreach="props.data.collection_payments" t-as="cp" t-key="cp_index">
+                    <div class="lry-tax-row">
+                        <span><t t-esc="cp.name"/></span>
+                        <span><t t-esc="props.formatCurrency(cp.amount)"/></span>
+                    </div>
+                </t>
+                <div t-if="props.data.change" class="lry-tax-row">
+                    <span>Change &#160; <span class="lry-ar">الباقي</span></span>
+                    <span><t t-esc="props.formatCurrency(props.data.change)"/></span>
+                </div>
+            </t>
+
+            <!-- رصيد الزبون (كل طلباته على الحساب) بعد التحصيل أو الإلغاء -->
+            <t t-if="props.data.is_collection">
+                <div class="lry-divider"/>
+                <div t-attf-class="lry-tax-row {{ props.data.partner_balance ? 'lry-credit-row' : '' }}">
+                    <span>Your Balance &#160; <span class="lry-ar">المتبقي على حسابك</span></span>
+                    <span><t t-esc="props.formatCurrency(props.data.partner_balance)"/></span>
+                </div>
+            </t>
+
+            <t t-if="!props.data.is_collection">
+                <!-- ====== ITEMS TABLE ====== -->
+                <div class="lry-table-header">
+                    <span>ITEM <span class="lry-ar">الصنف</span></span>
+                    <span>QTY × PRICE = NET <span class="lry-ar">الكمية × السعر = الإجمالي</span></span>
+                </div>
+                <div class="lry-divider"/>
+
+                <t t-foreach="props.data.orderlines" t-as="line" t-key="line_index">
+                    <div class="lry-item">
+                        <div class="lry-item-name">* <t t-esc="line.productName"/></div>
+                        <div class="lry-item-calc">
+                            <span><t t-esc="line.qtyPlain or line.qty"/> × <t t-esc="line.unitPricePlain or line.unitPrice"/></span>
+                            <span class="lry-item-amount"><t t-esc="line.pricePlain or line.price"/></span>
+                        </div>
+                    </div>
+                </t>
+
+                <div class="lry-divider"/>
+
+                <!-- ====== SUBTOTALS ====== -->
+                <div class="lry-tax-row">
+                    <span>Total Qty &#160; <span class="lry-ar">الكمية الإجمالية</span></span>
+                    <span><t t-esc="props.data.total_qty"/></span>
+                </div>
+                <div class="lry-tax-row">
+                    <span>Sub Total &#160; <span class="lry-ar">المجموع الفرعي</span></span>
+                    <span><t t-esc="props.formatCurrency(props.data.total_without_tax)"/></span>
+                </div>
+
+                <div class="lry-divider"/>
+
+                <!-- ====== VAT ====== -->
+                <t t-set="taxTotals" t-value="props.data.taxTotals"/>
+                <div class="lry-tax-row">
+                    <span>Before VAT &#160; <span class="lry-ar">قبل الضريبة</span></span>
+                    <span><t t-esc="props.formatCurrency(props.data.total_without_tax)"/></span>
+                </div>
+                <t t-if="taxTotals and taxTotals.has_tax_groups">
+                    <t t-foreach="taxTotals.subtotals" t-as="subtotal" t-key="subtotal.name">
+                        <t t-foreach="subtotal.tax_groups" t-as="tax_group" t-key="tax_group.id">
+                            <div class="lry-tax-row">
+                                <span>VAT &#160; <span class="lry-ar">ضريبة القيمة المضافة</span></span>
+                                <span><t t-esc="props.formatCurrency(tax_group.tax_amount_currency)"/></span>
+                            </div>
+                        </t>
+                    </t>
+                </t>
+                <div class="lry-tax-row lry-net-amount">
+                    <span>Net Amount &#160; <span class="lry-ar">المبلغ الاجمالي</span></span>
+                    <span><t t-esc="props.formatCurrency(taxTotals.order_total)"/></span>
+                </div>
+                <div class="lry-tax-row">
+                    <span>Paid Amount &#160; <span class="lry-ar">المبلغ المدفوع</span></span>
+                    <span><t t-esc="props.formatCurrency(props.data.paid_real ?? props.data.total_paid)"/></span>
+                </div>
+                <div t-if="props.data.credit_amount" class="lry-tax-row lry-credit-row">
+                    <span>On Credit (Unpaid) &#160; <span class="lry-ar">المتبقي على الحساب</span></span>
+                    <span><t t-esc="props.formatCurrency(props.data.credit_amount)"/></span>
+                </div>
+            </t>
+
+            <div class="lry-divider"/>
+
+            <!-- ====== EMPLOYEE + PAYMENT ====== -->
+            <div class="lry-employee-line">Employee: <t t-esc="props.data.cashier"/></div>
+            <div t-if="!props.data.is_collection" class="lry-employee-line">
+                Payment Type:
+                <t t-foreach="props.data.paymentlines" t-as="pm" t-key="pm_index">
+                    <t t-esc="pm.name"/>
+                </t>
+            </div>
+
+            <div class="lry-divider"/>
+
+            <!-- ====== TERMS ====== -->
+            <t t-if="!props.data.is_collection">
+            <div class="lry-terms">
+                The management is not responsible for any change in color for shrink.
+                In case of damage or loss of article the compensation is limited to 5 times of cleaning charges.
+                The Laundry will not be responsible for clothes &amp; Carpets after 60 days.
+            </div>
+            <div class="lry-terms lry-ar">
+                الادارة غير مسئولة عن اي تغيير في اللون او تكماش.
+                في حال تلف او فقدان اي قطعة والتعويض محدد بـ 5 مرات قيمة تنظيفها
+                مع اقصى مدة لاستلام الملابس 60 يوم فقط.
+            </div>
+
+            <div class="lry-divider"/>
+            </t>
+
+            <!-- ====== FOOTER ====== -->
+            <div class="lry-bottom-info"><t t-esc="props.data.date"/></div>
+            <div class="lry-thank-you lry-ar">يشرفنا زيارتكم</div>
+            <div class="lry-thank-you">Thank You &amp; Come Again</div>
+            <br/>
+
+        </div>
+    </t>
+
+</templates>

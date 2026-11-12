@@ -1,0 +1,30 @@
+{
+    "name": "Laundry Manager Dashboard",
+    "version": "18.0.1.7",
+    "category": "Sales/Point of Sale",
+    "summary": "Sales, cash collection, cashier and customer dashboard for the laundry manager",
+    "author": "Dekad",
+    "license": "LGPL-3",
+    "depends": ["point_of_sale", "alarab_laundry_implementation"],
+    "data": [
+        "security/security.xml",
+        "data/whatsapp_template.xml",
+        "views/dashboard_views.xml",
+        "views/pos_order_views.xml",
+        "views/report_menus.xml",
+        "report/report_templates.xml",
+        "report/customer_statement.xml",
+    ],
+    "assets": {
+        "web.assets_backend": [
+            "alarab_laundry_dashboard/static/src/dashboard/laundry_dashboard.js",
+            "alarab_laundry_dashboard/static/src/dashboard/laundry_dashboard.xml",
+            "alarab_laundry_dashboard/static/src/dashboard/laundry_dashboard.scss",
+            "alarab_laundry_dashboard/static/src/reports/laundry_report.js",
+            "alarab_laundry_dashboard/static/src/reports/laundry_report.xml",
+            "alarab_laundry_dashboard/static/src/reports/laundry_report.scss",
+        ],
+    },
+    "installable": True,
+    "application": True,
+}

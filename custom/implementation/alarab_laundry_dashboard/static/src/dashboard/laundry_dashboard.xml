@@ -1,0 +1,275 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+
+    <t t-name="alarab_laundry_dashboard.KpiCards">
+        <div t-foreach="cards" t-as="card" t-key="card.key" class="col-6 col-md-4 col-xl">
+            <div class="card o_ld_kpi h-100" t-att-class="{'o_ld_clickable': card.onClick}" t-on-click="() => this.onCardClick(card)">
+                <div class="card-body p-3">
+                    <div class="o_ld_kpi_label text-muted" t-esc="card.label"/>
+                    <div class="o_ld_kpi_value" t-att-class="card.valueClass" t-esc="card.value"/>
+                    <div class="o_ld_kpi_sub small o_ld_inline">
+                        <span t-if="card.trend" t-att-class="card.trend.cls" t-esc="card.trend.label"/>
+                        <span t-if="card.sub" class="text-muted" t-esc="card.sub"/>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </t>
+
+    <t t-name="alarab_laundry_dashboard.Dashboard">
+        <div class="o_action o_ld_dashboard" t-att-dir="isRtl ? 'rtl' : 'ltr'">
+            <!-- ======================== filters ======================== -->
+            <div class="o_ld_filters border-bottom">
+                <div class="d-flex flex-wrap align-items-center gap-2">
+                    <h4 class="m-0 o_ld_title">Laundry Dashboard</h4>
+                    <div class="btn-group o_ld_presets" role="group">
+                        <t t-foreach="state.filters.presets" t-as="preset" t-key="preset.key">
+                            <button type="button" class="btn btn-sm"
+                                    t-att-class="state.preset === preset.key ? 'btn-primary' : 'btn-outline-secondary'"
+                                    t-on-click="() => this.selectPreset(preset.key)"
+                                    t-esc="preset.label"/>
+                        </t>
+                    </div>
+                    <div t-if="state.preset === 'custom'" class="d-flex align-items-center gap-1">
+                        <input type="date" class="form-control form-control-sm o_ld_date" t-att-value="state.dateFrom"
+                               t-on-change="(ev) => this.onDateChange('dateFrom', ev)"/>
+                        <span>→</span>
+                        <input type="date" class="form-control form-control-sm o_ld_date" t-att-value="state.dateTo"
+                               t-on-change="(ev) => this.onDateChange('dateTo', ev)"/>
+                    </div>
+                    <button type="button" class="btn btn-sm btn-light o_ld_push_end" t-on-click="() => this.load()" title="Refresh">
+                        <i class="fa fa-refresh" t-att-class="{'fa-spin': state.loading}"/>
+                    </button>
+                </div>
+                <div class="d-flex flex-wrap align-items-center gap-2 mt-2" t-if="state.filters.configs.length > 1">
+                    <span class="text-muted small">Point of Sale:</span>
+                    <t t-foreach="state.filters.configs" t-as="config" t-key="config.id">
+                        <button type="button" class="btn btn-sm rounded-pill"
+                                t-att-class="isConfigActive(config.id) ? 'btn-secondary' : 'btn-outline-secondary'"
+                                t-on-click="() => this.toggleConfig(config.id)" t-esc="config.name"/>
+                    </t>
+                    <span t-if="!state.configIds.length" class="text-muted small">(all)</span>
+                </div>
+                <div t-if="state.data" class="small text-muted mt-1 o_ld_inline">
+                    <bdi t-esc="state.data.period.label"/>
+                    <span>· <t t-esc="compareLabel"/></span>
+                    <span>· <t t-esc="timezoneLabel"/></span>
+                </div>
+                <div t-if="state.data and timezoneWarning" class="alert alert-warning py-1 px-2 mt-2 mb-0 small o_ld_inline" role="alert">
+                    <i class="fa fa-clock-o"/><span t-esc="timezoneWarning"/>
+                </div>
+            </div>
+
+            <div t-if="!state.data and state.loading" class="text-center p-5 text-muted">
+                <i class="fa fa-spinner fa-spin fa-2x"/>
+            </div>
+
+            <div t-if="state.data" class="o_ld_body" t-att-class="{'o_ld_loading': state.loading}">
+                
+                <!-- ======================== KPIs ======================== -->
+                <div class="row g-2 mb-2">
+                    <t t-call="alarab_laundry_dashboard.KpiCards"><t t-set="cards" t-value="salesCards"/></t>
+                </div>
+                <div class="row g-2 mb-3">
+                    <t t-call="alarab_laundry_dashboard.KpiCards"><t t-set="cards" t-value="collectionCards"/></t>
+                </div>
+
+                <!-- ======================== charts ======================== -->
+                <div class="row g-3 mb-3">
+                    <div class="col-12 col-lg-8">
+                        <div class="card h-100"><div class="card-body">
+                            <h6 class="card-title">Sales trend</h6>
+                            <div class="o_ld_chart"><canvas t-ref="salesChart"/></div>
+                        </div></div>
+                    </div>
+                    <div class="col-12 col-lg-4">
+                        <div class="card h-100"><div class="card-body">
+                            <h6 class="card-title">Service mix</h6>
+                            <div class="o_ld_chart" t-if="state.data.categories.some((c) => c.amount &gt; 0)"><canvas t-ref="categoryChart"/></div>
+                            <div t-else="" class="text-muted text-center py-5">No sales in this period</div>
+                        </div></div>
+                    </div>
+                </div>
+
+                <div class="row g-3 mb-3">
+                    <div class="col-12 col-lg-8">
+                        <div class="card h-100"><div class="card-body">
+                            <h6 class="card-title">Cash and bank collection</h6>
+                            <div class="o_ld_chart"><canvas t-ref="paymentsChart"/></div>
+                        </div></div>
+                    </div>
+                    <div class="col-12 col-lg-4">
+                        <div class="card h-100"><div class="card-body">
+                            <h6 class="card-title">Best-selling items</h6>
+                            <div class="table-responsive">
+                                <table class="table table-sm table-hover mb-0">
+                                    <thead><tr><th>Item</th><th class="text-end">Qty</th><th class="text-end">Amount</th></tr></thead>
+                                    <tbody>
+                                        <tr t-foreach="state.data.products" t-as="product" t-key="product.id" class="o_ld_clickable" t-on-click="() => this.openProduct(product)">
+                                            <td t-esc="product.name"/>
+                                            <td class="text-end" t-esc="int(product.qty)"/>
+                                            <td class="text-end text-nowrap" t-esc="money(product.amount)"/>
+                                        </tr>
+                                        <tr t-if="!state.data.products.length"><td colspan="3" class="text-muted text-center">No sales in this period</td></tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div></div>
+                    </div>
+                </div>
+
+                <!-- ======================== heatmap ======================== -->
+                <div class="card mb-3"><div class="card-body">
+                    <h6 class="card-title">Busy hours <small class="text-muted">(number of orders)</small></h6>
+                    <div class="table-responsive">
+                        <table class="o_ld_heatmap">
+                            <thead>
+                                <tr>
+                                    <th/>
+                                    <th t-foreach="hours" t-as="hour" t-key="hour" t-esc="hour"/>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr t-foreach="state.data.heatmap.days" t-as="day" t-key="day_index">
+                                    <th class="text-nowrap pe-2" t-esc="day"/>
+                                    <td t-foreach="hours" t-as="hour" t-key="hour"
+                                        t-att-style="heatColor(state.data.heatmap.matrix[day_index][hour])"
+                                        t-on-click="() => this.openHeatCell(day_index, hour)"
+                                        t-esc="state.data.heatmap.matrix[day_index][hour] or ''"/>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div></div>
+
+                <!-- ======================== cashiers ======================== -->
+                <div class="card mb-3"><div class="card-body">
+                    <h6 class="card-title">Cashiers</h6>
+                    <div class="table-responsive">
+                        <table class="table table-sm table-hover mb-0">
+                            <thead><tr>
+                                <th>Cashier</th><th class="text-end">Orders</th><th class="text-end">Sales</th>
+                                <th class="text-end">Discounts</th><th class="text-end">Refunds</th>
+                            </tr></thead>
+                            <tbody>
+                                <tr t-foreach="state.data.cashiers" t-as="cashier" t-key="cashier.key" class="o_ld_clickable" t-on-click="() => this.openCashierOrders(cashier)">
+                                    <td t-esc="cashier.name"/>
+                                    <td class="text-end" t-esc="int(cashier.orders)"/>
+                                    <td class="text-end text-nowrap" t-esc="money(cashier.sales)"/>
+                                    <td class="text-end text-nowrap" t-esc="money(cashier.discounts)"/>
+                                    <td class="text-end text-nowrap">
+                                        <t t-esc="money(cashier.refunds_amount)"/>
+                                        <small class="text-muted" t-if="cashier.refunds_count"> (<t t-esc="int(cashier.refunds_count)"/>)</small>
+                                    </td>
+                                </tr>
+                                <tr t-if="!state.data.cashiers.length"><td colspan="5" class="text-muted text-center">No sales in this period</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div></div>
+
+                <!-- ======================== customers ======================== -->
+                <div class="row g-3 mb-3">
+                    <div class="col-12 col-lg-5">
+                        <div class="card h-100"><div class="card-body">
+                            <h6 class="card-title">Top customers</h6>
+                            <div class="table-responsive">
+                                <table class="table table-sm table-hover mb-0">
+                                    <thead><tr><th>Customer</th><th class="text-end">Orders</th><th class="text-end">Spent</th></tr></thead>
+                                    <tbody>
+                                        <tr t-foreach="state.data.customers.top" t-as="customer" t-key="customer.id" class="o_ld_clickable" t-on-click="() => this.openCustomerOrders(customer)">
+                                            <td>
+                                                <div t-esc="customer.name"/>
+                                                <small class="text-muted" dir="ltr" t-esc="customer.phone"/>
+                                            </td>
+                                            <td class="text-end" t-esc="int(customer.orders)"/>
+                                            <td class="text-end text-nowrap" t-esc="money(customer.amount)"/>
+                                        </tr>
+                                        <tr t-if="!state.data.customers.top.length"><td colspan="3" class="text-muted text-center">No identified customers in this period</td></tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div></div>
+                    </div>
+                    <div class="col-12 col-lg-7">
+                        <div class="card h-100"><div class="card-body">
+                            <div class="d-flex flex-wrap align-items-center gap-2 mb-2">
+                                <h6 class="card-title m-0">Customers who stopped coming</h6>
+                                <select class="form-select form-select-sm w-auto o_ld_push_end" t-on-change="onLapseChange">
+                                    <t t-foreach="[30, 45, 60, 90]" t-as="days" t-key="days">
+                                        <option t-att-value="days" t-att-selected="state.lapseDays === days" t-esc="lapseLabel(days)"/>
+                                    </t>
+                                </select>
+                            </div>
+                            <p class="small text-muted mb-2">Regular customers (2+ orders) who have not ordered recently, sorted by total spent. Not affected by the period filter.</p>
+                            <div class="table-responsive">
+                                <table class="table table-sm table-hover mb-0">
+                                    <thead><tr>
+                                        <th>Customer</th><th class="text-end">Last order</th>
+                                        <th class="text-end">Orders</th><th class="text-end">Spent</th><th/>
+                                    </tr></thead>
+                                    <tbody>
+                                        <tr t-foreach="state.data.customers.lapsed" t-as="customer" t-key="customer.id">
+                                            <td class="o_ld_clickable" t-on-click="() => this.openPartner(customer)">
+                                                <div t-esc="customer.name"/>
+                                                <small class="text-muted" dir="ltr" t-esc="customer.phone"/>
+                                            </td>
+                                            <td class="text-end text-nowrap">
+                                                <t t-esc="customer.last_order"/>
+                                                <div class="small text-danger" t-esc="daysAgo(customer.days)"/>
+                                            </td>
+                                            <td class="text-end" t-esc="int(customer.orders)"/>
+                                            <td class="text-end text-nowrap" t-esc="money(customer.amount)"/>
+                                            <td class="text-end">
+                                                <button t-if="customer.whatsapp_url" type="button" class="btn btn-sm btn-success"
+                                                        t-on-click="() => this.openWhatsapp(customer)" title="Send WhatsApp">
+                                                    <i class="fa fa-whatsapp"/>
+                                                </button>
+                                                <span t-else="" class="small text-muted" title="Missing or invalid phone number">—</span>
+                                            </td>
+                                        </tr>
+                                        <tr t-if="!state.data.customers.lapsed.length"><td colspan="5" class="text-muted text-center">No customers to win back</td></tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div></div>
+                    </div>
+                </div>
+
+                <!-- ======================== sessions ======================== -->
+                <div class="card mb-3"><div class="card-body">
+                    <h6 class="card-title">
+                        Cash register sessions
+                        <span t-if="state.data.sessions.open_count" class="badge text-bg-warning o_ld_gap_start" t-esc="openSessionsLabel"/>
+                    </h6>
+                    <div class="table-responsive">
+                        <table class="table table-sm table-hover mb-0">
+                            <thead><tr>
+                                <th>Session</th><th>Point of Sale</th><th>Opened by</th><th>Closed</th>
+                                <th class="text-end">Expected cash</th><th class="text-end">Counted cash</th><th class="text-end">Difference</th>
+                            </tr></thead>
+                            <tbody>
+                                <tr t-foreach="state.data.sessions.list" t-as="session" t-key="session.id" class="o_ld_clickable" t-on-click="() => this.openSession(session)">
+                                    <td class="text-nowrap">
+                                        <t t-esc="session.name"/>
+                                        <span t-if="session.state !== 'closed'" class="badge text-bg-warning o_ld_gap_start" t-esc="session.state_label"/>
+                                    </td>
+                                    <td t-esc="session.config"/>
+                                    <td t-esc="session.user"/>
+                                    <td class="text-nowrap" t-esc="dateTime(session.stop_at)"/>
+                                    <td class="text-end text-nowrap"><t t-if="session.cash_control" t-esc="money2(session.expected)"/></td>
+                                    <td class="text-end text-nowrap"><t t-if="session.cash_control and session.state === 'closed'" t-esc="money2(session.counted)"/></td>
+                                    <td class="text-end text-nowrap fw-bold"
+                                        t-att-class="session.difference &lt; -0.005 ? 'text-danger' : (session.difference &gt; 0.005 ? 'text-warning' : 'text-success')">
+                                        <t t-if="session.cash_control and session.state === 'closed'" t-esc="money2(session.difference)"/>
+                                    </td>
+                                </tr>
+                                <tr t-if="!state.data.sessions.list.length"><td colspan="7" class="text-muted text-center">No sessions in this period</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div></div>
+            </div>
+        </div>
+    </t>
+</templates>

@@ -1,0 +1,3539 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* london_laundry_implementation
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 18.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-11-07 19:41+0000\n"
+"PO-Revision-Date: 2026-11-07 19:41+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/dashboard/laundry_dashboard.js:0
+msgid "%(day)s %(hour)s:00 — %(count)s orders"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/dashboard/laundry_dashboard.js:0
+msgid "%(new)s new · %(returning)s returning"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/report.py:0
+msgid "%(open)s of %(count)s open"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/js/ticket_screen_patch.js:0
+msgid ""
+"%(order)s still has %(due)s to pay. Collect the payment before handing over "
+"the clothes. Deliver anyway?"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/pos_session.py:0
+msgid "%(order)s: %(error)s"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/pos_session.py:0
+msgid "%(order)s: cancelled collection %(original)s is not in this session."
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/pos_session.py:0
+msgid ""
+"%(order)s: collected %(paid)s but only %(due)s was due; the difference stays"
+" as customer credit."
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/pos_session.py:0
+msgid "%(order)s: invoice %(invoice)s is already paid."
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/pos_session.py:0
+msgid "%(order)s: no posted invoice."
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/js/collection_patch.js:0
+msgid ""
+"%(order)s: only %(due)s is still due. Discard this order and start the "
+"collection again."
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/js/collect_payment_popup.js:0
+msgid "%(order)s: the amount is more than the remaining %(due)s."
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/dashboard/laundry_dashboard.js:0
+msgid "%(overdue)s overdue · %(count)s customers"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/dashboard/laundry_dashboard.js:0
+msgid "%s days"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/dashboard/laundry_dashboard.js:0
+msgid "%s of collected"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/dashboard/laundry_dashboard.js:0
+msgid "%s open"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/dashboard/laundry_dashboard.js:0
+msgid "%s refund(s)"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/reports/laundry_report.js:0
+msgid "%s selected"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/dashboard/laundry_dashboard.js:0
+msgid "%s session(s) with a difference"
+msgstr ""
+
+#. module: london_laundry_implementation
+#: model:ir.actions.report,print_report_name:london_laundry_implementation.action_report_customer_statement
+msgid "'Statement - %s' % object.name"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/dashboard/laundry_dashboard.xml:0
+msgid "(all)"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/dashboard/laundry_dashboard.xml:0
+msgid "(number of orders)"
+msgstr ""
+
+#. module: london_laundry_implementation
+#: model_terms:ir.ui.view,arch_db:london_laundry_implementation.daily_report_email_section
+msgid "(متبقي - ما اندفع)"
+msgstr ""
+
+#. module: london_laundry_implementation
+#: model_terms:ir.ui.view,arch_db:london_laundry_implementation.daily_report_email_section
+msgid ""
+")\n"
+"            · الخصومات:"
+msgstr ""
+
+#. module: london_laundry_implementation
+#: model_terms:ir.ui.view,arch_db:london_laundry_implementation.view_account_payment_register_form_laundry
+msgid ""
+") and will be matched when\n"
+"                    the session is closed. Register only what is still due, otherwise the invoice is paid twice."
+msgstr ""
+
+#. module: london_laundry_implementation
+#: model_terms:ir.ui.view,arch_db:london_laundry_implementation.view_move_form_laundry_pending_collection
+msgid ""
+").\n"
+"                    It will be matched with this invoice when the session is closed. Do not register this payment again."
+msgstr ""
+
+#. module: london_laundry_implementation
+#: model_terms:ir.ui.view,arch_db:london_laundry_implementation.daily_report_email
+msgid ". التفاصيل لكل نقطة تحت."
+msgstr ""
+
+#. module: london_laundry_implementation
+#: model:ir.model.fields.selection,name:london_laundry_implementation.selection__account_move__laundry_expected_hour__00
+#: model:ir.model.fields.selection,name:london_laundry_implementation.selection__pos_order__laundry_expected_hour__00
+msgid "00:00"
+msgstr ""
+
+#. module: london_laundry_implementation
+#: model:ir.model.fields.selection,name:london_laundry_implementation.selection__account_move__laundry_expected_hour__01
+#: model:ir.model.fields.selection,name:london_laundry_implementation.selection__pos_order__laundry_expected_hour__01
+msgid "01:00"
+msgstr ""
+
+#. module: london_laundry_implementation
+#: model:ir.model.fields.selection,name:london_laundry_implementation.selection__account_move__laundry_expected_hour__02
+#: model:ir.model.fields.selection,name:london_laundry_implementation.selection__pos_order__laundry_expected_hour__02
+msgid "02:00"
+msgstr ""
+
+#. module: london_laundry_implementation
+#: model:ir.model.fields.selection,name:london_laundry_implementation.selection__account_move__laundry_expected_hour__03
+#: model:ir.model.fields.selection,name:london_laundry_implementation.selection__pos_order__laundry_expected_hour__03
+msgid "03:00"
+msgstr ""
+
+#. module: london_laundry_implementation
+#: model:ir.model.fields.selection,name:london_laundry_implementation.selection__account_move__laundry_expected_hour__04
+#: model:ir.model.fields.selection,name:london_laundry_implementation.selection__pos_order__laundry_expected_hour__04
+msgid "04:00"
+msgstr ""
+
+#. module: london_laundry_implementation
+#: model:ir.model.fields.selection,name:london_laundry_implementation.selection__account_move__laundry_expected_hour__05
+#: model:ir.model.fields.selection,name:london_laundry_implementation.selection__pos_order__laundry_expected_hour__05
+msgid "05:00"
+msgstr ""
+
+#. module: london_laundry_implementation
+#: model_terms:ir.ui.view,arch_db:london_laundry_implementation.view_partner_form_laundry_mobile_required
+msgid "05XXXXXXXX / 04XXXXXXX / +963…"
+msgstr ""
+
+#. module: london_laundry_implementation
+#: model:ir.model.fields.selection,name:london_laundry_implementation.selection__account_move__laundry_expected_hour__06
+#: model:ir.model.fields.selection,name:london_laundry_implementation.selection__pos_order__laundry_expected_hour__06
+msgid "06:00"
+msgstr ""
+
+#. module: london_laundry_implementation
+#: model:ir.model.fields.selection,name:london_laundry_implementation.selection__account_move__laundry_expected_hour__07
+#: model:ir.model.fields.selection,name:london_laundry_implementation.selection__pos_order__laundry_expected_hour__07
+msgid "07:00"
+msgstr ""
+
+#. module: london_laundry_implementation
+#: model:ir.model.fields.selection,name:london_laundry_implementation.selection__account_move__laundry_expected_hour__08
+#: model:ir.model.fields.selection,name:london_laundry_implementation.selection__pos_order__laundry_expected_hour__08
+msgid "08:00"
+msgstr ""
+
+#. module: london_laundry_implementation
+#: model:ir.model.fields.selection,name:london_laundry_implementation.selection__account_move__laundry_expected_hour__09
+#: model:ir.model.fields.selection,name:london_laundry_implementation.selection__pos_order__laundry_expected_hour__09
+msgid "09:00"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/report.py:0
+msgid "1-30 days"
+msgstr ""
+
+#. module: london_laundry_implementation
+#: model:ir.model.fields.selection,name:london_laundry_implementation.selection__account_move__laundry_expected_hour__10
+#: model:ir.model.fields.selection,name:london_laundry_implementation.selection__pos_order__laundry_expected_hour__10
+msgid "10:00"
+msgstr ""
+
+#. module: london_laundry_implementation
+#: model:ir.model.fields.selection,name:london_laundry_implementation.selection__account_move__laundry_expected_hour__11
+#: model:ir.model.fields.selection,name:london_laundry_implementation.selection__pos_order__laundry_expected_hour__11
+msgid "11:00"
+msgstr ""
+
+#. module: london_laundry_implementation
+#: model:ir.model.fields.selection,name:london_laundry_implementation.selection__account_move__laundry_expected_hour__12
+#: model:ir.model.fields.selection,name:london_laundry_implementation.selection__pos_order__laundry_expected_hour__12
+msgid "12:00"
+msgstr ""
+
+#. module: london_laundry_implementation
+#: model:ir.model.fields.selection,name:london_laundry_implementation.selection__account_move__laundry_expected_hour__13
+#: model:ir.model.fields.selection,name:london_laundry_implementation.selection__pos_order__laundry_expected_hour__13
+msgid "13:00"
+msgstr ""
+
+#. module: london_laundry_implementation
+#: model:ir.model.fields.selection,name:london_laundry_implementation.selection__account_move__laundry_expected_hour__14
+#: model:ir.model.fields.selection,name:london_laundry_implementation.selection__pos_order__laundry_expected_hour__14
+msgid "14:00"
+msgstr ""
+
+#. module: london_laundry_implementation
+#: model:ir.model.fields.selection,name:london_laundry_implementation.selection__account_move__laundry_expected_hour__15
+#: model:ir.model.fields.selection,name:london_laundry_implementation.selection__pos_order__laundry_expected_hour__15
+msgid "15:00"
+msgstr ""
+
+#. module: london_laundry_implementation
+#: model:ir.model.fields.selection,name:london_laundry_implementation.selection__account_move__laundry_expected_hour__16
+#: model:ir.model.fields.selection,name:london_laundry_implementation.selection__pos_order__laundry_expected_hour__16
+msgid "16:00"
+msgstr ""
+
+#. module: london_laundry_implementation
+#: model:ir.model.fields.selection,name:london_laundry_implementation.selection__account_move__laundry_expected_hour__17
+#: model:ir.model.fields.selection,name:london_laundry_implementation.selection__pos_order__laundry_expected_hour__17
+msgid "17:00"
+msgstr ""
+
+#. module: london_laundry_implementation
+#: model:ir.model.fields.selection,name:london_laundry_implementation.selection__account_move__laundry_expected_hour__18
+#: model:ir.model.fields.selection,name:london_laundry_implementation.selection__pos_order__laundry_expected_hour__18
+msgid "18:00"
+msgstr ""
+
+#. module: london_laundry_implementation
+#: model:ir.model.fields.selection,name:london_laundry_implementation.selection__account_move__laundry_expected_hour__19
+#: model:ir.model.fields.selection,name:london_laundry_implementation.selection__pos_order__laundry_expected_hour__19
+msgid "19:00"
+msgstr ""
+
+#. module: london_laundry_implementation
+#: model:ir.model.fields.selection,name:london_laundry_implementation.selection__account_move__laundry_expected_hour__20
+#: model:ir.model.fields.selection,name:london_laundry_implementation.selection__pos_order__laundry_expected_hour__20
+msgid "20:00"
+msgstr ""
+
+#. module: london_laundry_implementation
+#: model:ir.model.fields.selection,name:london_laundry_implementation.selection__account_move__laundry_expected_hour__21
+#: model:ir.model.fields.selection,name:london_laundry_implementation.selection__pos_order__laundry_expected_hour__21
+msgid "21:00"
+msgstr ""
+
+#. module: london_laundry_implementation
+#: model:ir.model.fields.selection,name:london_laundry_implementation.selection__account_move__laundry_expected_hour__22
+#: model:ir.model.fields.selection,name:london_laundry_implementation.selection__pos_order__laundry_expected_hour__22
+msgid "22:00"
+msgstr ""
+
+#. module: london_laundry_implementation
+#: model:ir.model.fields.selection,name:london_laundry_implementation.selection__account_move__laundry_expected_hour__23
+#: model:ir.model.fields.selection,name:london_laundry_implementation.selection__pos_order__laundry_expected_hour__23
+msgid "23:00"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/report.py:0
+msgid "31-60 days"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/report.py:0
+msgid "61-90 days"
+msgstr ""
+
+#. module: london_laundry_implementation
+#: model_terms:ir.ui.view,arch_db:london_laundry_implementation.daily_report_email_section
+msgid "<br/>النسب مقارنة مع"
+msgstr ""
+
+#. module: london_laundry_implementation
+#: model_terms:ir.ui.view,arch_db:london_laundry_implementation.res_config_settings_view_form_laundry_daily_report
+msgid "<span class=\"me-2\">At</span>"
+msgstr ""
+
+#. module: london_laundry_implementation
+#: model_terms:ir.ui.view,arch_db:london_laundry_implementation.res_config_settings_view_form_laundry_daily_report
+msgid "<span class=\"me-2\">Server closes it after</span>"
+msgstr ""
+
+#. module: london_laundry_implementation
+#: model_terms:ir.ui.view,arch_db:london_laundry_implementation.res_config_settings_view_form_laundry_daily_report
+msgid "<span class=\"ms-1\">minutes if still open</span>"
+msgstr ""
+
+#. module: london_laundry_implementation
+#: model_terms:ir.ui.view,arch_db:london_laundry_implementation.report_customer_statement
+msgid "<span class=\"text-danger\">Not paid</span>"
+msgstr ""
+
+#. module: london_laundry_implementation
+#: model_terms:ir.ui.view,arch_db:london_laundry_implementation.report_customer_statement
+msgid "<span class=\"text-success\">Paid</span>"
+msgstr ""
+
+#. module: london_laundry_implementation
+#: model_terms:ir.ui.view,arch_db:london_laundry_implementation.report_customer_statement
+msgid "<span class=\"text-warning\">Partially paid</span>"
+msgstr ""
+
+#. module: london_laundry_implementation
+#: model_terms:ir.ui.view,arch_db:london_laundry_implementation.report_customer_statement
+msgid "<span>Customer Statement</span>"
+msgstr ""
+
+#. module: london_laundry_implementation
+#: model_terms:ir.ui.view,arch_db:london_laundry_implementation.report_customer_statement
+msgid "<strong>Address / العنوان:</strong>"
+msgstr ""
+
+#. module: london_laundry_implementation
+#: model_terms:ir.ui.view,arch_db:london_laundry_implementation.report_customer_statement
+msgid "<strong>Contact / الهاتف:</strong>"
+msgstr ""
+
+#. module: london_laundry_implementation
+#: model_terms:ir.ui.view,arch_db:london_laundry_implementation.report_customer_statement
+msgid "<strong>Customer / الزبون:</strong>"
+msgstr ""
+
+#. module: london_laundry_implementation
+#: model_terms:ir.ui.view,arch_db:london_laundry_implementation.report_customer_statement
+msgid "<strong>Period / الفترة</strong>"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/pos_order.py:0
+msgid ""
+"A collection can only be cancelled in the session where it was taken, before"
+" the session is closed. Ask the accountant."
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/js/collection_patch.js:0
+msgid "A collection cannot contain products."
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/js/collection_patch.js:0
+msgid "A collection cannot contain products. Start a new order."
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/js/collection_patch.js:0
+msgid "A collection must be paid with cash, card or transfer."
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/js/ticket_screen_patch.js:0
+msgid "A connection to the server is needed to cancel a collection."
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/js/collection_patch.js:0
+msgid "A connection to the server is needed to check the remaining amounts."
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/js/ticket_screen_patch.js:0
+msgid "A connection to the server is needed to collect a payment."
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/js/ticket_screen_patch.js:0
+msgid "A connection to the server is needed to save the delivery."
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/js/ticket_screen_patch.js:0
+msgid "A connection to the server is needed to save the shelf."
+msgstr ""
+
+#. module: london_laundry_implementation
+#: model_terms:ir.ui.view,arch_db:london_laundry_implementation.res_config_settings_view_form_laundry_daily_report
+msgid ""
+"A summary of this point of sale (sales, payments, cashiers, sessions and "
+"deliveries) is e-mailed every night after midnight for the previous day. "
+"Separate several addresses with commas."
+msgstr ""
+
+#. module: london_laundry_implementation
+#: model:ir.model.fields,field_description:london_laundry_implementation.field_london_delivery_method__active
+#: model:ir.model.fields,field_description:london_laundry_implementation.field_london_delivery_person__active
+msgid "Active"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/report.py:0
+msgid "All branches"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/report.py:0
+msgid "All cashiers"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/report.py:0
+msgid "All customers"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/report.py:0
+msgid "All orders"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/report.py:0
+msgid "All payment methods"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/report.py:0
+msgid "All points of sale"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/report.py:0
+msgid "All services"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/report.py:0
+#: code:addons/london_laundry_implementation/static/src/dashboard/laundry_dashboard.xml:0
+msgid "Amount"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/report.py:0
+#: model_terms:ir.ui.view,arch_db:london_laundry_implementation.report_customer_statement
+msgid "Amount excl. VAT"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/report.py:0
+#: model_terms:ir.ui.view,arch_db:london_laundry_implementation.report_customer_statement
+msgid "Amount incl. VAT"
+msgstr ""
+
+#. module: london_laundry_implementation
+#: model:ir.model.fields,help:london_laundry_implementation.field_pos_order__laundry_credit_remaining
+msgid ""
+"Amount the customer still owes on this order, collections taken at the POS "
+"included."
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/js/delivery_charge.js:0
+#: code:addons/london_laundry_implementation/static/src/xml/delivery_person_popup.xml:0
+#: code:addons/london_laundry_implementation/static/src/xml/expected_delivery_popup.xml:0
+msgid "Apply"
+msgstr ""
+
+#. module: london_laundry_implementation
+#: model_terms:ir.ui.view,arch_db:london_laundry_implementation.view_london_delivery_person_search
+msgid "Archived"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/report.py:0
+msgid "As of %s"
+msgstr ""
+
+#. module: london_laundry_implementation
+#: model_terms:ir.ui.view,arch_db:london_laundry_implementation.res_config_settings_view_form_laundry_daily_report
+msgid ""
+"At this time the POS opens the Close Register screen by itself and the "
+"cashier must count the cash and close (cashiers who are not managers do not "
+"see the expected amounts). If the register is still open after the delay, "
+"the server closes it without a cash count; it is flagged in the daily "
+"e-mail."
+msgstr ""
+
+#. module: london_laundry_implementation
+#: model:ir.model.fields,field_description:london_laundry_implementation.field_pos_config__laundry_auto_close
+#: model:ir.model.fields,field_description:london_laundry_implementation.field_res_config_settings__pos_laundry_auto_close
+#: model_terms:ir.ui.view,arch_db:london_laundry_implementation.res_config_settings_view_form_laundry_daily_report
+msgid "Auto-close Sessions"
+msgstr ""
+
+#. module: london_laundry_implementation
+#: model:ir.model.fields,field_description:london_laundry_implementation.field_pos_config__laundry_auto_close_time
+#: model:ir.model.fields,field_description:london_laundry_implementation.field_res_config_settings__pos_laundry_auto_close_time
+msgid "Auto-close Time"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/report.py:0
+#: code:addons/london_laundry_implementation/static/src/dashboard/laundry_dashboard.js:0
+msgid "Average order"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/report.py:0
+msgid "Balance"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/report.py:0
+#: code:addons/london_laundry_implementation/static/src/dashboard/laundry_dashboard.js:0
+msgid "Bank"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/dashboard/laundry_dashboard.js:0
+msgid "Bank collected"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/xml/receipt.xml:0
+msgid "Before VAT"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/dashboard/laundry_dashboard.xml:0
+msgid "Best-selling items"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/report.py:0
+msgid "Branch"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/dashboard/laundry_dashboard.xml:0
+msgid "Busy hours"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/xml/receipt.xml:0
+msgid "COLLECTION CANCELLED    إلغاء تحصيل"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/js/ticket_screen_patch.js:0
+#: code:addons/london_laundry_implementation/static/src/xml/ticket_screen.xml:0
+msgid "Cancel Collection"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/js/ticket_screen_patch.js:0
+msgid ""
+"Cancel the collection %(order)s of %(amount)s? The money is given back to "
+"the customer and the orders become unpaid again."
+msgstr ""
+
+#. module: london_laundry_implementation
+#: model:ir.model.fields,field_description:london_laundry_implementation.field_pos_order__laundry_reversed_order_id
+msgid "Cancelled Collection"
+msgstr ""
+
+#. module: london_laundry_implementation
+#: model:ir.model.fields,field_description:london_laundry_implementation.field_pos_payment__laundry_reversed_payment_id
+msgid "Cancelled Collection Line"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/xml/receipt.xml:0
+msgid "Cancels receipt"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/report.py:0
+#: code:addons/london_laundry_implementation/static/src/dashboard/laundry_dashboard.js:0
+msgid "Cash"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/report.py:0
+#: model:ir.actions.client,name:london_laundry_implementation.action_report_sessions
+#: model:ir.ui.menu,name:london_laundry_implementation.menu_report_sessions
+msgid "Cash Register Sessions"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/dashboard/laundry_dashboard.xml:0
+msgid "Cash and bank collection"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/dashboard/laundry_dashboard.js:0
+msgid "Cash collected"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/dashboard/laundry_dashboard.js:0
+msgid "Cash difference"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/dashboard/laundry_dashboard.xml:0
+msgid "Cash register sessions"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/report.py:0
+#: code:addons/london_laundry_implementation/static/src/dashboard/laundry_dashboard.xml:0
+msgid "Cashier"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/report.py:0
+#: model:ir.actions.client,name:london_laundry_implementation.action_report_cashiers
+#: model:ir.ui.menu,name:london_laundry_implementation.menu_report_cashiers
+msgid "Cashier Performance"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/dashboard/laundry_dashboard.xml:0
+msgid "Cashiers"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/xml/receipt.xml:0
+msgid "Change"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/report.py:0
+msgid "Change %"
+msgstr ""
+
+#. module: london_laundry_implementation
+#: model:ir.model.fields,help:london_laundry_implementation.field_london_delivery_method__laundry_with_charge
+msgid ""
+"Choosing this method in the POS adds the delivery charge line and asks the "
+"cashier for its price."
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/xml/delivery_person_popup.xml:0
+#: code:addons/london_laundry_implementation/static/src/xml/expected_delivery_popup.xml:0
+msgid "Clear"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/report.py:0
+#: code:addons/london_laundry_implementation/static/src/dashboard/laundry_dashboard.xml:0
+msgid "Closed"
+msgstr ""
+
+#. module: london_laundry_implementation
+#: model:ir.model.fields,field_description:london_laundry_implementation.field_pos_session__laundry_auto_closed
+msgid "Closed Automatically"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/pos_session.py:0
+msgid "Closed automatically (no cash count)."
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/pos_session.py:0
+msgid ""
+"Closed automatically at the end of the day. The cash was NOT counted: the "
+"counted amount was set to the expected amount."
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/xml/collect_payment_popup.xml:0
+msgid "Collect"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/js/collection_patch.js:0
+#: code:addons/london_laundry_implementation/static/src/js/ticket_screen_patch.js:0
+#: code:addons/london_laundry_implementation/static/src/xml/collect_payment_popup.xml:0
+#: code:addons/london_laundry_implementation/static/src/xml/ticket_screen.xml:0
+msgid "Collect Payment"
+msgstr ""
+
+#. module: london_laundry_implementation
+#: model_terms:ir.ui.view,arch_db:london_laundry_implementation.view_pos_pos_form_laundry_delivery
+msgid "Collected"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/report.py:0
+msgid "Collected %"
+msgstr ""
+
+#. module: london_laundry_implementation
+#: model:ir.model.fields,field_description:london_laundry_implementation.field_pos_payment__laundry_collected_order_id
+msgid "Collected Order"
+msgstr ""
+
+#. module: london_laundry_implementation
+#: model:ir.model.fields,field_description:london_laundry_implementation.field_pos_payment__laundry_collected_order_name
+msgid "Collected Order Ref"
+msgstr ""
+
+#. module: london_laundry_implementation
+#: model:ir.model.fields,field_description:london_laundry_implementation.field_account_bank_statement_line__laundry_pending_collection
+#: model:ir.model.fields,field_description:london_laundry_implementation.field_account_move__laundry_pending_collection
+#: model:ir.model.fields,field_description:london_laundry_implementation.field_account_payment_register__laundry_pending_collection
+msgid "Collected at POS (not matched yet)"
+msgstr ""
+
+#. module: london_laundry_implementation
+#: model:ir.model.fields,help:london_laundry_implementation.field_pos_order__laundry_pending_collection
+msgid ""
+"Collected at the POS but not reconciled with the invoice yet (done when the "
+"session closes)."
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/js/ticket_screen_patch.js:0
+#: model:ir.model.fields.selection,name:london_laundry_implementation.selection__pos_order__laundry_collection_status__collection
+msgid "Collection"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/js/ticket_screen_patch.js:0
+#: model:ir.model.fields.selection,name:london_laundry_implementation.selection__pos_order__laundry_collection_status__collection_cancelled
+msgid "Collection - Cancelled"
+msgstr ""
+
+#. module: london_laundry_implementation
+#: model:ir.model.fields,field_description:london_laundry_implementation.field_pos_order__laundry_reversal_order_ids
+msgid "Collection Cancellations"
+msgstr ""
+
+#. module: london_laundry_implementation
+#: model_terms:ir.ui.view,arch_db:london_laundry_implementation.view_pos_order_filter_laundry_collection
+msgid "Collection Not Matched"
+msgstr ""
+
+#. module: london_laundry_implementation
+#: model_terms:ir.ui.view,arch_db:london_laundry_implementation.view_pos_pos_form_laundry_delivery
+msgid "Collection Order"
+msgstr ""
+
+#. module: london_laundry_implementation
+#: model:ir.model.fields,field_description:london_laundry_implementation.field_pos_payment__laundry_reconciled
+msgid "Collection Reconciled"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/js/ticket_screen_patch.js:0
+#: model:ir.model.fields.selection,name:london_laundry_implementation.selection__pos_order__laundry_collection_status__collection_reversal
+msgid "Collection Reversal"
+msgstr ""
+
+#. module: london_laundry_implementation
+#: model:ir.model.fields,field_description:london_laundry_implementation.field_pos_order__laundry_collection_status
+#: model_terms:ir.ui.view,arch_db:london_laundry_implementation.view_pos_order_filter_laundry_collection
+msgid "Collection Status"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/report.py:0
+#: model:ir.actions.client,name:london_laundry_implementation.action_report_collection
+#: model:ir.ui.menu,name:london_laundry_implementation.menu_report_collection
+msgid "Collection by Payment Method"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/js/collection_patch.js:0
+msgid ""
+"Collection lines are fixed. Discard this order and start the collection "
+"again to change them."
+msgstr ""
+
+#. module: london_laundry_implementation
+#: model:ir.model.fields,field_description:london_laundry_implementation.field_pos_order__laundry_collection_payment_ids
+#: model_terms:ir.ui.view,arch_db:london_laundry_implementation.view_pos_order_filter_laundry_collection
+#: model_terms:ir.ui.view,arch_db:london_laundry_implementation.view_pos_pos_form_laundry_delivery
+msgid "Collections"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/pos_session.py:0
+msgid ""
+"Collections not fully matched with their invoices (to check by the accountant):\n"
+"%s"
+msgstr ""
+
+#. module: london_laundry_implementation
+#: model:ir.model.fields,help:london_laundry_implementation.field_pos_config__laundry_report_emails
+#: model:ir.model.fields,help:london_laundry_implementation.field_res_config_settings__pos_laundry_report_emails
+msgid ""
+"Comma-separated e-mail addresses that receive the daily summary of this "
+"point of sale (sent after midnight for the previous day)."
+msgstr ""
+
+#. module: london_laundry_implementation
+#: model:ir.model,name:london_laundry_implementation.model_res_company
+msgid "Companies"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/report.py:0
+msgid "Compared with"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/report.py:0
+msgid "Compared with: %s"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/report.py:0
+msgid "Comparison (%s)"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/js/ticket_screen_patch.js:0
+msgid "Completed"
+msgstr ""
+
+#. module: london_laundry_implementation
+#: model:ir.model,name:london_laundry_implementation.model_res_config_settings
+msgid "Config Settings"
+msgstr ""
+
+#. module: london_laundry_implementation
+#: model:ir.model,name:london_laundry_implementation.model_res_partner
+msgid "Contact"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/xml/closing_popup.xml:0
+msgid "Count the cash in the drawer and enter what you find."
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/report.py:0
+#: code:addons/london_laundry_implementation/static/src/dashboard/laundry_dashboard.xml:0
+msgid "Counted cash"
+msgstr ""
+
+#. module: london_laundry_implementation
+#: model:ir.model.fields,field_description:london_laundry_implementation.field_london_delivery_method__create_uid
+#: model:ir.model.fields,field_description:london_laundry_implementation.field_london_delivery_person__create_uid
+msgid "Created by"
+msgstr ""
+
+#. module: london_laundry_implementation
+#: model:ir.model.fields,field_description:london_laundry_implementation.field_london_delivery_method__create_date
+#: model:ir.model.fields,field_description:london_laundry_implementation.field_london_delivery_person__create_date
+msgid "Created on"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/report.py:0
+msgid "Currency"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/report.py:0
+msgid "Currency: %s"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/dashboard.py:0
+msgid "Custom"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/report.py:0
+#: code:addons/london_laundry_implementation/static/src/dashboard/laundry_dashboard.xml:0
+msgid "Customer"
+msgstr ""
+
+#. module: london_laundry_implementation
+#: model:ir.model.fields,field_description:london_laundry_implementation.field_pos_order__laundry_partner_balance
+msgid "Customer Balance After"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/report.py:0
+#: model:ir.actions.client,name:london_laundry_implementation.action_report_receivables
+#: model:ir.ui.menu,name:london_laundry_implementation.menu_report_receivables
+msgid "Customer Balances (Receivables)"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/report.py:0
+#: model:ir.actions.client,name:london_laundry_implementation.action_report_statement
+#: model:ir.actions.report,name:london_laundry_implementation.action_report_customer_statement
+#: model:ir.ui.menu,name:london_laundry_implementation.menu_report_statement
+#: model_terms:ir.ui.view,arch_db:london_laundry_implementation.res_config_settings_view_form_laundry_daily_report
+msgid "Customer Statement"
+msgstr ""
+
+#. module: london_laundry_implementation
+#: model:ir.model,name:london_laundry_implementation.model_report_london_laundry_implementation_report_customer_statement
+msgid "Customer Statement PDF"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/report.py:0
+msgid "Customer account (pay later)"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/dashboard/laundry_dashboard.js:0
+msgid "Customer balances"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/reports/laundry_report.xml:0
+msgid "Customer name, phone or reference"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/report.py:0
+msgid ""
+"Customer orders by month. Paid and remaining amounts are as of today; open a"
+" month to see the customers who still owe from it."
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/report.py:0
+msgid ""
+"Customer orders dated in the period. Paid and remaining amounts are as of "
+"today (collections taken at the POS included). Previous balance: what is "
+"still owed from before the period."
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/report.py:0
+msgid "Customer payments"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/reports/laundry_report.xml:0
+msgid "Customer statement (PDF)"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/report.py:0
+#: code:addons/london_laundry_implementation/static/src/dashboard/laundry_dashboard.js:0
+#: model:ir.actions.client,name:london_laundry_implementation.action_report_customers
+#: model:ir.ui.menu,name:london_laundry_implementation.menu_report_customers
+msgid "Customers"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/dashboard/laundry_dashboard.xml:0
+msgid "Customers who stopped coming"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/report.py:0
+msgid "Customers with a balance"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/xml/receipt.xml:0
+msgid "DESCRIPTION"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/xml/receipt.xml:0
+msgid "DUE / PAID / REMAINING"
+msgstr ""
+
+#. module: london_laundry_implementation
+#: model_terms:ir.ui.view,arch_db:london_laundry_implementation.res_config_settings_view_form_laundry_daily_report
+msgid "Daily Report"
+msgstr ""
+
+#. module: london_laundry_implementation
+#: model:ir.model.fields,field_description:london_laundry_implementation.field_pos_config__laundry_report_emails
+#: model:ir.model.fields,field_description:london_laundry_implementation.field_res_config_settings__pos_laundry_report_emails
+msgid "Daily Report Emails"
+msgstr ""
+
+#. module: london_laundry_implementation
+#: model_terms:ir.ui.view,arch_db:london_laundry_implementation.res_config_settings_view_form_laundry_daily_report
+msgid "Daily Report by E-mail"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/report.py:0
+#: model:ir.actions.client,name:london_laundry_implementation.action_report_daily
+#: model:ir.ui.menu,name:london_laundry_implementation.menu_report_daily
+msgid "Daily Sales"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/res_config_settings.py:0
+msgid "Daily report sent to %s"
+msgstr ""
+
+#. module: london_laundry_implementation
+#: model:ir.ui.menu,name:london_laundry_implementation.menu_laundry_dashboard
+msgid "Dashboard"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/xml/collect_payment_popup.xml:0
+#: model_terms:ir.ui.view,arch_db:london_laundry_implementation.report_customer_statement
+msgid "Date"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/xml/receipt.xml:0
+msgid "Date & Time"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/js/ticket_screen_patch.js:0
+#: code:addons/london_laundry_implementation/static/src/xml/ticket_screen.xml:0
+#: model:ir.model.fields,field_description:london_laundry_implementation.field_account_bank_statement_line__laundry_delivered
+#: model:ir.model.fields,field_description:london_laundry_implementation.field_account_move__laundry_delivered
+#: model:ir.model.fields,field_description:london_laundry_implementation.field_pos_order__laundry_delivered
+#: model_terms:ir.ui.view,arch_db:london_laundry_implementation.view_account_invoice_filter_laundry_delivery
+msgid "Delivered"
+msgstr ""
+
+#. module: london_laundry_implementation
+#: model:ir.model.fields,field_description:london_laundry_implementation.field_account_bank_statement_line__laundry_delivered_employee_id
+#: model:ir.model.fields,field_description:london_laundry_implementation.field_account_move__laundry_delivered_employee_id
+#: model:ir.model.fields,field_description:london_laundry_implementation.field_pos_order__laundry_delivered_employee_id
+#: model_terms:ir.ui.view,arch_db:london_laundry_implementation.view_account_invoice_filter_laundry_delivery
+msgid "Delivered By"
+msgstr ""
+
+#. module: london_laundry_implementation
+#: model:product.template,name:london_laundry_implementation.product_laundry_delivery_product_template
+msgid "Delivery / توصيل"
+msgstr ""
+
+#. module: london_laundry_implementation
+#: model:ir.model.fields,field_description:london_laundry_implementation.field_london_delivery_method__laundry_with_charge
+msgid "Delivery Charge"
+msgstr ""
+
+#. module: london_laundry_implementation
+#: model:ir.model.fields,field_description:london_laundry_implementation.field_pos_config__laundry_delivery_product_id
+#: model:ir.model.fields,field_description:london_laundry_implementation.field_res_config_settings__pos_laundry_delivery_product_id
+#: model_terms:ir.ui.view,arch_db:london_laundry_implementation.res_config_settings_view_form_laundry_daily_report
+msgid "Delivery Charge Product"
+msgstr ""
+
+#. module: london_laundry_implementation
+#: model_terms:ir.ui.view,arch_db:london_laundry_implementation.view_account_invoice_filter_laundry_delivery
+msgid "Delivery Date"
+msgstr ""
+
+#. module: london_laundry_implementation
+#: model:ir.model.fields,field_description:london_laundry_implementation.field_account_bank_statement_line__laundry_delivery_datetime
+#: model:ir.model.fields,field_description:london_laundry_implementation.field_account_move__laundry_delivery_datetime
+#: model:ir.model.fields,field_description:london_laundry_implementation.field_pos_order__laundry_delivery_datetime
+#: model_terms:ir.ui.view,arch_db:london_laundry_implementation.view_account_invoice_filter_laundry_delivery
+msgid "Delivery Date & Time"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/js/control_buttons_patch.js:0
+#: code:addons/london_laundry_implementation/static/src/xml/control_buttons.xml:0
+#: model:ir.model.fields,field_description:london_laundry_implementation.field_account_bank_statement_line__laundry_delivery_method_id
+#: model:ir.model.fields,field_description:london_laundry_implementation.field_account_move__laundry_delivery_method_id
+#: model:ir.model.fields,field_description:london_laundry_implementation.field_pos_order__laundry_delivery_method_id
+#: model_terms:ir.ui.view,arch_db:london_laundry_implementation.view_account_invoice_filter_laundry_delivery
+msgid "Delivery Method"
+msgstr ""
+
+#. module: london_laundry_implementation
+#: model:ir.actions.act_window,name:london_laundry_implementation.action_london_delivery_method
+#: model:ir.ui.menu,name:london_laundry_implementation.menu_london_delivery_method
+msgid "Delivery Methods"
+msgstr ""
+
+#. module: london_laundry_implementation
+#: model:ir.model.fields,field_description:london_laundry_implementation.field_account_bank_statement_line__laundry_delivery_person_id
+#: model:ir.model.fields,field_description:london_laundry_implementation.field_account_move__laundry_delivery_person_id
+msgid "Delivery Person (old)"
+msgstr ""
+
+#. module: london_laundry_implementation
+#: model:ir.actions.act_window,name:london_laundry_implementation.action_london_delivery_person
+msgid "Delivery Persons"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/js/delivery_charge.js:0
+msgid "Delivery Price"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/js/delivery_charge.js:0
+msgid "Delivery reduced to %s: the order with delivery cannot exceed %s."
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/report.py:0
+#: code:addons/london_laundry_implementation/static/src/dashboard/laundry_dashboard.xml:0
+msgid "Difference"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/xml/collect_payment_popup.xml:0
+#: code:addons/london_laundry_implementation/static/src/xml/delivery_person_popup.xml:0
+#: code:addons/london_laundry_implementation/static/src/xml/expected_delivery_popup.xml:0
+msgid "Discard"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/report.py:0
+#: code:addons/london_laundry_implementation/static/src/dashboard/laundry_dashboard.xml:0
+msgid "Discounts"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/dashboard/laundry_dashboard.js:0
+msgid "Discounts given"
+msgstr ""
+
+#. module: london_laundry_implementation
+#: model:ir.model.fields,field_description:london_laundry_implementation.field_london_delivery_method__display_name
+#: model:ir.model.fields,field_description:london_laundry_implementation.field_london_delivery_person__display_name
+msgid "Display Name"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/xml/receipt.xml:0
+msgid "Due"
+msgstr ""
+
+#. module: london_laundry_implementation
+#: model:ir.model.fields,field_description:london_laundry_implementation.field_pos_payment__laundry_collected_due
+msgid "Due Before Collection"
+msgstr ""
+
+#. module: london_laundry_implementation
+#: model:ir.model.fields,field_description:london_laundry_implementation.field_account_move__dynamic_duplicate_warning
+#: model:ir.model.fields,field_description:london_laundry_implementation.field_account_payment_register__dynamic_duplicate_warning
+#: model:ir.model.fields,field_description:london_laundry_implementation.field_hr_employee__dynamic_duplicate_warning
+#: model:ir.model.fields,field_description:london_laundry_implementation.field_london_delivery_method__dynamic_duplicate_warning
+#: model:ir.model.fields,field_description:london_laundry_implementation.field_london_delivery_person__dynamic_duplicate_warning
+#: model:ir.model.fields,field_description:london_laundry_implementation.field_london_laundry_daily_report__dynamic_duplicate_warning
+#: model:ir.model.fields,field_description:london_laundry_implementation.field_london_laundry_dashboard__dynamic_duplicate_warning
+#: model:ir.model.fields,field_description:london_laundry_implementation.field_london_laundry_report__dynamic_duplicate_warning
+#: model:ir.model.fields,field_description:london_laundry_implementation.field_pos_config__dynamic_duplicate_warning
+#: model:ir.model.fields,field_description:london_laundry_implementation.field_pos_order__dynamic_duplicate_warning
+#: model:ir.model.fields,field_description:london_laundry_implementation.field_pos_payment__dynamic_duplicate_warning
+#: model:ir.model.fields,field_description:london_laundry_implementation.field_pos_session__dynamic_duplicate_warning
+#: model:ir.model.fields,field_description:london_laundry_implementation.field_report_london_laundry_implementation_report_customer_statement__dynamic_duplicate_warning
+#: model:ir.model.fields,field_description:london_laundry_implementation.field_report_london_laundry_implementation_report_laundry_document__dynamic_duplicate_warning
+#: model:ir.model.fields,field_description:london_laundry_implementation.field_res_company__dynamic_duplicate_warning
+#: model:ir.model.fields,field_description:london_laundry_implementation.field_res_config_settings__dynamic_duplicate_warning
+#: model:ir.model.fields,field_description:london_laundry_implementation.field_res_partner__dynamic_duplicate_warning
+#: model:ir.model.fields,field_description:london_laundry_implementation.field_res_users__dynamic_duplicate_warning
+msgid "Duplicate Warning"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/xml/receipt.xml:0
+msgid "EXPECTED DELIVERY:"
+msgstr ""
+
+#. module: london_laundry_implementation
+#: model:ir.model,name:london_laundry_implementation.model_hr_employee
+msgid "Employee"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/xml/receipt.xml:0
+msgid "Employee:"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/js/collect_payment_popup.js:0
+msgid "Enter an amount for %s."
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/reports/laundry_report.xml:0
+msgid "Excel"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/report.py:0
+msgid "Excl. VAT"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/js/control_buttons_patch.js:0
+#: code:addons/london_laundry_implementation/static/src/xml/control_buttons.xml:0
+#: code:addons/london_laundry_implementation/static/src/xml/ticket_screen.xml:0
+#: model:ir.model.fields,field_description:london_laundry_implementation.field_account_bank_statement_line__laundry_expected_delivery
+#: model:ir.model.fields,field_description:london_laundry_implementation.field_account_move__laundry_expected_delivery
+#: model:ir.model.fields,field_description:london_laundry_implementation.field_pos_order__laundry_expected_delivery
+#: model_terms:ir.ui.view,arch_db:london_laundry_implementation.view_account_invoice_filter_laundry_delivery
+msgid "Expected Delivery"
+msgstr ""
+
+#. module: london_laundry_implementation
+#: model:ir.model.fields,field_description:london_laundry_implementation.field_account_bank_statement_line__laundry_expected_hour
+#: model:ir.model.fields,field_description:london_laundry_implementation.field_account_move__laundry_expected_hour
+#: model:ir.model.fields,field_description:london_laundry_implementation.field_pos_order__laundry_expected_hour
+msgid "Expected Hour"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/report.py:0
+#: code:addons/london_laundry_implementation/static/src/dashboard/laundry_dashboard.xml:0
+msgid "Expected cash"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/xml/receipt.xml:0
+msgid "FOLD"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/js/control_buttons_patch.js:0
+#: model:ir.model.fields.selection,name:london_laundry_implementation.selection__account_move__laundry_packing__fold
+#: model:ir.model.fields.selection,name:london_laundry_implementation.selection__pos_order__laundry_packing__fold
+msgid "Fold"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/reports/laundry_report.xml:0
+msgid "Fold all"
+msgstr ""
+
+#. module: london_laundry_implementation
+#: model:ir.model.fields,field_description:london_laundry_implementation.field_pos_config__laundry_free_delivery_from
+#: model:ir.model.fields,field_description:london_laundry_implementation.field_res_config_settings__pos_laundry_free_delivery_from
+#: model_terms:ir.ui.view,arch_db:london_laundry_implementation.res_config_settings_view_form_laundry_daily_report
+msgid "Free Delivery From"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/js/delivery_charge.js:0
+msgid "Free delivery: the order is %s or more."
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/js/delivery_charge.js:0
+msgid "Free delivery?"
+msgstr ""
+
+#. module: london_laundry_implementation
+#: model:ir.model.fields,field_description:london_laundry_implementation.field_account_bank_statement_line__laundry_is_paid
+#: model:ir.model.fields,field_description:london_laundry_implementation.field_account_move__laundry_is_paid
+msgid "Fully Paid"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/xml/receipt.xml:0
+msgid "HANGER"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/js/control_buttons_patch.js:0
+#: model:ir.model.fields.selection,name:london_laundry_implementation.selection__account_move__laundry_packing__hanger
+#: model:ir.model.fields.selection,name:london_laundry_implementation.selection__pos_order__laundry_packing__hanger
+msgid "Hanger"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/xml/control_buttons.xml:0
+#: model:ir.model.fields,field_description:london_laundry_implementation.field_account_bank_statement_line__laundry_packing
+#: model:ir.model.fields,field_description:london_laundry_implementation.field_account_move__laundry_packing
+#: model:ir.model.fields,field_description:london_laundry_implementation.field_pos_order__laundry_packing
+#: model_terms:ir.ui.view,arch_db:london_laundry_implementation.view_account_invoice_filter_laundry_delivery
+msgid "Hanger / Fold"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/js/control_buttons_patch.js:0
+#: code:addons/london_laundry_implementation/static/src/xml/control_buttons.xml:0
+msgid "Hanger or Fold"
+msgstr ""
+
+#. module: london_laundry_implementation
+#: model_terms:ir.ui.view,arch_db:london_laundry_implementation.view_account_invoice_filter_laundry_delivery
+msgid "Has Shelf"
+msgstr ""
+
+#. module: london_laundry_implementation
+#: model_terms:ir.ui.view,arch_db:london_laundry_implementation.res_config_settings_view_form_laundry_daily_report
+msgid ""
+"Hello {{partner_name}}, your balance with {{company}} is {{total_due}}: "
+"{{statement_link}}"
+msgstr ""
+
+#. module: london_laundry_implementation
+#: model:london.delivery.method,name:london_laundry_implementation.delivery_method_home
+msgid "Home Delivery"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/xml/expected_delivery_popup.xml:0
+#: model_terms:ir.ui.view,arch_db:london_laundry_implementation.view_move_form_laundry_delivery
+#: model_terms:ir.ui.view,arch_db:london_laundry_implementation.view_pos_pos_form_laundry_delivery
+msgid "Hour"
+msgstr ""
+
+#. module: london_laundry_implementation
+#: model:ir.model.fields,field_description:london_laundry_implementation.field_london_delivery_method__id
+#: model:ir.model.fields,field_description:london_laundry_implementation.field_london_delivery_person__id
+msgid "ID"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/xml/receipt.xml:0
+msgid "ITEM"
+msgstr ""
+
+#. module: london_laundry_implementation
+#: model:ir.model.fields,help:london_laundry_implementation.field_pos_config__laundry_auto_close_grace
+#: model:ir.model.fields,help:london_laundry_implementation.field_res_config_settings__pos_laundry_auto_close_grace
+msgid ""
+"If the register is still open this many minutes after the closing time, the "
+"server closes it without a cash count (counted = expected)."
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/backend/inline_char_field.js:0
+msgid "Inline Char"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/pos_config.py:0
+msgid "Invalid e-mail address(es) for the daily report: %s"
+msgstr ""
+
+#. module: london_laundry_implementation
+#: model:ir.model.fields,field_description:london_laundry_implementation.field_pos_order__laundry_is_collection
+msgid "Is Collection"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/dashboard/laundry_dashboard.xml:0
+msgid "Item"
+msgstr ""
+
+#. module: london_laundry_implementation
+#: model:ir.model,name:london_laundry_implementation.model_account_move
+msgid "Journal Entry"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/dashboard.py:0
+msgid "Last 7 days"
+msgstr ""
+
+#. module: london_laundry_implementation
+#: model:ir.model.fields,field_description:london_laundry_implementation.field_pos_config__laundry_report_last_date
+msgid "Last Daily Report"
+msgstr ""
+
+#. module: london_laundry_implementation
+#: model:ir.model.fields,field_description:london_laundry_implementation.field_london_delivery_method__write_uid
+#: model:ir.model.fields,field_description:london_laundry_implementation.field_london_delivery_person__write_uid
+msgid "Last Updated by"
+msgstr ""
+
+#. module: london_laundry_implementation
+#: model:ir.model.fields,field_description:london_laundry_implementation.field_london_delivery_method__write_date
+#: model:ir.model.fields,field_description:london_laundry_implementation.field_london_delivery_person__write_date
+msgid "Last Updated on"
+msgstr ""
+
+#. module: london_laundry_implementation
+#: model:ir.model.fields,help:london_laundry_implementation.field_pos_config__laundry_report_last_date
+msgid "Last day whose summary was sent automatically."
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/dashboard.py:0
+msgid "Last month"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/dashboard/laundry_dashboard.xml:0
+msgid "Last order"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/report.py:0
+msgid "Last visit"
+msgstr ""
+
+#. module: london_laundry_implementation
+#: model_terms:ir.ui.view,arch_db:london_laundry_implementation.res_config_settings_view_form_laundry_daily_report
+msgid "Laundry Cash Control"
+msgstr ""
+
+#. module: london_laundry_implementation
+#: model:ir.model,name:london_laundry_implementation.model_london_laundry_daily_report
+msgid "Laundry Daily E-mail Report"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/dashboard/laundry_dashboard.xml:0
+#: model:ir.actions.client,name:london_laundry_implementation.action_laundry_dashboard
+#: model:ir.ui.menu,name:london_laundry_implementation.menu_laundry_dashboard_root
+#: model:res.groups,name:london_laundry_implementation.group_laundry_dashboard
+msgid "Laundry Dashboard"
+msgstr ""
+
+#. module: london_laundry_implementation
+#: model_terms:ir.ui.view,arch_db:london_laundry_implementation.res_config_settings_view_form_laundry_daily_report
+msgid "Laundry Delivery"
+msgstr ""
+
+#. module: london_laundry_implementation
+#: model:ir.model,name:london_laundry_implementation.model_london_delivery_method
+msgid "Laundry Delivery Method"
+msgstr ""
+
+#. module: london_laundry_implementation
+#: model:ir.model,name:london_laundry_implementation.model_london_delivery_person
+msgid "Laundry Delivery Person"
+msgstr ""
+
+#. module: london_laundry_implementation
+#: model:ir.model,name:london_laundry_implementation.model_london_laundry_dashboard
+msgid "Laundry Manager Dashboard"
+msgstr ""
+
+#. module: london_laundry_implementation
+#: model:ir.model.fields,field_description:london_laundry_implementation.field_account_payment_register__laundry_pending_sessions
+msgid "Laundry Pending Sessions"
+msgstr ""
+
+#. module: london_laundry_implementation
+#: model:ir.actions.report,name:london_laundry_implementation.action_report_laundry
+msgid "Laundry Report"
+msgstr ""
+
+#. module: london_laundry_implementation
+#: model:ir.model,name:london_laundry_implementation.model_report_london_laundry_implementation_report_laundry_document
+msgid "Laundry Report PDF"
+msgstr ""
+
+#. module: london_laundry_implementation
+#: model:ir.model,name:london_laundry_implementation.model_london_laundry_report
+msgid "Laundry Reports"
+msgstr ""
+
+#. module: london_laundry_implementation
+#: model:ir.model.fields,field_description:london_laundry_implementation.field_pos_config__laundry_tz
+#: model:ir.model.fields,field_description:london_laundry_implementation.field_res_config_settings__pos_laundry_tz
+msgid "Laundry Tz"
+msgstr ""
+
+#. module: london_laundry_implementation
+#: model:ir.actions.server,name:london_laundry_implementation.ir_cron_laundry_auto_close_ir_actions_server
+msgid "Laundry: Auto-close POS Sessions"
+msgstr ""
+
+#. module: london_laundry_implementation
+#: model:ir.actions.server,name:london_laundry_implementation.ir_cron_laundry_daily_report_ir_actions_server
+msgid "Laundry: Send Daily Report E-mails"
+msgstr ""
+
+#. module: london_laundry_implementation
+#: model:ir.model.fields,help:london_laundry_implementation.field_pos_config__laundry_auto_close_time
+#: model:ir.model.fields,help:london_laundry_implementation.field_res_config_settings__pos_laundry_auto_close_time
+msgid ""
+"Local time (24h) at which the POS opens the closing screen by itself. 00:00 "
+"= midnight."
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/xml/receipt.xml:0
+msgid "Logo"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/xml/receipt.xml:0
+msgid "MOBILE:"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/js/ticket_screen_patch.js:0
+msgid "Mark %(order)s as delivered by %(cashier)s?"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/report.py:0
+#: code:addons/london_laundry_implementation/static/src/reports/laundry_report.xml:0
+msgid "Minimum due"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/report.py:0
+#: model:ir.actions.client,name:london_laundry_implementation.action_report_monthly_receivables
+#: model:ir.ui.menu,name:london_laundry_implementation.menu_report_monthly_receivables
+msgid "Monthly Receivables"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/xml/receipt.xml:0
+msgid "NAME:"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/xml/receipt.xml:0
+msgid "NET AMT"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/xml/delivery_person_popup.xml:0
+#: model:ir.model.fields,field_description:london_laundry_implementation.field_london_delivery_method__name
+#: model:ir.model.fields,field_description:london_laundry_implementation.field_london_delivery_person__name
+msgid "Name"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/xml/receipt.xml:0
+msgid "Net Amount"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/report.py:0
+msgid "Net excl. VAT"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/report.py:0
+msgid "Net sales"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/dashboard/laundry_dashboard.js:0
+msgid "New"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/xml/ticket_screen.xml:0
+msgid "No"
+msgstr ""
+
+#. module: london_laundry_implementation
+#: model_terms:ir.ui.view,arch_db:london_laundry_implementation.view_account_invoice_filter_laundry_delivery
+msgid "No Shelf"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/report.py:0
+msgid "No comparison"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/dashboard/laundry_dashboard.xml:0
+msgid "No customers to win back"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/reports/laundry_report.xml:0
+msgid "No data for this period"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/dashboard/laundry_dashboard.xml:0
+msgid "No identified customers in this period"
+msgstr ""
+
+#. module: london_laundry_implementation
+#: model_terms:ir.ui.view,arch_db:london_laundry_implementation.report_customer_statement
+msgid "No orders in this period / لا توجد طلبات في هذه الفترة"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/dashboard/laundry_dashboard.xml:0
+msgid "No sales in this period"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/dashboard/laundry_dashboard.xml:0
+msgid "No sessions in this period"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/js/ticket_screen_patch.js:0
+msgid "No shelf"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/dashboard/laundry_dashboard.js:0
+msgid "No visit for %s+ days"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/js/delivery_charge.js:0
+msgid "No, add the price"
+msgstr ""
+
+#. module: london_laundry_implementation
+#: model_terms:ir.ui.view,arch_db:london_laundry_implementation.view_account_invoice_filter_laundry_delivery
+msgid "Not Delivered"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/pos_session.py:0
+msgid "Not closed automatically: %s"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/pos_session.py:0
+msgid ""
+"Not closed automatically: unfinished orders with items (%s). Finish or "
+"cancel them, then close the register."
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/report.py:0
+msgid "Not due"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/report.py:0
+msgid "Not paid"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/report.py:0
+msgid "Note"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/js/ticket_screen_patch.js:0
+msgid "Nothing is due for this customer."
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/xml/receipt.xml:0
+msgid "ORDER"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/report.py:0
+msgid "Older"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/report.py:0
+msgid "Oldest due"
+msgstr ""
+
+#. module: london_laundry_implementation
+#: model_terms:ir.ui.view,arch_db:london_laundry_implementation.view_pos_order_tree_laundry_collection
+msgid "On Credit"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/xml/receipt.xml:0
+msgid "On Credit (Unpaid)"
+msgstr ""
+
+#. module: london_laundry_implementation
+#: model_terms:ir.ui.view,arch_db:london_laundry_implementation.view_pos_order_filter_laundry_collection
+msgid "On Credit (all)"
+msgstr ""
+
+#. module: london_laundry_implementation
+#: model:ir.model.fields.selection,name:london_laundry_implementation.selection__pos_order__laundry_collection_status__credit_paid
+msgid "On Credit - Collected"
+msgstr ""
+
+#. module: london_laundry_implementation
+#: model:ir.model.fields.selection,name:london_laundry_implementation.selection__pos_order__laundry_collection_status__credit_partial
+msgid "On Credit - Partially Paid"
+msgstr ""
+
+#. module: london_laundry_implementation
+#: model:ir.model.fields.selection,name:london_laundry_implementation.selection__pos_order__laundry_collection_status__credit_unpaid
+#: model_terms:ir.ui.view,arch_db:london_laundry_implementation.view_pos_order_filter_laundry_collection
+msgid "On Credit - Unpaid"
+msgstr ""
+
+#. module: london_laundry_implementation
+#: model:ir.model.fields,field_description:london_laundry_implementation.field_pos_order__laundry_credit_amount
+msgid "On Credit Amount"
+msgstr ""
+
+#. module: london_laundry_implementation
+#: model:ir.model.fields,help:london_laundry_implementation.field_pos_payment__laundry_collected_order_id
+msgid "On Credit order this collection payment pays."
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/pos_order.py:0
+msgid "Only a manager can cancel a collection."
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/reports/laundry_report.xml:0
+msgid ""
+"Open balances from accounting: unpaid invoices and customer-account sales, "
+"minus payments not yet matched."
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/report.py:0
+msgid "Open orders"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/report.py:0
+msgid "Opened"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/report.py:0
+#: code:addons/london_laundry_implementation/static/src/dashboard/laundry_dashboard.xml:0
+msgid "Opened by"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/xml/collect_payment_popup.xml:0
+msgid "Order"
+msgstr ""
+
+#. module: london_laundry_implementation
+#: model_terms:ir.ui.view,arch_db:london_laundry_implementation.report_customer_statement
+msgid "Order / Invoice"
+msgstr ""
+
+#. module: london_laundry_implementation
+#: model:ir.model.fields,help:london_laundry_implementation.field_pos_order__laundry_is_collection
+msgid ""
+"Order created at the POS to collect earlier On Credit orders (no products, "
+"no invoice)."
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/report.py:0
+#: code:addons/london_laundry_implementation/static/src/dashboard/laundry_dashboard.js:0
+#: code:addons/london_laundry_implementation/static/src/dashboard/laundry_dashboard.xml:0
+msgid "Orders"
+msgstr ""
+
+#. module: london_laundry_implementation
+#: model_terms:ir.ui.view,arch_db:london_laundry_implementation.report_customer_statement
+msgid "Orders in the period"
+msgstr ""
+
+#. module: london_laundry_implementation
+#: model_terms:ir.ui.view,arch_db:london_laundry_implementation.res_config_settings_view_form_laundry_daily_report
+msgid ""
+"Orders of this amount or more (VAT included) are delivered for free. Below "
+"it, the order with delivery cannot exceed this amount (the delivery charge "
+"is reduced). 0 = no rule."
+msgstr ""
+
+#. module: london_laundry_implementation
+#: model:ir.model.fields,help:london_laundry_implementation.field_pos_config__laundry_free_delivery_from
+#: model:ir.model.fields,help:london_laundry_implementation.field_res_config_settings__pos_laundry_free_delivery_from
+msgid ""
+"Orders of this amount or more (VAT included) get free delivery. Below it, "
+"the delivery charge is capped so that the order with delivery does not "
+"exceed this amount. 0 = no rule."
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/dashboard/laundry_dashboard.js:0
+msgid "Other"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/xml/receipt.xml:0
+msgid "PAYMENT RECEIPT    إيصال تحصيل"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/reports/laundry_report.xml:0
+msgid "PDF"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/report.py:0
+msgid "POS"
+msgstr ""
+
+#. module: london_laundry_implementation
+#: model:ir.model.fields,field_description:london_laundry_implementation.field_account_bank_statement_line__laundry_pending_sessions
+#: model:ir.model.fields,field_description:london_laundry_implementation.field_account_move__laundry_pending_sessions
+msgid "POS Sessions"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/xml/receipt.xml:0
+msgid "PRICE"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/report.py:0
+#: code:addons/london_laundry_implementation/static/src/js/ticket_screen_patch.js:0
+#: code:addons/london_laundry_implementation/static/src/xml/receipt.xml:0
+#: model:ir.model.fields.selection,name:london_laundry_implementation.selection__pos_order__laundry_collection_status__paid
+#: model_terms:ir.ui.view,arch_db:london_laundry_implementation.report_customer_statement
+msgid "Paid"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/xml/receipt.xml:0
+msgid "Paid Amount"
+msgstr ""
+
+#. module: london_laundry_implementation
+#: model_terms:ir.ui.view,arch_db:london_laundry_implementation.report_customer_statement
+msgid ""
+"Paid and remaining amounts are as of the print date.\n"
+"                            <span lang=\"ar\" dir=\"rtl\" class=\"d-block\">المبالغ المدفوعة والمتبقية حسب تاريخ الطباعة.</span>"
+msgstr ""
+
+#. module: london_laundry_implementation
+#: model:ir.model.fields,help:london_laundry_implementation.field_pos_order__laundry_collection_status
+msgid ""
+"Paid: settled at the counter (cash, card, transfer).\n"
+"On Credit: sold on the customer account; the status follows the invoice payment and the collections taken at the POS.\n"
+"Collection: a payment collected at the POS for earlier On Credit orders.\n"
+"Collection Reversal: cancels a collection of the same session (money given back)."
+msgstr ""
+
+#. module: london_laundry_implementation
+#: model:ir.model.fields,help:london_laundry_implementation.field_pos_order__laundry_credit_amount
+msgid ""
+"Part of the order paid with a customer-account (pay later) payment method."
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/js/ticket_screen_patch.js:0
+msgid ""
+"Part or all of this On Credit order was already collected. After the refund,"
+" the accountant must fix that payment on the invoice. Continue?"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/js/ticket_screen_patch.js:0
+msgid "Partially Paid"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/report.py:0
+msgid "Partially paid"
+msgstr ""
+
+#. module: london_laundry_implementation
+#: model:ir.model,name:london_laundry_implementation.model_account_payment_register
+msgid "Pay"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/report.py:0
+msgid "Payment"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/xml/receipt.xml:0
+msgid "Payment Type:"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/report.py:0
+#: code:addons/london_laundry_implementation/static/src/dashboard/laundry_dashboard.js:0
+msgid "Payments"
+msgstr ""
+
+#. module: london_laundry_implementation
+#: model:ir.model.fields,field_description:london_laundry_implementation.field_pos_order__laundry_pending_collection
+msgid "Pending Collection"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/report.py:0
+msgid "Period"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/report.py:0
+msgid "Period: %s"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/report.py:0
+msgid "Phone"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/dashboard.py:0
+msgid "Please choose a period of 3 years or less."
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/dashboard.py:0
+msgid "Please choose both dates."
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/res_config_settings.py:0
+msgid "Please enter at least one e-mail address for the daily report."
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/report.py:0
+#: code:addons/london_laundry_implementation/static/src/dashboard/laundry_dashboard.xml:0
+msgid "Point of Sale"
+msgstr ""
+
+#. module: london_laundry_implementation
+#: model:ir.model,name:london_laundry_implementation.model_pos_config
+msgid "Point of Sale Configuration"
+msgstr ""
+
+#. module: london_laundry_implementation
+#: model:ir.model,name:london_laundry_implementation.model_pos_order
+msgid "Point of Sale Orders"
+msgstr ""
+
+#. module: london_laundry_implementation
+#: model:ir.model,name:london_laundry_implementation.model_pos_payment
+msgid "Point of Sale Payments"
+msgstr ""
+
+#. module: london_laundry_implementation
+#: model:ir.model,name:london_laundry_implementation.model_pos_session
+msgid "Point of Sale Session"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/dashboard/laundry_dashboard.xml:0
+msgid "Point of Sale:"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/report.py:0
+#: model_terms:ir.ui.view,arch_db:london_laundry_implementation.report_customer_statement
+msgid "Previous balance"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/report.py:0
+#: code:addons/london_laundry_implementation/static/src/dashboard/laundry_dashboard.js:0
+msgid "Previous period"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/xml/ticket_screen.xml:0
+msgid "Print Receipt"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/report.py:0
+msgid "Printed on"
+msgstr ""
+
+#. module: london_laundry_implementation
+#: model_terms:ir.ui.view,arch_db:london_laundry_implementation.report_customer_statement
+msgid "Printed on / تاريخ الطباعة:"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/xml/receipt.xml:0
+msgid "QTY"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/xml/receipt.xml:0
+msgid "QTY × PRICE = NET"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/dashboard/laundry_dashboard.xml:0
+msgid "Qty"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/report.py:0
+msgid "Quantity"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/xml/receipt.xml:0
+msgid "Receipt No."
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/dashboard/laundry_dashboard.xml:0
+msgid "Refresh"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/js/ticket_screen_patch.js:0
+msgid "Refund a collected order?"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/report.py:0
+msgid "Refunded amount"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/report.py:0
+#: code:addons/london_laundry_implementation/static/src/dashboard/laundry_dashboard.js:0
+#: code:addons/london_laundry_implementation/static/src/dashboard/laundry_dashboard.xml:0
+msgid "Refunds"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/dashboard/laundry_dashboard.xml:0
+msgid ""
+"Regular customers (2+ orders) who have not ordered recently, sorted by total"
+" spent. Not affected by the period filter."
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/report.py:0
+#: code:addons/london_laundry_implementation/static/src/xml/collect_payment_popup.xml:0
+#: code:addons/london_laundry_implementation/static/src/xml/receipt.xml:0
+#: model_terms:ir.ui.view,arch_db:london_laundry_implementation.report_customer_statement
+#: model_terms:ir.ui.view,arch_db:london_laundry_implementation.view_pos_order_tree_laundry_collection
+msgid "Remaining"
+msgstr ""
+
+#. module: london_laundry_implementation
+#: model:ir.model.fields,field_description:london_laundry_implementation.field_pos_order__laundry_credit_remaining
+msgid "Remaining On Credit"
+msgstr ""
+
+#. module: london_laundry_implementation
+#: model_terms:ir.ui.view,arch_db:london_laundry_implementation.report_customer_statement
+msgid "Remaining from the period"
+msgstr ""
+
+#. module: london_laundry_implementation
+#: model:ir.ui.menu,name:london_laundry_implementation.menu_laundry_reports
+msgid "Reports"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/report.py:0
+#: code:addons/london_laundry_implementation/static/src/dashboard/laundry_dashboard.js:0
+#: code:addons/london_laundry_implementation/static/src/dashboard/laundry_dashboard.xml:0
+msgid "Sales"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/report.py:0
+#: model:ir.actions.client,name:london_laundry_implementation.action_report_category
+#: model:ir.ui.menu,name:london_laundry_implementation.menu_report_category
+msgid "Sales by Service and Item"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/dashboard/laundry_dashboard.xml:0
+msgid "Sales trend"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/report.py:0
+msgid "Same period last year"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/js/collect_payment_popup.js:0
+msgid "Select at least one order."
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/reports/laundry_report.xml:0
+msgid "Send payment reminder"
+msgstr ""
+
+#. module: london_laundry_implementation
+#: model_terms:ir.ui.view,arch_db:london_laundry_implementation.res_config_settings_view_form_laundry_daily_report
+msgid "Send yesterday's report now"
+msgstr ""
+
+#. module: london_laundry_implementation
+#: model_terms:ir.ui.view,arch_db:london_laundry_implementation.res_config_settings_view_form_laundry_daily_report
+msgid ""
+"Sent with the customer statement (Laundry Dashboard > Reports > Customer "
+"Statement). Leave empty to use the default bilingual message."
+msgstr ""
+
+#. module: london_laundry_implementation
+#: model:ir.model.fields,field_description:london_laundry_implementation.field_london_delivery_method__sequence
+msgid "Sequence"
+msgstr ""
+
+#. module: london_laundry_implementation
+#: model:ir.model.fields,field_description:london_laundry_implementation.field_pos_config__laundry_auto_close_grace
+#: model:ir.model.fields,field_description:london_laundry_implementation.field_res_config_settings__pos_laundry_auto_close_grace
+msgid "Server Close After (min)"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/report.py:0
+msgid "Service"
+msgstr ""
+
+#. module: london_laundry_implementation
+#: model_terms:ir.ui.view,arch_db:london_laundry_implementation.res_config_settings_view_form_laundry_daily_report
+msgid ""
+"Service added to the order when the cashier chooses a delivery method with a"
+" charge (e.g. Home Delivery). The cashier enters its price, VAT included."
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/dashboard/laundry_dashboard.xml:0
+msgid "Service mix"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/dashboard/laundry_dashboard.xml:0
+msgid "Session"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/report.py:0
+msgid "Share %"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/js/ticket_screen_patch.js:0
+#: code:addons/london_laundry_implementation/static/src/xml/ticket_screen.xml:0
+#: model:ir.model.fields,field_description:london_laundry_implementation.field_account_bank_statement_line__laundry_shelf
+#: model:ir.model.fields,field_description:london_laundry_implementation.field_account_move__laundry_shelf
+#: model:ir.model.fields,field_description:london_laundry_implementation.field_pos_order__laundry_shelf
+#: model_terms:ir.ui.view,arch_db:london_laundry_implementation.view_account_invoice_filter_laundry_delivery
+msgid "Shelf"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/report.py:0
+msgid "Show"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/dashboard/laundry_dashboard.js:0
+msgid "Sold on account"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/report.py:0
+msgid "Sold on customer account"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/report.py:0
+msgid "Specific month"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/report.py:0
+msgid "Specific year"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/report.py:0
+#: code:addons/london_laundry_implementation/static/src/dashboard/laundry_dashboard.xml:0
+msgid "Spent"
+msgstr ""
+
+#. module: london_laundry_implementation
+#: model:ir.model.fields,field_description:london_laundry_implementation.field_res_config_settings__laundry_statement_whatsapp_message
+#: model_terms:ir.ui.view,arch_db:london_laundry_implementation.res_config_settings_view_form_laundry_daily_report
+msgid "Statement WhatsApp Message"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/report.py:0
+#: model_terms:ir.ui.view,arch_db:london_laundry_implementation.report_customer_statement
+msgid "Status"
+msgstr ""
+
+#. module: london_laundry_implementation
+#: model:london.delivery.method,name:london_laundry_implementation.delivery_method_pickup
+msgid "Store Pickup"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/xml/receipt.xml:0
+msgid "Sub Total"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/xml/receipt.xml:0
+msgid "Sub Total:"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/xml/receipt.xml:0
+msgid "TAX INVOICE    فاتورة ضريبية"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/xml/receipt.xml:0
+msgid "TRN:"
+msgstr ""
+
+#. module: london_laundry_implementation
+#: model:ir.model.fields,help:london_laundry_implementation.field_res_config_settings__laundry_statement_whatsapp_message
+msgid ""
+"Text of the WhatsApp message sent with the customer statement. Placeholders:"
+" {{partner_name}}, {{company}}, {{date_from}}, {{date_to}}, "
+"{{previous_balance}}, {{invoiced}}, {{invoice_count}}, {{open_count}}, "
+"{{paid}}, {{remaining}}, {{total_due}}, {{statement_link}}. Empty = the "
+"default message."
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/xml/receipt.xml:0
+msgid "Thank You & Come Again"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/pos_session.py:0
+msgid "The cash details could not be saved."
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/pos_session.py:0
+msgid "The cash difference is not zero after setting the counted cash."
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/res_partner.py:0
+msgid ""
+"The contact \"%s\" must have a mobile number.\n"
+"لا يمكن حفظ جهة اتصال بدون رقم موبايل."
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/res_config_settings.py:0
+msgid "The daily report could not be sent: %s"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/xml/receipt.xml:0
+msgid ""
+"The management is not responsible for any change in color for shrink.\n"
+"                In case of damage or loss of article the compensation is limited to 5 times of cleaning charges.\n"
+"                The Laundry will not be responsible for clothes & Carpets after 60 days."
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/res_partner.py:0
+msgid ""
+"The number \"%s\" is not a valid mobile or landline number. A UAE number can be typed as it is (e.g. 0501234567 or 042345678); a number from another country needs its country code (e.g. +963944123456).\n"
+"الرقم لازم يكون موبايل أو أرضي صحيح. الرقم الإماراتي بينكتب عادي (0501234567 أو 042345678)، والرقم من بلد تاني لازم مع رمز الدولة (مثلاً +963944123456)."
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/res_partner.py:0
+msgid ""
+"The phone \"%s\" is not a valid mobile or landline number (a number from another country needs its country code, e.g. +963944123456).\n"
+"رقم الهاتف لازم يكون موبايل أو أرضي صحيح (الرقم من بلد تاني مع رمز الدولة)."
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/pos_session.py:0
+msgid "The session could not be closed."
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/account_move.py:0
+msgid "The shelf must be a number from 1 to 9."
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/dashboard.py:0
+msgid "The start date must be before the end date."
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/pos_order.py:0
+msgid "This collection is already cancelled."
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/pos_order.py:0
+msgid ""
+"This collection is already matched with the invoices. Ask the accountant."
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/js/ticket_screen_patch.js:0
+msgid ""
+"This customer's unpaid orders have no invoice; they cannot be collected from"
+" the POS yet."
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/dashboard.py:0
+msgid "This month"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/pos_order.py:0
+msgid "This order has no invoice, the delivery cannot be saved."
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/pos_order.py:0
+msgid "This order has no invoice, the shelf cannot be saved."
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/js/delivery_charge.js:0
+msgid "This order is %(method)s with no delivery charge. Deliver it for free?"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/pos_order.py:0
+msgid "This order is not a collection."
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/account_move.py:0
+msgid ""
+"This order still has %(due)s to pay. Collect the payment before handing over"
+" the clothes (POS: Orders > Unpaid > Collect Payment)."
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/dashboard/laundry_dashboard.js:0
+msgid "This period"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/js/collection_patch.js:0
+msgid "This point of sale has no customer account (On Credit) payment method."
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/dashboard.py:0
+msgid "This year"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/dashboard/laundry_dashboard.js:0
+msgid ""
+"Times are shown in your user timezone (%(user)s), which differs from this "
+"device (%(device)s). You can change it in your preferences."
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/dashboard/laundry_dashboard.js:0
+msgid "Times in %s"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/dashboard.py:0
+msgid "Today"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/report.py:0
+msgid "Top 10 debtors"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/report.py:0
+msgid "Top 20 debtors"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/report.py:0
+msgid "Top 50 debtors"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/dashboard/laundry_dashboard.xml:0
+msgid "Top customers"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/report.py:0
+msgid "Top debtor"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/report.py:0
+#: code:addons/london_laundry_implementation/static/src/reports/laundry_report.xml:0
+#: code:addons/london_laundry_implementation/static/src/xml/collect_payment_popup.xml:0
+#: model_terms:ir.ui.view,arch_db:london_laundry_implementation.report_customer_statement
+#: model_terms:ir.ui.view,arch_db:london_laundry_implementation.report_laundry_document
+msgid "Total"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/xml/receipt.xml:0
+msgid "Total Paid"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/xml/receipt.xml:0
+msgid "Total Qty"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/xml/receipt.xml:0
+msgid "Total Qty:"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/xml/receipt.xml:0
+msgid "Total Refunded"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/report.py:0
+#: model_terms:ir.ui.view,arch_db:london_laundry_implementation.report_customer_statement
+msgid "Total due"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/xml/collect_payment_popup.xml:0
+msgid "Total to collect"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/report.py:0
+msgid "Unallocated payments"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/dashboard.py:0
+#: code:addons/london_laundry_implementation/models/report.py:0
+msgid "Uncategorized"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/reports/laundry_report.xml:0
+msgid "Unfold all"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/dashboard.py:0
+msgid "Unknown"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/dashboard.py:0
+msgid "Unknown period."
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/report.py:0
+msgid "Unknown report."
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/js/ticket_screen_patch.js:0
+msgid "Unpaid"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/account_move.py:0
+#: code:addons/london_laundry_implementation/static/src/js/ticket_screen_patch.js:0
+msgid "Unpaid order"
+msgstr ""
+
+#. module: london_laundry_implementation
+#: model:ir.model,name:london_laundry_implementation.model_res_users
+msgid "User"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/report.py:0
+#: code:addons/london_laundry_implementation/static/src/xml/receipt.xml:0
+#: model_terms:ir.ui.view,arch_db:london_laundry_implementation.report_customer_statement
+msgid "VAT"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/js/delivery_charge.js:0
+msgid "VAT included"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/js/delivery_charge.js:0
+msgid "VAT included - at most %s (order with delivery up to %s)"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/report.py:0
+msgid "Walk-in customers"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/report.py:0
+msgid "Walk-in customers (no name)"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/report.py:0
+msgid "Without customer"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/js/delivery_charge.js:0
+msgid "Yes, free delivery"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/dashboard.py:0
+msgid "Yesterday"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/dashboard.py:0
+msgid "You are not allowed to open the laundry dashboard."
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/xml/receipt.xml:0
+msgid "Your Balance"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/dashboard/laundry_dashboard.js:0
+msgid "compared with %s"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/report.py:0
+msgid ""
+"customer payments made outside the POS are not linked to a branch or "
+"cashier, so they are only included when all points of sale are selected"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/dashboard/laundry_dashboard.js:0
+msgid "excl. VAT %s"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/dashboard/laundry_dashboard.js:0
+msgid "incl. %s paid outside the POS"
+msgstr ""
+
+#. module: london_laundry_implementation
+#: model_terms:ir.ui.view,arch_db:london_laundry_implementation.res_config_settings_view_form_laundry_daily_report
+msgid "manager@example.com, owner@example.com"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/report.py:0
+msgid "not collected yet"
+msgstr ""
+
+#. module: london_laundry_implementation
+#: model_terms:ir.ui.view,arch_db:london_laundry_implementation.view_account_payment_register_form_laundry
+msgid "of these invoices was already collected at the POS (session"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/xml/collect_payment_popup.xml:0
+msgid "older On Credit order(s) without invoice are not listed."
+msgstr ""
+
+#. module: london_laundry_implementation
+#: model_terms:ir.ui.view,arch_db:london_laundry_implementation.res_config_settings_view_form_laundry_daily_report
+msgid "time)"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/dashboard/laundry_dashboard.js:0
+msgid "to be collected later"
+msgstr ""
+
+#. module: london_laundry_implementation
+#: model_terms:ir.ui.view,arch_db:london_laundry_implementation.view_move_form_laundry_pending_collection
+msgid "was already collected at the POS (session"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/xml/receipt.xml:0
+msgid "| PRINTER1"
+msgstr ""
+
+#. module: london_laundry_implementation
+#: model_terms:ir.ui.view,arch_db:london_laundry_implementation.daily_report_email_section
+msgid "· المبيعات بدون ضريبة:"
+msgstr ""
+
+#. module: london_laundry_implementation
+#: model_terms:ir.ui.view,arch_db:london_laundry_implementation.daily_report_email
+msgid "· عدد الزبائن:"
+msgstr ""
+
+#. module: london_laundry_implementation
+#: model_terms:ir.ui.view,arch_db:london_laundry_implementation.daily_report_email
+msgid "· متأخر منها:"
+msgstr ""
+
+#. module: london_laundry_implementation
+#: model_terms:ir.ui.view,arch_db:london_laundry_implementation.daily_report_email_section
+msgid "أداء الكاشيرية"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/xml/receipt.xml:0
+msgid "إجمالي المدفوع"
+msgstr ""
+
+#. module: london_laundry_implementation
+#: model_terms:ir.ui.view,arch_db:london_laundry_implementation.report_customer_statement
+msgid "إجمالي المستحق"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/xml/receipt.xml:0
+msgid "إجمالي المسترد"
+msgstr ""
+
+#. module: london_laundry_implementation
+#: model_terms:ir.ui.view,arch_db:london_laundry_implementation.daily_report_email
+msgid "إجمالي ديون الزبائن لهلق (كل الفروع):"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/xml/receipt.xml:0
+msgid "إلغاء الإيصال"
+msgstr ""
+
+#. module: london_laundry_implementation
+#: model_terms:ir.ui.view,arch_db:london_laundry_implementation.report_customer_statement
+msgid "الإجمالي"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/xml/receipt.xml:0
+msgid "الاجمالي"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/xml/receipt.xml:0
+msgid ""
+"الادارة غير مسئولة عن اي تغيير في اللون او تكماش.\n"
+"                في حال تلف او فقدان اي قطعة والتعويض محدد بـ 5 مرات قيمة تنظيفها\n"
+"                مع اقصى مدة لاستلام الملابس 60 يوم فقط."
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/xml/receipt.xml:0
+msgid "الباقي"
+msgstr ""
+
+#. module: london_laundry_implementation
+#: model_terms:ir.ui.view,arch_db:london_laundry_implementation.report_customer_statement
+msgid "التاريخ"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/xml/receipt.xml:0
+msgid "التاريخ والوقت"
+msgstr ""
+
+#. module: london_laundry_implementation
+#: model_terms:ir.ui.view,arch_db:london_laundry_implementation.daily_report_email_section
+msgid ""
+"التحصيلات داخلة بـ \"المحصّل\" فوق (المصاري واصلة عالصندوق)، ومو محسوبة "
+"بالمبيعات ولا بعدد الطلبات."
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/xml/receipt.xml:0
+msgid "التسليم المتوقع"
+msgstr ""
+
+#. module: london_laundry_implementation
+#: model_terms:ir.ui.view,arch_db:london_laundry_implementation.daily_report_email
+msgid "التقرير اليومي -"
+msgstr ""
+
+#. module: london_laundry_implementation
+#: model_terms:ir.ui.view,arch_db:london_laundry_implementation.daily_report_email_section
+msgid "الجلسة"
+msgstr ""
+
+#. module: london_laundry_implementation
+#: model_terms:ir.ui.view,arch_db:london_laundry_implementation.daily_report_email_section
+#: model_terms:ir.ui.view,arch_db:london_laundry_implementation.report_customer_statement
+msgid "الحالة"
+msgstr ""
+
+#. module: london_laundry_implementation
+#: model_terms:ir.ui.view,arch_db:london_laundry_implementation.daily_report_email_section
+msgid "الخصومات"
+msgstr ""
+
+#. module: london_laundry_implementation
+#: model_terms:ir.ui.view,arch_db:london_laundry_implementation.daily_report_email_section
+msgid "الدفعات حسب طريقة الدفع"
+msgstr ""
+
+#. module: london_laundry_implementation
+#: model_terms:ir.ui.view,arch_db:london_laundry_implementation.daily_report_email_deliveries
+msgid "الرف"
+msgstr ""
+
+#. module: london_laundry_implementation
+#: model_terms:ir.ui.view,arch_db:london_laundry_implementation.daily_report_email_section
+msgid "الزبائن"
+msgstr ""
+
+#. module: london_laundry_implementation
+#: model_terms:ir.ui.view,arch_db:london_laundry_implementation.daily_report_email_deliveries
+#: model_terms:ir.ui.view,arch_db:london_laundry_implementation.daily_report_email_section
+msgid "الزبون"
+msgstr ""
+
+#. module: london_laundry_implementation
+#: model_terms:ir.ui.view,arch_db:london_laundry_implementation.daily_report_email_deliveries
+msgid "الساعة"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/xml/receipt.xml:0
+msgid "السعر"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/xml/receipt.xml:0
+msgid "الصنف"
+msgstr ""
+
+#. module: london_laundry_implementation
+#: model_terms:ir.ui.view,arch_db:london_laundry_implementation.report_customer_statement
+msgid "الضريبة"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/xml/receipt.xml:0
+#: model_terms:ir.ui.view,arch_db:london_laundry_implementation.daily_report_email_deliveries
+msgid "الطلب"
+msgstr ""
+
+#. module: london_laundry_implementation
+#: model_terms:ir.ui.view,arch_db:london_laundry_implementation.report_customer_statement
+msgid "الطلب / الفاتورة"
+msgstr ""
+
+#. module: london_laundry_implementation
+#: model_terms:ir.ui.view,arch_db:london_laundry_implementation.daily_report_email
+#: model_terms:ir.ui.view,arch_db:london_laundry_implementation.daily_report_email_section
+msgid "الطلبات"
+msgstr ""
+
+#. module: london_laundry_implementation
+#: model_terms:ir.ui.view,arch_db:london_laundry_implementation.daily_report_email_section
+msgid "الفرق"
+msgstr ""
+
+#. module: london_laundry_implementation
+#: model_terms:ir.ui.view,arch_db:london_laundry_implementation.daily_report_email_section
+msgid "الكاشير"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/xml/receipt.xml:0
+msgid "الكمية"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/xml/receipt.xml:0
+msgid "الكمية × السعر = الإجمالي"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/xml/receipt.xml:0
+msgid "الكمية الإجمالية"
+msgstr ""
+
+#. module: london_laundry_implementation
+#: model_terms:ir.ui.view,arch_db:london_laundry_implementation.daily_report_email_deliveries
+#: model_terms:ir.ui.view,arch_db:london_laundry_implementation.daily_report_email_section
+msgid "المبلغ"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/xml/receipt.xml:0
+msgid "المبلغ الاجمالي"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/xml/receipt.xml:0
+msgid "المبلغ المدفوع"
+msgstr ""
+
+#. module: london_laundry_implementation
+#: model_terms:ir.ui.view,arch_db:london_laundry_implementation.report_customer_statement
+msgid "المبلغ بدون ضريبة"
+msgstr ""
+
+#. module: london_laundry_implementation
+#: model_terms:ir.ui.view,arch_db:london_laundry_implementation.report_customer_statement
+msgid "المبلغ مع الضريبة"
+msgstr ""
+
+#. module: london_laundry_implementation
+#: model_terms:ir.ui.view,arch_db:london_laundry_implementation.daily_report_email
+#: model_terms:ir.ui.view,arch_db:london_laundry_implementation.daily_report_email_section
+msgid "المبيعات"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/xml/receipt.xml:0
+#: model_terms:ir.ui.view,arch_db:london_laundry_implementation.report_customer_statement
+msgid "المتبقي"
+msgstr ""
+
+#. module: london_laundry_implementation
+#: model_terms:ir.ui.view,arch_db:london_laundry_implementation.daily_report_email_section
+msgid "المتبقي (آجل - On Credit)"
+msgstr ""
+
+#. module: london_laundry_implementation
+#: model_terms:ir.ui.view,arch_db:london_laundry_implementation.daily_report_email
+#: model_terms:ir.ui.view,arch_db:london_laundry_implementation.daily_report_email_section
+msgid "المتبقي (آجل)"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/xml/receipt.xml:0
+msgid "المتبقي على الحساب"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/xml/receipt.xml:0
+msgid "المتبقي على حسابك"
+msgstr ""
+
+#. module: london_laundry_implementation
+#: model_terms:ir.ui.view,arch_db:london_laundry_implementation.report_customer_statement
+msgid "المتبقي من الفترة"
+msgstr ""
+
+#. module: london_laundry_implementation
+#: model_terms:ir.ui.view,arch_db:london_laundry_implementation.daily_report_email_section
+msgid "المتوقع"
+msgstr ""
+
+#. module: london_laundry_implementation
+#: model_terms:ir.ui.view,arch_db:london_laundry_implementation.daily_report_email
+msgid "المجموع"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/xml/receipt.xml:0
+msgid "المجموع الفرعي"
+msgstr ""
+
+#. module: london_laundry_implementation
+#: model_terms:ir.ui.view,arch_db:london_laundry_implementation.daily_report_email
+#: model_terms:ir.ui.view,arch_db:london_laundry_implementation.daily_report_email_section
+msgid "المحصّل"
+msgstr ""
+
+#. module: london_laundry_implementation
+#: model_terms:ir.ui.view,arch_db:london_laundry_implementation.daily_report_email_section
+msgid "المحصّل (كاش + بنك)"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/xml/receipt.xml:0
+#: model_terms:ir.ui.view,arch_db:london_laundry_implementation.report_customer_statement
+msgid "المدفوع"
+msgstr ""
+
+#. module: london_laundry_implementation
+#: model_terms:ir.ui.view,arch_db:london_laundry_implementation.daily_report_email_section
+msgid "المرتجعات"
+msgstr ""
+
+#. module: london_laundry_implementation
+#: model_terms:ir.ui.view,arch_db:london_laundry_implementation.daily_report_email_section
+msgid "المرتجعات:"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/xml/receipt.xml:0
+msgid "المستحق"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/xml/receipt.xml:0
+msgid "المستحق / المدفوع / المتبقي"
+msgstr ""
+
+#. module: london_laundry_implementation
+#: model_terms:ir.ui.view,arch_db:london_laundry_implementation.daily_report_email_section
+msgid "المستخدم"
+msgstr ""
+
+#. module: london_laundry_implementation
+#: model_terms:ir.ui.view,arch_db:london_laundry_implementation.daily_report_email_section
+msgid "المعدود"
+msgstr ""
+
+#. module: london_laundry_implementation
+#: model_terms:ir.ui.view,arch_db:london_laundry_implementation.daily_report_email
+msgid "الملخص حسب نقطة البيع"
+msgstr ""
+
+#. module: london_laundry_implementation
+#: model_terms:ir.ui.view,arch_db:london_laundry_implementation.daily_report_email_deliveries
+msgid "الموبايل"
+msgstr ""
+
+#. module: london_laundry_implementation
+#: model_terms:ir.ui.view,arch_db:london_laundry_implementation.daily_report_email_deliveries
+msgid "الموعد"
+msgstr ""
+
+#. module: london_laundry_implementation
+#: model_terms:ir.ui.view,arch_db:london_laundry_implementation.daily_report_email
+msgid "النسب مقارنة مع"
+msgstr ""
+
+#. module: london_laundry_implementation
+#: model_terms:ir.ui.view,arch_db:london_laundry_implementation.daily_report_email_section
+msgid "الوقت"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/xml/receipt.xml:0
+msgid "بشرفنا زيارتكم"
+msgstr ""
+
+#. module: london_laundry_implementation
+#: model_terms:ir.ui.view,arch_db:london_laundry_implementation.daily_report_email_section
+msgid "تحصيلات الديون (On Credit)"
+msgstr ""
+
+#. module: london_laundry_implementation
+#: model_terms:ir.ui.view,arch_db:london_laundry_implementation.daily_report_email_section
+msgid "تسليمات اليوم ("
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/xml/receipt.xml:0
+msgid "تعليق"
+msgstr ""
+
+#. module: london_laundry_implementation
+#: model_terms:ir.ui.view,arch_db:london_laundry_implementation.daily_report_email_section
+msgid "جديد ·"
+msgstr ""
+
+#. module: london_laundry_implementation
+#: model_terms:ir.ui.view,arch_db:london_laundry_implementation.daily_report_email_section
+msgid "جلسات الصندوق"
+msgstr ""
+
+#. module: london_laundry_implementation
+#: model_terms:ir.ui.view,arch_db:london_laundry_implementation.daily_report_email_section
+msgid "دفعات زبائن من خارج نقطة البيع"
+msgstr ""
+
+#. module: london_laundry_implementation
+#: model_terms:ir.ui.view,arch_db:london_laundry_implementation.report_customer_statement
+msgid "رصيد سابق"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/xml/receipt.xml:0
+msgid "رقم الإيصال"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/xml/receipt.xml:0
+msgid "ضريبة القيمة المضافة"
+msgstr ""
+
+#. module: london_laundry_implementation
+#: model_terms:ir.ui.view,arch_db:london_laundry_implementation.daily_report_email_section
+msgid "طريقة الدفع"
+msgstr ""
+
+#. module: london_laundry_implementation
+#: model_terms:ir.ui.view,arch_db:london_laundry_implementation.daily_report_email_deliveries
+msgid "طلب ما انعرضوا."
+msgstr ""
+
+#. module: london_laundry_implementation
+#: model_terms:ir.ui.view,arch_db:london_laundry_implementation.report_customer_statement
+msgid "طلبات الفترة"
+msgstr ""
+
+#. module: london_laundry_implementation
+#: model_terms:ir.ui.view,arch_db:london_laundry_implementation.daily_report_email_section
+msgid "طلبات متأخرة ما تسلّمت"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/xml/receipt.xml:0
+msgid "طي"
+msgstr ""
+
+#. module: london_laundry_implementation
+#: model_terms:ir.ui.view,arch_db:london_laundry_implementation.daily_report_email_section
+msgid "عدد الطلبات"
+msgstr ""
+
+#. module: london_laundry_implementation
+#: model_terms:ir.ui.view,arch_db:london_laundry_implementation.report_customer_statement
+msgid "غير مدفوعة"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/xml/receipt.xml:0
+msgid "قبل الضريبة"
+msgstr ""
+
+#. module: london_laundry_implementation
+#: model_terms:ir.ui.view,arch_db:london_laundry_implementation.daily_report_email_section
+msgid "قديم"
+msgstr ""
+
+#. module: london_laundry_implementation
+#: model_terms:ir.ui.view,arch_db:london_laundry_implementation.report_customer_statement
+msgid "كشف حساب زبون"
+msgstr ""
+
+#. module: london_laundry_implementation
+#: model_terms:ir.ui.view,arch_db:london_laundry_implementation.daily_report_email_section
+msgid "ما في تحصيلات بهاليوم"
+msgstr ""
+
+#. module: london_laundry_implementation
+#: model_terms:ir.ui.view,arch_db:london_laundry_implementation.daily_report_email_section
+msgid "ما في جلسات بهاليوم"
+msgstr ""
+
+#. module: london_laundry_implementation
+#: model_terms:ir.ui.view,arch_db:london_laundry_implementation.daily_report_email_section
+msgid "ما في دفعات بهاليوم"
+msgstr ""
+
+#. module: london_laundry_implementation
+#: model_terms:ir.ui.view,arch_db:london_laundry_implementation.daily_report_email_section
+msgid "ما في مبيعات بهاليوم"
+msgstr ""
+
+#. module: london_laundry_implementation
+#: model_terms:ir.ui.view,arch_db:london_laundry_implementation.daily_report_email_section
+msgid "متوسط الطلب"
+msgstr ""
+
+#. module: london_laundry_implementation
+#: model_terms:ir.ui.view,arch_db:london_laundry_implementation.daily_report_email_section
+msgid "مجموع"
+msgstr ""
+
+#. module: london_laundry_implementation
+#: model_terms:ir.ui.view,arch_db:london_laundry_implementation.daily_report_email_section
+msgid "مجموع التحصيلات"
+msgstr ""
+
+#. module: london_laundry_implementation
+#: model_terms:ir.ui.view,arch_db:london_laundry_implementation.report_customer_statement
+msgid "مدفوعة"
+msgstr ""
+
+#. module: london_laundry_implementation
+#: model_terms:ir.ui.view,arch_db:london_laundry_implementation.report_customer_statement
+msgid "مدفوعة جزئياً"
+msgstr ""
+
+#. module: london_laundry_implementation
+#: model_terms:ir.ui.view,arch_db:london_laundry_implementation.daily_report_email_section
+msgid "ملخص اليوم"
+msgstr ""
+
+#. module: london_laundry_implementation
+#: model_terms:ir.ui.view,arch_db:london_laundry_implementation.daily_report_email_section
+msgid "من - إلى"
+msgstr ""
+
+#. module: london_laundry_implementation
+#: model_terms:ir.ui.view,arch_db:london_laundry_implementation.daily_report_email
+msgid "نقطة البيع"
+msgstr ""
+
+#. module: london_laundry_implementation
+#: model_terms:ir.ui.view,arch_db:london_laundry_implementation.daily_report_email
+msgid "نقطة البيع:"
+msgstr ""
+
+#. module: london_laundry_implementation
+#: model_terms:ir.ui.view,arch_db:london_laundry_implementation.daily_report_email
+msgid ""
+"هالإيميل بينبعت تلقائياً من Odoo كل يوم بعد نص الليل عن اليوم اللي قبله."
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/xml/receipt.xml:0
+msgid "وصف"
+msgstr ""
+
+#. module: london_laundry_implementation
+#: model_terms:ir.ui.view,arch_db:london_laundry_implementation.daily_report_email_deliveries
+msgid "وفي كمان"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/xml/receipt.xml:0
+msgid "يشرفنا زيارتكم"
+msgstr ""
+
+#. module: london_laundry_implementation
+#: model_terms:ir.ui.view,arch_db:london_laundry_implementation.daily_report_email_deliveries
+msgid "يوم)"
+msgstr ""
+
+#. module: london_laundry_implementation
+#: model_terms:ir.ui.view,arch_db:london_laundry_implementation.daily_report_email
+msgid "⚠ تنبيهات"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/xml/ticket_screen.xml:0
+msgid "✓ Yes"
+msgstr ""

@@ -1,0 +1,229 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* dekad_accounting_reports_enhanced
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 18.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-09-30 09:06+0000\n"
+"PO-Revision-Date: 2026-09-30 09:06+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: dekad_accounting_reports_enhanced
+#. odoo-javascript
+#: code:addons/dekad_accounting_reports_enhanced/static/src/components/warnings/warnings.xml:0
+msgid ""
+",\n"
+"        which is the earliest available exchange rate for the selected currency.\n"
+"        Please review entries before this date — today's rate was used as a fallback and results may be inaccurate."
+msgstr ""
+
+#. module: dekad_accounting_reports_enhanced
+#. odoo-javascript
+#: code:addons/dekad_accounting_reports_enhanced/static/src/components/warnings/warnings.xml:0
+msgid "Accounting → Configuration → Currencies"
+msgstr ""
+
+#. module: dekad_accounting_reports_enhanced
+#. odoo-javascript
+#: code:addons/dekad_accounting_reports_enhanced/static/src/components/custom_filters.xml:0
+msgid "Accounts"
+msgstr ""
+
+#. module: dekad_accounting_reports_enhanced
+#: model_terms:ir.ui.view,arch_db:dekad_accounting_reports_enhanced.pdf_export_partner_account_info
+msgid "Accounts:"
+msgstr ""
+
+#. module: dekad_accounting_reports_enhanced
+#. odoo-python
+#: code:addons/dekad_accounting_reports_enhanced/models/account_report.py:0
+msgid "Accounts: %s"
+msgstr ""
+
+#. module: dekad_accounting_reports_enhanced
+#. odoo-python
+#: code:addons/dekad_accounting_reports_enhanced/models/account_report.py:0
+msgid "Amounts in Lakhs"
+msgstr ""
+
+#. module: dekad_accounting_reports_enhanced
+#. odoo-python
+#: code:addons/dekad_accounting_reports_enhanced/models/account_report.py:0
+msgid "Amounts in Millions"
+msgstr ""
+
+#. module: dekad_accounting_reports_enhanced
+#. odoo-python
+#: code:addons/dekad_accounting_reports_enhanced/models/account_report.py:0
+msgid "Amounts in Thousands"
+msgstr ""
+
+#. module: dekad_accounting_reports_enhanced
+#: model:ir.model.fields,field_description:dekad_accounting_reports_enhanced.field_account_move_line__analytic_account_id
+#: model:account.report.column,name:dekad_accounting_reports_enhanced.general_ledger_report_analytic_account
+#: model:account.report.column,name:dekad_accounting_reports_enhanced.partner_ledger_report_analytic_account
+msgid "Analytic Account"
+msgstr ""
+
+#. module: dekad_accounting_reports_enhanced
+#. odoo-python
+#: code:addons/dekad_accounting_reports_enhanced/models/account_report.py:0
+msgid "Analytic Account: %s"
+msgstr ""
+
+#. module: dekad_accounting_reports_enhanced
+#. odoo-javascript
+#: code:addons/dekad_accounting_reports_enhanced/static/src/components/filter_secondary_currency.js:0
+#: model:account.report.column,name:dekad_accounting_reports_enhanced.general_ledger_report_company_name
+#: model:account.report.column,name:dekad_accounting_reports_enhanced.partner_ledger_report_company_name
+msgid "Company"
+msgstr ""
+
+#. module: dekad_accounting_reports_enhanced
+#. odoo-javascript
+#: code:addons/dekad_accounting_reports_enhanced/static/src/components/filter_secondary_currency.xml:0
+msgid "Company Currency"
+msgstr ""
+
+#. module: dekad_accounting_reports_enhanced
+#. odoo-python
+#: code:addons/dekad_accounting_reports_enhanced/models/account_report.py:0
+msgid "Currency: %s"
+msgstr ""
+
+#. module: dekad_accounting_reports_enhanced
+#. odoo-javascript
+#: code:addons/dekad_accounting_reports_enhanced/static/src/components/custom_filters.xml:0
+msgid "Custom"
+msgstr ""
+
+#. module: dekad_accounting_reports_enhanced
+#. odoo-javascript
+#: code:addons/dekad_accounting_reports_enhanced/static/src/components/custom_filters.xml:0
+msgid "Filter by Accounts"
+msgstr ""
+
+#. module: dekad_accounting_reports_enhanced
+#. odoo-javascript
+#: code:addons/dekad_accounting_reports_enhanced/static/src/components/warnings/warnings.xml:0
+msgid ""
+"for the selected secondary currency.\n"
+"        Values are displayed without conversion — please add exchange rates under"
+msgstr ""
+
+#. module: dekad_accounting_reports_enhanced
+#. odoo-javascript
+#: code:addons/dekad_accounting_reports_enhanced/static/src/components/custom_filters.xml:0
+msgid "Group by Analytic Account"
+msgstr ""
+
+#. module: dekad_accounting_reports_enhanced
+#. odoo-javascript
+#: code:addons/dekad_accounting_reports_enhanced/static/src/components/custom_filters.xml:0
+msgid "Group by Company"
+msgstr ""
+
+#. module: dekad_accounting_reports_enhanced
+#. odoo-python
+#: code:addons/dekad_accounting_reports_enhanced/models/account_report.py:0
+msgid "Grouped by: Analytic Account"
+msgstr ""
+
+#. module: dekad_accounting_reports_enhanced
+#. odoo-python
+#: code:addons/dekad_accounting_reports_enhanced/models/account_report.py:0
+msgid "Grouped by: Company"
+msgstr ""
+
+#. module: dekad_accounting_reports_enhanced
+#. odoo-javascript
+#. odoo-python
+#: code:addons/dekad_accounting_reports_enhanced/models/account_report.py:0
+#: code:addons/dekad_accounting_reports_enhanced/static/src/components/custom_filters.xml:0
+#: model_terms:ir.ui.view,arch_db:dekad_accounting_reports_enhanced.account_report_form_view_secondary_currency
+#: model:ir.model.fields,field_description:dekad_accounting_reports_enhanced.field_account_report__filter_hide_initial_balance
+msgid "Hide Initial Balance"
+msgstr ""
+
+#. module: dekad_accounting_reports_enhanced
+#. odoo-javascript
+#: code:addons/dekad_accounting_reports_enhanced/static/src/components/custom_filters.xml:0
+#: model_terms:ir.ui.view,arch_db:dekad_accounting_reports_enhanced.account_report_form_view_secondary_currency
+#: model:ir.model.fields,field_description:dekad_accounting_reports_enhanced.field_account_report__filter_hide_zero_balance
+msgid "Hide Zero Balance"
+msgstr ""
+
+#. module: dekad_accounting_reports_enhanced
+#. odoo-javascript
+#: code:addons/dekad_accounting_reports_enhanced/static/src/components/filter_secondary_currency.js:0
+msgid "In %s"
+msgstr ""
+
+#. module: dekad_accounting_reports_enhanced
+#. odoo-javascript
+#: code:addons/dekad_accounting_reports_enhanced/static/src/components/warnings/warnings.xml:0
+msgid "No exchange rate found"
+msgstr ""
+
+#. module: dekad_accounting_reports_enhanced
+#. odoo-javascript
+#: code:addons/dekad_accounting_reports_enhanced/static/src/components/custom_filters.xml:0
+msgid "Search accounts..."
+msgstr ""
+
+#. module: dekad_accounting_reports_enhanced
+#. odoo-javascript
+#: code:addons/dekad_accounting_reports_enhanced/static/src/components/filter_secondary_currency.js:0
+#: model_terms:ir.ui.view,arch_db:dekad_accounting_reports_enhanced.account_report_form_view_secondary_currency
+#: model:ir.model.fields,field_description:dekad_accounting_reports_enhanced.field_account_report__filter_secondary_currency
+msgid "Secondary Currency"
+msgstr ""
+
+#. module: dekad_accounting_reports_enhanced
+#. odoo-javascript
+#: code:addons/dekad_accounting_reports_enhanced/static/src/components/custom_filters.xml:0
+msgid "Show Analytic Account"
+msgstr ""
+
+#. module: dekad_accounting_reports_enhanced
+#. odoo-javascript
+#: code:addons/dekad_accounting_reports_enhanced/static/src/components/custom_filters.xml:0
+msgid "Show Company Column"
+msgstr ""
+
+#. module: dekad_accounting_reports_enhanced
+#. odoo-javascript
+#: code:addons/dekad_accounting_reports_enhanced/static/src/components/warnings/warnings.xml:0
+msgid "Some journal entries are dated before"
+msgstr ""
+
+#. module: dekad_accounting_reports_enhanced
+#. odoo-python
+#: code:addons/dekad_accounting_reports_enhanced/models/account_report.py:0
+msgid "Unknown Company"
+msgstr ""
+
+#. module: dekad_accounting_reports_enhanced
+#. odoo-python
+#: code:addons/dekad_accounting_reports_enhanced/models/account_report.py:0
+msgid "Wrong ID for general ledger line to expand: %s"
+msgstr ""
+
+#. module: dekad_accounting_reports_enhanced
+#. odoo-python
+#: code:addons/dekad_accounting_reports_enhanced/models/account_report.py:0
+msgid "Wrong ID for partner ledger line to expand: %s"
+msgstr ""
+
+#. module: dekad_accounting_reports_enhanced
+#. odoo-python
+#: code:addons/dekad_accounting_reports_enhanced/models/account_report.py:0
+msgid "∅ No Analytic Account"
+msgstr ""

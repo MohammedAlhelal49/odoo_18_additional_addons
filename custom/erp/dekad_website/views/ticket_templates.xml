@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <template id="ticket_submit_template" name="Dekad Submit a Ticket">
+        <t t-call="dekad_website.layout">
+            <section class="ve-page-hero" style="background-image:url(/dekad_website/static/src/img/contact_us.jpg);">
+                <div class="ve-page-hero-overlay"></div>
+                <div class="container ve-page-hero-content">
+                    <span class="ve-section-tag ve-tag-onlight">Support</span>
+                    <h1>Submit a Ticket</h1>
+                    <nav aria-label="breadcrumb"><ol class="ve-breadcrumb"><li><a href="/">Home</a></li><li class="active">Submit a Ticket</li></ol></nav>
+                </div>
+            </section>
+
+            <t t-if="form_sent">
+                <t t-call="dekad_website.success_modal">
+                    <t t-set="modal_title">Ticket Submitted!</t>
+                    <t t-set="modal_message">
+                        <t t-if="ticket_ref">
+                            Our support team has received your ticket and will get back to you shortly.
+                            <span class="ve-ticket-ref-badge">Ticket #<t t-esc="ticket_ref"/></span>
+                        </t>
+                        <t t-else="">Thank you — our support team has received your ticket and will get back to you shortly.</t>
+                    </t>
+                </t>
+            </t>
+
+            <section class="ve-section ve-contact-section">
+                <div class="container">
+                    <div class="row justify-content-center">
+                        <div class="col-12 col-lg-8">
+                            <div class="ve-contact-form-wrap">
+                                <span class="ve-section-tag">We're Here to Help</span>
+                                <h2>Tell Us What You Need</h2>
+                                <p>Working hours: Daily from 9:00 AM to 5:00 PM (except Friday). Ticket responses are usually provided within 24 business hours.</p>
+
+                                <t t-if="form_error">
+                                    <div class="alert alert-danger" role="alert"><t t-esc="form_error_message or 'Please fill in your full name, email, type, message subject, and your question before submitting.'"/></div>
+                                </t>
+
+                                <form class="ve-contact-form" action="/submit-ticket" method="post" enctype="multipart/form-data">
+                                    <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                                    <input type="text" class="ve-hp-field" tabindex="-1" autocomplete="off" name="company_url"/>
+
+                                    <div class="ve-form-row">
+                                        <div class="ve-form-group">
+                                            <label>Full Name *</label>
+                                            <input type="text" name="partner_name" t-att-value="partner.name or ''" required="required"/>
+                                        </div>
+                                        <div class="ve-form-group">
+                                            <label>Email Address *</label>
+                                            <input type="email" name="partner_email" t-att-value="partner.email or ''" required="required"/>
+                                        </div>
+                                    </div>
+                                    <div class="ve-form-row">
+                                        <div class="ve-form-group">
+                                            <label>Phone Number</label>
+                                            <input type="tel" name="partner_phone" t-att-value="partner.phone or ''"/>
+                                        </div>
+                                        <div class="ve-form-group">
+                                            <label>Company Name</label>
+                                            <input type="text" name="partner_company_name" t-att-value="partner.commercial_company_name or ''"/>
+                                        </div>
+                                    </div>
+
+                                    <div class="ve-form-group" t-if="tags">
+                                        <label>Type *</label>
+                                        <div class="row">
+                                            <t t-foreach="tags" t-as="tag">
+                                                <div class="col-12 col-md-4 mb-2">
+                                                    <div class="form-check">
+                                                        <input type="checkbox" class="form-check-input" t-att-id="'tag_%s' % tag.id" name="tag_ids" t-att-value="tag.id"/>
+                                                        <label class="form-check-label" t-att-for="'tag_%s' % tag.id"><t t-esc="tag.name"/></label>
+                                                    </div>
+                                                </div>
+                                            </t>
+                                        </div>
+                                    </div>
+
+                                    <div class="ve-form-group">
+                                        <label>Message Subject *</label>
+                                        <input type="text" name="name" required="required"/>
+                                    </div>
+                                    <div class="ve-form-group">
+                                        <label>Ask Your Question *</label>
+                                        <textarea name="description" rows="5" placeholder="The more detail you give, the faster we can help..." required="required"></textarea>
+                                    </div>
+                                    <div class="ve-form-group">
+                                        <label>Attach a File (optional)</label>
+                                        <input type="file" name="attachment" accept=".jpg,.jpeg,.png,.gif,.webp,.pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.txt,.csv,.zip"/>
+                                        <small style="color:#94a3b8; margin-top:4px;">Images, PDF, Office documents, text, CSV, or zip — 10 MB max.</small>
+                                    </div>
+
+                                    <button type="submit" class="ve-btn-primary">Submit Ticket <i class="fa fa-paper-plane"/></button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </t>
+    </template>
+
+</odoo>

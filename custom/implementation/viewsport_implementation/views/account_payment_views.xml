@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <record id="view_account_payment_form_inherit_viewsport" model="ir.ui.view">
+        <field name="name">account.payment.form.inherit.viewsport</field>
+        <field name="model">account.payment</field>
+        <field name="inherit_id" ref="account.view_account_payment_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='memo']" position="after">
+                <field name="receipt_voucher_no" invisible="payment_type != 'inbound' or not receipt_voucher_no"/>
+                <field name="receipt_payment_method" invisible="payment_type != 'inbound'"/>
+                <field name="receipt_bank_name" invisible="payment_type != 'inbound'"/>
+                <field name="receipt_description" invisible="payment_type != 'inbound'"
+                       placeholder="Leave empty to describe the paid invoices automatically"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,32 @@
+<odoo>
+    <record id="view_pos_order_form_laundry_tracking" model="ir.ui.view">
+        <field name="name">pos.order.form.laundry.tracking</field>
+        <field name="model">pos.order</field>
+        <field name="inherit_id" ref="point_of_sale.view_pos_pos_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//header" position="inside">
+                <button name="action_laundry_mark_ready" type="object" string="Mark Ready"
+                        invisible="laundry_ready_date or state not in ('paid', 'done', 'invoiced')"/>
+                <button name="action_laundry_mark_picked_up" type="object" string="Picked Up"
+                        class="btn-primary"
+                        invisible="laundry_picked_up_date or state not in ('paid', 'done', 'invoiced')"/>
+            </xpath>
+            <xpath expr="//field[@name='date_order']" position="after">
+                <field name="laundry_ready_date" readonly="1" invisible="not laundry_ready_date"/>
+                <field name="laundry_picked_up_date" readonly="1" invisible="not laundry_picked_up_date"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_pos_order_list_laundry_tracking" model="ir.ui.view">
+        <field name="name">pos.order.list.laundry.tracking</field>
+        <field name="model">pos.order</field>
+        <field name="inherit_id" ref="point_of_sale.view_pos_order_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='state']" position="before">
+                <field name="laundry_ready_date" optional="hide"/>
+                <field name="laundry_picked_up_date" optional="hide"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

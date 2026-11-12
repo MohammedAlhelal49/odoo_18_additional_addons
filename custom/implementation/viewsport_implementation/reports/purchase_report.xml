@@ -1,0 +1,284 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="paperformat_custom_po" model="report.paperformat">
+        <field name="name">Custom Compact PO Format</field>
+        <field name="default">False</field>
+        <field name="format">A4</field>
+        <field name="orientation">Portrait</field>
+        <field name="margin_top">10</field>      <!-- Reduced top margin (in mm) -->
+        <field name="margin_bottom">22</field>   <!-- Reduced bottom margin -->
+        <field name="margin_left">5</field>
+        <field name="margin_right">5</field>
+        <field name="header_line">False</field>
+        <field name="header_spacing">10</field>  <!-- Spacing between top edge and main content -->
+        <field name="dpi">90</field>
+    </record>
+
+    <record id="paperformat_viewsport_po" model="report.paperformat">
+        <field name="name">Viewsport PO Format</field>
+        <field name="default">False</field>
+        <field name="format">A4</field>
+        <field name="orientation">Portrait</field>
+        <field name="margin_top">3</field>
+        <field name="margin_bottom">23</field>
+        <field name="margin_left">2.5</field>
+        <field name="margin_right">4.5</field>
+        <field name="header_line">False</field>
+        <field name="header_spacing">0</field>
+        <field name="dpi">90</field>
+    </record>
+
+    <record id="action_report_purchase_order_viewsport" model="ir.actions.report">
+        <field name="name">Viewsport Purchase Order</field>
+        <field name="model">purchase.order</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">viewsport_implementation.report_purchaseorder_viewsport_document</field>
+        <field name="report_file">viewsport_implementation.report_purchaseorder_viewsport_document</field>
+        <field name="binding_model_id" ref="purchase.model_purchase_order"/>
+        <field name="binding_type">report</field>
+        <field name="print_report_name">'PO_%s' % (object.name or '').replace('/', '_')</field>
+        <field name="paperformat_id" ref="paperformat_viewsport_po"/>
+    </record>
+
+    <record id="paperformat_viewsport_quotation" model="report.paperformat">
+        <field name="name">Viewsport Quotation Format</field>
+        <field name="default">False</field>
+        <field name="format">A4</field>
+        <field name="orientation">Portrait</field>
+        <field name="margin_top">5</field>
+        <field name="margin_bottom">27</field>
+        <field name="margin_left">7</field>
+        <field name="margin_right">7</field>
+        <field name="header_line">False</field>
+        <field name="header_spacing">0</field>
+        <field name="dpi">85</field>
+    </record>
+
+    <record id="action_report_sale_order_viewsport" model="ir.actions.report">
+        <field name="name">Viewsport Quotation / Order</field>
+        <field name="model">sale.order</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">viewsport_implementation.report_saleorder_viewsport_document</field>
+        <field name="report_file">viewsport_implementation.report_saleorder_viewsport_document</field>
+        <field name="binding_model_id" ref="sale.model_sale_order"/>
+        <field name="binding_type">report</field>
+        <field name="print_report_name">'%s (%02d) %s_quote_%s' % (object.qtn_seq or object.name, object.qtn_revision, (object.date_order and object.date_order.strftime('%d%m%Y')) or '', object.partner_id.commercial_partner_id.name or '')</field>
+        <field name="paperformat_id" ref="paperformat_viewsport_quotation"/>
+    </record>
+
+    <record id="paperformat_viewsport_delivery" model="report.paperformat">
+        <field name="name">Viewsport Delivery Note Format</field>
+        <field name="default">False</field>
+        <field name="format">A4</field>
+        <field name="orientation">Portrait</field>
+        <field name="margin_top">4</field>
+        <field name="margin_bottom">23</field>
+        <field name="margin_left">7</field>
+        <field name="margin_right">5</field>
+        <field name="header_line">False</field>
+        <field name="header_spacing">0</field>
+        <field name="dpi">88</field>
+    </record>
+
+    <record id="action_report_delivery_note_viewsport" model="ir.actions.report">
+        <field name="name">Viewsport Delivery Note</field>
+        <field name="model">stock.picking</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">viewsport_implementation.report_delivery_note_viewsport_document</field>
+        <field name="report_file">viewsport_implementation.report_delivery_note_viewsport_document</field>
+        <field name="print_report_name">'VSP_DN_%s' % (object.vs_dln_seq or object.name).replace('/', '_')</field>
+        <field name="binding_model_id" ref="stock.model_stock_picking"/>
+        <field name="binding_type">report</field>
+        <field name="paperformat_id" ref="paperformat_viewsport_delivery"/>
+    </record>
+
+    <record id="paperformat_viewsport_delivery_order" model="report.paperformat">
+        <field name="name">Viewsport Delivery Order Format</field>
+        <field name="default">False</field>
+        <field name="format">A4</field>
+        <field name="orientation">Portrait</field>
+        <field name="margin_top">4</field>
+        <field name="margin_bottom">23</field>
+        <field name="margin_left">2.5</field>
+        <field name="margin_right">2</field>
+        <field name="header_line">False</field>
+        <field name="header_spacing">0</field>
+        <field name="dpi">84</field>
+    </record>
+
+    <record id="action_report_delivery_order_viewsport" model="ir.actions.report">
+        <field name="name">Viewsport Delivery Order</field>
+        <field name="model">stock.picking</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">viewsport_implementation.report_delivery_viewsport_document</field>
+        <field name="report_file">viewsport_implementation.report_delivery_viewsport_document</field>
+        <field name="print_report_name">'VSP_DO_%s' % (object.vs_do_seq or object.name).replace('/', '_')</field>
+        <field name="binding_model_id" ref="stock.model_stock_picking"/>
+        <field name="binding_type">report</field>
+        <field name="paperformat_id" ref="paperformat_viewsport_delivery_order"/>
+    </record>
+
+    <record id="paperformat_viewsport_rfq" model="report.paperformat">
+        <field name="name">Viewsport RFQ Format</field>
+        <field name="default">False</field>
+        <field name="format">A4</field>
+        <field name="orientation">Portrait</field>
+        <field name="margin_top">3</field>
+        <field name="margin_bottom">24</field>
+        <field name="margin_left">3</field>
+        <field name="margin_right">6.5</field>
+        <field name="header_line">False</field>
+        <field name="header_spacing">0</field>
+        <field name="dpi">90</field>
+    </record>
+
+    <record id="action_report_rfq_viewsport" model="ir.actions.report">
+        <field name="name">Viewsport Request for Quotation</field>
+        <field name="model">purchase.order</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">viewsport_implementation.report_rfq_viewsport_document</field>
+        <field name="report_file">viewsport_implementation.report_rfq_viewsport_document</field>
+        <field name="binding_model_id" ref="purchase.model_purchase_order"/>
+        <field name="binding_type">report</field>
+        <field name="print_report_name">object._get_rfq_report_filename()</field>
+        <field name="paperformat_id" ref="paperformat_viewsport_rfq"/>
+    </record>
+
+    <record id="paperformat_viewsport_invoice" model="report.paperformat">
+        <field name="name">Viewsport Tax Invoice Format</field>
+        <field name="default">False</field>
+        <field name="format">A4</field>
+        <field name="orientation">Portrait</field>
+        <field name="margin_top">4</field>
+        <field name="margin_bottom">23</field>
+        <field name="margin_left">0.5</field>
+        <field name="margin_right">5</field>
+        <field name="header_line">False</field>
+        <field name="header_spacing">0</field>
+        <field name="dpi">90</field>
+    </record>
+
+    <record id="action_report_tax_invoice_viewsport" model="ir.actions.report">
+        <field name="name">Viewsport Tax Invoice</field>
+        <field name="model">account.move</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">viewsport_implementation.report_tax_invoice_viewsport_document</field>
+        <field name="report_file">viewsport_implementation.report_tax_invoice_viewsport_document</field>
+        <field name="binding_model_id" ref="account.model_account_move"/>
+        <field name="binding_type">report</field>
+        <field name="print_report_name">(object._get_report_base_filename())</field>
+        <field name="paperformat_id" ref="viewsport_implementation.paperformat_viewsport_invoice"/>
+    </record>
+
+    <record id="paperformat_viewsport_invoice_wide" model="report.paperformat">
+        <field name="name">Viewsport Invoice Format (wide margins)</field>
+        <field name="default">False</field>
+        <field name="format">A4</field>
+        <field name="orientation">Portrait</field>
+        <field name="margin_top">5</field>
+        <field name="margin_bottom">23</field>
+        <field name="margin_left">5.5</field>
+        <field name="margin_right">6.5</field>
+        <field name="header_line">False</field>
+        <field name="header_spacing">0</field>
+        <field name="dpi">80</field>
+    </record>
+
+    <record id="action_report_proforma_invoice_viewsport" model="ir.actions.report">
+        <field name="name">Viewsport Proforma Invoice</field>
+        <field name="model">account.move</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">viewsport_implementation.report_proforma_invoice_viewsport_document</field>
+        <field name="report_file">viewsport_implementation.report_proforma_invoice_viewsport_document</field>
+        <field name="binding_model_id" ref="account.model_account_move"/>
+        <field name="binding_type">report</field>
+        <field name="print_report_name">(object._get_report_base_filename())</field>
+        <field name="paperformat_id" ref="viewsport_implementation.paperformat_viewsport_invoice_wide"/>
+    </record>
+
+    <record id="action_report_commercial_invoice_viewsport" model="ir.actions.report">
+        <field name="name">Viewsport Commercial Invoice</field>
+        <field name="model">account.move</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">viewsport_implementation.report_commercial_invoice_viewsport_document</field>
+        <field name="report_file">viewsport_implementation.report_commercial_invoice_viewsport_document</field>
+        <field name="binding_model_id" ref="account.model_account_move"/>
+        <field name="binding_type">report</field>
+        <field name="print_report_name">(object._get_report_base_filename() + ' - Commercial')</field>
+        <field name="paperformat_id" ref="viewsport_implementation.paperformat_viewsport_invoice_wide"/>
+    </record>
+
+    <record id="action_report_credit_note_viewsport" model="ir.actions.report">
+        <field name="name">Viewsport Credit Note</field>
+        <field name="model">account.move</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">viewsport_implementation.report_credit_note_viewsport_document</field>
+        <field name="report_file">viewsport_implementation.report_credit_note_viewsport_document</field>
+        <field name="binding_model_id" ref="account.model_account_move"/>
+        <field name="binding_type">report</field>
+        <field name="print_report_name">(object._get_report_base_filename() + ' - Credit Note')</field>
+        <field name="paperformat_id" ref="viewsport_implementation.paperformat_viewsport_invoice_wide"/>
+    </record>
+
+    <record id="action_report_debit_note_viewsport" model="ir.actions.report">
+        <field name="name">Viewsport Debit Note</field>
+        <field name="model">account.move</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">viewsport_implementation.report_debit_note_viewsport_document</field>
+        <field name="report_file">viewsport_implementation.report_debit_note_viewsport_document</field>
+        <field name="binding_model_id" ref="account.model_account_move"/>
+        <field name="binding_type">report</field>
+        <field name="print_report_name">(object._get_report_base_filename() + ' - Debit Note')</field>
+        <field name="paperformat_id" ref="viewsport_implementation.paperformat_viewsport_invoice_wide"/>
+    </record>
+    <record id="paperformat_viewsport_receipt" model="report.paperformat">
+        <field name="name">Viewsport Receipt Voucher Format</field>
+        <field name="default">False</field>
+        <field name="format">A4</field>
+        <field name="orientation">Portrait</field>
+        <field name="margin_top">5</field>
+        <field name="margin_bottom">8</field>
+        <field name="margin_left">6</field>
+        <field name="margin_right">10</field>
+        <field name="header_line">False</field>
+        <field name="header_spacing">0</field>
+        <field name="dpi">90</field>
+    </record>
+
+    <record id="action_report_receipt_voucher_viewsport" model="ir.actions.report">
+        <field name="name">Viewsport Receipt Voucher</field>
+        <field name="model">account.payment</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">viewsport_implementation.report_receipt_voucher_viewsport_document</field>
+        <field name="report_file">viewsport_implementation.report_receipt_voucher_viewsport_document</field>
+        <field name="binding_model_id" ref="account.model_account_payment"/>
+        <field name="binding_type">report</field>
+        <field name="print_report_name">'Receipt Voucher - %s' % (object.receipt_voucher_no or object.name)</field>
+        <field name="paperformat_id" ref="viewsport_implementation.paperformat_viewsport_receipt"/>
+    </record>
+    <record id="paperformat_viewsport_cheque_ack" model="report.paperformat">
+        <field name="name">Viewsport Cheque Acknowledgement Format</field>
+        <field name="default">False</field>
+        <field name="format">A4</field>
+        <field name="orientation">Portrait</field>
+        <field name="margin_top">5</field>
+        <field name="margin_bottom">8</field>
+        <field name="margin_left">6</field>
+        <field name="margin_right">10</field>
+        <field name="header_line">False</field>
+        <field name="header_spacing">0</field>
+        <field name="dpi">81</field>
+    </record>
+
+    <record id="action_report_cheque_ack_viewsport" model="ir.actions.report">
+        <field name="name">Viewsport Cheque Acknowledgement</field>
+        <field name="model">pdc.wizard</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">viewsport_implementation.report_cheque_ack_viewsport_document</field>
+        <field name="report_file">viewsport_implementation.report_cheque_ack_viewsport_document</field>
+        <field name="binding_model_id" ref="sh_pdc.model_pdc_wizard"/>
+        <field name="binding_type">report</field>
+        <field name="print_report_name">'Cheque Acknowledgement - %s' % (object.reference or object.name)</field>
+        <field name="paperformat_id" ref="viewsport_implementation.paperformat_viewsport_cheque_ack"/>
+    </record>
+</odoo>

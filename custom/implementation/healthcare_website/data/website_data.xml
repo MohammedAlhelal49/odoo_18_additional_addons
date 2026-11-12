@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="website.default_website" model="website">
+        <field name="name">Health Protection</field>
+        <field name="favicon" type="base64" file="healthcare_website/static/src/img/favicon.png"/>
+    </record>
+</odoo>

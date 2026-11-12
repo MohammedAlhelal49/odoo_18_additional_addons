@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="action_homat_leads" model="ir.actions.act_window">
+        <field name="name">طلبات مبادرة حماة الوطن</field>
+        <field name="res_model">crm.lead</field>
+        <field name="view_mode">list,form,kanban</field>
+        <field name="domain">[('tag_ids.name', '=', 'مبادرة حماة الوطن')]</field>
+        <field name="context">{'default_type': 'lead'}</field>
+    </record>
+    <menuitem
+        id="menu_homat_leads"
+        name="طلبات حماة الوطن"
+        action="action_homat_leads"
+        parent="crm.crm_menu_root"
+        sequence="21"/>
+</odoo>

@@ -1,0 +1,97 @@
+.o_ld_report {
+    overflow: auto;
+    background-color: $o-webclient-background-color;
+
+    // direction-neutral spacing (not mirrored by Odoo's RTL build)
+    .o_ld_gap { gap: 0.4rem; }
+    .o_ld_push_end { margin-inline-start: auto; }
+    .o_ld_gap_start { margin-inline-start: 0.35rem; }
+    .o_ld_filter_text { margin-inline-start: 0.35rem; }
+
+    .o_ld_report_bar {
+        position: sticky;
+        top: 0;
+        z-index: 10;
+        padding: 0.75rem 1rem;
+        background-color: $o-view-background-color;
+    }
+
+    .o_ld_report_title { margin-inline-end: 1rem; }
+    .o_ld_date { width: 9.5rem; }
+    .o_ld_active_filter { box-shadow: inset 0 -2px 0 $o-action; }
+
+    .o_ld_report_body {
+        padding: 1rem;
+        transition: opacity 0.2s;
+        &.o_ld_loading { opacity: 0.55; pointer-events: none; }
+    }
+
+    .o_ld_report_sheet {
+        background-color: $o-view-background-color;
+        border: 1px solid $border-color;
+        border-radius: 0.25rem;
+        padding: 1.25rem;
+        max-width: 1400px;
+        margin-inline: auto;
+    }
+
+    .o_ld_report_table {
+        thead th {
+            background-color: $gray-200;
+            white-space: nowrap;
+            font-weight: 600;
+        }
+        .o_ld_label { white-space: nowrap; }
+        > tbody > tr > td, > tfoot > tr > td { vertical-align: middle; }
+        // second line under the name (phone / date + WhatsApp / PDF), aligned with the name, not the caret
+        .o_ld_sub {
+            display: flex;
+            align-items: center;
+            gap: 0.35rem;
+            margin-top: 0.15rem;
+            padding-inline-start: 1.25rem;
+            font-weight: normal;
+        }
+        .o_ld_num_ltr { direction: ltr; unicode-bidi: isolate; }
+        .o_ld_caret {
+            display: inline-block;
+            width: 1.25rem;
+            cursor: pointer;
+        }
+        .o_ld_parent > td { font-weight: 600; }
+        .o_ld_level_1 > td:first-child { padding-inline-start: 2.25rem; }
+        .o_ld_level_1 { color: $gray-700; }
+        .o_ld_line_link {
+            color: inherit;
+            &:hover { color: $o-action; text-decoration: underline; }
+        }
+        .o_ld_total td {
+            font-weight: 700;
+            border-top: 2px solid $gray-700;
+            background-color: $gray-100;
+        }
+    }
+
+    @include media-breakpoint-down(md) {
+        .o_ld_report_body { padding: 0.5rem; }
+        .o_ld_report_sheet { padding: 0.75rem; }
+    }
+}
+
+// Odoo's layout sets `overflow: hidden` (and hides the scrollbar) on
+// .o_web_client > .o_action_manager > .o_action, which beats the plain .o_ld_report rule above:
+// re-enable scrolling with a more specific selector.
+.o_web_client > .o_action_manager > .o_action.o_ld_report {
+    overflow-y: auto;
+    scrollbar-width: auto;
+
+    &::-webkit-scrollbar {
+        display: initial;
+    }
+}
+
+.o_ld_report {
+    .o_ld_search { width: 240px; }
+    .o_ld_min_due { width: 120px; }
+    .o_ld_period_select { width: auto; }
+}

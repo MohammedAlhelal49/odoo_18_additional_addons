@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+
+    <t t-name="london_laundry_implementation.ExpectedDeliveryPopup">
+        <Dialog title="props.title">
+            <div class="d-flex gap-2">
+                <input type="date" class="form-control form-control-lg" t-model="state.inputValue" t-ref="input"/>
+                <select class="form-select form-select-lg w-auto" t-model="state.hour">
+                    <option value="">Hour</option>
+                    <t t-foreach="hours" t-as="hour" t-key="hour.value">
+                        <option t-att-value="hour.value" t-esc="hour.label"/>
+                    </t>
+                </select>
+            </div>
+            <t t-set-slot="footer">
+                <button class="btn btn-primary btn-lg lh-lg o-default-button" t-on-click="confirm">Apply</button>
+                <button class="btn btn-secondary btn-lg lh-lg o-default-button" t-on-click="clear">Clear</button>
+                <button class="btn btn-secondary btn-lg lh-lg o-default-button" t-on-click="props.close">Discard</button>
+            </t>
+        </Dialog>
+    </t>
+
+</templates>

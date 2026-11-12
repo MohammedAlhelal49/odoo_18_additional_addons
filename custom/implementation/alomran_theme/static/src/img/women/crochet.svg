@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 520" role="img" aria-label="Crochet">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f7efe6"/><stop offset="1" stop-color="#ead9c7"/></linearGradient>
+    <pattern id="knit" width="16" height="12" patternUnits="userSpaceOnUse"><path d="M0 0 L8 12 L16 0" fill="none" stroke="#000" stroke-opacity=".12" stroke-width="2"/></pattern>
+  </defs>
+  <rect width="800" height="520" fill="url(#bg)"/>
+  <!-- yarn balls -->
+  <g>
+    <circle cx="140" cy="140" r="90" fill="#e8a0a6"/>
+    <g stroke="#c9767d" stroke-width="5" fill="none"><path d="M60 110 Q140 60 220 120"/><path d="M55 150 Q140 90 228 160"/><path d="M70 190 Q150 130 220 200"/><path d="M100 60 Q90 140 120 228"/><path d="M150 52 Q130 140 160 230"/></g>
+    <circle cx="690" cy="120" r="80" fill="#8fb9b0"/>
+    <g stroke="#6f9a91" stroke-width="5" fill="none"><path d="M615 100 Q690 50 765 110"/><path d="M612 140 Q690 90 768 150"/><path d="M630 180 Q700 130 760 185"/><path d="M660 45 Q650 120 680 198"/></g>
+    <circle cx="700" cy="400" r="70" fill="#f3e3c8"/>
+    <g stroke="#d9c39c" stroke-width="5" fill="none"><path d="M635 380 Q700 335 765 390"/><path d="M640 420 Q700 375 765 425"/><path d="M680 332 Q670 400 700 468"/></g>
+  </g>
+  <!-- doily / granny square in progress -->
+  <g transform="translate(400 280)">
+    <circle r="150" fill="#fffaf2"/>
+    <circle r="150" fill="url(#knit)"/>
+    <g fill="none" stroke-width="10">
+      <circle r="125" stroke="#e8a0a6" stroke-dasharray="18 8"/>
+      <circle r="95" stroke="#8fb9b0" stroke-dasharray="14 7"/>
+      <circle r="65" stroke="#c9a15b" stroke-dasharray="12 6"/>
+      <circle r="35" stroke="#e8a0a6" stroke-dasharray="10 5"/>
+    </g>
+    <g fill="#fffaf2"><circle r="12"/></g>
+    <g stroke="#d48b92" stroke-width="4" fill="none" opacity=".7">
+      <path d="M0 -150 L0 -110 M106 -106 L78 -78 M150 0 L110 0 M106 106 L78 78 M0 150 L0 110 M-106 106 L-78 78 M-150 0 L-110 0 M-106 -106 L-78 -78"/>
+    </g>
+  </g>
+  <!-- yarn trail to hook -->
+  <path d="M215 175 Q300 260 260 360 Q240 420 300 450" stroke="#e8a0a6" stroke-width="5" fill="none"/>
+  <!-- crochet hook -->
+  <g transform="rotate(-35 470 420)"><rect x="380" y="412" width="230" height="14" rx="7" fill="#c9a15b"/><rect x="470" y="408" width="70" height="22" rx="8" fill="#1a5490"/><path d="M380 412 Q366 419 380 426 L388 419 Z" fill="#a8813f"/></g>
+  <!-- scissors small -->
+  <g transform="translate(100 420) rotate(20)"><circle r="12" fill="none" stroke="#c86f76" stroke-width="5"/><circle cy="28" r="12" fill="none" stroke="#c86f76" stroke-width="5"/><path d="M10 6 L70 22 M10 22 L70 6" stroke="#9aa5b1" stroke-width="5" stroke-linecap="round"/></g>
+</svg>

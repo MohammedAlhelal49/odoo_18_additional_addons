@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+
+    <t t-name="london_laundry_implementation.MultiFilter">
+        <Dropdown>
+            <button class="btn btn-secondary btn-sm o-dropdown-caret" t-att-class="{'o_ld_active_filter': state.options[name].length}">
+                <i t-att-class="'fa ' + icon"/>
+                <span class="o_ld_filter_text" t-esc="listLabel(name, items, idKey, allLabel)"/>
+            </button>
+            <t t-set-slot="content">
+                <DropdownItem onSelected="() => this.clearList(name)" class="'o_ld_filter_all' + (!state.options[name].length ? ' selected' : '')">
+                    <t t-esc="allLabel"/>
+                </DropdownItem>
+                <div class="dropdown-divider" role="separator"/>
+                <t t-foreach="items" t-as="item" t-key="item[idKey]">
+                    <DropdownItem closingMode="'none'" onSelected="() => this.toggleInList(name, item[idKey])"
+                                  class="state.options[name].includes(item[idKey]) ? 'selected' : ''">
+                        <t t-esc="item.name"/>
+                    </DropdownItem>
+                </t>
+            </t>
+        </Dropdown>
+    </t>
+
+    <t t-name="london_laundry_implementation.Report">
+        <div class="o_action o_ld_report" t-att-dir="isRtl ? 'rtl' : 'ltr'">
+            <div class="o_ld_report_bar border-bottom" t-if="state.filters">
+                <div class="d-flex flex-wrap align-items-center o_ld_gap">
+                    <h4 class="m-0 o_ld_report_title" t-esc="state.filters.title"/>
+                    <div class="d-flex flex-wrap o_ld_gap o_ld_push_end">
+                        <button type="button" class="btn btn-primary btn-sm" t-on-click="printPdf" t-att-disabled="state.loading">
+                            <i class="fa fa-file-pdf-o"/> PDF
+                        </button>
+                        <button type="button" class="btn btn-primary btn-sm" t-on-click="exportXlsx" t-att-disabled="state.loading">
+                            <i class="fa fa-file-excel-o"/> Excel
+                        </button>
+                    </div>
+                </div>
+
+                <div class="d-flex flex-wrap align-items-center o_ld_gap mt-2">
+                    <!-- period -->
+                    <Dropdown t-if="state.filters.has_period">
+                        <button class="btn btn-secondary btn-sm o-dropdown-caret">
+                            <i class="fa fa-calendar"/>
+                            <span class="o_ld_filter_text" t-esc="presetLabel"/>
+                        </button>
+                        <t t-set-slot="content">
+                            <t t-foreach="state.filters.presets" t-as="preset" t-key="preset.key">
+                                <DropdownItem onSelected="() => this.setOption('preset', preset.key)"
+                                              class="state.options.preset === preset.key ? 'selected' : ''">
+                                    <t t-esc="preset.label"/>
+                                </DropdownItem>
+                            </t>
+                        </t>
+                    </Dropdown>
+                    <div t-if="state.filters.has_period and (state.options.preset === 'month' or state.options.preset === 'year')"
+                         class="d-flex align-items-center o_ld_gap">
+                        <select t-if="state.options.preset === 'month'" class="form-select form-select-sm o_ld_period_select"
+                                t-on-change="(ev) => this.onSelectChange('month', ev)">
+                            <t t-foreach="state.filters.months" t-as="m" t-key="m.key">
+                                <option t-att-value="m.key" t-att-selected="m.key === state.options.month" t-esc="m.name"/>
+                            </t>
+                        </select>
+                        <select class="form-select form-select-sm o_ld_period_select"
+                                t-on-change="(ev) => this.onSelectChange('year', ev)">
+                            <t t-foreach="state.filters.years" t-as="y" t-key="y">
+                                <option t-att-value="y" t-att-selected="y === state.options.year" t-esc="y"/>
+                            </t>
+                        </select>
+                    </div>
+                    <div t-if="state.filters.has_period and state.options.preset === 'custom'" class="d-flex align-items-center o_ld_gap">
+                        <input type="date" class="form-control form-control-sm o_ld_date" t-att-value="state.options.date_from"
+                               t-on-change="(ev) => this.onDateChange('date_from', ev)"/>
+                        <span>→</span>
+                        <input type="date" class="form-control form-control-sm o_ld_date" t-att-value="state.options.date_to"
+                               t-on-change="(ev) => this.onDateChange('date_to', ev)"/>
+                    </div>
+
+                    <!-- comparison -->
+                    <Dropdown t-if="state.filters.has_comparison">
+                        <button class="btn btn-secondary btn-sm o-dropdown-caret" t-att-class="{'o_ld_active_filter': state.options.comparison !== 'none'}">
+                            <i class="fa fa-exchange"/>
+                            <span class="o_ld_filter_text" t-esc="comparisonLabel"/>
+                        </button>
+                        <t t-set-slot="content">
+                            <t t-foreach="state.filters.comparisons" t-as="cmp" t-key="cmp.key">
+                                <DropdownItem onSelected="() => this.setOption('comparison', cmp.key)"
+                                              class="state.options.comparison === cmp.key ? 'selected' : ''">
+                                    <t t-esc="cmp.label"/>
+                                </DropdownItem>
+                            </t>
+                        </t>
+                    </Dropdown>
+
+                    <t t-if="state.filters.configs.length > 1" t-call="london_laundry_implementation.MultiFilter">
+                        <t t-set="name" t-value="'config_ids'"/>
+                        <t t-set="items" t-value="state.filters.configs"/>
+                        <t t-set="idKey" t-value="'id'"/>
+                        <t t-set="icon" t-value="'fa-shopping-basket'"/>
+                        <t t-set="allLabel" t-value="state.filters.all_configs_label"/>
+                    </t>
+                    <t t-if="state.filters.cashiers.length" t-call="london_laundry_implementation.MultiFilter">
+                        <t t-set="name" t-value="'cashiers'"/>
+                        <t t-set="items" t-value="state.filters.cashiers"/>
+                        <t t-set="idKey" t-value="'key'"/>
+                        <t t-set="icon" t-value="'fa-user'"/>
+                        <t t-set="allLabel" t-value="state.filters.all_cashiers_label"/>
+                    </t>
+                    <t t-if="state.filters.categories.length" t-call="london_laundry_implementation.MultiFilter">
+                        <t t-set="name" t-value="'category_ids'"/>
+                        <t t-set="items" t-value="state.filters.categories"/>
+                        <t t-set="idKey" t-value="'id'"/>
+                        <t t-set="icon" t-value="'fa-tags'"/>
+                        <t t-set="allLabel" t-value="state.filters.all_categories_label"/>
+                    </t>
+                    <t t-if="state.filters.payment_kinds.length" t-call="london_laundry_implementation.MultiFilter">
+                        <t t-set="name" t-value="'payment_kinds'"/>
+                        <t t-set="items" t-value="state.filters.payment_kinds"/>
+                        <t t-set="idKey" t-value="'key'"/>
+                        <t t-set="icon" t-value="'fa-money'"/>
+                        <t t-set="allLabel" t-value="state.filters.all_payments_label"/>
+                    </t>
+
+                    <!-- customer invoice reports -->
+                    <t t-if="state.filters.has_customer_filters">
+                        <input type="search" class="form-control form-control-sm o_ld_search"
+                               placeholder="Customer name, phone or reference"
+                               t-att-value="state.options.partner_search"
+                               t-on-change="(ev) => this.onTextChange('partner_search', ev)"/>
+                        <t t-call="london_laundry_implementation.MultiFilter">
+                            <t t-set="name" t-value="'statuses'"/>
+                            <t t-set="items" t-value="state.filters.statuses"/>
+                            <t t-set="idKey" t-value="'key'"/>
+                            <t t-set="icon" t-value="'fa-check-circle'"/>
+                            <t t-set="allLabel" t-value="state.filters.all_statuses_label"/>
+                        </t>
+                        <t t-if="state.filters.companies.length > 1" t-call="london_laundry_implementation.MultiFilter">
+                            <t t-set="name" t-value="'company_ids'"/>
+                            <t t-set="items" t-value="state.filters.companies"/>
+                            <t t-set="idKey" t-value="'id'"/>
+                            <t t-set="icon" t-value="'fa-building'"/>
+                            <t t-set="allLabel" t-value="state.filters.all_companies_label"/>
+                        </t>
+                        <Dropdown t-if="state.filters.show_choices.length">
+                            <button class="btn btn-secondary btn-sm o-dropdown-caret" t-att-class="{'o_ld_active_filter': state.options.show !== 'all'}">
+                                <i class="fa fa-sort-amount-desc"/>
+                                <span class="o_ld_filter_text" t-esc="showLabel"/>
+                            </button>
+                            <t t-set-slot="content">
+                                <t t-foreach="state.filters.show_choices" t-as="choice" t-key="choice.key">
+                                    <DropdownItem onSelected="() => this.setOption('show', choice.key)"
+                                                  class="state.options.show === choice.key ? 'selected' : ''">
+                                        <t t-esc="choice.label"/>
+                                    </DropdownItem>
+                                </t>
+                            </t>
+                        </Dropdown>
+                        <input t-if="state.filters.show_choices.length" type="number" min="0" step="any"
+                               class="form-control form-control-sm o_ld_min_due" placeholder="Minimum due"
+                               t-att-value="state.options.min_due"
+                               t-on-change="(ev) => this.onTextChange('min_due', ev)"/>
+                    </t>
+
+                    <button t-if="state.data and hasChildren" type="button" class="btn btn-link btn-sm o_ld_push_end"
+                            t-on-click="() => this.unfoldAll(!Object.keys(state.unfolded).length)">
+                        <t t-if="Object.keys(state.unfolded).length">Fold all</t>
+                        <t t-else="">Unfold all</t>
+                    </button>
+                </div>
+            </div>
+
+            <div t-if="!state.data" class="text-center p-5 text-muted"><i class="fa fa-spinner fa-spin fa-2x"/></div>
+
+            <div t-if="state.data" class="o_ld_report_body" t-att-class="{'o_ld_loading': state.loading}">
+                <div class="o_ld_report_sheet">
+                    <div class="mb-3">
+                        <div class="fw-bold" t-esc="state.data.company"/>
+                        <div class="small text-muted"><bdi t-esc="state.data.period_label"/></div>
+                        <div t-if="state.data.key === 'receivables'" class="small text-muted">Open balances from accounting: unpaid invoices and customer-account sales, minus payments not yet matched.</div>
+                        <div t-if="state.data.note" class="small text-muted" t-esc="state.data.note"/>
+                        <div class="small text-muted" t-foreach="state.data.filters_summary" t-as="part" t-key="part_index" t-esc="part"/>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table table-sm table-hover o_ld_report_table">
+                            <thead>
+                                <tr>
+                                    <th/>
+                                    <th t-foreach="state.data.columns" t-as="col" t-key="col.key"
+                                        t-att-class="col.type !== 'text' ? 'text-end' : ''" t-esc="col.label"/>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr t-foreach="visibleLines" t-as="line" t-key="line.id"
+                                    t-att-class="'o_ld_level_' + line.level + (line.children and line.children.length ? ' o_ld_parent' : '') + ' ' + (line.class or '')">
+                                    <td class="o_ld_label">
+                                        <span class="o_ld_caret" t-on-click="() => this.toggleLine(line)">
+                                            <i t-if="line.children and line.children.length"
+                                               t-att-class="'fa fa-fw ' + (isUnfolded(line) ? 'fa-caret-down' : (isRtl ? 'fa-caret-left' : 'fa-caret-right'))"/>
+                                        </span>
+                                        <a t-if="line.action" href="#" class="o_ld_line_link" t-on-click.prevent="() => this.openLine(line)" t-esc="line.label"/>
+                                        <span t-else="" t-esc="line.label"/>
+                                        <!-- phone / date and actions on their own line under the name:
+                                             the label column keeps the width of the name only -->
+                                        <div t-if="line.sublabel or line.whatsapp_url or line.pdf_url" class="o_ld_sub">
+                                            <small t-if="line.sublabel" class="text-muted o_ld_num_ltr" t-esc="line.sublabel"/>
+                                            <button t-if="line.whatsapp_url" type="button" class="btn btn-sm btn-success py-0 px-1"
+                                                    t-on-click.stop="() => this.openWhatsapp(line.whatsapp_url)" title="Send payment reminder">
+                                                <i class="fa fa-whatsapp"/>
+                                            </button>
+                                            <button t-if="line.pdf_url" type="button" class="btn btn-sm btn-secondary py-0 px-1"
+                                                    t-on-click.stop="() => this.openUrl(line.pdf_url)" title="Customer statement (PDF)">
+                                                <i class="fa fa-file-pdf-o"/>
+                                            </button>
+                                        </div>
+                                    </td>
+                                    <td t-foreach="state.data.columns" t-as="col" t-key="col.key"
+                                        t-att-class="(col.type !== 'text' ? 'text-end text-nowrap ' : '') + deltaClass(col, line.values[col.key])"
+                                        t-esc="format(line.values[col.key], col.type)"/>
+                                </tr>
+                                <tr t-if="!state.data.lines.length">
+                                    <td t-att-colspan="state.data.columns.length + 1" class="text-center text-muted py-4">No data for this period</td>
+                                </tr>
+                            </tbody>
+                            <tfoot>
+                                <tr class="o_ld_total">
+                                    <td>Total</td>
+                                    <td t-foreach="state.data.columns" t-as="col" t-key="col.key"
+                                        t-att-class="(col.type !== 'text' ? 'text-end text-nowrap ' : '') + deltaClass(col, state.data.totals[col.key])"
+                                        t-esc="format(state.data.totals[col.key], col.type)"/>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </t>
+</templates>

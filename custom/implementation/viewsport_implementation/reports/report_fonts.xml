@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!--
+        Fonts bundled with the module (see static/src/fonts/README.md); called by every Viewsport report and footer.
+        wkhtmltopdf neither falls back to the next family for a missing glyph nor supports unicode-range, so Arabic
+        text is tagged in the templates (class vs-ar, or dir="rtl") and given IBM Plex Sans Arabic explicitly (Noto Sans Arabic breaks alef and lam-alef shaping in wkhtmltopdf).
+    -->
+    <template id="vs_report_fonts">
+        <t t-set="vs_font_dir" t-value="'/viewsport_implementation/static/src/fonts/'"/>
+        <style>
+            <t t-foreach="[('VS Sans', 'LiberationSans'), ('VS Narrow', 'LiberationSansNarrow'), ('VS Arabic', 'IBMPlexSansArabic'),
+                           ('VS Calibri', 'Carlito'), ('VS Cambria', 'Caladea'), ('VS Georgia', 'Gelasio'),
+                           ('VS Script', 'DancingScript')]" t-as="ff">
+                <t t-foreach="[('normal', 'Regular'), ('bold', 'Bold')]" t-as="wt">
+                    @font-face { font-family: '<t t-out="ff[0]"/>'; font-weight: <t t-out="wt[0]"/>; font-style: normal;
+                                 src: url('<t t-out="vs_font_dir + ff[1] + '-' + ('Bold' if ff[1] == 'DancingScript' else wt[1])"/>.ttf') format('truetype'); }
+                </t>
+            </t>
+            .vs-ar, [dir="rtl"] { font-family: 'VS Arabic', sans-serif !important; }
+        </style>
+    </template>
+</odoo>

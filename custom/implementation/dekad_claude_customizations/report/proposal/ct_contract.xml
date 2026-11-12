@@ -1,0 +1,387 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Implementation contract (English). Parties, scope, duration, support, value and payments come
+         from the order and the Technical Proposal tab; the legal clauses are fixed text. -->
+    <record id="action_report_ct_contract" model="ir.actions.report">
+        <field name="name">Implementation Contract</field>
+        <field name="model">sale.order</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">dekad_claude_customizations.ct_contract</field>
+        <field name="report_file">dekad_claude_customizations.ct_contract</field>
+        <field name="print_report_name">'Implementation Contract - %s' % (object.name)</field>
+        <field name="binding_model_id" ref="sale.model_sale_order"/>
+        <field name="binding_type">report</field>
+    </record>
+
+    <template id="ct_contract">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="dekad_claude_customizations.ct_contract_doc"/>
+            </t>
+        </t>
+    </template>
+
+    <!-- one clause: English left, Arabic right -->
+    <template id="ct_pair">
+        <table class="ct-pair o_ignore_layout_styling" style="border:none; border-collapse:separate; border-spacing:0;"><tr style="border:none;">
+            <td class="ct-en" style="border:none;"><t t-out="en_body"/></td>
+            <td class="ct-ar" lang="ar" dir="rtl" style="border:none;"><t t-out="ar_body"/></td>
+        </tr></table>
+    </template>
+
+    <template id="ct_heading">
+        <table class="ct-head o_ignore_layout_styling" style="border:none; border-bottom:1px solid #d5dde7; border-collapse:separate; border-spacing:0;"><tr style="border:none;">
+            <td class="ct-hen" style="border:none;"><span class="ct-hn"><t t-out="num"/>.</span> <t t-out="en"/></td>
+            <td class="ct-har" lang="ar" dir="rtl" style="border:none;"><span class="ct-hn ct-ltr"><t t-out="num"/>.</span> <t t-out="ar"/></td>
+        </tr></table>
+    </template>
+
+    <!-- party box: English label | value | Arabic label -->
+    <template id="ct_party">
+        <table class="ct-party o_ignore_layout_styling">
+            <tr><th colspan="2"><t t-out="t_en"/></th><th class="ct-ar-h" lang="ar" dir="rtl"><t t-out="t_ar"/></th></tr>
+            <tr><td class="ct-k">Name / Company</td><td class="ct-v"><b><t t-out="p_name"/></b></td><td class="ct-k ct-ar-h" lang="ar" dir="rtl">الاسم / الشركة</td></tr>
+            <tr><td class="ct-k">Trade Licence</td><td class="ct-v"><t t-out="o.ct_v(p_lic)"/></td><td class="ct-k ct-ar-h" lang="ar" dir="rtl">السجل التجاري</td></tr>
+            <tr><td class="ct-k">Tax Number (TRN)</td><td class="ct-v"><t t-out="o.ct_v(p_trn)"/></td><td class="ct-k ct-ar-h" lang="ar" dir="rtl">الرقم الضريبي</td></tr>
+            <tr><td class="ct-k">Address</td><td class="ct-v"><t t-out="p_addr"/></td><td class="ct-k ct-ar-h" lang="ar" dir="rtl">العنوان</td></tr>
+            <tr><td colspan="2" class="ct-k"><t t-out="h_en"/></td><td class="ct-k ct-ar-h" lang="ar" dir="rtl"><t t-out="h_ar"/></td></tr>
+        </table>
+    </template>
+
+    <template id="ct_contract_doc">
+        <t t-set="company" t-value="o.company_id"/>
+        <t t-set="pc" t-value="company.dekad_bar_color()"/>
+        <t t-set="cp_small_header" t-value="True"/>
+        <t t-set="partner" t-value="o.partner_id.commercial_partner_id"/>
+        <t t-set="signer" t-value="company.dekad_signatory_id"/>
+        <t t-set="info" t-value="company.ct_info()"/>
+        <t t-set="edition" t-value="o.cp_label('edition', o.cp_edition) or 'Odoo'"/>
+        <t t-set="edition_ar" t-value="o.cp_label('edition', o.cp_edition, 'ar') or 'Odoo'"/>
+        <t t-set="total" t-value="o.ct_total()"/>
+        <t t-set="months" t-value="o.cp_support_months or 0"/>
+        <t t-call="web.external_layout">
+            <t t-set="doc" t-value="o"/>
+            <div class="page">
+                <svg t-if="pc != company.primary_color" class="o_shape_bubble_1 z-n1 position-fixed" width="1100" height="1100" xmlns="http://www.w3.org/2000/svg"><circle cx="550" cy="550" r="550" t-att-fill="pc" fill-opacity=".1"/></svg>
+                <style>
+                    <t t-out="o.cp_font_css()"/>
+                    .ct { font-family: Arial, sans-serif; font-size: 10.5pt; color: #272a30; line-height: 1.45; }
+                    .ct [lang="ar"] { font-family: 'Cairo', Arial, sans-serif; line-height: 1.75; }
+                    .ct table { width: 100%; border-collapse: collapse; }
+                    .ct p { margin: 0 0 1.6mm 0; text-align: justify; }
+                    .ct ul { margin: 0 0 1.6mm 5mm; padding: 0; } .ct li { margin-bottom: 1mm; text-align: justify; }
+                    .ct .ct-num { display: inline-block; direction: ltr; unicode-bidi: isolate; }
+                    .ct .ct-pair td.ct-ar .ct-num { margin-left: 2mm; } .ct .ct-pair td.ct-en .ct-num { margin-right: 1.5mm; }
+                    .ct .ct-ltr { direction: ltr; unicode-bidi: isolate; display: inline-block; white-space: nowrap; }
+                    .ct table.ct-title { margin-bottom: 3mm; border-bottom: 1.7px solid <t t-out="pc"/> !important; }
+                    .ct .ct-title td { border: 0 !important; color: <t t-out="pc"/>; font-weight: bold; padding-bottom: 1.5mm; }
+                    .ct .ct-pair { margin-bottom: 0.8mm; page-break-inside: avoid; }
+                    .ct .ct-pair td { width: 50%; vertical-align: top; }
+                    .ct .ct-pair td.ct-en { padding-right: 3.5mm; text-align: left; }
+                    .ct .ct-pair td.ct-ar { padding-left: 3.5mm; text-align: right; font-size: 11pt; }
+                    .ct table.ct-head { margin: 4mm 0 2mm 0; page-break-after: avoid; }
+                    .ct table.ct-head td { width: 50%; font-size: 13pt; font-weight: bold; color: <t t-out="pc"/>; padding-bottom: 1.2mm; }
+                    .ct table.ct-head td.ct-har { text-align: right; font-size: 14.5pt; }
+                    .ct .ct-hn { font-size: 14.5pt; }
+                    .ct table.ct-party { border: 1px solid #d5dde7 !important; margin-bottom: 3mm; page-break-inside: avoid; }
+                    .ct table.ct-party td, .ct table.ct-party th { border: 0 !important; padding: 1.4mm 3mm !important; vertical-align: top; }
+                    .ct table.ct-party th { background: #edf0f5; color: <t t-out="pc"/>; font-size: 11pt; text-align: left; }
+                    .ct table.ct-party th.ct-ar-h { text-align: right; font-size: 12pt; }
+                    .ct table.ct-party td.ct-k { width: 22%; color: #75808f; font-size: 9.5pt; }
+                    .ct table.ct-party td.ct-ar-h { text-align: right; font-size: 10.5pt; }
+                    .ct table.ct-party td.ct-v { width: 56%; text-align: center; font-weight: bold; }
+                    .ct .ct-blank { display: inline-block; min-width: 40mm; border-bottom: 1px solid #aab4c3; }
+                    .ct table.ct-pay { border: 1px solid #d5dde7 !important; margin: 1mm 0 2.5mm 0; page-break-inside: avoid; }
+                    .ct table.ct-pay th { background: #4b6995; color: #fff; padding: 2mm 3mm; text-align: left; border: 0 !important; }
+                    .ct table.ct-pay td { padding: 1.8mm 3mm !important; border: 0 !important; border-bottom: 1px solid #d5dde7 !important; }
+                    .ct table.ct-pay .ct-r { text-align: center; } .ct table.ct-pay .ct-ar-h { text-align: right; }
+                    .ct table.ct-sign { border: 1px solid <t t-out="pc"/> !important; margin-top: 3mm; page-break-inside: avoid; }
+                    .ct table.ct-sign td { width: 50%; padding: 5mm !important; vertical-align: top; border: 0 !important; border-right: 1px solid <t t-out="pc"/> !important; }
+                    .ct table.ct-sign td + td { border-right: 0 !important; }
+                    .ct .ct-sign h3 { font-size: 11pt; color: <t t-out="pc"/>; margin: 0 0 2mm 0; }
+                    .ct .ct-logo { height: 25mm; margin-bottom: 2mm; }
+                    .ct .ct-r { overflow: hidden; margin-bottom: 1.5mm; }
+                    .ct .ct-sl { float: left; width: 30%; color: #75808f; font-size: 9.5pt; padding-top: 2mm; }
+                    .ct .ct-sla { font-size: 9.5pt; text-align: left; }
+                    .ct .ct-sv { float: left; width: 68%; min-height: 10mm; border-bottom: 1px solid #aab4c3; padding: 3mm 1mm 1mm 1mm; }
+                </style>
+                <div class="ct">
+                    <table class="ct-title o_ignore_layout_styling" style="border:none; border-collapse:separate; border-spacing:0;"><tr style="border:none;">
+                        <td style="border:none; width:50%; font-size:17pt;">ERP System Implementation Contract<div style="font-size:10.5pt; font-weight:normal; color:#75808f;">Based on the platform <t t-out="o.ct_platform()"/></div></td>
+                        <td style="border:none; width:50%; text-align:right; font-size:18pt;" lang="ar" dir="rtl">عقد تنفيذ نظام تخطيط موارد المؤسسات (ERP)<div style="font-size:11pt; font-weight:normal; color:#75808f;">قائم على منصة <t t-out="o.ct_platform('ar')"/></div></td>
+                    </tr></table>
+
+                    <t t-call="dekad_claude_customizations.ct_pair">
+                        <t t-set="en_body"><p>This Contract is made and agreed on <b><t t-out="o.cp_d(o.ct_date or o.cp_date())"/></b> (contract reference <b><t t-out="o.ct_ref()"/></b>) between the following parties:</p></t>
+                        <t t-set="ar_body"><p>إنه في يوم <b><span class="ct-ltr"><t t-out="o.cp_d(o.ct_date or o.cp_date())"/></span></b> (مرجع العقد <b><span class="ct-ltr"><t t-out="o.ct_ref()"/></span></b>) تم الاتفاق والتراضي بين كل من:</p></t>
+                    </t>
+                    <t t-call="dekad_claude_customizations.ct_party">
+                        <t t-set="t_en">First Party (Executing Company)</t><t t-set="t_ar">الطرف الأول (الشركة المنفذة)</t>
+                        <t t-set="p_name" t-value="info['name']"/>
+                        <t t-set="p_lic" t-value="company.partner_id.dekad_trade_license"/>
+                        <t t-set="p_trn" t-value="info['trn']"/>
+                        <t t-set="p_addr" t-value="info['address']"/>
+                        <t t-set="h_en">Hereinafter referred to as the "First Party" or the "Executing Company".</t><t t-set="h_ar">ويشار إليه فيما بعد بـ "الطرف الأول" أو "الشركة المنفذة".</t>
+                    </t>
+                    <t t-call="dekad_claude_customizations.ct_party">
+                        <t t-set="t_en">Second Party (Client)</t><t t-set="t_ar">الطرف الثاني (العميل)</t>
+                        <t t-set="p_name" t-value="partner.name"/>
+                        <t t-set="p_lic" t-value="partner.dekad_trade_license"/>
+                        <t t-set="p_trn" t-value="partner.vat"/>
+                        <t t-set="p_addr" t-value="partner.ct_address()"/>
+                        <t t-set="h_en">Hereinafter referred to as the "Second Party" or the "Client".</t><t t-set="h_ar">ويشار إليه فيما بعد بـ "الطرف الثاني" أو "العميل".</t>
+                    </t>
+                    <t t-call="dekad_claude_customizations.ct_pair">
+                        <t t-set="en_body"><p>The First Party and the Second Party are collectively referred to as the "Parties" and individually as a "Party".</p></t>
+                        <t t-set="ar_body"><p>ويشار إلى الطرف الأول والطرف الثاني مجتمعين بـ "الطرفين" ومنفردين بـ "الطرف".</p></t>
+                    </t>
+                    <div style="page-break-inside:avoid;">
+                    <t t-call="dekad_claude_customizations.ct_heading"><t t-set="num" t-value="'1'"/><t t-set="en">Introduction and Definitions</t><t t-set="ar">التمهيد والتعريفات</t></t>
+                    <t t-call="dekad_claude_customizations.ct_pair">
+                        <t t-set="en_body"><p>The First Party is a company specialised in consulting services and in implementing and customising ERP systems based on <t t-if="o.cp_edition == 'enterprise'">the Odoo Enterprise platform</t><t t-else="">the open-source Odoo platform</t>, and has the technical expertise required to do so. The Second Party wishes to engage the First Party to implement, configure and customise an ERP system suited to the nature of its business and operational requirements, in accordance with the scope and conditions of this Contract and its annexes. Both Parties are fully competent and have agreed as follows:</p></t>
+                        <t t-set="ar_body"><p>حيث إن الطرف الأول شركة متخصصة في تقديم خدمات الاستشارات وتنفيذ وتخصيص أنظمة تخطيط موارد المؤسسات (ERP) القائمة على <t t-if="o.cp_edition == 'enterprise'">منصة أودو إنتربرايز</t><t t-else="">Odoo مفتوح المصدر</t>، ولديه الخبرة والكفاءات الفنية اللازمة لذلك. وحيث إن الطرف الثاني يرغب في الاستعانة بالطرف الأول لتنفيذ وتهيئة وتخصيص نظام ERP يتناسب مع طبيعة أعماله ومتطلباته التشغيلية، وفقاً للنطاق والشروط الموضحة في هذا العقد وملحقاته. فقد اتفق الطرفان، وهما بكامل الأهلية المعتبرة شرعاً ونظاماً، على ما يلي:</p></t>
+                    </t>
+                    </div>
+                    <t t-call="dekad_claude_customizations.ct_pair">
+                        <t t-set="en_body"><p><b>"Contract"</b> means this Contract and all its appendices, annexes and scope-of-work documents, which form an integral part of it.</p></t>
+                        <t t-set="ar_body"><p><b>"العقد":</b> يقصد به هذا العقد وجميع ملاحقه ومرفقاته ووثائق نطاق العمل المرفقة به، والتي تُعد جزءاً لا يتجزأ منه.</p></t>
+                    </t>
+                    <t t-call="dekad_claude_customizations.ct_pair">
+                        <t t-set="en_body"><p><b>"System"</b> means the ERP system to be implemented on the <t t-out="o.ct_platform()"/> platform, as agreed in the scope of work.</p></t>
+                        <t t-set="ar_body"><p><b>"النظام":</b> يقصد به نظام تخطيط موارد المؤسسات المراد تنفيذه القائم على منصة <t t-out="o.ct_platform('ar')"/>، وفق ما يتم الاتفاق عليه في نطاق العمل.</p></t>
+                    </t>
+                    <t t-call="dekad_claude_customizations.ct_pair">
+                        <t t-set="en_body"><p><b>"Scope of Work"</b> means the document specifying the modules, requirements and tasks agreed to be implemented (clause 2.2 and the Technical Proposal).</p></t>
+                        <t t-set="ar_body"><p><b>"نطاق العمل":</b> الوثيقة التي تحدد الوحدات (Modules) والمتطلبات والمهام المتفق على تنفيذها (البند 2.2 والمقترح الفني).</p></t>
+                    </t>
+                    <t t-call="dekad_claude_customizations.ct_pair">
+                        <t t-set="en_body"><p><b>"Customisation"</b> means any development or software modification made on the platform beyond its default configuration.</p></t>
+                        <t t-set="ar_body"><p><b>"التخصيص" (Customization):</b> أي تطوير أو تعديل برمجي يُجرى على النظام الأساسي بما يتجاوز إعدادات التهيئة (Configuration) الافتراضية.</p></t>
+                    </t>
+                    <t t-call="dekad_claude_customizations.ct_pair">
+                        <t t-set="en_body"><p><b>"Go-Live Date"</b> means the date on which the Client starts using the System in the production environment.</p></t>
+                        <t t-set="ar_body"><p><b>"تاريخ الإطلاق" (Go-Live):</b> التاريخ الذي يبدأ فيه العميل استخدام النظام فعلياً في بيئة الإنتاج (Production).</p></t>
+                    </t>
+                    <t t-call="dekad_claude_customizations.ct_pair">
+                        <t t-set="en_body"><p><b>"Warranty Period"</b> means the period of <b><t t-out="o.ct_v(months or None)"/> months</b> from the Go-Live Date during which the First Party repairs, without additional charge, defects resulting from the work it executed.</p></t>
+                        <t t-set="ar_body"><p><b>"فترة الضمان":</b> مدة <b><t t-out="o.ct_v(months or None)"/> أشهر</b> من تاريخ الإطلاق، يلتزم الطرف الأول خلالها بإصلاح الأعطال الناتجة عن الأعمال التي نفّذها دون مقابل إضافي.</p></t>
+                    </t>
+                    <t t-call="dekad_claude_customizations.ct_pair">
+                        <t t-set="en_body"><p><b>"Change Request"</b> means any request from the Client to add or modify requirements outside the agreed Scope of Work.</p></t>
+                        <t t-set="ar_body"><p><b>"طلب التغيير" (Change Request):</b> أي طلب من العميل لإضافة أو تعديل متطلبات خارج نطاق العمل المتفق عليه.</p></t>
+                    </t>
+                    <div style="page-break-inside:avoid;">
+                    <t t-call="dekad_claude_customizations.ct_heading"><t t-set="num" t-value="'2'"/><t t-set="en">Subject of the Contract and Scope of Work</t><t t-set="ar">موضوع العقد ونطاق العمل</t></t>
+                    <t t-call="dekad_claude_customizations.ct_pair">
+                        <t t-set="en_body"><p>The First Party undertakes to provide the Second Party with implementation, configuration and customisation services for the ERP system, as detailed below.</p></t>
+                        <t t-set="ar_body"><p>يلتزم الطرف الأول بتقديم خدمات تنفيذ وتهيئة وتخصيص نظام ERP للطرف الثاني، وفقاً للتفاصيل التالية:</p></t>
+                    </t>
+                    <t t-call="dekad_claude_customizations.ct_pair">
+                        <t t-set="en_body"><p><b>2.1 Software platform.</b> The System is implemented on <t t-out="o.ct_platform()"/>.</p></t>
+                        <t t-set="ar_body"><p><b>2.1 المنصة البرمجية.</b> يتم تنفيذ النظام باستخدام منصة <t t-out="o.ct_platform('ar')"/>.</p></t>
+                    </t>
+                    </div>
+                    <t t-call="dekad_claude_customizations.ct_pair">
+                        <t t-set="en_body"><p><b>2.2 Modules covered.</b> The scope of work covers the configuration of the following modules, as detailed in the Technical Proposal:</p></t>
+                        <t t-set="ar_body"><p><b>2.2 الوحدات (Modules) المشمولة بالتنفيذ.</b> يشمل نطاق العمل تهيئة الوحدات التالية وفقاً للتفاصيل الواردة في المقترح الفني:</p></t>
+                    </t>
+                    <table class="ct-pair o_ignore_layout_styling" style="border:none; border-collapse:separate; border-spacing:0;">
+                        <tr t-foreach="o.cp_module_ids" t-as="m" style="border:none; page-break-inside:avoid;">
+                            <td class="ct-en" style="border:none;">&#8226; <b><t t-out="m.name_en"/></b><t t-if="m.scope_en"> &#8212; <t t-out="m.scope_en"/></t></td>
+                            <td class="ct-ar" lang="ar" dir="rtl" style="border:none;">&#8226; <b><t t-out="m.name_ar or m.name_en"/></b><t t-if="m.scope_ar or m.scope_en"> &#8212; <t t-out="m.scope_ar or m.scope_en"/></t></td>
+                        </tr>
+                    </table>
+                    <t t-call="dekad_claude_customizations.ct_pair">
+                        <t t-set="en_body"><p><b>2.3 Users and hosting.</b> Number of users covered by the implementation: <b><span class="ct-ltr"><t t-out="o.ct_v(o.cp_hosting_users or None)"/></span> users</b>. Hosting environment: <t t-if="o.cp_include_hosting">hosted by the First Party.</t><t t-else="">as agreed between the Parties in writing.</t></p></t>
+                        <t t-set="ar_body"><p><b>2.3 عدد المستخدمين وبيئة الاستضافة.</b> عدد المستخدمين المشمولين بالتنفيذ: <b><span class="ct-ltr"><t t-out="o.ct_v(o.cp_hosting_users or None)"/></span> مستخدماً</b>. بيئة الاستضافة: <t t-if="o.cp_include_hosting">استضافة الطرف الأول.</t><t t-else="">حسب ما يتفق عليه الطرفان كتابياً.</t></p></t>
+                    </t>
+                    <t t-call="dekad_claude_customizations.ct_pair">
+                        <t t-set="en_body"><p><b>2.4 Not covered by this Contract.</b> (a) Development work outside the Scope of Work, which is treated as a Change Request. (b) Maintenance and support after the <t t-out="months or '___'"/>-month Warranty Period, which are regulated by a separate support and maintenance contract. (c) Full migration of data from a previous system, which is quoted separately; a simple import of master data from structured files provided by the Client is included.</p></t>
+                        <t t-set="ar_body"><p><b>2.4 ما لا يشمله العقد.</b> (أ) أعمال تطوير غير واردة في نطاق العمل (يتم التعامل معها كطلبات تغيير). (ب) الصيانة والدعم الفني بعد فترة الضمان البالغة <t t-out="months or '___'"/> أشهر، وتُنظَّم بعقد دعم وصيانة مستقل. (ج) ترحيل البيانات الكامل من نظام سابق، ويُسعَّر بشكل منفصل؛ ويشمل العقد استيراداً بسيطاً للبيانات الأساسية من ملفات منظّمة يوفّرها العميل.</p></t>
+                    </t>
+                    <div style="page-break-inside:avoid;">
+                    <t t-call="dekad_claude_customizations.ct_heading"><t t-set="num" t-value="'3'"/><t t-set="en">Implementation Duration and Timeline</t><t t-set="ar">مدة التنفيذ والجدول الزمني</t></t>
+                    <t t-call="dekad_claude_customizations.ct_pair">
+                        <t t-set="en_body"><p>The period from the start of the work until the System is operational according to the Second Party's requirements is <b><t t-out="o.ct_v(o.cp_duration_en)"/></b>. This period includes preparing the hosting site and database, configuring the System and training the users, and is conditional on the Client providing the required data, access and a project contact in due time.</p></t>
+                        <t t-set="ar_body"><p>تبلغ المدة من بدء العمل حتى تشغيل النظام حسب متطلبات الطرف الثاني <b><t t-out="o.ct_v(o.cp_duration_ar or o.cp_duration_en)"/></b>. وتشمل هذه المدة تجهيز الموقع المستضيف وقاعدة البيانات وتهيئة النظام وتدريب المستخدمين، وهي مشروطة بتزويد العميل بالبيانات والصلاحيات وجهة الاتصال المطلوبة في الوقت المناسب.</p></t>
+                    </t>
+                    </div>
+                    <div style="page-break-inside:avoid;">
+                    <t t-call="dekad_claude_customizations.ct_heading"><t t-set="num" t-value="'4'"/><t t-set="en">Obligations of the First Party</t><t t-set="ar">التزامات الطرف الأول (الشركة المنفذة)</t></t>
+                    <t t-call="dekad_claude_customizations.ct_pair">
+                        <t t-set="en_body"><ul><li>Set up the System and prepare the database for <b><t t-out="partner.name"/></b>.</li></ul></t>
+                        <t t-set="ar_body"><ul><li>إنشاء النظام وإعداد قاعدة البيانات الخاصة بـ <b><t t-out="partner.name"/></b>.</li></ul></t>
+                    </t>
+                    <t t-call="dekad_claude_customizations.ct_pair">
+                        <t t-set="en_body"><ul><li>Configure the modules listed in clause 2.2 and execute the agreed Scope of Work.</li></ul></t>
+                        <t t-set="ar_body"><ul><li>تهيئة الوحدات المذكورة في البند 2.2 وتنفيذ نطاق العمل المتفق عليه.</li></ul></t>
+                    </t>
+                    <t t-call="dekad_claude_customizations.ct_pair">
+                        <t t-set="en_body"><ul><li>Train the Client's users on the configured workflows<t t-if="o.cp_training_from and o.cp_training_to">, in <t t-out="o.cp_training_from"/> to <t t-out="o.cp_training_to"/> sessions of <t t-out="o.cp_training_hours"/> hours each</t><t t-elif="o.cp_training_from">, in <t t-out="o.cp_training_from"/> sessions of <t t-out="o.cp_training_hours"/> hours each</t><t t-else="">, as needed</t>.</li></ul></t>
+                        <t t-set="ar_body"><ul><li>تدريب مستخدمي العميل على المسارات المهيأة<t t-if="o.cp_training_from and o.cp_training_to">، من <t t-out="o.cp_training_from"/> إلى <t t-out="o.cp_training_to"/> جلسات، مدة كل جلسة <t t-out="o.cp_training_hours"/> ساعة</t><t t-elif="o.cp_training_from">، في <t t-out="o.cp_training_from"/> جلسات، مدة كل جلسة <t t-out="o.cp_training_hours"/> ساعة</t><t t-else="">، حسب الحاجة</t>.</li></ul></t>
+                    </t>
+                    <t t-call="dekad_claude_customizations.ct_pair">
+                        <t t-set="en_body"><ul><li>Provide free support during the Warranty Period (Saturday to Thursday, <span class="ct-ltr"><t t-out="o.cp_support_from or '___'"/> to <t t-out="o.cp_support_to or '___'"/></span>, UAE time), remotely or on site when required.</li></ul></t>
+                        <t t-set="ar_body"><ul><li>تقديم الدعم المجاني خلال فترة الضمان (من السبت إلى الخميس، من <span class="ct-ltr"><t t-out="o.cp_support_from or '___'"/> إلى <t t-out="o.cp_support_to or '___'"/></span>، بتوقيت الإمارات)، عن بُعد أو في الموقع عند الحاجة.</li></ul></t>
+                    </t>
+                    </div>
+                    <div style="page-break-inside:avoid;">
+                    <t t-call="dekad_claude_customizations.ct_heading"><t t-set="num" t-value="'5'"/><t t-set="en">Contract Value and Payment Terms</t><t t-set="ar">قيمة العقد وشروط الدفع</t></t>
+                    <t t-call="dekad_claude_customizations.ct_pair">
+                        <t t-set="en_body"><p>The total value of this Contract for the work specified is <b><span class="ct-ltr"><t t-out="total" t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/></span></b> (<t t-out="o.ct_words(total)"/>), <t t-if="not o.ct_has_tax()">with no tax applicable</t><t t-elif="o.ct_tax_mode == 'inclusive'">inclusive of VAT</t><t t-else="">exclusive of VAT, which is added at the prevailing rate</t>. It is paid according to the schedule below.</p></t>
+                        <t t-set="ar_body"><p>تبلغ القيمة الإجمالية لهذا العقد (مقابل أعمال التنفيذ المحددة) مبلغاً وقدره <b><span class="ct-ltr"><t t-out="total" t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/></span></b> (<t t-out="o.ct_words(total, 'ar')"/>)، <t t-if="not o.ct_has_tax()">دون أي ضريبة</t><t t-elif="o.ct_tax_mode == 'inclusive'">شامل ضريبة القيمة المضافة</t><t t-else="">غير شامل ضريبة القيمة المضافة التي تُضاف بالنسبة السارية</t>. وتُسدد وفق جدول الدفعات التالي:</p></t>
+                    </t>
+                    </div>
+                    <table class="ct-pay o_ignore_layout_styling">
+                        <thead><tr><th>#</th><th>Payment due</th><th class="ct-r">Amount</th><th class="ct-ar-h" dir="rtl" lang="ar">تُسدد عند</th></tr></thead>
+                        <tbody>
+                            <tr t-foreach="o.ct_installments()" t-as="inst">
+                                <td><t t-out="inst_index + 1"/></td>
+                                <td><t t-out="inst[0]"/></td>
+                                <td class="ct-r"><t t-if="inst[3]"><span class="ct-ltr"><t t-out="'%g' % inst[3]"/>%</span> &#8212; </t><span class="ct-ltr"><t t-out="inst[2]" t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/></span></td>
+                                <td class="ct-ar-h" dir="rtl" lang="ar"><t t-out="inst[1]"/></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <t t-set="pm_en" t-value="dict(o._fields['ct_payment_method'].selection).get(o.ct_payment_method) or ''"/>
+                    <t t-set="pm_ar" t-value="{'transfer': 'تحويل بنكي', 'cheque': 'شيك', 'cash': 'نقداً', 'any': 'تحويل بنكي / شيك / نقداً'}.get(o.ct_payment_method) or ''"/>
+                    <t t-call="dekad_claude_customizations.ct_pair">
+                        <t t-set="en_body"><p><b class="ct-num">5.1</b> All payments are made according to the schedule above<t t-if="pm_en and not o.ct_payment_ids.filtered('method')">, by <t t-out="pm_en.lower()"/></t>.</p></t>
+                        <t t-set="ar_body"><p><b class="ct-num">5.1</b> تُسدد جميع الدفعات حسب الجدول أعلاه<t t-if="pm_ar and not o.ct_payment_ids.filtered('method')">، عن طريق <t t-out="pm_ar"/></t>.</p></t>
+                    </t>
+                    <t t-call="dekad_claude_customizations.ct_pair">
+                        <t t-set="en_body"><p><b class="ct-num">5.2</b> If the first payment is delayed by more than <t t-out="o.ct_late_days or '___'"/> working days after signing, the First Party may terminate this Contract and submit a new quotation, which is not required to be of the same value as the first financial offer.</p></t>
+                        <t t-set="ar_body"><p><b class="ct-num">5.2</b> في حال تأخر الدفعة الأولى بعد توقيع العقد لأكثر من <t t-out="o.ct_late_days or '___'"/> أيام عمل، يحق للطرف الأول فسخ العقد وإعادة تقديم عرض سعر آخر لا يُشترط أن يكون بنفس قيمة العرض المالي الأول.</p></t>
+                    </t>
+                    <t t-call="dekad_claude_customizations.ct_pair">
+                        <t t-set="en_body"><p><b class="ct-num">5.3</b> Each payment is invoiced on its due date and is payable on the due date stated in the invoice. If a payment is not received <t t-out="o.ct_notice_days or '___'"/> days after its due date, the First Party sends the Second Party a written reminder. If it remains unpaid <t t-out="o.ct_suspend_days or '___'"/> days after its due date, the First Party may suspend the work, support and hosting until it is paid. If it remains unpaid <t t-out="o.ct_terminate_days or '___'"/> days after its due date, the First Party may terminate this Contract by written notice; in that case the amounts already paid are non-refundable, and the Second Party remains liable for the instalments due and the value of the work performed up to the termination date.</p></t>
+                        <t t-set="ar_body"><p><b class="ct-num">5.3</b> تُصدر فاتورة بكل دفعة عند استحقاقها وتُسدد في تاريخ الاستحقاق المذكور في الفاتورة. وإذا لم تُستلم الدفعة بعد مرور <t t-out="o.ct_notice_days or '___'"/> أيام من تاريخ استحقاقها، يرسل الطرف الأول إلى الطرف الثاني تنبيهاً كتابياً. وإذا بقيت غير مسددة بعد <t t-out="o.ct_suspend_days or '___'"/> يوماً من استحقاقها، يحق للطرف الأول إيقاف العمل والدعم والاستضافة حتى السداد. وإذا بقيت غير مسددة بعد <t t-out="o.ct_terminate_days or '___'"/> يوماً من استحقاقها، يحق للطرف الأول إنهاء هذا العقد بإشعار كتابي؛ وفي هذه الحالة لا تُسترد المبالغ المدفوعة، ويبقى الطرف الثاني ملتزماً بالدفعات المستحقة وبقيمة الأعمال المنفذة حتى تاريخ الإنهاء.</p></t>
+                    </t>
+                    <t t-call="dekad_claude_customizations.ct_pair">
+                        <t t-set="en_body"><p><b class="ct-num">5.4</b> Where payment is by cheque, the Second Party hands the First Party all the cheques of the schedule on signing, with the amounts and due dates stated in it. A returned or unpaid cheque is treated as a non-payment, and the Second Party pays its amount by bank transfer within 3 days of notice. If no cheques are provided, each payment is due by bank transfer on its due date.</p></t>
+                        <t t-set="ar_body"><p><b class="ct-num">5.4</b> إذا كان السداد بشيكات، يسلّم الطرف الثاني للطرف الأول جميع شيكات الجدول عند التوقيع بالمبالغ وتواريخ الاستحقاق المبينة فيه. ويُعد الشيك المرتجع أو غير المسدد تأخراً في السداد، ويلتزم الطرف الثاني بسداد مبلغه بالتحويل البنكي خلال 3 أيام من الإشعار. وإذا لم تُسلَّم شيكات، تُستحق كل دفعة بالتحويل البنكي في تاريخ استحقاقها.</p></t>
+                    </t>
+                    <t t-call="dekad_claude_customizations.ct_pair">
+                        <t t-set="en_body"><p><b class="ct-num">5.5</b> The contract value does not include Change Requests, nor support and maintenance after the Warranty Period; these are calculated separately upon request.</p></t>
+                        <t t-set="ar_body"><p><b class="ct-num">5.5</b> لا تشمل القيمة الإجمالية المذكورة أعمال التغيير الإضافية (Change Requests)، ولا الدعم والصيانة بعد فترة الضمان، وتُحتسب هذه البنود بشكل منفصل عند طلبها.</p></t>
+                    </t>
+                    <t t-call="dekad_claude_customizations.ct_pair">
+                        <t t-set="en_body"><p t-if="o.ct_note"><b>Additional terms:</b> <t t-out="o.ct_note"/></p></t>
+                        <t t-set="ar_body"><p t-if="o.ct_note"><b>شروط إضافية:</b> <t t-out="o.ct_note"/></p></t>
+                    </t>
+                    <div style="page-break-inside:avoid;">
+                    <t t-call="dekad_claude_customizations.ct_heading"><t t-set="num" t-value="'6'"/><t t-set="en">Change Requests</t><t t-set="ar">طلبات التغيير (Change Requests)</t></t>
+                    <t t-call="dekad_claude_customizations.ct_pair">
+                        <t t-set="en_body"><p><b class="ct-num">6.1</b> Any request from the Client to add requirements, modules or tasks not contained in the Scope of Work is a Change Request and is executed by the First Party only after written agreement on its scope, cost and impact on the schedule.</p></t>
+                        <t t-set="ar_body"><p><b class="ct-num">6.1</b> أي طلب من العميل لإضافة متطلبات أو وحدات أو مهام غير واردة ضمن نطاق العمل يُعامل كـ "طلب تغيير"، ولا يلتزم الطرف الأول بتنفيذه إلا بعد الاتفاق الكتابي على نطاقه وتكلفته وأثره على الجدول الزمني.</p></t>
+                    </t>
+                    <t t-call="dekad_claude_customizations.ct_pair">
+                        <t t-set="en_body"><p><b class="ct-num">6.2</b> On receipt of a Change Request, the First Party provides the Client with a technical and financial quotation stating the additional cost and the time required.</p></t>
+                        <t t-set="ar_body"><p><b class="ct-num">6.2</b> يقوم الطرف الأول، عند استلام طلب التغيير، بتزويد العميل بعرض فني ومالي (Quotation) يوضح التكلفة الإضافية والمدة الزمنية اللازمة.</p></t>
+                    </t>
+                    <t t-call="dekad_claude_customizations.ct_pair">
+                        <t t-set="en_body"><p><b class="ct-num">6.3</b> The Client's silence or non-response to a change quotation is not agreement to execute it, and the First Party does not start any Change Request until the quotation is signed by both Parties.</p></t>
+                        <t t-set="ar_body"><p><b class="ct-num">6.3</b> لا يُعد سكوت العميل أو عدم رده على عرض التغيير موافقة على تنفيذه، ولا يبدأ الطرف الأول في تنفيذ أي طلب تغيير إلا بعد توقيع العرض من الطرفين.</p></t>
+                    </t>
+                    </div>
+                    <div style="page-break-inside:avoid;">
+                    <t t-call="dekad_claude_customizations.ct_heading"><t t-set="num" t-value="'7'"/><t t-set="en">Confidentiality and Data Protection</t><t t-set="ar">السرية وحماية البيانات</t></t>
+                    <t t-call="dekad_claude_customizations.ct_pair">
+                        <t t-set="en_body"><p><b class="ct-num">7.1</b> The First Party is not responsible for misuse of data by the Client's users; its responsibility is limited to data backups.</p></t>
+                        <t t-set="ar_body"><p><b class="ct-num">7.1</b> لا يعتبر الطرف الأول مسؤولاً عن سوء استخدام البيانات من قبل المستخدمين، وتقتصر مسؤوليته على النسخ الاحتياطية (Data Backups).</p></t>
+                    </t>
+                    <t t-call="dekad_claude_customizations.ct_pair">
+                        <t t-set="en_body"><p><b class="ct-num">7.2</b> The First Party is not responsible for data deleted intentionally by any user of the Second Party.</p></t>
+                        <t t-set="ar_body"><p><b class="ct-num">7.2</b> لا يعد الطرف الأول مسؤولاً عن حذف بيانات عمداً من قبل أي مستخدم لدى الطرف الثاني.</p></t>
+                    </t>
+                    <t t-call="dekad_claude_customizations.ct_pair">
+                        <t t-set="en_body"><p><b class="ct-num">7.3</b> Where hosting is provided by the First Party, it performs periodic maintenance on the hosting servers, including periodic backups, restoring any backup at the Second Party's direct request, and protecting the database from damage or unauthorised access.</p></t>
+                        <t t-set="ar_body"><p><b class="ct-num">7.3</b> يلتزم الطرف الأول بإجراء صيانات دورية في سيرفرات الاستضافة في حال كانت الاستضافة عن طريقه، وتشمل: إنشاء نسخ احتياطية دورية، واستعادة أي نسخة احتياطية بطلب مباشر من الطرف الثاني، والحفاظ على قاعدة البيانات من التلف أو الوصول غير المصرح به.</p></t>
+                    </t>
+                    </div>
+                    <div style="page-break-inside:avoid;">
+                    <t t-call="dekad_claude_customizations.ct_heading"><t t-set="num" t-value="'8'"/><t t-set="en">Force Majeure</t><t t-set="ar">القوة القاهرة</t></t>
+                    <t t-call="dekad_claude_customizations.ct_pair">
+                        <t t-set="en_body"><p>Neither Party is in breach of its obligations if non-performance or delay results from circumstances beyond its control that could not be foreseen or avoided, such as natural disasters, wars, epidemics, widespread interruption of basic services (internet or electricity) or emergency government decisions. The affected Party notifies the other in writing as soon as possible, and the affected obligations are extended for the duration of the force majeure.</p></t>
+                        <t t-set="ar_body"><p>لا يُعد أي طرف مخالفاً لالتزاماته بموجب هذا العقد إذا كان عدم التنفيذ أو التأخير ناتجاً عن ظروف قوة قاهرة خارجة عن إرادته ولا يمكن توقعها أو تفاديها، مثل الكوارث الطبيعية والحروب والأوبئة وانقطاع الخدمات الأساسية (الإنترنت/الكهرباء) على نطاق واسع أو القرارات الحكومية الطارئة. ويلتزم الطرف المتأثر بإشعار الطرف الآخر كتابياً بذلك في أقرب وقت ممكن، وتُمدَّد الالتزامات المتأثرة بما يعادل مدة استمرار القوة القاهرة.</p></t>
+                    </t>
+                    </div>
+                    <div style="page-break-inside:avoid;">
+                    <t t-call="dekad_claude_customizations.ct_heading"><t t-set="num" t-value="'9'"/><t t-set="en">Termination of the Contract</t><t t-set="ar">إنهاء العقد</t></t>
+                    <t t-call="dekad_claude_customizations.ct_pair">
+                        <t t-set="en_body"><p><b class="ct-num">9.1</b> The First Party may terminate this Contract after signing if: (a) the Second Party does not comply with the payment terms in clause 5; or (b) the Second Party does not comply with the laws of the United Arab Emirates.</p></t>
+                        <t t-set="ar_body"><p><b class="ct-num">9.1</b> يجوز للطرف الأول إنهاء العقد بعد التوقيع في الحالتين: (أ) عدم الامتثال بشروط الدفع الواردة في البند 5؛ (ب) عدم التزام الطرف الثاني بالقوانين داخل دولة الإمارات العربية المتحدة.</p></t>
+                    </t>
+                    <t t-call="dekad_claude_customizations.ct_pair">
+                        <t t-set="en_body"><p><b class="ct-num">9.2</b> The Second Party may terminate this Contract after signing if: (a) the First Party does not implement the modules included in the implementation; or (b) not all of the Second Party's users are trained.</p></t>
+                        <t t-set="ar_body"><p><b class="ct-num">9.2</b> يجوز للطرف الثاني إنهاء العقد بعد التوقيع في الحالتين: (أ) عدم التزام الطرف الأول بتنفيذ وحدات المشروع المشمولة في التنفيذ؛ (ب) عدم تدريب جميع المستخدمين لدى الطرف الثاني.</p></t>
+                    </t>
+                    <t t-call="dekad_claude_customizations.ct_pair">
+                        <t t-set="en_body"><p><b class="ct-num">9.3</b> If the Second Party wishes to terminate this Contract unilaterally within <t t-out="o.ct_withdraw_days or '___'"/> working days of signing, the first payment is non-refundable and the cheque for the second payment is returned.</p></t>
+                        <t t-set="ar_body"><p><b class="ct-num">9.3</b> في حال رغبة الطرف الثاني في إنهاء العقد من طرف واحد خلال <t t-out="o.ct_withdraw_days or '___'"/> يوم عمل كحد أقصى من توقيع العقد، تكون الدفعة الأولى غير مستردة ويتم إرجاع شيك الدفعة الثانية.</p></t>
+                    </t>
+                    <t t-call="dekad_claude_customizations.ct_pair">
+                        <t t-set="en_body"><p><b class="ct-num">9.4</b> If the First Party terminates this Contract for the Second Party's default, or the Second Party cancels it after the withdrawal period in clause 9.3, the amounts already paid are non-refundable, and the Second Party remains liable for the instalments due and the value of the work performed up to the termination date.</p></t>
+                        <t t-set="ar_body"><p><b class="ct-num">9.4</b> إذا أنهى الطرف الأول العقد بسبب إخلال الطرف الثاني، أو ألغاه الطرف الثاني بعد انقضاء مهلة الانسحاب المذكورة في البند 9.3، فلا تُسترد المبالغ المدفوعة، ويبقى الطرف الثاني ملتزماً بالدفعات المستحقة وبقيمة الأعمال المنفذة حتى تاريخ الإنهاء.</p></t>
+                    </t>
+                    </div>
+                    <div style="page-break-inside:avoid;">
+                    <t t-call="dekad_claude_customizations.ct_heading"><t t-set="num" t-value="'10'"/><t t-set="en">General Provisions</t><t t-set="ar">أحكام عامة</t></t>
+                    <t t-call="dekad_claude_customizations.ct_pair">
+                        <t t-set="en_body"><ul><li>This Contract is the entire agreement between the Parties and supersedes any prior negotiations, agreements or understandings, oral or written, on its subject matter.</li></ul></t>
+                        <t t-set="ar_body"><ul><li>يُشكِّل هذا العقد الاتفاق الكامل بين الطرفين، ويحل محل أي مفاوضات أو اتفاقات أو تفاهمات سابقة، شفهية أو كتابية، تتعلق بموضوعه.</li></ul></t>
+                    </t>
+                    <t t-call="dekad_claude_customizations.ct_pair">
+                        <t t-set="en_body"><ul><li>No clause may be amended except by written consent signed by both Parties.</li></ul></t>
+                        <t t-set="ar_body"><ul><li>لا يجوز تعديل أي بند من بنود هذا العقد إلا بموافقة كتابية موقعة من الطرفين.</li></ul></t>
+                    </t>
+                    <t t-call="dekad_claude_customizations.ct_pair">
+                        <t t-set="en_body"><ul><li>Neither Party may assign this Contract or any of its rights or obligations to a third party without the other Party's prior written consent.</li></ul></t>
+                        <t t-set="ar_body"><ul><li>لا يجوز لأي طرف التنازل عن هذا العقد أو أي من حقوقه أو التزاماته لطرف ثالث دون موافقة كتابية مسبقة من الطرف الآخر.</li></ul></t>
+                    </t>
+                    <t t-call="dekad_claude_customizations.ct_pair">
+                        <t t-set="en_body"><ul><li>If any term is found unenforceable or contrary to law, the remaining terms stay in full force and effect.</li></ul></t>
+                        <t t-set="ar_body"><ul><li>في حال تبين أن أحد بنود هذا العقد غير قابل للتنفيذ أو مخالف للنظام، يبقى باقي البنود سارياً ونافذاً بكامل قوته.</li></ul></t>
+                    </t>
+                    <t t-call="dekad_claude_customizations.ct_pair">
+                        <t t-set="en_body"><ul><li>Official notices are sent to the e-mail address of each Party stated in this Contract, or by any other means agreed in writing.</li></ul></t>
+                        <t t-set="ar_body"><ul><li>تُعتمد وسائل التواصل التالية للإشعارات الرسمية: البريد الإلكتروني الموضح في بيانات كل طرف في هذا العقد، أو أي وسيلة أخرى يتفق عليها الطرفان كتابياً.</li></ul></t>
+                    </t>
+                    <t t-call="dekad_claude_customizations.ct_pair">
+                        <t t-set="en_body"><ul><li>This Contract is drawn up in two original copies of the same text and date, one received by each Party.</li></ul></t>
+                        <t t-set="ar_body"><ul><li>حُرر هذا العقد من نسختين أصليتين بنفس النص والتاريخ، استلم كل طرف نسخة منهما للعمل بموجبها.</li></ul></t>
+                    </t>
+                    </div>
+                    <div style="page-break-inside:avoid;">
+                    <t t-call="dekad_claude_customizations.ct_heading"><t t-set="num" t-value="'11'"/><t t-set="en">Signatures</t><t t-set="ar">التوقيعات</t></t>
+                    <t t-call="dekad_claude_customizations.ct_pair">
+                        <t t-set="en_body"><p>In witness whereof, this Contract was signed by the authorised representatives of the Parties on the date stated above.</p></t>
+                        <t t-set="ar_body"><p>وإثباتاً لما تقدم، تم التوقيع على هذا العقد من ممثلي الطرفين المخوَّلين بذلك في التاريخ المذكور أعلاه.</p></t>
+                    </t>
+                    </div>
+                    <table class="ct-sign o_ignore_layout_styling"><tr>
+                        <td>
+                            <h3>First Party / الطرف الأول</h3>
+                            <div class="ct-logo" t-att-style="'height:33mm;' if company.id == 4 else None"><img t-if="company.logo" t-att-src="image_data_uri(company.logo)" t-att-style="'max-height:32mm; max-width:85mm;' if company.id == 4 else 'max-height:24mm; max-width:70mm;'"/></div>
+                            <b><t t-out="info['name']"/></b>
+                            <div class="ct-r"><div class="ct-sl"><div>Name</div><div lang="ar" dir="rtl" class="ct-sla">الاسم</div></div><div class="ct-sv"><t t-out="signer.name or ''"/></div></div>
+                            <div class="ct-r"><div class="ct-sl"><div>Position</div><div lang="ar" dir="rtl" class="ct-sla">المنصب</div></div><div class="ct-sv"><t t-out="signer.partner_id.function or ''"/></div></div>
+                            <div class="ct-r"><div style="color:#75808f; font-size:9.5pt; overflow:hidden;"><span style="float:left;">Signature / Stamp</span><span lang="ar" dir="rtl" style="float:right;">التوقيع والختم</span></div><div style="height:42mm; border-bottom:1px solid #aab4c3; overflow:hidden; padding-top:2mm;"><div style="float:left; width:56%; padding-top:6mm;"><img t-if="signer.dekad_signature" t-att-src="image_data_uri(signer.dekad_signature)" style="max-height:34mm; max-width:100%;"/></div><div style="float:right; width:42%; text-align:right;"><img t-if="company.dekad_stamp" t-att-src="image_data_uri(company.dekad_stamp)" style="max-height:40mm; max-width:100%;"/></div></div></div>
+                            <div class="ct-r"><div class="ct-sl"><div>Date</div><div lang="ar" dir="rtl" class="ct-sla">التاريخ</div></div><div class="ct-sv"><span class="ct-ltr"><t t-out="o.cp_d(o.ct_date or o.cp_date())"/></span></div></div>
+                        </td>
+                        <td>
+                            <h3>Second Party / الطرف الثاني</h3>
+                            <t t-set="clogo" t-value="o.partner_id.image_1920 or partner.image_1920"/>
+                            <div class="ct-logo"><img t-if="clogo" t-att-src="image_data_uri(clogo)" style="max-height:24mm; max-width:70mm;"/></div>
+                            <b><t t-out="partner.name"/></b>
+                            <div class="ct-r"><div class="ct-sl"><div>Name</div><div lang="ar" dir="rtl" class="ct-sla">الاسم</div></div><div class="ct-sv"><t t-out="o.cp_cust_signer_name or ''"/></div></div>
+                            <div class="ct-r"><div class="ct-sl"><div>Position</div><div lang="ar" dir="rtl" class="ct-sla">المنصب</div></div><div class="ct-sv"><t t-out="o.cp_cust_signer_title or ''"/></div></div>
+                            <div class="ct-r"><div style="color:#75808f; font-size:9.5pt; overflow:hidden;"><span style="float:left;">Signature / Stamp</span><span lang="ar" dir="rtl" style="float:right;">التوقيع والختم</span></div><div style="height:42mm; border-bottom:1px solid #aab4c3; overflow:hidden; padding-top:2mm;"></div></div>
+                            <div class="ct-r"><div class="ct-sl"><div>Date</div><div lang="ar" dir="rtl" class="ct-sla">التاريخ</div></div><div class="ct-sv"></div></div>
+                        </td>
+                    </tr></table>
+                </div>
+            </div>
+        </t>
+    </template>
+</odoo>

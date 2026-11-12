@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Wizard Form View -->
+        <record id="view_module_translation_wizard_form" model="ir.ui.view">
+            <field name="name">module.translation.wizard.form</field>
+            <field name="model">module.translation.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Interactive Translator">
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="module_id" options="{'no_create': True}"/>
+                                <field name="lang_id" options="{'no_create': True}"/>
+                                <field name="untranslated_only"/>
+                            </group>
+                            <group>
+                                <button string="Load Terms" name="action_load_terms" type="object"
+                                        class="btn-secondary"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="Translations">
+                                <field name="line_ids" nolabel="1">
+                                    <list editable="bottom" create="false" delete="false">
+                                        <field name="source_string"/>
+                                        <field name="translation"/>
+                                    </list>
+                                </field>
+                            </page>
+                        </notebook>
+                    </sheet>
+                    <footer>
+                        <button string="Apply Translations" name="action_apply_translations" type="object"
+                                class="btn-primary"/>
+                        <button string="Cancel" class="btn-secondary" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <!-- Action to open wizard -->
+        <record id="action_module_translation_wizard" model="ir.actions.act_window">
+            <field name="name">Interactive Translator</field>
+            <field name="res_model">module.translation.wizard</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+
+        <!-- Menu Item (Placed under Settings > Translations) -->
+        <menuitem id="menu_module_translation_wizard"
+                  name="Interactive Translator"
+                  parent="base.menu_translation"
+                  action="action_module_translation_wizard"
+                  sequence="50"/>
+    </data>
+</odoo>

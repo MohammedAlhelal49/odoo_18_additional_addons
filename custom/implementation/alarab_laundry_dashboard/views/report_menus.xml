@@ -1,0 +1,61 @@
+<odoo>
+    <record id="action_report_daily" model="ir.actions.client">
+        <field name="name">Daily Sales</field>
+        <field name="tag">alarab_laundry_report</field>
+        <field name="params" eval="{'report': 'daily'}"/>
+    </record>
+    <record id="action_report_category" model="ir.actions.client">
+        <field name="name">Sales by Service and Item</field>
+        <field name="tag">alarab_laundry_report</field>
+        <field name="params" eval="{'report': 'category'}"/>
+    </record>
+    <record id="action_report_collection" model="ir.actions.client">
+        <field name="name">Collection by Payment Method</field>
+        <field name="tag">alarab_laundry_report</field>
+        <field name="params" eval="{'report': 'collection'}"/>
+    </record>
+    <record id="action_report_sessions" model="ir.actions.client">
+        <field name="name">Cash Register Sessions</field>
+        <field name="tag">alarab_laundry_report</field>
+        <field name="params" eval="{'report': 'sessions'}"/>
+    </record>
+    <record id="action_report_cashiers" model="ir.actions.client">
+        <field name="name">Cashier Performance</field>
+        <field name="tag">alarab_laundry_report</field>
+        <field name="params" eval="{'report': 'cashiers'}"/>
+    </record>
+    <record id="action_report_customers" model="ir.actions.client">
+        <field name="name">Customers</field>
+        <field name="tag">alarab_laundry_report</field>
+        <field name="params" eval="{'report': 'customers'}"/>
+    </record>
+
+    <record id="action_report_receivables" model="ir.actions.client">
+        <field name="name">Customer Balances (Receivables)</field>
+        <field name="tag">alarab_laundry_report</field>
+        <field name="params" eval="{'report': 'receivables'}"/>
+    </record>
+
+    <record id="action_report_statement" model="ir.actions.client">
+        <field name="name">Customer Statement</field>
+        <field name="tag">alarab_laundry_report</field>
+        <field name="params" eval="{'report': 'statement'}"/>
+    </record>
+    <record id="action_report_monthly_receivables" model="ir.actions.client">
+        <field name="name">Monthly Receivables</field>
+        <field name="tag">alarab_laundry_report</field>
+        <field name="params" eval="{'report': 'monthly_receivables'}"/>
+    </record>
+
+    <menuitem id="menu_laundry_reports" name="Reports" parent="menu_laundry_dashboard_root"
+              groups="alarab_laundry_dashboard.group_laundry_dashboard" sequence="10"/>
+    <menuitem id="menu_report_daily" name="Daily Sales" parent="menu_laundry_reports" action="action_report_daily" sequence="1"/>
+    <menuitem id="menu_report_category" name="Sales by Service and Item" parent="menu_laundry_reports" action="action_report_category" sequence="2"/>
+    <menuitem id="menu_report_collection" name="Collection by Payment Method" parent="menu_laundry_reports" action="action_report_collection" sequence="3"/>
+    <menuitem id="menu_report_sessions" name="Cash Register Sessions" parent="menu_laundry_reports" action="action_report_sessions" sequence="4"/>
+    <menuitem id="menu_report_cashiers" name="Cashier Performance" parent="menu_laundry_reports" action="action_report_cashiers" sequence="5"/>
+    <menuitem id="menu_report_customers" name="Customers" parent="menu_laundry_reports" action="action_report_customers" sequence="6"/>
+    <menuitem id="menu_report_receivables" name="Customer Balances (Receivables)" parent="menu_laundry_reports" action="action_report_receivables" sequence="7"/>
+    <menuitem id="menu_report_statement" name="Customer Statement" parent="menu_laundry_reports" action="action_report_statement" sequence="8"/>
+    <menuitem id="menu_report_monthly_receivables" name="Monthly Receivables" parent="menu_laundry_reports" action="action_report_monthly_receivables" sequence="9"/>
+</odoo>

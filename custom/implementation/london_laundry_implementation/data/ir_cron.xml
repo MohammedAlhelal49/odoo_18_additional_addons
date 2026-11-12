@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+    <!-- بيشتغل كل نص ساعة، وبيبعت تقرير اليوم الماضي لكل نقطة بيع مرة وحدة بعد الساعة 00:30 بتوقيتها -->
+    <record id="ir_cron_laundry_daily_report" model="ir.cron">
+        <field name="name">Laundry: Send Daily Report E-mails</field>
+        <field name="model_id" ref="model_london_laundry_daily_report"/>
+        <field name="state">code</field>
+        <field name="code">model._cron_send_daily_reports()</field>
+        <field name="interval_number">30</field>
+        <field name="interval_type">minutes</field>
+        <field name="active" eval="True"/>
+    </record>
+
+    <!-- إغلاق تلقائي للجلسات المنسية (شبكة أمان) بالوقت المحدد بإعدادات نقطة البيع -->
+    <record id="ir_cron_laundry_auto_close" model="ir.cron">
+        <field name="name">Laundry: Auto-close POS Sessions</field>
+        <field name="model_id" ref="point_of_sale.model_pos_session"/>
+        <field name="state">code</field>
+        <field name="code">model._cron_laundry_auto_close()</field>
+        <field name="interval_number">1</field>
+        <field name="interval_type">minutes</field>
+        <field name="active" eval="True"/>
+    </record>
+</odoo>

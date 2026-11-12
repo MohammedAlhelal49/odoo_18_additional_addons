@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+
+    <t t-name="osh_rahash_implementation.OrderReceipt">
+        <t t-set="d" t-value="props.data"/>
+        <t t-set="company" t-value="d.headerData.company"/>
+        <t t-set="taxTotals" t-value="d.taxTotals"/>
+        <!-- tax invoice only when the order has a real tax AND the company has a TRN;
+             otherwise a plain sales invoice with nothing tax related printed -->
+        <t t-set="hasTax" t-value="taxTotals and taxTotals.has_tax_groups and d.amount_tax and company.vat"/>
+        <!-- t-translation="off": the English labels must stay English when the POS is in Arabic -->
+        <div class="pos-receipt osh-receipt" t-translation="off">
+
+            <!-- ====== HEADER ====== -->
+            <div class="osh-header">
+                <!-- البراند أبيض وأسود (فيه الاسم عربي وإنجليزي، فما في داعي نكتبه) -->
+                <img src="/osh_rahash_implementation/static/src/img/brand_bw.png?v=2"
+                     class="osh-logo" alt="OSH Rahash"/>
+                <!-- shop contact (English | value | Arabic), fixed text given by the customer -->
+                <table class="osh-info osh-shop">
+                    <tr>
+                        <td class="osh-info-en">Address</td>
+                        <td class="osh-info-val" dir="rtl">العين - الجيمي - مريجب</td>
+                        <td class="osh-info-ar">العنوان</td>
+                    </tr>
+                    <tr>
+                        <td class="osh-info-en">Tel</td>
+                        <td class="osh-info-val">037227659</td>
+                        <td class="osh-info-ar">رقم الاتصال</td>
+                    </tr>
+                    <tr>
+                        <td class="osh-info-en">WhatsApp</td>
+                        <td class="osh-info-val">0505886030</td>
+                        <td class="osh-info-ar">واتساب</td>
+                    </tr>
+                </table>
+                <div t-if="d.headerData.header" class="osh-contact osh-pre" t-esc="d.headerData.header"/>
+                <div t-if="hasTax" class="osh-contact">TRN : <t t-esc="company.vat"/></div>
+            </div>
+
+            <!-- ====== TITLE ====== -->
+            <div class="osh-title">
+                <span class="osh-title-line"/>
+                <span class="osh-title-text">
+                    <t t-if="hasTax">Tax Invoice <span dir="rtl">فاتورة ضريبية</span></t>
+                    <t t-else="">Sales Invoice <span dir="rtl">فاتورة</span></t>
+                </span>
+                <span class="osh-title-line"/>
+            </div>
+
+            <!-- ====== ORDER INFO (English | value | Arabic) ====== -->
+            <table class="osh-info">
+                <tr>
+                    <td class="osh-info-en">No</td>
+                    <td class="osh-info-val osh-strong"><t t-esc="d.headerData.trackingNumber"/></td>
+                    <td class="osh-info-ar">الرقم</td>
+                </tr>
+                <tr>
+                    <td class="osh-info-en">Date</td>
+                    <td class="osh-info-val"><t t-esc="d.osh_date"/></td>
+                    <td class="osh-info-ar">التاريخ</td>
+                </tr>
+                <tr>
+                    <td class="osh-info-en">Time</td>
+                    <td class="osh-info-val"><t t-esc="d.osh_time"/></td>
+                    <td class="osh-info-ar">الوقت</td>
+                </tr>
+                <tr t-if="d.cashier">
+                    <td class="osh-info-en">Cashier</td>
+                    <td class="osh-info-val"><t t-esc="d.cashier"/></td>
+                    <td class="osh-info-ar">الكاشير</td>
+                </tr>
+                <tr t-if="d.partner_name">
+                    <td class="osh-info-en">Customer</td>
+                    <td class="osh-info-val"><t t-esc="d.partner_name"/></td>
+                    <td class="osh-info-ar">العميل</td>
+                </tr>
+                <tr t-if="d.partner_mobile">
+                    <td class="osh-info-en">Mobile</td>
+                    <td class="osh-info-val"><t t-esc="d.partner_mobile"/></td>
+                    <td class="osh-info-ar">الجوال</td>
+                </tr>
+            </table>
+
+            <!-- ====== ITEMS ====== -->
+            <table class="osh-items">
+                <thead>
+                    <tr>
+                        <th class="osh-col-item"><div class="osh-ar">الصنف</div>Item</th>
+                        <th class="osh-col-qty"><div class="osh-ar">الكمية</div>QTY</th>
+                        <th class="osh-col-rate"><div class="osh-ar">السعر</div>Rate</th>
+                        <th class="osh-col-total"><div class="osh-ar">الإجمالي</div>Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <t t-foreach="d.orderlines" t-as="line" t-key="line_index">
+                        <tr class="osh-item-row">
+                            <td class="osh-col-item">
+                                <div t-if="line.nameEn" class="osh-item-en" t-esc="line.nameEn"/>
+                                <div t-if="line.nameAr" class="osh-item-ar" dir="rtl" t-esc="line.nameAr"/>
+                                <div t-if="line.discount and line.discount !== '0'" class="osh-item-note">
+                                    Discount <t t-esc="line.discount"/>% خصم
+                                </div>
+                                <div t-if="line.customerNote" class="osh-item-note" dir="auto" t-esc="line.customerNote"/>
+                            </td>
+                            <td class="osh-col-qty">
+                                <t t-esc="line.qty"/>
+                                <div t-if="line.unit" t-esc="line.unit"/>
+                            </td>
+                            <td class="osh-col-rate"><t t-esc="line.rawUnitPrice"/></td>
+                            <td class="osh-col-total"><t t-esc="line.rawTotal"/></td>
+                        </tr>
+                    </t>
+                </tbody>
+            </table>
+            <div class="osh-items-count">
+                <span>Items <t t-esc="d.orderlines.length"/></span>
+                <span>Qty <t t-esc="d.total_qty"/></span>
+            </div>
+
+            <!-- ====== GENERAL NOTE (order note from the POS "General Note" button) ====== -->
+            <div t-if="d.generalNote" class="osh-general-note">
+                <div class="osh-general-note-title">Note <span dir="rtl">ملاحظات</span></div>
+                <div class="osh-pre" dir="auto" t-esc="d.generalNote"/>
+            </div>
+
+            <!-- ====== TOTALS ====== -->
+            <div class="osh-totals">
+                <!-- before-tax total only on a tax invoice (otherwise it equals Net) -->
+                <div t-if="hasTax" class="osh-total-row">
+                    <span class="osh-total-en">Total</span>
+                    <span class="osh-total-val" t-esc="props.formatCurrency(d.total_without_tax)"/>
+                    <span class="osh-total-ar">المجموع</span>
+                </div>
+                <t t-if="hasTax">
+                    <t t-foreach="taxTotals.subtotals" t-as="subtotal" t-key="subtotal.name">
+                        <t t-foreach="subtotal.tax_groups" t-as="tax_group" t-key="tax_group.id">
+                            <div class="osh-total-row">
+                                <span class="osh-total-en"><t t-esc="tax_group.group_name"/></span>
+                                <span class="osh-total-val" t-esc="props.formatCurrency(tax_group.tax_amount_currency)"/>
+                                <span class="osh-total-ar">الضريبة</span>
+                            </div>
+                        </t>
+                    </t>
+                </t>
+                <div t-if="d.show_rounding" class="osh-total-row">
+                    <span class="osh-total-en">Rounding</span>
+                    <span class="osh-total-val" t-esc="props.formatCurrency(d.order_rounding)"/>
+                    <span class="osh-total-ar">التقريب</span>
+                </div>
+                <div class="osh-total-row osh-net">
+                    <span class="osh-total-en">Net</span>
+                    <span class="osh-total-val" t-esc="props.formatCurrency(d.osh_net)"/>
+                    <span class="osh-total-ar">الصافي</span>
+                </div>
+                <div class="osh-total-row">
+                    <span class="osh-total-en">Paid</span>
+                    <span class="osh-total-val" t-esc="props.formatCurrency(d.total_paid)"/>
+                    <span class="osh-total-ar">المدفوع</span>
+                </div>
+                <div t-if="d.osh_payment_names" class="osh-pay-method" t-esc="d.osh_payment_names"/>
+                <div class="osh-total-row">
+                    <span class="osh-total-en">Change</span>
+                    <span class="osh-total-val" t-esc="props.formatCurrency(d.order_change or 0)"/>
+                    <span class="osh-total-ar">المتبقي</span>
+                </div>
+            </div>
+
+            <!-- ====== FOOTER ====== -->
+            <div t-if="d.footer" class="osh-footer-text osh-pre" t-esc="d.footer"/>
+            <div class="osh-ornament">✦ ✦ ✦</div>
+            <div class="osh-thanks">Thanks For Your Visit</div>
+            <div class="osh-thanks">Come Again</div>
+            <div class="osh-thanks osh-thanks-ar" dir="rtl">شكراً لزيارتكم</div>
+
+            <!-- ====== SOCIAL (Instagram / TikTok) ====== -->
+            <div class="osh-social-title">Follow Us <span dir="rtl">تابعونا</span></div>
+            <table class="osh-social">
+                <tr>
+                    <td>
+                        <img src="/osh_rahash_implementation/static/src/img/qr_instagram.png" alt="Instagram"/>
+                        <div>Instagram</div>
+                    </td>
+                    <td>
+                        <img src="/osh_rahash_implementation/static/src/img/qr_tiktok.png" alt="TikTok"/>
+                        <div>TikTok</div>
+                    </td>
+                </tr>
+            </table>
+            <div class="osh-social-handle">@osh.rahash</div>
+
+            <div t-if="d.pos_qr_code" class="osh-qr">
+                <img t-att-src="d.pos_qr_code" alt="QR"/>
+                <div t-if="d.ticket_code">Code: <t t-esc="d.ticket_code"/></div>
+            </div>
+            <br/>
+        </div>
+    </t>
+
+</templates>

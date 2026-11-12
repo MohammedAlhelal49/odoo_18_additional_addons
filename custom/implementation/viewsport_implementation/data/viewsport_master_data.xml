@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+    <!-- Payment terms from the "Payment Terms" dropdown of the Viewsport PO Excel template -->
+    <record id="payment_term_cdc" model="account.payment.term">
+        <field name="name">CDC</field>
+    </record>
+    <record id="payment_term_cash" model="account.payment.term">
+        <field name="name">Cash</field>
+    </record>
+    <record id="payment_term_pdc_30" model="account.payment.term">
+        <field name="name">PDC 30 Days</field>
+        <field name="line_ids" eval="[Command.clear(), Command.create({'value': 'percent', 'value_amount': 100.0, 'nb_days': 30})]"/>
+    </record>
+    <record id="payment_term_pdc_45" model="account.payment.term">
+        <field name="name">PDC 45 Days</field>
+        <field name="line_ids" eval="[Command.clear(), Command.create({'value': 'percent', 'value_amount': 100.0, 'nb_days': 45})]"/>
+    </record>
+    <record id="payment_term_pdc_60" model="account.payment.term">
+        <field name="name">PDC 60 Days</field>
+        <field name="line_ids" eval="[Command.clear(), Command.create({'value': 'percent', 'value_amount': 100.0, 'nb_days': 60})]"/>
+    </record>
+    <record id="payment_term_pdc_90" model="account.payment.term">
+        <field name="name">PDC 90 Days</field>
+        <field name="line_ids" eval="[Command.clear(), Command.create({'value': 'percent', 'value_amount': 100.0, 'nb_days': 90})]"/>
+    </record>
+    <record id="payment_term_mutually_agreed" model="account.payment.term">
+        <field name="name">To be mutually agreed</field>
+    </record>
+    <record id="payment_term_60_30_10" model="account.payment.term">
+        <field name="name">60% advance with order and 30% Against Martial Delivery and 10% up on completion.</field>
+        <field name="line_ids" eval="[Command.clear(),
+            Command.create({'value': 'percent', 'value_amount': 60.0, 'nb_days': 0}),
+            Command.create({'value': 'percent', 'value_amount': 30.0, 'nb_days': 0}),
+            Command.create({'value': 'percent', 'value_amount': 10.0, 'nb_days': 0})]"/>
+    </record>
+    <record id="payment_term_on_account" model="account.payment.term">
+        <field name="name">On Account</field>
+    </record>
+    <record id="payment_term_bank_transfer" model="account.payment.term">
+        <field name="name">Bank Transfer</field>
+    </record>
+    <record id="payment_term_monthly" model="account.payment.term">
+        <field name="name">Monthly Payment</field>
+    </record>
+    <record id="payment_term_50_50_delivery" model="account.payment.term">
+        <field name="name">50% Down Payment, 50% Prior to Delivery</field>
+        <field name="line_ids" eval="[Command.clear(),
+            Command.create({'value': 'percent', 'value_amount': 50.0, 'nb_days': 0}),
+            Command.create({'value': 'percent', 'value_amount': 50.0, 'nb_days': 0})]"/>
+    </record>
+
+    <!-- Contact persons from the "Contact Person" dropdown of the Viewsport PO Excel template -->
+    <record id="contact_nasir" model="res.partner">
+        <field name="name">Nasir</field>
+        <field name="parent_id" ref="base.main_partner"/>
+        <field name="country_id" ref="base.ae"/>
+    </record>
+    <record id="contact_waleed" model="res.partner">
+        <field name="name">Waleed</field>
+        <field name="parent_id" ref="base.main_partner"/>
+        <field name="country_id" ref="base.ae"/>
+    </record>
+    <record id="contact_abdulrasheed" model="res.partner">
+        <field name="name">Abdulrasheed</field>
+        <field name="parent_id" ref="base.main_partner"/>
+        <field name="country_id" ref="base.ae"/>
+    </record>
+    <record id="contact_shahbaz" model="res.partner">
+        <field name="name">Shahbaz</field>
+        <field name="parent_id" ref="base.main_partner"/>
+        <field name="country_id" ref="base.ae"/>
+    </record>
+    <record id="contact_office" model="res.partner">
+        <field name="name">Office</field>
+        <field name="parent_id" ref="base.main_partner"/>
+        <field name="country_id" ref="base.ae"/>
+    </record>
+    <record id="contact_farooq" model="res.partner">
+        <field name="name">Farooq</field>
+        <field name="parent_id" ref="base.main_partner"/>
+        <field name="country_id" ref="base.ae"/>
+    </record>
+</odoo>

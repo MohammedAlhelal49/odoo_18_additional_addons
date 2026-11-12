@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+    <!-- ChatGPT Ads (OpenAI) — مفتاح الـ Conversions API بينضاف يدوياً:
+         Settings > Technical > System Parameters > New
+         Key: alomran.openai_capi_key -->
+    <record id="param_openai_pixel_id" model="ir.config_parameter">
+        <field name="key">alomran.openai_pixel_id</field>
+        <field name="value">Hq3DiNGCoatRs8hZmvdVuz</field>
+    </record>
+    <!-- True خلال التجربة، بعدين False -->
+    <record id="param_openai_pixel_debug" model="ir.config_parameter">
+        <field name="key">alomran.openai_pixel_debug</field>
+        <field name="value">True</field>
+    </record>
+</odoo>

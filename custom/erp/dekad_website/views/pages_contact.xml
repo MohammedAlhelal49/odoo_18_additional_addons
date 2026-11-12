@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <template id="page_contact" name="Dekad- Contact">
+<t t-call="dekad_website.layout">
+    <section class="ve-page-hero" style="background-image:url(/dekad_website/static/src/img/contact_us.jpg);">
+        <div class="ve-page-hero-overlay"></div>
+        <div class="container ve-page-hero-content">
+            <span class="ve-section-tag ve-tag-onlight">Get In Touch</span>
+            <h1>We'd Love to <span style="color:#fff;">Hear From You</span></h1>
+            <nav aria-label="breadcrumb"><ol class="ve-breadcrumb"><li><a href="/">Home</a></li><li class="active">Contact</li></ol></nav>
+        </div>
+    </section>
+
+    <section class="ve-contact-cards-section">
+        <div class="container">
+            <div class="ve-contact-cards-grid">
+                <div class="ve-contact-info-card wow fadeInUp" data-wow-delay="100ms"><div class="ve-ci-icon"><i class="fa fa-clock-o"></i></div><h5>Business Hours</h5><p>Sat–Thu, 9am – 6pm</p></div>
+                <div class="ve-contact-info-card wow fadeInUp" data-wow-delay="250ms"><div class="ve-ci-icon"><i class="fa fa-phone"></i></div><h5>Call Us</h5><p><span class="dk-ltr" dir="ltr">+971 56 955 9537</span><br/><small>We're happy to help</small></p></div>
+                <div class="ve-contact-info-card wow fadeInUp" data-wow-delay="400ms"><div class="ve-ci-icon"><i class="fa fa-envelope"></i></div><h5>Email Us</h5><p>info@dekad.tech<br/><small>We reply within 24 hours</small></p></div>
+            </div>
+        </div>
+    </section>
+
+    <t t-if="form_sent">
+        <t t-call="dekad_website.success_modal">
+            <t t-set="modal_title">Message Sent!</t>
+            <t t-set="modal_message">Thank you! Your message has been sent — one of our advisors will reach out within one business day.</t>
+        </t>
+    </t>
+
+    <section class="ve-section ve-contact-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-12 col-lg-7 wow fadeInLeft" data-wow-delay="100ms">
+                    <div class="ve-contact-form-wrap">
+                        <span class="ve-section-tag ve-tag-invert">Send a Message</span>
+                        <h2>Let's Start a Conversation</h2>
+                        <p>Fill in the form and one of our advisors will contact you within one business day.</p>
+                        <t t-if="form_error">
+                            <div class="alert alert-danger" role="alert">Please fill in your name and a valid email address.</div>
+                        </t>
+                        <form class="ve-contact-form" action="/contact" method="post">
+                            <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                            <input type="text" class="ve-hp-field" tabindex="-1" autocomplete="off" name="company_url"/>
+                            <div class="ve-form-row">
+                                <div class="ve-form-group"><label>Full Name</label><input type="text" name="name" placeholder="Your full name" required="required"/></div>
+                                <div class="ve-form-group"><label>Email Address</label><input type="email" name="email" placeholder="Your email" required="required"/></div>
+                            </div>
+                            <div class="ve-form-row">
+                                <div class="ve-form-group"><label>Phone Number</label><input type="tel" name="phone" placeholder="Your phone"/></div>
+                                <div class="ve-form-group"><label>Service Interested In</label>
+                                    <select name="service">
+                                        <option value="">Select a service</option>
+                                        <option value="odoo-consultancy">Odoo Consultancy</option>
+                                        <option value="odoo-implementation">Odoo Implementation</option>
+                                        <option value="odoo-integration">Odoo Integration</option>
+                                        <option value="odoo-support">Odoo Support</option>
+                                        <option value="odoo-migration">Odoo Migration</option>
+                                        <option value="odoo-web-design">Odoo Web Design</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="ve-form-group"><label>Your Message</label><textarea name="message" rows="5" placeholder="Tell us about your business needs..."></textarea></div>
+                            <button type="submit" class="ve-btn-primary">Send Message <i class="fa fa-paper-plane"/></button>
+                        </form>
+                    </div>
+                </div>
+                <div class="col-12 col-lg-5 wow fadeInRight" data-wow-delay="200ms">
+                    <div class="ve-contact-aside">
+                        <div class="ve-ca-box">
+                            <h4>Why Clients Choose Us</h4>
+                            <ul class="ve-ca-list">
+                                <li><span class="ve-check-badge"><i class="fa fa-check"></i></span> Free initial consultation</li>
+                                <li><span class="ve-check-badge"><i class="fa fa-check"></i></span> Response within 24 hours</li>
+                                <li><span class="ve-check-badge"><i class="fa fa-check"></i></span> No sales pressure — ever</li>
+                                <li><span class="ve-check-badge"><i class="fa fa-check"></i></span> Certified Odoo implementation experts</li>
+                                <li><span class="ve-check-badge"><i class="fa fa-check"></i></span> Dedicated support after go-live</li>
+                            </ul>
+                        </div>
+                        <div class="ve-ca-hours">
+                            <h5><span class="ve-check-badge"><i class="fa fa-clock-o"></i></span> Office Hours</h5>
+                            <ul>
+                                <li><span>Saturday – Thursday</span><strong>9:00 AM – 6:00 PM</strong></li>
+                                <li><span>Friday</span><strong>Closed</strong></li>
+                            </ul>
+                        </div>
+<!--                        <div class="ve-ca-social">-->
+<!--                            <h5>Connect With Us</h5>-->
+<!--                            <div class="ve-social">-->
+<!--                                <a href="#"><i class="fa fa-facebook"></i></a>-->
+<!--                                <a href="#"><i class="fa fa-twitter"></i></a>-->
+<!--                                <a href="#"><i class="fa fa-linkedin"></i></a>-->
+<!--                                <a href="#"><i class="fa fa-instagram"></i></a>-->
+<!--                            </div>-->
+<!--                        </div>-->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+</t>
+    </template>
+
+</odoo>

@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_pos_pos_form_laundry_delivery" model="ir.ui.view">
+        <field name="name">pos.order.form.laundry.delivery</field>
+        <field name="model">pos.order</field>
+        <field name="inherit_id" ref="point_of_sale.view_pos_pos_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//header" position="inside">
+                <button name="action_laundry_whatsapp_ready" type="object" string="WhatsApp Ready" icon="fa-whatsapp"
+                        invisible="not partner_id or laundry_is_collection or state in ('draft', 'cancel')"/>
+            </xpath>
+            <field name="date_order" position="after">
+                <label for="laundry_expected_delivery"/>
+                <div class="o_row">
+                    <field name="laundry_expected_delivery" nolabel="1"/>
+                    <field name="laundry_expected_hour" nolabel="1" placeholder="Hour"
+                           invisible="not laundry_expected_delivery"/>
+                </div>
+                <field name="laundry_delivery_method_id" options="{'no_create': True}"/>
+                <field name="laundry_packing"/>
+                <field name="laundry_delivered_employee_id" invisible="not laundry_delivered_employee_id"/>
+                <field name="laundry_collection_status" widget="badge"
+                       decoration-success="laundry_collection_status in ('paid', 'credit_paid')"
+                       decoration-info="laundry_collection_status == 'collection'"
+                       decoration-muted="laundry_collection_status in ('collection_cancelled', 'collection_reversal')"
+                       decoration-warning="laundry_collection_status == 'credit_partial'"
+                       decoration-danger="laundry_collection_status == 'credit_unpaid'"/>
+                <field name="laundry_credit_amount" invisible="not laundry_credit_amount"/>
+                <field name="laundry_credit_remaining" invisible="not laundry_credit_amount"/>
+                <field name="laundry_pending_collection" invisible="not laundry_pending_collection"/>
+                <field name="laundry_reversed_order_id" invisible="not laundry_reversed_order_id"/>
+                <field name="laundry_reversal_order_ids" widget="many2many_tags" invisible="not laundry_reversal_order_ids"/>
+                <field name="laundry_partner_balance" invisible="not laundry_is_collection"/>
+                <field name="laundry_is_collection" invisible="1"/>
+            </field>
+            <xpath expr="//notebook" position="inside">
+                <page string="Collections" name="laundry_collections" invisible="not laundry_collection_payment_ids">
+                    <field name="laundry_collection_payment_ids" readonly="1">
+                        <list>
+                            <field name="payment_date"/>
+                            <field name="pos_order_id" string="Collection Order"/>
+                            <field name="session_id"/>
+                            <field name="amount" string="Collected"/>
+                            <field name="laundry_collected_due"/>
+                            <field name="laundry_reconciled" widget="boolean_toggle" readonly="1"/>
+                        </list>
+                    </field>
+                </page>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_pos_order_tree_laundry_collection" model="ir.ui.view">
+        <field name="name">pos.order.list.laundry.collection</field>
+        <field name="model">pos.order</field>
+        <field name="inherit_id" ref="point_of_sale.view_pos_order_tree"/>
+        <field name="arch" type="xml">
+            <field name="state" position="after">
+                <field name="laundry_collection_status" widget="badge" optional="show"
+                       decoration-success="laundry_collection_status in ('paid', 'credit_paid')"
+                       decoration-info="laundry_collection_status == 'collection'"
+                       decoration-muted="laundry_collection_status in ('collection_cancelled', 'collection_reversal')"
+                       decoration-warning="laundry_collection_status == 'credit_partial'"
+                       decoration-danger="laundry_collection_status == 'credit_unpaid'"/>
+                <field name="laundry_credit_amount" optional="hide" sum="On Credit"/>
+                <field name="laundry_credit_remaining" optional="hide" sum="Remaining"/>
+            </field>
+        </field>
+    </record>
+
+    <record id="view_pos_order_filter_laundry_collection" model="ir.ui.view">
+        <field name="name">pos.order.search.laundry.collection</field>
+        <field name="model">pos.order</field>
+        <field name="inherit_id" ref="point_of_sale.view_pos_order_filter"/>
+        <field name="arch" type="xml">
+            <filter name="cancelled" position="after">
+                <separator/>
+                <filter string="On Credit - Unpaid" name="laundry_credit_unpaid"
+                        domain="[('laundry_collection_status', 'in', ('credit_unpaid', 'credit_partial'))]"/>
+                <filter string="On Credit (all)" name="laundry_credit_all"
+                        domain="[('laundry_collection_status', 'in', ('credit_unpaid', 'credit_partial', 'credit_paid'))]"/>
+                <filter string="Collections" name="laundry_collections"
+                        domain="[('laundry_is_collection', '=', True)]"/>
+                <filter string="Collection Not Matched" name="laundry_collection_pending"
+                        domain="[('laundry_pending_collection', '!=', 0)]"/>
+            </filter>
+            <filter name="status" position="after">
+                <filter string="Collection Status" name="groupby_laundry_collection"
+                        context="{'group_by': 'laundry_collection_status'}"/>
+            </filter>
+        </field>
+    </record>
+</odoo>

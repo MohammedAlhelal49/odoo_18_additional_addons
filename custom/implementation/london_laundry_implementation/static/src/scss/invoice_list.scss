@@ -1,0 +1,46 @@
+// تظليل سطور لائحة الفواتير حسب التسليم والدفع (الشروط بـ account_move_views.xml):
+// أزرق = مسلّمة ومدفوعة، أخضر = مسلّمة ومو مدفوعة، أحمر = مو مسلّمة ومو مدفوعة،
+// أصفر = مدفوعة ولسا ما تسلّمت. النص بيضل بلونه العادي (غامق) حتى يضل مقروء.
+$laundry-default-bg: #ffffff;
+$laundry-row-colors: (
+    "primary": #9fc5f8,  // أزرق
+    "success": #9fdcae,  // أخضر
+    "danger": #f4a3a3,   // أحمر
+    "warning": #f7d774,  // أصفر
+);
+
+@mixin laundry-row-bg($bg) {
+    > td {
+        --bs-table-bg-type: #{$bg};
+        --bs-table-accent-bg: #{$bg};
+        background-color: $bg !important;
+        border-bottom-color: darken($bg, 12%);
+    }
+}
+
+.o_laundry_invoice_list .o_list_renderer .o_data_row {
+    @include laundry-row-bg($laundry-default-bg);
+
+    @each $name, $bg in $laundry-row-colors {
+        &.text-#{$name} {
+            color: #212529 !important;
+            @include laundry-row-bg($bg);
+
+            &:hover > td {
+                background-color: darken($bg, 8%) !important;
+            }
+        }
+    }
+}
+
+// خانة الرف داخل اللائحة: شفافة وبتبيّن حدودها عند المرور أو الكتابة
+.o_laundry_invoice_list .o_laundry_inline_char {
+    min-width: 4rem;
+    background-color: transparent;
+    border-bottom-color: rgba(0, 0, 0, 0.25);
+
+    &:hover, &:focus {
+        background-color: #ffffff;
+        border-bottom-color: #212529;
+    }
+}

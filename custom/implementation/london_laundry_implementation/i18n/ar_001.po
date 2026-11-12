@@ -1,0 +1,1246 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# * london_laundry_dashboard
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 18.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-10-17 20:28+0000\n"
+"PO-Revision-Date: 2026-10-17 20:28+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: ar_001\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Generated-By: Babel 2.10.3\n"
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/dashboard/laundry_dashboard.js
+#, python-format
+msgid "%(day)s %(hour)s:00 — %(count)s orders"
+msgstr "%(day)s الساعة %(hour)s:00 — %(count)s طلب"
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/dashboard/laundry_dashboard.js
+#, python-format
+msgid "%(new)s new · %(returning)s returning"
+msgstr "%(new)s جديد · %(returning)s عائد"
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/dashboard/laundry_dashboard.js
+#, python-format
+msgid "%(overdue)s overdue · %(count)s customers"
+msgstr "%(overdue)s متأخر · %(count)s زبون"
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/dashboard/laundry_dashboard.js
+#, python-format
+msgid "%s days"
+msgstr "%s يوم"
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/dashboard/laundry_dashboard.js
+#, python-format
+msgid "%s of collected"
+msgstr "%s من المحصّل"
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/dashboard/laundry_dashboard.js
+#, python-format
+msgid "%s open"
+msgstr "%s مفتوحة"
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/dashboard/laundry_dashboard.js
+#, python-format
+msgid "%s refund(s)"
+msgstr "%s مرتجع"
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/reports/laundry_report.js
+#, python-format
+msgid "%s selected"
+msgstr "%s محدد"
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/dashboard/laundry_dashboard.js
+#, python-format
+msgid "%s session(s) with a difference"
+msgstr "%s جلسة فيها فرق"
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/dashboard/laundry_dashboard.xml
+msgid "(all)"
+msgstr "(الكل)"
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/dashboard/laundry_dashboard.xml
+msgid "(number of orders)"
+msgstr "(عدد الطلبات)"
+
+#. module: london_laundry_implementation
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/report.py
+msgid "1-30 days"
+msgstr "1-30"
+
+#. module: london_laundry_implementation
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/report.py
+msgid "31-60 days"
+msgstr "31-60"
+
+#. module: london_laundry_implementation
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/report.py
+msgid "61-90 days"
+msgstr "61-90"
+
+#. module: london_laundry_implementation
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/report.py
+msgid "All cashiers"
+msgstr "كل الكاشيرية"
+
+#. module: london_laundry_implementation
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/report.py
+msgid "All payment methods"
+msgstr "كل طرق الدفع"
+
+#. module: london_laundry_implementation
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/report.py
+msgid "All points of sale"
+msgstr "كل نقاط البيع"
+
+#. module: london_laundry_implementation
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/report.py
+msgid "All services"
+msgstr "كل الخدمات"
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/report.py
+#: code:addons/london_laundry_implementation/static/src/dashboard/laundry_dashboard.xml
+msgid "Amount"
+msgstr "المبلغ"
+
+#. module: london_laundry_implementation
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/report.py
+#, python-format
+msgid "As of %s"
+msgstr "حتى تاريخ %s"
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/report.py
+#: code:addons/london_laundry_implementation/static/src/dashboard/laundry_dashboard.js
+msgid "Average order"
+msgstr "متوسط الطلب"
+
+#. module: london_laundry_implementation
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/report.py
+msgid "Balance"
+msgstr "الرصيد"
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/report.py
+#: code:addons/london_laundry_implementation/static/src/dashboard/laundry_dashboard.js
+msgid "Bank"
+msgstr "بنك"
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/dashboard/laundry_dashboard.js
+msgid "Bank collected"
+msgstr "المحصّل بنك"
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/dashboard/laundry_dashboard.xml
+msgid "Best-selling items"
+msgstr "الأكثر مبيعاً"
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/dashboard/laundry_dashboard.xml
+msgid "Busy hours"
+msgstr "ساعات الذروة"
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/report.py
+#: code:addons/london_laundry_implementation/static/src/dashboard/laundry_dashboard.js
+msgid "Cash"
+msgstr "نقدي"
+
+#. module: london_laundry_implementation
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/report.py
+msgid "Cash Register Sessions"
+msgstr "جلسات الصندوق"
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/dashboard/laundry_dashboard.xml
+msgid "Cash and bank collection"
+msgstr "التحصيل نقدي وبنك"
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/dashboard/laundry_dashboard.js
+msgid "Cash collected"
+msgstr "المحصّل نقدي"
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/dashboard/laundry_dashboard.js
+msgid "Cash difference"
+msgstr "فرق الصندوق"
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/dashboard/laundry_dashboard.xml
+msgid "Cash register sessions"
+msgstr "جلسات الصندوق"
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/report.py
+#: code:addons/london_laundry_implementation/static/src/dashboard/laundry_dashboard.xml
+msgid "Cashier"
+msgstr "الكاشير"
+
+#. module: london_laundry_implementation
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/report.py
+msgid "Cashier Performance"
+msgstr "أداء الكاشيرية"
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/dashboard/laundry_dashboard.xml
+msgid "Cashiers"
+msgstr "الكاشيرية"
+
+#. module: london_laundry_implementation
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/report.py
+msgid "Change %"
+msgstr "التغيّر %"
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/report.py
+#: code:addons/london_laundry_implementation/static/src/dashboard/laundry_dashboard.xml
+msgid "Closed"
+msgstr "أُغلقت"
+
+#. module: london_laundry_implementation
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/report.py
+msgid "Collection by Payment Method"
+msgstr "التحصيل حسب طريقة الدفع"
+
+#. module: london_laundry_implementation
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/report.py
+msgid "Compared with"
+msgstr "مقارنة مع"
+
+#. module: london_laundry_implementation
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/report.py
+#, python-format
+msgid "Compared with: %s"
+msgstr "مقارنة مع: %s"
+
+#. module: london_laundry_implementation
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/report.py
+#, python-format
+msgid "Comparison (%s)"
+msgstr "المقارنة (%s)"
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/report.py
+#: code:addons/london_laundry_implementation/static/src/dashboard/laundry_dashboard.xml
+msgid "Counted cash"
+msgstr "النقد المعدود"
+
+#. module: london_laundry_implementation
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/report.py
+msgid "Currency"
+msgstr "العملة"
+
+#. module: london_laundry_implementation
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/report.py
+#, python-format
+msgid "Currency: %s"
+msgstr "العملة: %s"
+
+#. module: london_laundry_implementation
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/dashboard.py
+msgid "Custom"
+msgstr "مخصص"
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/dashboard/laundry_dashboard.xml
+msgid "Customer"
+msgstr "الزبون"
+
+#. module: london_laundry_implementation
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/report.py
+msgid "Customer Balances (Receivables)"
+msgstr "أرصدة الزبائن (الذمم)"
+
+#. module: london_laundry_implementation
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/report.py
+msgid "Customer account (pay later)"
+msgstr "حساب الزبون (آجل)"
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/dashboard/laundry_dashboard.js
+msgid "Customer balances"
+msgstr "أرصدة الزبائن"
+
+#. module: london_laundry_implementation
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/report.py
+msgid "Customer payments"
+msgstr "دفعات الزبائن"
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/report.py
+#: code:addons/london_laundry_implementation/static/src/dashboard/laundry_dashboard.js
+msgid "Customers"
+msgstr "الزبائن"
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/dashboard/laundry_dashboard.xml
+msgid "Customers who stopped coming"
+msgstr "زبائن انقطعوا"
+
+#. module: london_laundry_implementation
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/report.py
+msgid "Daily Sales"
+msgstr "المبيعات اليومية"
+
+#. module: london_laundry_implementation
+msgid "Dashboard"
+msgstr "لوحة المؤشرات"
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/report.py
+#: code:addons/london_laundry_implementation/static/src/dashboard/laundry_dashboard.xml
+msgid "Difference"
+msgstr "الفرق"
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/report.py
+#: code:addons/london_laundry_implementation/static/src/dashboard/laundry_dashboard.xml
+msgid "Discounts"
+msgstr "الخصومات"
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/dashboard/laundry_dashboard.js
+msgid "Discounts given"
+msgstr "الخصومات الممنوحة"
+
+#. module: london_laundry_implementation
+msgid "Duplicate Warning"
+msgstr ""
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/reports/laundry_report.xml
+msgid "Excel"
+msgstr "Excel"
+
+#. module: london_laundry_implementation
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/report.py
+msgid "Excl. VAT"
+msgstr "بدون ضريبة"
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/report.py
+#: code:addons/london_laundry_implementation/static/src/dashboard/laundry_dashboard.xml
+msgid "Expected cash"
+msgstr "النقد المتوقع"
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/reports/laundry_report.xml
+msgid "Fold all"
+msgstr "طي الكل"
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/dashboard/laundry_dashboard.xml
+msgid "Item"
+msgstr "الصنف"
+
+#. module: london_laundry_implementation
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/dashboard.py
+msgid "Last 7 days"
+msgstr "آخر 7 أيام"
+
+#. module: london_laundry_implementation
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/dashboard.py
+msgid "Last month"
+msgstr "الشهر الماضي"
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/dashboard/laundry_dashboard.xml
+msgid "Last order"
+msgstr "آخر طلب"
+
+#. module: london_laundry_implementation
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/report.py
+msgid "Last visit"
+msgstr "آخر زيارة"
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/dashboard/laundry_dashboard.xml
+msgid "Laundry Dashboard"
+msgstr "لوحة مؤشرات المغسلة"
+
+#. module: london_laundry_implementation
+msgid "Laundry Manager Dashboard"
+msgstr "لوحة مؤشرات مدير المغسلة"
+
+#. module: london_laundry_implementation
+msgid "Laundry Report"
+msgstr "تقرير المغسلة"
+
+#. module: london_laundry_implementation
+msgid "Laundry Report PDF"
+msgstr "تقرير المغسلة PDF"
+
+#. module: london_laundry_implementation
+msgid "Laundry Reports"
+msgstr "تقارير المغسلة"
+
+#. module: london_laundry_implementation
+msgid "Mark Ready"
+msgstr "جاهز"
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/dashboard/laundry_dashboard.xml
+msgid "Missing or invalid phone number"
+msgstr "رقم الهاتف غير موجود أو غير صالح"
+
+#. module: london_laundry_implementation
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/report.py
+msgid "Net excl. VAT"
+msgstr "الصافي بدون ضريبة"
+
+#. module: london_laundry_implementation
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/report.py
+msgid "Net sales"
+msgstr "صافي المبيعات"
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/dashboard/laundry_dashboard.js
+msgid "New"
+msgstr "جديد"
+
+#. module: london_laundry_implementation
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/report.py
+msgid "No comparison"
+msgstr "بدون مقارنة"
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/dashboard/laundry_dashboard.xml
+msgid "No customers to win back"
+msgstr "لا يوجد زبائن منقطعون"
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/reports/laundry_report.xml
+msgid "No data for this period"
+msgstr "لا توجد بيانات لهذه الفترة"
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/dashboard/laundry_dashboard.xml
+msgid "No identified customers in this period"
+msgstr "لا يوجد زبائن مسجّلون في هذه الفترة"
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/dashboard/laundry_dashboard.xml
+msgid "No sales in this period"
+msgstr "لا توجد مبيعات في هذه الفترة"
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/dashboard/laundry_dashboard.xml
+msgid "No sessions in this period"
+msgstr "لا توجد جلسات في هذه الفترة"
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/dashboard/laundry_dashboard.js
+#, python-format
+msgid "No visit for %s+ days"
+msgstr "بدون زيارة منذ %s+ يوم"
+
+#. module: london_laundry_implementation
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/report.py
+msgid "Not due"
+msgstr "غير مستحق"
+
+#. module: london_laundry_implementation
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/report.py
+msgid "Note"
+msgstr "ملاحظة"
+
+#. module: london_laundry_implementation
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/report.py
+msgid "Older"
+msgstr "أقدم"
+
+#. module: london_laundry_implementation
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/report.py
+msgid "Oldest due"
+msgstr "أقدم استحقاق"
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/reports/laundry_report.xml
+msgid ""
+"Open balances from accounting: unpaid invoices and customer-account sales, "
+"minus payments not yet matched."
+msgstr ""
+"الأرصدة المفتوحة من المحاسبة: الفواتير غير المدفوعة ومبيعات الحساب الآجل، "
+"مطروحاً منها الدفعات غير المطابقة."
+
+#. module: london_laundry_implementation
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/report.py
+msgid "Opened"
+msgstr "فُتحت"
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/report.py
+#: code:addons/london_laundry_implementation/static/src/dashboard/laundry_dashboard.xml
+msgid "Opened by"
+msgstr "فتحها"
+
+#. module: london_laundry_implementation
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/pos_order.py
+#, python-format
+msgid "Order %s is already marked as picked up."
+msgstr "الطلب %s مسجّل مسبقاً كمُستلم."
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/report.py
+#: code:addons/london_laundry_implementation/static/src/dashboard/laundry_dashboard.js
+#: code:addons/london_laundry_implementation/static/src/dashboard/laundry_dashboard.xml
+msgid "Orders"
+msgstr "الطلبات"
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/dashboard/laundry_dashboard.js
+msgid "Other"
+msgstr "أخرى"
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/reports/laundry_report.xml
+msgid "PDF"
+msgstr "PDF"
+
+#. module: london_laundry_implementation
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/report.py
+msgid "POS"
+msgstr "نقطة البيع"
+
+#. module: london_laundry_implementation
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/report.py
+msgid "Payment"
+msgstr "الدفع"
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/report.py
+#: code:addons/london_laundry_implementation/static/src/dashboard/laundry_dashboard.js
+msgid "Payments"
+msgstr "المدفوعات"
+
+#. module: london_laundry_implementation
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/report.py
+msgid "Period"
+msgstr "الفترة"
+
+#. module: london_laundry_implementation
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/report.py
+#, python-format
+msgid "Period: %s"
+msgstr "الفترة: %s"
+
+#. module: london_laundry_implementation
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/report.py
+msgid "Phone"
+msgstr "الهاتف"
+
+#. module: london_laundry_implementation
+msgid "Picked Up"
+msgstr "تم الاستلام"
+
+#. module: london_laundry_implementation
+msgid "Picked Up On"
+msgstr "تاريخ الاستلام"
+
+#. module: london_laundry_implementation
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/dashboard.py
+msgid "Please choose a period of 3 years or less."
+msgstr "يرجى اختيار فترة 3 سنوات أو أقل."
+
+#. module: london_laundry_implementation
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/dashboard.py
+msgid "Please choose both dates."
+msgstr "يرجى اختيار التاريخين."
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/report.py
+#: code:addons/london_laundry_implementation/static/src/dashboard/laundry_dashboard.xml
+msgid "Point of Sale"
+msgstr "نقطة البيع"
+
+#. module: london_laundry_implementation
+msgid "Point of Sale Orders"
+msgstr "طلبات نقطة البيع"
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/dashboard/laundry_dashboard.xml
+msgid "Point of Sale:"
+msgstr "نقطة البيع:"
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/report.py
+#: code:addons/london_laundry_implementation/static/src/dashboard/laundry_dashboard.js
+msgid "Previous period"
+msgstr "الفترة السابقة"
+
+#. module: london_laundry_implementation
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/report.py
+msgid "Printed on"
+msgstr "تاريخ الطباعة"
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/dashboard/laundry_dashboard.xml
+msgid "Qty"
+msgstr "الكمية"
+
+#. module: london_laundry_implementation
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/report.py
+msgid "Quantity"
+msgstr "الكمية"
+
+#. module: london_laundry_implementation
+msgid "Ready On"
+msgstr "تاريخ الجاهزية"
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/dashboard/laundry_dashboard.xml
+msgid "Refresh"
+msgstr "تحديث"
+
+#. module: london_laundry_implementation
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/report.py
+msgid "Refunded amount"
+msgstr "المبلغ المرتجع"
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/report.py
+#: code:addons/london_laundry_implementation/static/src/dashboard/laundry_dashboard.js
+#: code:addons/london_laundry_implementation/static/src/dashboard/laundry_dashboard.xml
+msgid "Refunds"
+msgstr "المرتجعات"
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/dashboard/laundry_dashboard.xml
+msgid ""
+"Regular customers (2+ orders) who have not ordered recently, sorted by total"
+" spent. Not affected by the period filter."
+msgstr ""
+"زبائن دائمون (طلبين أو أكثر) لم يطلبوا مؤخراً، مرتبين حسب إجمالي الإنفاق. لا"
+" يتأثر بفلتر الفترة."
+
+#. module: london_laundry_implementation
+msgid "Reports"
+msgstr "التقارير"
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/report.py
+#: code:addons/london_laundry_implementation/static/src/dashboard/laundry_dashboard.js
+#: code:addons/london_laundry_implementation/static/src/dashboard/laundry_dashboard.xml
+msgid "Sales"
+msgstr "المبيعات"
+
+#. module: london_laundry_implementation
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/report.py
+msgid "Sales by Service and Item"
+msgstr "المبيعات حسب الخدمة والصنف"
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/dashboard/laundry_dashboard.xml
+msgid "Sales trend"
+msgstr "اتجاه المبيعات"
+
+#. module: london_laundry_implementation
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/report.py
+msgid "Same period last year"
+msgstr "نفس الفترة من السنة الماضية"
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/dashboard/laundry_dashboard.xml
+msgid "Send WhatsApp"
+msgstr "إرسال واتساب"
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/reports/laundry_report.xml
+msgid "Send payment reminder"
+msgstr "إرسال تذكير بالدفع"
+
+#. module: london_laundry_implementation
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/report.py
+msgid "Service"
+msgstr "الخدمة"
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/dashboard/laundry_dashboard.xml
+msgid "Service mix"
+msgstr "توزيع الخدمات"
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/dashboard/laundry_dashboard.xml
+msgid "Session"
+msgstr "الجلسة"
+
+#. module: london_laundry_implementation
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/report.py
+msgid "Share %"
+msgstr "النسبة %"
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/dashboard/laundry_dashboard.js
+msgid "Sold on account"
+msgstr "مبيعات آجلة"
+
+#. module: london_laundry_implementation
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/report.py
+msgid "Sold on customer account"
+msgstr "مبيعات على حساب الزبون"
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/report.py
+#: code:addons/london_laundry_implementation/static/src/dashboard/laundry_dashboard.xml
+msgid "Spent"
+msgstr "الإنفاق"
+
+#. module: london_laundry_implementation
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/report.py
+msgid "Status"
+msgstr "الحالة"
+
+#. module: london_laundry_implementation
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/dashboard.py
+msgid "The start date must be before the end date."
+msgstr "يجب أن يكون تاريخ البداية قبل تاريخ النهاية."
+
+#. module: london_laundry_implementation
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/dashboard.py
+msgid "This month"
+msgstr "هذا الشهر"
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/dashboard/laundry_dashboard.js
+msgid "This period"
+msgstr "هذه الفترة"
+
+#. module: london_laundry_implementation
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/dashboard.py
+msgid "This year"
+msgstr "هذه السنة"
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/dashboard/laundry_dashboard.js
+#, python-format
+msgid ""
+"Times are shown in your user timezone (%(user)s), which differs from this "
+"device (%(device)s). You can change it in your preferences."
+msgstr ""
+"الأوقات معروضة حسب المنطقة الزمنية لمستخدمك (%(user)s)، وهي مختلفة عن هذا "
+"الجهاز (%(device)s). يمكنك تغييرها من التفضيلات."
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/dashboard/laundry_dashboard.js
+#, python-format
+msgid "Times in %s"
+msgstr "الأوقات حسب %s"
+
+#. module: london_laundry_implementation
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/dashboard.py
+msgid "Today"
+msgstr "اليوم"
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/dashboard/laundry_dashboard.xml
+msgid "Top customers"
+msgstr "أفضل الزبائن"
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/report.py
+#: code:addons/london_laundry_implementation/static/src/reports/laundry_report.xml
+msgid "Total"
+msgstr "الإجمالي"
+
+#. module: london_laundry_implementation
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/report.py
+msgid "Unallocated payments"
+msgstr "دفعات غير مخصصة"
+
+#. module: london_laundry_implementation
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/dashboard.py
+#: code:addons/london_laundry_implementation/models/report.py
+msgid "Uncategorized"
+msgstr "بدون تصنيف"
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/reports/laundry_report.xml
+msgid "Unfold all"
+msgstr "توسيع الكل"
+
+#. module: london_laundry_implementation
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/dashboard.py
+msgid "Unknown"
+msgstr "غير معروف"
+
+#. module: london_laundry_implementation
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/dashboard.py
+msgid "Unknown period."
+msgstr "فترة غير معروفة."
+
+#. module: london_laundry_implementation
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/report.py
+msgid "Unknown report."
+msgstr "تقرير غير معروف."
+
+#. module: london_laundry_implementation
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/report.py
+msgid "VAT"
+msgstr "الضريبة"
+
+#. module: london_laundry_implementation
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/report.py
+msgid "Walk-in customers"
+msgstr "زبائن بدون اسم"
+
+#. module: london_laundry_implementation
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/report.py
+msgid "Walk-in customers (no name)"
+msgstr "زبائن بدون اسم (عابرون)"
+
+#. module: london_laundry_implementation
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/report.py
+msgid "Without customer"
+msgstr "بدون زبون"
+
+#. module: london_laundry_implementation
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/dashboard.py
+msgid "Yesterday"
+msgstr "أمس"
+
+#. module: london_laundry_implementation
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/dashboard.py
+msgid "You are not allowed to open the laundry dashboard."
+msgstr "غير مسموح لك بفتح لوحة مؤشرات المغسلة."
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/dashboard/laundry_dashboard.js
+#, python-format
+msgid "compared with %s"
+msgstr "مقارنة مع %s"
+
+#. module: london_laundry_implementation
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/report.py
+msgid ""
+"customer payments made outside the POS are not linked to a branch or "
+"cashier, so they are only included when all points of sale are selected"
+msgstr ""
+"دفعات الزبائن المسجلة خارج نقطة البيع غير مرتبطة بفرع أو كاشير، لذلك تظهر "
+"فقط عند اختيار كل نقاط البيع"
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/dashboard/laundry_dashboard.js
+#, python-format
+msgid "excl. VAT %s"
+msgstr "بدون ضريبة %s"
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/dashboard/laundry_dashboard.js
+#, python-format
+msgid "incl. %s paid outside the POS"
+msgstr "منها %s دُفعت خارج نقطة البيع"
+
+#. module: london_laundry_implementation
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/report.py
+msgid "not collected yet"
+msgstr "لم تُحصّل بعد"
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/dashboard/laundry_dashboard.js
+msgid "to be collected later"
+msgstr "تُحصّل لاحقاً"
+
+#. module: london_laundry_implementation
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/report.py:0
+msgid "%(open)s of %(count)s open"
+msgstr "%(open)s مفتوحة من %(count)s"
+
+#. module: london_laundry_implementation
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/report.py:0
+msgid "All branches"
+msgstr "كل الفروع"
+
+#. module: london_laundry_implementation
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/report.py:0
+msgid "All customers"
+msgstr "كل الزبائن"
+
+#. module: london_laundry_implementation
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/report.py:0
+msgid "All orders"
+msgstr "كل الطلبات"
+
+#. module: london_laundry_implementation
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/report.py:0
+#: model_terms:ir.ui.view,arch_db:london_laundry_implementation.report_customer_statement
+msgid "Amount excl. VAT"
+msgstr "المبلغ بدون ضريبة"
+
+#. module: london_laundry_implementation
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/report.py:0
+#: model_terms:ir.ui.view,arch_db:london_laundry_implementation.report_customer_statement
+msgid "Amount incl. VAT"
+msgstr "المبلغ مع الضريبة"
+
+#. module: london_laundry_implementation
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/report.py:0
+msgid "Branch"
+msgstr "الفرع"
+
+#. module: london_laundry_implementation
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/report.py:0
+msgid "Collected %"
+msgstr "نسبة التحصيل %"
+
+#. module: london_laundry_implementation
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/report.py:0
+#: model:ir.actions.client,name:london_laundry_implementation.action_report_statement
+#: model:ir.actions.report,name:london_laundry_implementation.action_report_customer_statement
+#: model:ir.ui.menu,name:london_laundry_implementation.menu_report_statement
+#: model_terms:ir.ui.view,arch_db:london_laundry_implementation.res_config_settings_view_form_laundry_daily_report
+msgid "Customer Statement"
+msgstr "كشف ذمم الزبائن"
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/reports/laundry_report.xml:0
+msgid "Customer name, phone or reference"
+msgstr "اسم الزبون أو هاتفه أو رقمه المرجعي"
+
+#. module: london_laundry_implementation
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/report.py:0
+msgid ""
+"Customer orders by month. Paid and remaining amounts are as of today; open a"
+" month to see the customers who still owe from it."
+msgstr ""
+"طلبات الزبائن حسب الشهر. المبالغ المدفوعة والمتبقية حسب وضعها اليوم؛ افتح "
+"الشهر لترى الزبائن الذين ما زال عليهم مبالغ منه."
+
+#. module: london_laundry_implementation
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/report.py:0
+msgid ""
+"Customer orders dated in the period. Paid and remaining amounts are as of "
+"today (collections taken at the POS included). Previous balance: what is "
+"still owed from before the period."
+msgstr ""
+"طلبات الزبائن المؤرخة ضمن الفترة. المبالغ المدفوعة والمتبقية حسب وضعها اليوم"
+" (مع التحصيلات من نقطة البيع). الرصيد السابق: ما زال مستحقاً من قبل الفترة."
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#: code:addons/london_laundry_implementation/static/src/reports/laundry_report.xml:0
+msgid "Customer statement (PDF)"
+msgstr "كشف حساب الزبون (PDF)"
+
+#. module: london_laundry_implementation
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/report.py:0
+msgid "Customers with a balance"
+msgstr "الزبائن المدينون فقط"
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/report.py:0
+#: code:addons/london_laundry_implementation/static/src/reports/laundry_report.xml:0
+msgid "Minimum due"
+msgstr "الحد الأدنى للمستحق"
+
+#. module: london_laundry_implementation
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/report.py:0
+#: model:ir.actions.client,name:london_laundry_implementation.action_report_monthly_receivables
+#: model:ir.ui.menu,name:london_laundry_implementation.menu_report_monthly_receivables
+msgid "Monthly Receivables"
+msgstr "الذمم الشهرية"
+
+#. module: london_laundry_implementation
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/report.py:0
+msgid "Not paid"
+msgstr "غير مدفوعة"
+
+#. module: london_laundry_implementation
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/report.py:0
+msgid "Open orders"
+msgstr "طلبات مفتوحة"
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/report.py:0
+#: code:addons/london_laundry_implementation/static/src/js/ticket_screen_patch.js:0
+#: code:addons/london_laundry_implementation/static/src/xml/receipt.xml:0
+#: model:ir.model.fields.selection,name:london_laundry_implementation.selection__pos_order__laundry_collection_status__paid
+#: model_terms:ir.ui.view,arch_db:london_laundry_implementation.report_customer_statement
+msgid "Paid"
+msgstr "مدفوعة"
+
+#. module: london_laundry_implementation
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/report.py:0
+msgid "Partially paid"
+msgstr "مدفوعة جزئياً"
+
+#. module: london_laundry_implementation
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/report.py:0
+#: model_terms:ir.ui.view,arch_db:london_laundry_implementation.report_customer_statement
+msgid "Previous balance"
+msgstr "رصيد سابق"
+
+#. module: london_laundry_implementation
+#. odoo-javascript
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/report.py:0
+#: code:addons/london_laundry_implementation/static/src/xml/collect_payment_popup.xml:0
+#: code:addons/london_laundry_implementation/static/src/xml/receipt.xml:0
+#: model_terms:ir.ui.view,arch_db:london_laundry_implementation.report_customer_statement
+#: model_terms:ir.ui.view,arch_db:london_laundry_implementation.view_pos_order_tree_laundry_collection
+msgid "Remaining"
+msgstr "المتبقي"
+
+#. module: london_laundry_implementation
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/report.py:0
+msgid "Show"
+msgstr "العرض"
+
+#. module: london_laundry_implementation
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/report.py:0
+msgid "Specific month"
+msgstr "شهر محدد"
+
+#. module: london_laundry_implementation
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/report.py:0
+msgid "Specific year"
+msgstr "سنة محددة"
+
+#. module: london_laundry_implementation
+#: model:ir.model.fields,field_description:london_laundry_implementation.field_res_config_settings__laundry_statement_whatsapp_message
+#: model_terms:ir.ui.view,arch_db:london_laundry_implementation.res_config_settings_view_form_laundry_daily_report
+msgid "Statement WhatsApp Message"
+msgstr "رسالة واتساب لكشف الحساب"
+
+#. module: london_laundry_implementation
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/report.py:0
+msgid "Top 10 debtors"
+msgstr "أكبر 10 مدينين"
+
+#. module: london_laundry_implementation
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/report.py:0
+msgid "Top 20 debtors"
+msgstr "أكبر 20 مدين"
+
+#. module: london_laundry_implementation
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/report.py:0
+msgid "Top 50 debtors"
+msgstr "أكبر 50 مدين"
+
+#. module: london_laundry_implementation
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/report.py:0
+msgid "Top debtor"
+msgstr "أكبر مدين"
+
+#. module: london_laundry_implementation
+#. odoo-python
+#: code:addons/london_laundry_implementation/models/report.py:0
+#: model_terms:ir.ui.view,arch_db:london_laundry_implementation.report_customer_statement
+msgid "Total due"
+msgstr "إجمالي المستحق"

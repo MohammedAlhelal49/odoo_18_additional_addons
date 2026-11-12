@@ -1,0 +1,325 @@
+/*rtl:begin:ignore*/
+/* The receipt is always LTR (English left, Arabic right). When the user language is
+   Arabic, Odoo runs rtlcss on the bundle, which would flip direction, left/right and
+   text-align here and lay the receipt out mirrored (cut on the left when printing). */
+/* ===== OSH RAHASH POS RECEIPT ===== */
+/* أبيض وأسود بس (طابعة حرارية) */
+/* Every size is designed for a 266px wide receipt (screen preview and browser
+   printing, see @media print in point_of_sale receipt_screen.scss) and written
+   as N * var(--u).
+   A direct printer (ePOS / IoT box) prints an image of the receipt rendered with
+   the .pos-receipt-print class at 512px, pixel for pixel, so there --u scales
+   the whole receipt to 512px. Without it the receipt fills half the paper. */
+
+.pos-receipt.osh-receipt {
+    --u: 1px;
+}
+
+.pos-receipt.osh-receipt.pos-receipt-print {
+    --u: calc(512px / 266);
+}
+
+.pos-receipt.osh-receipt {
+    /* the POS in Arabic is RTL: keep the receipt LTR (English left, Arabic right),
+       otherwise anything too wide is cut on the left */
+    direction: ltr;
+    box-sizing: border-box;
+    width: calc(266 * var(--u));
+    max-width: 100%;
+    margin: 0 auto;
+    padding: calc(2 * var(--u));
+    overflow-wrap: anywhere;
+    font-family: Tahoma, 'DejaVu Sans', Arial, sans-serif;
+    font-size: calc(12 * var(--u));
+    line-height: 1.3;
+    color: #000;
+    background: #fff;
+}
+
+.osh-receipt *,
+.osh-receipt *::before,
+.osh-receipt *::after {
+    box-sizing: border-box;
+}
+
+.osh-receipt [dir="rtl"],
+.osh-receipt .osh-ar,
+.osh-receipt .osh-info-ar,
+.osh-receipt .osh-total-ar {
+    font-family: Tahoma, 'DejaVu Sans', Arial, sans-serif;
+}
+
+.osh-pre {
+    white-space: pre-line;
+}
+
+/* HEADER */
+.osh-header {
+    text-align: center;
+}
+
+.osh-logo {
+    display: block;
+    width: calc(170 * var(--u));
+    height: auto;
+    margin: 0 auto calc(4 * var(--u)) auto;
+}
+
+.osh-contact {
+    font-size: calc(11 * var(--u));
+    margin-top: calc(1 * var(--u));
+}
+
+/* TITLE: خط - العنوان - خط */
+.osh-title {
+    display: flex;
+    align-items: center;
+    margin: calc(6 * var(--u)) 0 calc(4 * var(--u)) 0;
+}
+
+.osh-title-line {
+    flex: 1;
+    min-width: calc(8 * var(--u));
+    border-top: calc(1 * var(--u)) solid #000;
+}
+
+.osh-title-text {
+    padding: 0 calc(4 * var(--u));
+    font-size: calc(13 * var(--u));
+    font-weight: bold;
+    text-align: center;
+}
+
+/* ORDER INFO */
+.osh-info {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
+    font-size: calc(12 * var(--u));
+    margin-bottom: calc(3 * var(--u));
+}
+
+.osh-info td {
+    padding: calc(1 * var(--u)) 0;
+    vertical-align: middle;
+}
+
+.osh-info-en  { width: 27%; text-align: left; }
+.osh-info-val { width: 46%; text-align: center; }
+.osh-info-ar  { width: 27%; text-align: right; direction: rtl; }
+
+.osh-strong {
+    font-size: calc(15 * var(--u));
+    font-weight: bold;
+}
+
+/* ITEMS TABLE */
+.osh-items {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
+    font-size: calc(11 * var(--u));
+}
+
+.osh-items thead th {
+    border-top: calc(2 * var(--u)) solid #000;
+    border-bottom: calc(2 * var(--u)) solid #000;
+    padding: calc(2 * var(--u)) calc(1 * var(--u));
+    font-size: calc(10 * var(--u));
+    font-weight: bold;
+    vertical-align: bottom;
+}
+
+.osh-items .osh-ar {
+    font-size: calc(10 * var(--u));
+    font-weight: normal;
+}
+
+.osh-items td {
+    padding: calc(3 * var(--u)) calc(1 * var(--u));
+    vertical-align: top;
+}
+
+.osh-item-row + .osh-item-row td {
+    border-top: calc(1 * var(--u)) dotted #000;
+}
+
+.osh-col-item  { width: 42%; text-align: left; }
+.osh-col-qty   { width: 17%; text-align: center; }
+.osh-col-rate  { width: 19%; text-align: right; }
+.osh-col-total { width: 22%; text-align: right; font-weight: bold; }
+
+.osh-items th.osh-col-total { font-weight: bold; }
+
+.osh-item-en {
+    font-weight: bold;
+}
+
+.osh-item-ar {
+    text-align: right;
+    font-size: calc(12 * var(--u));
+}
+
+.osh-item-note {
+    font-size: calc(10 * var(--u));
+    font-style: italic;
+}
+
+.osh-items-count {
+    display: flex;
+    justify-content: space-between;
+    font-size: calc(10 * var(--u));
+    border-top: calc(2 * var(--u)) solid #000;
+    padding-top: calc(2 * var(--u));
+}
+
+/* TOTALS: English | value | Arabic */
+.osh-totals {
+    margin-top: calc(4 * var(--u));
+}
+
+.osh-total-row {
+    display: flex;
+    align-items: center;
+    padding: calc(2 * var(--u)) 0;
+    border-bottom: calc(1 * var(--u)) dashed #000;
+    font-size: calc(12 * var(--u));
+}
+
+/* min-width: 0 lets the three parts shrink and wrap instead of overflowing */
+.osh-total-en  { flex: 1; min-width: 0; text-align: left; font-weight: bold; }
+.osh-total-val { flex: 1.4; min-width: 0; text-align: center; }
+.osh-total-ar  { flex: 1; min-width: 0; text-align: right; direction: rtl; font-weight: bold; }
+
+.osh-net {
+    border: calc(2 * var(--u)) solid #000;
+    border-radius: calc(5 * var(--u));
+    padding: calc(3 * var(--u)) calc(4 * var(--u));
+    margin: calc(3 * var(--u)) 0;
+    font-size: calc(14 * var(--u));
+}
+
+.osh-net .osh-total-val {
+    flex: 2.2;
+    font-weight: bold;
+}
+
+.osh-pay-method {
+    text-align: center;
+    font-size: calc(10 * var(--u));
+    padding: calc(1 * var(--u)) 0;
+}
+
+/* FOOTER */
+.osh-footer-text {
+    text-align: center;
+    font-size: calc(11 * var(--u));
+    margin-top: calc(6 * var(--u));
+}
+
+.osh-ornament {
+    text-align: center;
+    font-size: calc(11 * var(--u));
+    letter-spacing: calc(4 * var(--u));
+    margin: calc(6 * var(--u)) 0 calc(3 * var(--u)) 0;
+}
+
+.osh-thanks {
+    text-align: center;
+    font-size: calc(12 * var(--u));
+    line-height: 1.3;
+}
+
+.osh-thanks-ar {
+    font-size: calc(14 * var(--u));
+    font-weight: bold;
+}
+
+.osh-qr {
+    text-align: center;
+    font-size: calc(10 * var(--u));
+    margin-top: calc(6 * var(--u));
+}
+
+.osh-qr img {
+    width: calc(100 * var(--u));
+    height: calc(100 * var(--u));
+}
+
+/* Printing from the browser: Odoo already sets 266px; keep our padding small */
+@media print {
+    /* Arabic users: Odoo's RTL bundle flips its own print rule (left: 10px -> right: 10px),
+       which pushes the receipt past the LEFT edge of 72 mm paper. Pin it to the left edge,
+       and let it shrink to the paper width if the printable area is narrower than 266px. */
+    body.pos .o-main-components-container,
+    body.pos .render-container {
+        left: 0 !important;
+        right: auto !important;
+        top: 0 !important;
+    }
+    .render-container .pos-receipt.osh-receipt {
+        max-width: 100vw !important;
+    }
+    .render-container .pos-receipt.osh-receipt {
+        padding: 0 calc(2 * var(--u)) !important;
+    }
+}
+/* SHOP CONTACT (under the logo) */
+.osh-shop {
+    margin-top: calc(3 * var(--u));
+    font-size: calc(11 * var(--u));
+}
+
+/* SOCIAL QR CODES (Instagram / TikTok) */
+.osh-social-title {
+    text-align: center;
+    font-size: calc(12 * var(--u));
+    font-weight: bold;
+    margin-top: calc(8 * var(--u));
+    padding-top: calc(4 * var(--u));
+    border-top: calc(1 * var(--u)) dashed #000;
+}
+
+.osh-social {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
+    margin-top: calc(4 * var(--u));
+}
+
+.osh-social td {
+    width: 50%;
+    text-align: center;
+    vertical-align: top;
+    font-size: calc(11 * var(--u));
+    font-weight: bold;
+}
+
+.osh-social img {
+    display: block;
+    width: calc(96 * var(--u));
+    height: calc(96 * var(--u));
+    margin: 0 auto calc(2 * var(--u)) auto;
+    /* keep the QR modules sharp when the image is scaled */
+    image-rendering: pixelated;
+}
+
+.osh-social-handle {
+    text-align: center;
+    font-size: calc(11 * var(--u));
+    margin-top: calc(2 * var(--u));
+}
+/* GENERAL NOTE */
+.osh-general-note {
+    margin-top: calc(4 * var(--u));
+    padding: calc(3 * var(--u)) calc(4 * var(--u));
+    border: calc(1 * var(--u)) solid #000;
+    font-size: calc(12 * var(--u));
+    text-align: center;
+}
+
+.osh-general-note-title {
+    font-weight: bold;
+    margin-bottom: calc(2 * var(--u));
+}
+/*rtl:end:ignore*/

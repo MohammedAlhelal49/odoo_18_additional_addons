@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="alomran_daily_activity_report_view_list" model="ir.ui.view">
+        <field name="name">alomran.daily.activity.report.list</field>
+        <field name="model">alomran.daily.activity.report</field>
+        <field name="arch" type="xml">
+            <list string="Daily Activity Report" create="0" edit="0" delete="0"
+                  default_order="date desc, user_id">
+                <field name="date"/>
+                <field name="user_id" widget="many2one_avatar_user"/>
+                <field name="company_id" groups="base.group_multi_company"/>
+                <field name="new_customers" sum="Total"/>
+                <field name="follow_ups" sum="Total"/>
+                <field name="activities_total" sum="Total"/>
+                <field name="activities_done" sum="Total"/>
+                <field name="activities_overdue" sum="Total"
+                       decoration-danger="activities_overdue &gt; 0"/>
+                <field name="activities_open" sum="Total" optional="hide"/>
+                <field name="opportunities" sum="Total"/>
+                <field name="contracts" sum="Total"/>
+                <field name="contracts_amount" sum="Total" optional="show"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="alomran_daily_activity_report_view_pivot" model="ir.ui.view">
+        <field name="name">alomran.daily.activity.report.pivot</field>
+        <field name="model">alomran.daily.activity.report</field>
+        <field name="arch" type="xml">
+            <pivot string="Daily Activity Report" disable_linking="1" sample="1">
+                <field name="user_id" type="row"/>
+                <field name="new_customers" type="measure"/>
+                <field name="follow_ups" type="measure"/>
+                <field name="activities_total" type="measure"/>
+                <field name="activities_done" type="measure"/>
+                <field name="activities_overdue" type="measure"/>
+                <field name="opportunities" type="measure"/>
+                <field name="contracts" type="measure"/>
+            </pivot>
+        </field>
+    </record>
+
+    <record id="alomran_daily_activity_report_view_graph" model="ir.ui.view">
+        <field name="name">alomran.daily.activity.report.graph</field>
+        <field name="model">alomran.daily.activity.report</field>
+        <field name="arch" type="xml">
+            <graph string="Daily Activity Report" type="bar" stacked="0" sample="1">
+                <field name="user_id"/>
+                <field name="follow_ups" type="measure"/>
+            </graph>
+        </field>
+    </record>
+
+    <record id="alomran_daily_activity_report_view_search" model="ir.ui.view">
+        <field name="name">alomran.daily.activity.report.search</field>
+        <field name="model">alomran.daily.activity.report</field>
+        <field name="arch" type="xml">
+            <search string="Daily Activity Report">
+                <field name="user_id" string="Employee"/>
+                <field name="company_id" string="Branch" groups="base.group_multi_company"/>
+                <field name="date"/>
+                <filter name="filter_today" string="Today"
+                        domain="[('date', '=', context_today().strftime('%Y-%m-%d'))]"/>
+                <filter name="filter_yesterday" string="Yesterday"
+                        domain="[('date', '=', (context_today() - relativedelta(days=1)).strftime('%Y-%m-%d'))]"/>
+                <filter name="filter_last_7" string="Last 7 Days"
+                        domain="[('date', '&gt;=', (context_today() - relativedelta(days=6)).strftime('%Y-%m-%d')), ('date', '&lt;=', context_today().strftime('%Y-%m-%d'))]"/>
+                <filter name="filter_date" string="Date" date="date"/>
+                <separator/>
+                <filter name="filter_has_overdue" string="With Overdue Tasks"
+                        domain="[('activities_overdue', '&gt;', 0)]"/>
+                <group expand="0" string="Group By">
+                    <filter name="group_user" string="Employee" context="{'group_by': 'user_id'}"/>
+                    <filter name="group_company" string="Branch" context="{'group_by': 'company_id'}"
+                            groups="base.group_multi_company"/>
+                    <filter name="group_date" string="Day" context="{'group_by': 'date:day'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="alomran_daily_activity_report_action" model="ir.actions.act_window">
+        <field name="name">Daily Activity Analysis</field>
+        <field name="res_model">alomran.daily.activity.report</field>
+        <field name="view_mode">list,pivot,graph</field>
+        <field name="search_view_id" ref="alomran_daily_activity_report_view_search"/>
+        <field name="context">{'search_default_filter_today': 1, 'search_default_group_user': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_empty_folder">No activity recorded for the selected period.</p>
+            <p>Use the filters to choose the employee, the branch and the date range.</p>
+        </field>
+    </record>
+
+    <!-- Interactive report (filters + PDF / Excel) -->
+    <record id="alomran_daily_activity_report_client_action" model="ir.actions.client">
+        <field name="name">Daily Activity Report</field>
+        <field name="tag">alomran_daily_activity_report</field>
+    </record>
+
+    <!-- Messages list used by the drill-down (follow-ups / completed tasks) -->
+    <record id="mail_message_view_list_daily_report" model="ir.ui.view">
+        <field name="name">mail.message.list.daily.activity.report</field>
+        <field name="model">mail.message</field>
+        <field name="priority">100</field>
+        <field name="arch" type="xml">
+            <list string="Messages" create="0" edit="0" delete="0" default_order="date desc">
+                <field name="date"/>
+                <field name="author_id"/>
+                <field name="record_name" string="Document"/>
+                <field name="model" optional="hide"/>
+                <field name="mail_activity_type_id" string="Activity Type" optional="show"/>
+                <field name="body" string="Content"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Dashboard (KPIs + charts) -->
+    <record id="alomran_daily_activity_dashboard_client_action" model="ir.actions.client">
+        <field name="name">Activity Dashboard</field>
+        <field name="tag">alomran_daily_activity_dashboard</field>
+    </record>
+
+    <menuitem id="alomran_daily_activity_dashboard_menu"
+              name="Activity Dashboard"
+              parent="crm.crm_menu_report"
+              action="alomran_daily_activity_dashboard_client_action"
+              groups="sales_team.group_sale_salesman"
+              sequence="4"/>
+
+    <!-- Filters for the messages opened from the report (follow-ups / completed tasks) -->
+    <record id="mail_message_view_search_daily_report" model="ir.ui.view">
+        <field name="name">mail.message.search.daily.activity.report</field>
+        <field name="model">mail.message</field>
+        <field name="priority">100</field>
+        <field name="arch" type="xml">
+            <search string="Messages">
+                <field name="record_name" string="Document"/>
+                <field name="author_id" string="Employee"/>
+                <field name="mail_activity_type_id" string="Activity Type"/>
+                <field name="body" string="Content"/>
+                <filter string="Today" name="today"
+                        domain="[('date', '&gt;=', datetime.datetime.combine(context_today(), datetime.time(0, 0, 0)).to_utc())]"/>
+                <filter string="Yesterday" name="yesterday"
+                        domain="[('date', '&gt;=', datetime.datetime.combine(context_today() - relativedelta(days=1), datetime.time(0, 0, 0)).to_utc()),
+                                 ('date', '&lt;', datetime.datetime.combine(context_today(), datetime.time(0, 0, 0)).to_utc())]"/>
+                <filter string="Last 7 Days" name="last_7_days"
+                        domain="[('date', '&gt;=', datetime.datetime.combine(context_today() - relativedelta(days=6), datetime.time(0, 0, 0)).to_utc())]"/>
+                <filter string="Date" name="filter_date" date="date"/>
+                <separator/>
+                <filter string="Opportunities" name="on_leads" domain="[('model', '=', 'crm.lead')]"/>
+                <filter string="Contacts" name="on_partners" domain="[('model', '=', 'res.partner')]"/>
+                <filter string="Sales Orders" name="on_sale_orders" domain="[('model', '=', 'sale.order')]"/>
+                <separator/>
+                <filter string="Completed Tasks" name="completed_tasks" domain="[('mail_activity_type_id', '!=', False)]"/>
+                <filter string="Notes / Messages" name="notes" domain="[('mail_activity_type_id', '=', False)]"/>
+                <separator/>
+                <filter string="With Attachments" name="with_attachments" domain="[('attachment_ids', '!=', False)]"/>
+                <group expand="0" string="Group By">
+                    <filter string="Employee" name="group_author" context="{'group_by': 'author_id'}"/>
+                    <filter string="Activity Type" name="group_activity_type" context="{'group_by': 'mail_activity_type_id'}"/>
+                    <filter string="Document" name="group_document" context="{'group_by': 'record_name'}"/>
+                    <filter string="Document Type" name="group_model" context="{'group_by': 'model'}"/>
+                    <filter string="Day" name="group_day" context="{'group_by': 'date:day'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <menuitem id="alomran_daily_activity_report_menu"
+              name="Daily Activity Report"
+              parent="crm.crm_menu_report"
+              action="alomran_daily_activity_report_client_action"
+              groups="sales_team.group_sale_salesman"
+              sequence="5"/>
+
+    <menuitem id="alomran_daily_activity_analysis_menu"
+              name="Daily Activity Analysis"
+              parent="crm.crm_menu_report"
+              action="alomran_daily_activity_report_action"
+              groups="sales_team.group_sale_salesman"
+              sequence="6"/>
+
+</odoo>

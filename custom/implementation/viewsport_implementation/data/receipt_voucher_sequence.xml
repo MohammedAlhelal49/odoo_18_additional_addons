@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+    <!-- Receipt voucher number as in the Viewsport Excel template: 2-digit year + 6-digit counter, e.g. 26000001 -->
+    <record id="seq_receipt_voucher" model="ir.sequence">
+        <field name="name">Viewsport Receipt Voucher</field>
+        <field name="code">viewsport.receipt.voucher</field>
+        <field name="prefix">%(range_y)s</field>
+        <field name="padding">6</field>
+        <field name="use_date_range" eval="True"/>
+        <field name="company_id" eval="False"/>
+    </record>
+    <!-- RFQ counter as in the Viewsport RFQ template: 2-digit year + 4-digit counter, e.g. 260001 -->
+    <record id="seq_rfq" model="ir.sequence">
+        <field name="name">Viewsport RFQ</field>
+        <field name="code">viewsport.rfq</field>
+        <field name="prefix">%(range_y)s</field>
+        <field name="padding">4</field>
+        <field name="use_date_range" eval="True"/>
+        <field name="company_id" eval="False"/>
+    </record>
+    <!-- Delivery note number as on the Viewsport template: 2-digit year + 5-digit counter, e.g. 2600001 -->
+    <record id="seq_delivery_note" model="ir.sequence">
+        <field name="name">Viewsport Delivery Note</field>
+        <field name="code">viewsport.delivery.note</field>
+        <field name="prefix">%(range_y)s</field>
+        <field name="padding">5</field>
+        <field name="use_date_range" eval="True"/>
+        <field name="company_id" eval="False"/>
+    </record>
+    <!-- Delivery order number as on the Viewsport template: 2-digit year + 4-digit counter, e.g. 260001 -->
+    <record id="seq_delivery_order" model="ir.sequence">
+        <field name="name">Viewsport Delivery Order</field>
+        <field name="code">viewsport.delivery.order</field>
+        <field name="prefix">%(range_y)s</field>
+        <field name="padding">4</field>
+        <field name="use_date_range" eval="True"/>
+        <field name="company_id" eval="False"/>
+    </record>
+    <!-- Sales quotation number as on the Viewsport template: VSPQT + year + 4-digit counter, e.g. VSPQT20260001 -->
+    <record id="seq_quotation" model="ir.sequence">
+        <field name="name">Viewsport Quotation</field>
+        <field name="code">viewsport.quotation</field>
+        <field name="prefix">VSPQT%(range_year)s</field>
+        <field name="padding">4</field>
+        <field name="use_date_range" eval="True"/>
+        <field name="company_id" eval="False"/>
+    </record>
+</odoo>

@@ -1,0 +1,135 @@
+<odoo>
+    <record id="action_report_customer_statement" model="ir.actions.report">
+        <field name="name">Customer Statement</field>
+        <field name="model">res.partner</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">london_laundry_implementation.report_customer_statement</field>
+        <field name="report_file">london_laundry_implementation.report_customer_statement</field>
+        <field name="print_report_name">'Statement - %s' % object.name</field>
+    </record>
+
+    <!-- Bilingual (English / Arabic) on purpose: it is sent to the customer. -->
+    <template id="report_customer_statement">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-set="v" t-value="statements[o.id]"/>
+                <t t-set="s" t-value="v['summary']"/>
+                <t t-set="currency" t-value="v['currency']"/>
+                <t t-set="company" t-value="v['company']"/>
+                <t t-call="web.external_layout">
+                    <t t-set="layout_document_title">
+                        <span>Customer Statement</span>
+                    </t>
+                    <div class="page o_ld_statement">
+                        <style>
+                            .o_ld_statement .o_ld_ar { font-size: 0.85em; color: #555; }
+                            /* table headers can be coloured by the company layout: keep the Arabic readable */
+                            .o_ld_statement thead .o_ld_ar { color: inherit; opacity: 0.85; }
+                            .o_ld_statement .o_ld_num { direction: ltr; unicode-bidi: embed; white-space: nowrap; }
+                            .o_ld_statement table.o_ld_summary td { padding: 4px 8px; }
+                            .o_ld_statement .o_ld_due td { font-weight: bold; font-size: 1.1em; border-top: 2px solid #333; }
+                        </style>
+
+                        <div lang="ar" dir="rtl" class="text-end o_ld_ar mb-3">كشف حساب زبون</div>
+
+                        <div class="row mb-3">
+                            <div class="col-7">
+                                <div><strong>Customer / الزبون:</strong> <span t-field="o.name"/></div>
+                                <div t-if="o.mobile or o.phone">
+                                    <strong>Contact / الهاتف:</strong>
+                                    <span class="o_ld_num" t-out="o.mobile or o.phone"/>
+                                </div>
+                                <div t-if="o.street or o.city">
+                                    <strong>Address / العنوان:</strong>
+                                    <span t-out="', '.join(x for x in (o.street, o.street2, o.city) if x)"/>
+                                </div>
+                            </div>
+                            <div class="col-5 text-end">
+                                <div><strong>Period / الفترة</strong></div>
+                                <div class="o_ld_num">
+                                    <span t-out="v['date_from']" t-options="{'widget': 'date'}"/> -
+                                    <span t-out="v['date_to']" t-options="{'widget': 'date'}"/>
+                                </div>
+                                <div class="small text-muted mt-1">Printed on / تاريخ الطباعة: <span class="o_ld_num" t-out="v['printed_on']"/></div>
+                            </div>
+                        </div>
+
+                        <!-- Summary -->
+                        <table class="table table-sm o_ld_summary mb-4" style="width: 60%;">
+                            <tr t-if="abs(s['previous']) &gt;= 0.005">
+                                <td>Previous balance <div class="o_ld_ar" lang="ar" dir="rtl">رصيد سابق</div></td>
+                                <td class="text-end"><span class="o_ld_num" t-out="s['previous']" t-options="{'widget': 'monetary', 'display_currency': currency}"/></td>
+                            </tr>
+                            <tr>
+                                <td>Orders in the period <div class="o_ld_ar" lang="ar" dir="rtl">طلبات الفترة</div></td>
+                                <td class="text-end"><span class="o_ld_num" t-out="s['invoiced']" t-options="{'widget': 'monetary', 'display_currency': currency}"/></td>
+                            </tr>
+                            <tr>
+                                <td>Paid <div class="o_ld_ar" lang="ar" dir="rtl">المدفوع</div></td>
+                                <td class="text-end"><span class="o_ld_num" t-out="s['paid']" t-options="{'widget': 'monetary', 'display_currency': currency}"/></td>
+                            </tr>
+                            <tr>
+                                <td>Remaining from the period <div class="o_ld_ar" lang="ar" dir="rtl">المتبقي من الفترة</div></td>
+                                <td class="text-end"><span class="o_ld_num" t-out="s['remaining']" t-options="{'widget': 'monetary', 'display_currency': currency}"/></td>
+                            </tr>
+                            <tr class="o_ld_due">
+                                <td>Total due <div class="o_ld_ar" lang="ar" dir="rtl">إجمالي المستحق</div></td>
+                                <td class="text-end"><span class="o_ld_num" t-out="s['total_due']" t-options="{'widget': 'monetary', 'display_currency': currency}"/></td>
+                            </tr>
+                        </table>
+
+                        <!-- Invoices of the period -->
+                        <table class="table table-sm o_main_table" style="font-size: 0.85em;">
+                            <thead>
+                                <tr>
+                                    <th class="text-start">Date<div class="o_ld_ar" lang="ar" dir="rtl">التاريخ</div></th>
+                                    <th class="text-start">Order / Invoice<div class="o_ld_ar" lang="ar" dir="rtl">الطلب / الفاتورة</div></th>
+                                    <th class="text-start">Status<div class="o_ld_ar" lang="ar" dir="rtl">الحالة</div></th>
+                                    <th class="text-end">Amount excl. VAT<div class="o_ld_ar" lang="ar" dir="rtl">المبلغ بدون ضريبة</div></th>
+                                    <th class="text-end">VAT<div class="o_ld_ar" lang="ar" dir="rtl">الضريبة</div></th>
+                                    <th class="text-end">Amount incl. VAT<div class="o_ld_ar" lang="ar" dir="rtl">المبلغ مع الضريبة</div></th>
+                                    <th class="text-end">Paid<div class="o_ld_ar" lang="ar" dir="rtl">المدفوع</div></th>
+                                    <th class="text-end">Remaining<div class="o_ld_ar" lang="ar" dir="rtl">المتبقي</div></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr t-foreach="v['invoices']" t-as="inv">
+                                    <td><span class="o_ld_num" t-out="inv['invoice_date']" t-options="{'widget': 'date'}"/></td>
+                                    <td t-out="inv['name']"/>
+                                    <td>
+                                        <t t-if="inv['status'] == 'paid'"><span class="text-success">Paid</span><div class="o_ld_ar" lang="ar" dir="rtl">مدفوعة</div></t>
+                                        <t t-elif="inv['status'] == 'partial'"><span class="text-warning">Partially paid</span><div class="o_ld_ar" lang="ar" dir="rtl">مدفوعة جزئياً</div></t>
+                                        <t t-else=""><span class="text-danger">Not paid</span><div class="o_ld_ar" lang="ar" dir="rtl">غير مدفوعة</div></t>
+                                    </td>
+                                    <td class="text-end"><span class="o_ld_num" t-out="inv['untaxed']" t-options="{'widget': 'monetary', 'display_currency': currency}"/></td>
+                                    <td class="text-end"><span class="o_ld_num" t-out="inv['tax']" t-options="{'widget': 'monetary', 'display_currency': currency}"/></td>
+                                    <td class="text-end"><span class="o_ld_num" t-out="inv['amount']" t-options="{'widget': 'monetary', 'display_currency': currency}"/></td>
+                                    <td class="text-end"><span class="o_ld_num" t-out="inv['paid']" t-options="{'widget': 'monetary', 'display_currency': currency}"/></td>
+                                    <td class="text-end"><span class="o_ld_num" t-out="inv['remaining']" t-options="{'widget': 'monetary', 'display_currency': currency}"/></td>
+                                </tr>
+                                <tr t-if="not v['invoices']">
+                                    <td colspan="8" class="text-center text-muted">No orders in this period / لا توجد طلبات في هذه الفترة</td>
+                                </tr>
+                            </tbody>
+                            <tfoot t-if="v['invoices']">
+                                <tr style="font-weight: bold; border-top: 2px solid #333;">
+                                    <td colspan="3">Total<div class="o_ld_ar" lang="ar" dir="rtl">الإجمالي</div></td>
+                                    <td class="text-end"><span class="o_ld_num" t-out="s['untaxed']" t-options="{'widget': 'monetary', 'display_currency': currency}"/></td>
+                                    <td class="text-end"><span class="o_ld_num" t-out="s['tax']" t-options="{'widget': 'monetary', 'display_currency': currency}"/></td>
+                                    <td class="text-end"><span class="o_ld_num" t-out="s['invoiced']" t-options="{'widget': 'monetary', 'display_currency': currency}"/></td>
+                                    <td class="text-end"><span class="o_ld_num" t-out="s['paid']" t-options="{'widget': 'monetary', 'display_currency': currency}"/></td>
+                                    <td class="text-end"><span class="o_ld_num" t-out="s['remaining']" t-options="{'widget': 'monetary', 'display_currency': currency}"/></td>
+                                </tr>
+                            </tfoot>
+                        </table>
+
+                        <p class="small text-muted mt-3">
+                            Paid and remaining amounts are as of the print date.
+                            <span lang="ar" dir="rtl" class="d-block">المبالغ المدفوعة والمتبقية حسب تاريخ الطباعة.</span>
+                        </p>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>

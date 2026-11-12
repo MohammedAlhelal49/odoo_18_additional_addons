@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- ===== APP DETAIL PAGE (Overview / Key Features / Why Choose Us) ===== -->
+    <template id="master_app_template" name="Dekad App Detail">
+        <t t-call="dekad_website.layout">
+
+            <!-- Cover / Hero -->
+            <section class="ve-app-hero bg-img" t-attf-style="background-image:url('#{page.get('cover_bg', '')}');">
+                <div class="ve-app-hero-overlay"/>
+                <div class="container ve-app-hero-content">
+                    <h1><t t-esc="page.get('name')"/></h1>
+                    <p class="ve-app-hero-subtitle"><t t-esc="page.get('subtitle')"/></p>
+                </div>
+            </section>
+
+            <!-- Tabs -->
+            <section class="ve-section ve-app-tabs-section">
+                <div class="container">
+                    <ul class="nav ve-app-tabs" role="tablist">
+                        <li class="nav-item">
+                            <a class="nav-link active" data-toggle="tab" href="#tab_overview" role="tab" aria-selected="true">Overview</a>
+                        </li>
+                        <li class="nav-item" t-if="page.get('key_features')">
+                            <a class="nav-link" data-toggle="tab" href="#tab_features" role="tab" aria-selected="false">Key Features</a>
+                        </li>
+                        <li class="nav-item" t-if="page.get('why_choose_us')">
+                            <a class="nav-link" data-toggle="tab" href="#tab_why_us" role="tab" aria-selected="false">Why Choose Us</a>
+                        </li>
+                    </ul>
+
+                    <div class="tab-content ve-app-tab-content">
+
+                        <!-- Overview -->
+                        <div class="tab-pane fade show active" id="tab_overview" role="tabpanel">
+                            <div class="row align-items-center" t-if="page.get('overview')">
+                                <div class="col-lg-6 order-lg-2 mb-4 mb-lg-0">
+                                    <img t-att-src="page['overview'].get('image')" alt="Overview"
+                                         class="img-fluid ve-app-overview-img"/>
+                                </div>
+                                <div class="col-lg-6 order-lg-1">
+                                    <h2 class="ve-app-overview-title"><t t-esc="page['overview'].get('title')"/></h2>
+                                    <t t-foreach="page['overview'].get('paragraphs', [])" t-as="para">
+                                        <p class="ve-app-overview-p"><t t-esc="para"/></p>
+                                    </t>
+                                    <a t-if="page['overview'].get('cta_text')"
+                                       t-att-href="page['overview'].get('cta_url', '#')"
+                                       class="ve-btn-primary mt-3">
+                                        <t t-esc="page['overview'].get('cta_text')"/>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Key Features -->
+                        <div class="tab-pane fade" id="tab_features" role="tabpanel" t-if="page.get('key_features')">
+                            <div class="row">
+                                <t t-foreach="page['key_features']" t-as="feature">
+                                    <div class="col-lg-6 mb-4">
+                                        <div class="ve-feature-card">
+                                            <div class="ve-feature-card-img" t-if="feature.get('image')">
+                                                <img t-att-src="feature.get('image')" t-att-alt="feature.get('title')"/>
+                                            </div>
+                                            <div class="ve-feature-card-body">
+                                                <h5><t t-esc="feature.get('title')"/></h5>
+                                                <p><t t-esc="feature.get('description')"/></p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </t>
+                            </div>
+                        </div>
+
+                        <!-- Why Choose Us -->
+                        <div class="tab-pane fade" id="tab_why_us" role="tabpanel" t-if="page.get('why_choose_us')">
+                            <h3 class="text-center ve-why-title"><t t-esc="page['why_choose_us'].get('title')"/></h3>
+                            <div class="row">
+                                <t t-foreach="page['why_choose_us'].get('features', [])" t-as="item">
+                                    <div class="col-lg-3 col-md-6 mb-4">
+                                        <div class="ve-why-card">
+                                            <i t-attf-class="fa #{item.get('icon', 'fa-check')}"/>
+                                            <h4><t t-esc="item.get('title')"/></h4>
+                                            <p><t t-esc="item.get('description')"/></p>
+                                        </div>
+                                    </div>
+                                </t>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </section>
+
+        </t>
+    </template>
+
+    <!-- ===== APPS INDEX (grid of every app, /apps with no slug) ===== -->
+    <template id="apps_index_template" name="Dekad Apps Index">
+        <t t-call="dekad_website.layout">
+            <section class="ve-section ve-apps-index-section">
+                <div class="container">
+                    <div class="ve-section-header text-center">
+                        <span class="ve-section-tag">All Apps</span>
+                        <h2>Explore Our <span>Odoo Applications</span></h2>
+                        <p>Every module we implement, configure, and support - browse the full catalog.</p>
+                    </div>
+                    <div class="ve-services-grid">
+                        <t t-foreach="apps.values()" t-as="app">
+                            <a t-attf-href="/apps/#{app.get('slug')}" class="ve-service-card ve-app-index-card">
+                                <h4><t t-esc="app.get('name')"/></h4>
+                                <p><t t-esc="app.get('subtitle')"/></p>
+                                <span class="ve-card-link">Learn more <i class="fa fa-long-arrow-right"/></span>
+                            </a>
+                        </t>
+                    </div>
+                </div>
+            </section>
+        </t>
+    </template>
+
+</odoo>

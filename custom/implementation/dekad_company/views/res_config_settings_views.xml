@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="res_config_settings_view_form_inherit_crm_dekad" model="ir.ui.view">
+        <field name="name">res.config.settings.view.form.inherit.crm.dekad</field>
+        <field name="model">res.config.settings</field>
+        <field name="inherit_id" ref="crm.res_config_settings_view_form"/>
+        <field name="arch" type="xml">
+            <!-- Target the CRM app section directly -->
+            <xpath expr="//app[@name='crm']" position="inside">
+                <block title="Website Notifications" name="dekad_website_notifications">
+                    <setting id="website_lead_activity_users"
+                             help="Select the users who will receive a 'To Do' activity when a form is submitted on the website.">
+                        <field name="website_lead_activity_user_ids" widget="many2many_tags"
+                               placeholder="Select users..."/>
+                    </setting>
+                </block>
+
+                <block title="Inactivity Reminders" name="crm_inactivity_setting_container">
+                    <setting help="Configure when and to whom activity reminders are sent for untouched leads.">
+                        <div class="content-group">
+                            <div class="row mt16">
+                                <label for="crm_inactivity_days" class="col-lg-4 o_light_label"/>
+                                <field name="crm_inactivity_days" class="col-lg-8"/>
+                            </div>
+                            <div class="row mt16">
+                                <label for="crm_reminder_user_ids" class="col-lg-4 o_light_label"/>
+                                <field name="crm_reminder_user_ids" widget="many2many_tags" class="col-lg-8"/>
+                            </div>
+                        </div>
+                    </setting>
+                </block>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="res_config_settings_view_form_project_deadline" model="ir.ui.view">
+        <field name="name">res.config.settings.view.form.project.deadline</field>
+        <field name="model">res.config.settings</field>
+        <field name="inherit_id" ref="project.res_config_settings_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//app[@name='project']" position="inside">
+                <block title="Task Deadline Notifications" name="project_deadline_notification_container">
+                    <setting help="Automate activity and chatter notifications before task deadlines.">
+                        <field name="enable_deadline_notifications"/>
+                        <div class="content-group" invisible="not enable_deadline_notifications">
+                            <div class="row mt16">
+                                <label for="deadline_notify_days" class="col-lg-4 o_light_label"/>
+                                <field name="deadline_notify_days" class="col-lg-8"/>
+                            </div>
+                        </div>
+                    </setting>
+                </block>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="res_config_settings_view_form_helpdesk_reminder" model="ir.ui.view">
+        <field name="name">res.config.settings.view.form.helpdesk.reminder</field>
+        <field name="model">res.config.settings</field>
+        <field name="inherit_id" ref="base.res_config_settings_view_form"/>
+        <field name="arch" type="xml">
+            <!-- Target the main settings container or general settings group safely -->
+            <xpath expr="//app[@name='general_settings']" position="inside">
+                <block title="Helpdesk Inactivity Reminders" name="helpdesk_inactivity_setting_container">
+                    <setting
+                            help="Configure when and to whom activity reminders are sent for untouched Helpdesk tickets.">
+                        <div class="content-group">
+                            <div class="row mt16">
+                                <label for="helpdesk_inactivity_days" class="col-lg-4 o_light_label"/>
+                                <field name="helpdesk_inactivity_days" class="col-lg-8"/>
+                            </div>
+                            <div class="row mt16">
+                                <label for="helpdesk_reminder_user_ids" class="col-lg-4 o_light_label"/>
+                                <field name="helpdesk_reminder_user_ids" widget="many2many_tags" class="col-lg-8"/>
+                            </div>
+                        </div>
+                    </setting>
+                </block>
+            </xpath>
+        </field>
+    </record>
+</odoo>

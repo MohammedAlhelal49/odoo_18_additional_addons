@@ -1,0 +1,256 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- التقرير اليومي بالإيميل: تنسيق inline حتى يظهر صح على Gmail / Outlook / الموبايل.
+         إيميل واحد لكل مسؤول: قسم لكل نقطة بيع، ومع أكتر من نقطة جدول مقارنة ومجموع بالأعلى. -->
+    <template id="daily_report_email_change">
+        <t t-if="change is not None">
+            <span t-attf-style="font-size:12px;color:{{ '#1e7e34' if change &gt;= 0 else '#c0392b' }};">
+                <t t-esc="'▲' if change &gt;= 0 else '▼'"/> <t t-esc="int(round(abs(change)))"/>%
+            </span>
+        </t>
+    </template>
+
+    <template id="daily_report_email">
+        <t t-set="th" t-value="'padding:8px;border-bottom:2px solid #dee2e6;text-align:right;background:#f1f3f5;font-size:13px;'"/>
+        <t t-set="td" t-value="'padding:8px;border-bottom:1px solid #eee;text-align:right;font-size:13px;'"/>
+        <t t-set="tdn" t-value="'padding:8px;border-bottom:1px solid #eee;text-align:left;font-size:13px;white-space:nowrap;direction:ltr;'"/>
+        <t t-set="h2" t-value="'font-size:16px;margin:24px 0 8px 0;color:#1f3a4d;border-right:4px solid #1f3a4d;padding-right:8px;'"/>
+        <div dir="rtl" style="font-family:Tahoma,Arial,sans-serif;color:#212529;background:#ffffff;max-width:720px;margin:0 auto;text-align:right;">
+
+            <!-- العنوان -->
+            <div style="background:#1f3a4d;color:#ffffff;padding:16px 20px;border-radius:6px 6px 0 0;">
+                <div style="font-size:20px;font-weight:bold;">
+                    التقرير اليومي - <t t-esc="title"/>
+                </div>
+                <div style="font-size:14px;margin-top:4px;"><t t-esc="company.name"/> · <t t-esc="day_label"/></div>
+            </div>
+
+            <!-- تنبيهات كل النقاط -->
+            <div t-if="alerts" style="background:#fff3cd;border:1px solid #ffe08a;padding:10px 14px;margin-top:12px;border-radius:4px;font-size:13px;">
+                <div style="font-weight:bold;margin-bottom:4px;">⚠ تنبيهات</div>
+                <div t-foreach="alerts" t-as="alert">• <t t-esc="alert"/></div>
+            </div>
+
+            <!-- مقارنة النقاط (بس لما يكون في أكتر من نقطة) -->
+            <t t-if="multi">
+                <div t-attf-style="{{ h2 }}">الملخص حسب نقطة البيع</div>
+                <table style="width:100%;border-collapse:collapse;">
+                    <tr><th t-att-style="th">نقطة البيع</th><th t-attf-style="{{ th }}text-align:left;">المبيعات</th>
+                        <th t-attf-style="{{ th }}text-align:left;">المحصّل</th><th t-attf-style="{{ th }}text-align:left;">المتبقي (آجل)</th>
+                        <th t-att-style="th">الطلبات</th></tr>
+                    <tr t-foreach="sections" t-as="sec">
+                        <td t-attf-style="{{ td }}font-weight:bold;" t-esc="sec['config'].name"/>
+                        <td t-att-style="tdn"><t t-esc="money(sec['kpis']['sales'])"/><br/>
+                            <t t-call="london_laundry_implementation.daily_report_email_change"><t t-set="change" t-value="sec['changes']['sales']"/></t></td>
+                        <td t-attf-style="{{ tdn }}color:#1e7e34;" t-esc="money(sec['collected'])"/>
+                        <td t-attf-style="{{ tdn }}color:#c0392b;" t-esc="money(sec['kpis']['on_account'])"/>
+                        <td t-att-style="td" t-esc="int(sec['kpis']['orders'])"/>
+                    </tr>
+                    <tr style="background:#f8f9fa;">
+                        <td t-attf-style="{{ td }}font-weight:bold;">المجموع</td>
+                        <td t-attf-style="{{ tdn }}font-weight:bold;"><t t-esc="money(totals['sales'])"/><br/>
+                            <t t-call="london_laundry_implementation.daily_report_email_change"><t t-set="change" t-value="totals['changes']['sales']"/></t></td>
+                        <td t-attf-style="{{ tdn }}font-weight:bold;color:#1e7e34;" t-esc="money(totals['collected'])"/>
+                        <td t-attf-style="{{ tdn }}font-weight:bold;color:#c0392b;" t-esc="money(totals['remaining'])"/>
+                        <td t-attf-style="{{ td }}font-weight:bold;" t-esc="int(totals['orders'])"/>
+                    </tr>
+                </table>
+                <div style="font-size:12px;color:#6c757d;margin-top:6px;">النسب مقارنة مع <t t-esc="last_week_label"/>. التفاصيل لكل نقطة تحت.</div>
+            </t>
+
+            <!-- قسم لكل نقطة بيع -->
+            <t t-foreach="sections" t-as="sec">
+                <div t-if="multi" style="background:#e9eef2;color:#1f3a4d;padding:10px 14px;margin-top:28px;border-radius:4px;font-size:17px;font-weight:bold;">
+                    نقطة البيع: <t t-esc="sec['config'].name"/>
+                </div>
+                <t t-call="london_laundry_implementation.daily_report_email_section"/>
+            </t>
+
+            <div style="font-size:13px;margin-top:24px;padding:10px 14px;background:#f8f9fa;border-radius:4px;">
+                إجمالي ديون الزبائن لهلق (كل الفروع):
+                <b style="direction:ltr;unicode-bidi:embed;" t-esc="money(receivables['total'])"/>
+                · متأخر منها: <span style="direction:ltr;unicode-bidi:embed;color:#c0392b;" t-esc="money(receivables['overdue'])"/>
+                · عدد الزبائن: <t t-esc="receivables['customers']"/>
+            </div>
+
+            <div style="font-size:11px;color:#adb5bd;margin-top:24px;text-align:center;">
+                هالإيميل بينبعت تلقائياً من Odoo كل يوم بعد نص الليل عن اليوم اللي قبله.
+            </div>
+        </div>
+    </template>
+
+    <!-- تفاصيل نقطة بيع وحدة: sec = قيم _get_report_values -->
+    <template id="daily_report_email_section">
+        <t t-set="kpis" t-value="sec['kpis']"/>
+        <t t-set="money" t-value="sec['money']"/>
+        <t t-set="sessions" t-value="sec['sessions']"/>
+
+        <!-- الملخص -->
+        <div t-attf-style="{{ h2 }}">ملخص اليوم</div>
+        <table style="width:100%;border-collapse:collapse;">
+            <tr>
+                <td style="width:33%;padding:10px;border:1px solid #e9ecef;vertical-align:top;">
+                    <div style="font-size:12px;color:#6c757d;">المبيعات</div>
+                    <div style="font-size:18px;font-weight:bold;direction:ltr;text-align:right;" t-esc="money(kpis['sales'])"/>
+                    <t t-call="london_laundry_implementation.daily_report_email_change"><t t-set="change" t-value="sec['changes']['sales']"/></t>
+                </td>
+                <td style="width:33%;padding:10px;border:1px solid #e9ecef;vertical-align:top;">
+                    <div style="font-size:12px;color:#6c757d;">المحصّل (كاش + بنك)</div>
+                    <div style="font-size:18px;font-weight:bold;color:#1e7e34;direction:ltr;text-align:right;" t-esc="money(sec['collected'])"/>
+                    <t t-call="london_laundry_implementation.daily_report_email_change"><t t-set="change" t-value="sec['changes']['collected']"/></t>
+                </td>
+                <td style="width:33%;padding:10px;border:1px solid #e9ecef;vertical-align:top;">
+                    <div style="font-size:12px;color:#6c757d;">المتبقي (آجل - On Credit)</div>
+                    <div style="font-size:18px;font-weight:bold;color:#c0392b;direction:ltr;text-align:right;" t-esc="money(kpis['on_account'])"/>
+                </td>
+            </tr>
+            <tr>
+                <td style="padding:10px;border:1px solid #e9ecef;vertical-align:top;">
+                    <div style="font-size:12px;color:#6c757d;">عدد الطلبات</div>
+                    <div style="font-size:18px;font-weight:bold;" t-esc="int(kpis['orders'])"/>
+                    <t t-call="london_laundry_implementation.daily_report_email_change"><t t-set="change" t-value="sec['changes']['orders']"/></t>
+                </td>
+                <td style="padding:10px;border:1px solid #e9ecef;vertical-align:top;">
+                    <div style="font-size:12px;color:#6c757d;">متوسط الطلب</div>
+                    <div style="font-size:18px;font-weight:bold;direction:ltr;text-align:right;" t-esc="money(kpis['avg_order'])"/>
+                </td>
+                <td style="padding:10px;border:1px solid #e9ecef;vertical-align:top;">
+                    <div style="font-size:12px;color:#6c757d;">الزبائن</div>
+                    <div style="font-size:18px;font-weight:bold;" t-esc="int(kpis['customers'])"/>
+                    <div style="font-size:12px;color:#6c757d;"><t t-esc="int(kpis['new_customers'])"/> جديد · <t t-esc="int(kpis['returning_customers'])"/> قديم</div>
+                </td>
+            </tr>
+        </table>
+        <div style="font-size:12px;color:#6c757d;margin-top:6px;">
+            المرتجعات: <span style="direction:ltr;unicode-bidi:embed;" t-esc="money(kpis['refunds_amount'])"/> (<t t-esc="kpis['refunds_count']"/>)
+            · الخصومات: <span style="direction:ltr;unicode-bidi:embed;" t-esc="money(kpis['discounts'])"/>
+            · المبيعات بدون ضريبة: <span style="direction:ltr;unicode-bidi:embed;" t-esc="money(kpis['sales_untaxed'])"/>
+            <t t-if="not multi"><br/>النسب مقارنة مع <t t-esc="sec['last_week_label']"/>.</t>
+        </div>
+
+        <!-- طرق الدفع -->
+        <div t-attf-style="{{ h2 }}">الدفعات حسب طريقة الدفع</div>
+        <table style="width:100%;border-collapse:collapse;">
+            <tr><th t-att-style="th">طريقة الدفع</th><th t-att-style="th">عدد الطلبات</th><th t-attf-style="{{ th }}text-align:left;">المبلغ</th></tr>
+            <tr t-foreach="sec['methods']" t-as="m">
+                <td t-att-style="td"><t t-esc="m['name']"/>
+                    <span t-if="m['kind'] == 'credit'" style="font-size:11px;color:#c0392b;"> (متبقي - ما اندفع)</span></td>
+                <td t-att-style="td" t-esc="m['orders']"/>
+                <td t-att-style="tdn" t-esc="money(m['amount'])"/>
+            </tr>
+            <tr t-if="kpis['outside']">
+                <td t-att-style="td">دفعات زبائن من خارج نقطة البيع</td><td t-att-style="td"/>
+                <td t-att-style="tdn" t-esc="money(kpis['outside'])"/>
+            </tr>
+            <tr t-if="not sec['methods'] and not kpis['outside']"><td colspan="3" t-attf-style="{{ td }}color:#6c757d;text-align:center;">ما في دفعات بهاليوم</td></tr>
+            <tr t-if="sec['methods'] or kpis['outside']">
+                <td t-attf-style="{{ td }}font-weight:bold;">المحصّل</td><td t-att-style="td"/>
+                <td t-attf-style="{{ tdn }}font-weight:bold;color:#1e7e34;" t-esc="money(sec['collected'])"/>
+            </tr>
+            <tr t-if="kpis['on_account']">
+                <td t-attf-style="{{ td }}font-weight:bold;">المتبقي (آجل)</td><td t-att-style="td"/>
+                <td t-attf-style="{{ tdn }}font-weight:bold;color:#c0392b;" t-esc="money(kpis['on_account'])"/>
+            </tr>
+        </table>
+
+        <!-- تحصيلات الديون (On Credit) -->
+        <t t-set="collections" t-value="sec['collections']"/>
+        <div t-attf-style="{{ h2 }}">تحصيلات الديون (On Credit)</div>
+        <table style="width:100%;border-collapse:collapse;">
+            <tr><th t-att-style="th">الوقت</th><th t-att-style="th">الكاشير</th><th t-att-style="th">الزبون</th>
+                <th t-att-style="th">الطلبات</th><th t-att-style="th">طريقة الدفع</th><th t-attf-style="{{ th }}text-align:left;">المبلغ</th></tr>
+            <tr t-foreach="collections['list']" t-as="c">
+                <td t-attf-style="{{ td }}direction:ltr;" t-esc="c['time']"/>
+                <td t-att-style="td" t-esc="c['cashier']"/>
+                <td t-att-style="td" t-esc="c['customer']"/>
+                <td t-att-style="td" t-esc="c['orders']"/>
+                <td t-att-style="td" t-esc="c['methods']"/>
+                <td t-att-style="tdn" t-esc="money(c['amount'])"/>
+            </tr>
+            <tr t-if="not collections['list']"><td colspan="6" t-attf-style="{{ td }}color:#6c757d;text-align:center;">ما في تحصيلات بهاليوم</td></tr>
+            <t t-if="collections['list']">
+                <tr t-foreach="collections['by_method']" t-as="m">
+                    <td colspan="5" t-att-style="td">مجموع <t t-esc="m[0]"/></td>
+                    <td t-att-style="tdn" t-esc="money(m[1])"/>
+                </tr>
+                <tr>
+                    <td colspan="5" t-attf-style="{{ td }}font-weight:bold;">مجموع التحصيلات</td>
+                    <td t-attf-style="{{ tdn }}font-weight:bold;color:#1e7e34;" t-esc="money(collections['total'])"/>
+                </tr>
+            </t>
+        </table>
+        <div t-if="collections['list']" style="font-size:12px;color:#6c757d;margin-top:4px;">
+            التحصيلات داخلة بـ "المحصّل" فوق (المصاري واصلة عالصندوق)، ومو محسوبة بالمبيعات ولا بعدد الطلبات.
+        </div>
+
+        <!-- الكاشيرية -->
+        <div t-attf-style="{{ h2 }}">أداء الكاشيرية</div>
+        <table style="width:100%;border-collapse:collapse;">
+            <tr><th t-att-style="th">الكاشير</th><th t-att-style="th">الطلبات</th><th t-attf-style="{{ th }}text-align:left;">المبيعات</th>
+                <th t-attf-style="{{ th }}text-align:left;">المرتجعات</th><th t-attf-style="{{ th }}text-align:left;">الخصومات</th></tr>
+            <tr t-foreach="sec['cashiers']" t-as="c">
+                <td t-att-style="td" t-esc="c['name']"/>
+                <td t-att-style="td" t-esc="c['orders']"/>
+                <td t-att-style="tdn" t-esc="money(c['sales'])"/>
+                <td t-att-style="tdn"><t t-esc="money(c['refunds_amount'])"/> <t t-if="c['refunds_count']">(<t t-esc="c['refunds_count']"/>)</t></td>
+                <td t-att-style="tdn" t-esc="money(c['discounts'])"/>
+            </tr>
+            <tr t-if="not sec['cashiers']"><td colspan="5" t-attf-style="{{ td }}color:#6c757d;text-align:center;">ما في مبيعات بهاليوم</td></tr>
+        </table>
+
+        <!-- الجلسات -->
+        <div t-attf-style="{{ h2 }}">جلسات الصندوق</div>
+        <table style="width:100%;border-collapse:collapse;">
+            <tr><th t-att-style="th">الجلسة</th><th t-att-style="th">المستخدم</th><th t-att-style="th">الحالة</th><th t-att-style="th">من - إلى</th>
+                <th t-attf-style="{{ th }}text-align:left;">المتوقع</th><th t-attf-style="{{ th }}text-align:left;">المعدود</th><th t-attf-style="{{ th }}text-align:left;">الفرق</th></tr>
+            <tr t-foreach="sessions['list']" t-as="s">
+                <td t-att-style="td" t-esc="s['name']"/>
+                <td t-att-style="td" t-esc="s['user']"/>
+                <td t-attf-style="{{ td }}{{ '' if s['state'] == 'closed' else 'color:#c0392b;font-weight:bold;' }}"
+                    t-esc="('مسكّرة تلقائياً (بدون جرد)' if s.get('auto_closed') else 'مسكّرة') if s['state'] == 'closed' else 'مفتوحة'"/>
+                <td t-attf-style="{{ td }}direction:ltr;"><t t-esc="sec['local_time'](s['start_at'])"/> - <t t-esc="sec['local_time'](s['stop_at']) or '…'"/></td>
+                <td t-att-style="tdn" t-esc="money(s['expected']) if s['cash_control'] else '-'"/>
+                <td t-att-style="tdn" t-esc="money(s['counted']) if s['cash_control'] and s['state'] == 'closed' else '-'"/>
+                <td t-attf-style="{{ tdn }}{{ 'color:#c0392b;font-weight:bold;' if abs(s['difference']) &gt;= 0.01 else '' }}"
+                    t-esc="money(s['difference']) if s['cash_control'] and s['state'] == 'closed' else '-'"/>
+            </tr>
+            <tr t-if="not sessions['list']"><td colspan="7" t-attf-style="{{ td }}color:#6c757d;text-align:center;">ما في جلسات بهاليوم</td></tr>
+        </table>
+
+        <!-- المغسلة -->
+        <div t-attf-style="{{ h2 }}">تسليمات اليوم (<t t-esc="sec['today_label']"/>)</div>
+        <t t-set="rows" t-value="sec['due_today']"/>
+        <t t-set="rows_count" t-value="sec['due_today_count']"/>
+        <t t-set="empty_label" t-value="'ما في طلبات موعد تسليمها اليوم.'"/>
+        <t t-set="show_late" t-value="False"/>
+        <t t-call="london_laundry_implementation.daily_report_email_deliveries"/>
+
+        <div t-attf-style="{{ h2 }}">طلبات متأخرة ما تسلّمت</div>
+        <t t-set="rows" t-value="sec['overdue']"/>
+        <t t-set="rows_count" t-value="sec['overdue_count']"/>
+        <t t-set="empty_label" t-value="'ما في طلبات متأخرة.'"/>
+        <t t-set="show_late" t-value="True"/>
+        <t t-call="london_laundry_implementation.daily_report_email_deliveries"/>
+    </template>
+
+    <template id="daily_report_email_deliveries">
+        <table style="width:100%;border-collapse:collapse;">
+            <tr><th t-att-style="th">الطلب</th><th t-att-style="th">الزبون</th><th t-att-style="th">الموبايل</th><th t-att-style="th">الرف</th>
+                <th t-att-style="th">الساعة</th>
+                <th t-if="show_late" t-att-style="th">الموعد</th><th t-attf-style="{{ th }}text-align:left;">المبلغ</th></tr>
+            <tr t-foreach="rows" t-as="r">
+                <td t-att-style="td" t-esc="r['ref']"/>
+                <td t-att-style="td" t-esc="r['customer']"/>
+                <td t-attf-style="{{ td }}direction:ltr;" t-esc="r['mobile']"/>
+                <td t-att-style="td" t-esc="r['shelf'] or '-'"/>
+                <td t-attf-style="{{ td }}direction:ltr;" t-esc="r['hour'] or '-'"/>
+                <td t-if="show_late" t-attf-style="{{ td }}color:#c0392b;"><t t-esc="sec['short_date'](r['expected'])"/> (<t t-esc="r['days_late']"/> يوم)</td>
+                <td t-att-style="tdn" t-esc="money(r['amount'])"/>
+            </tr>
+            <tr t-if="not rows"><td t-att-colspan="7 if show_late else 6" t-attf-style="{{ td }}color:#6c757d;text-align:center;" t-esc="empty_label"/></tr>
+        </table>
+        <div t-if="rows_count &gt; len(rows)" style="font-size:12px;color:#6c757d;margin-top:4px;">
+            وفي كمان <t t-esc="rows_count - len(rows)"/> طلب ما انعرضوا.
+        </div>
+    </template>
+</odoo>

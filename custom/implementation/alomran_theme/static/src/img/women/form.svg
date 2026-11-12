@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 800" role="img" aria-label="Coffee mug on books">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fbf5ef"/><stop offset="1" stop-color="#efe0d4"/></linearGradient>
+    <linearGradient id="mug" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#f3ece6"/><stop offset=".5" stop-color="#ffffff"/><stop offset="1" stop-color="#e8ddd4"/></linearGradient>
+  </defs>
+  <rect width="700" height="800" fill="url(#bg)"/>
+  <!-- plant top -->
+  <g fill="#9cb8a5" opacity=".9"><ellipse cx="560" cy="150" rx="18" ry="70" transform="rotate(-25 560 150)"/><ellipse cx="600" cy="160" rx="16" ry="64" transform="rotate(20 600 160)"/><ellipse cx="540" cy="200" rx="14" ry="50" transform="rotate(-60 540 200)"/><ellipse cx="625" cy="210" rx="13" ry="46" transform="rotate(60 625 210)"/></g>
+  <rect x="540" y="230" width="90" height="90" rx="12" fill="#f8efe7"/>
+  <!-- table -->
+  <rect x="0" y="600" width="700" height="200" fill="#e5cfc2"/>
+  <!-- books -->
+  <rect x="120" y="540" width="420" height="40" rx="6" fill="#d9a6a3"/>
+  <rect x="140" y="580" width="400" height="34" rx="6" fill="#9cb8a5"/>
+  <rect x="110" y="506" width="400" height="36" rx="6" fill="#f3e3c8"/>
+  <rect x="110" y="520" width="400" height="5" fill="#e2cda8"/>
+  <!-- mug -->
+  <path d="M470 330 Q560 330 560 400 Q560 470 470 470" fill="none" stroke="#efe5dc" stroke-width="30"/>
+  <path d="M200 260 L480 260 L470 490 Q340 520 210 490 Z" fill="url(#mug)"/>
+  <ellipse cx="340" cy="260" rx="140" ry="22" fill="#e9dfd6"/>
+  <ellipse cx="340" cy="262" rx="124" ry="16" fill="#8a5a44"/>
+  <!-- heart on mug -->
+  <path d="M340 445 q-10 -12 -20 -4 q-8 8 20 26 q28 -18 20 -26 q-10 -8 -20 4z" fill="#d97b84"/>
+  <!-- pen + notebook -->
+  <g transform="rotate(-12 300 690)"><rect x="140" y="660" width="300" height="80" rx="6" fill="#fffaf4"/><g stroke="#e3d3c4" stroke-width="2"><line x1="160" y1="684" x2="420" y2="684"/><line x1="160" y1="704" x2="420" y2="704"/><line x1="160" y1="724" x2="380" y2="724"/></g></g>
+  <rect x="430" y="690" width="170" height="10" rx="5" fill="#1a5490" transform="rotate(-20 430 690)"/>
+  <!-- steam -->
+  <g fill="none" stroke="#d9c7b8" stroke-width="4" stroke-linecap="round" opacity=".8"><path d="M300 220 Q285 190 300 160 Q315 130 300 100"/><path d="M350 225 Q335 195 350 165 Q365 135 350 105"/></g>
+</svg>

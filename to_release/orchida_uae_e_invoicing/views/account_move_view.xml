@@ -1,0 +1,78 @@
+<odoo>
+    <record id="view_move_form_orchida_scenario" model="ir.ui.view">
+        <field name="name">account.move.form.orchida.scenario</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_move_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[@name='button_box']" position="inside">
+                <button name="action_open_latest_einvoice_submission"
+                        type="object"
+                        string="E-Invoice"
+                        class="oe_stat_button"
+                        icon="fa-file-text-o"
+                        groups="account.group_account_user"
+                        invisible="move_type not in ('out_invoice', 'out_refund') or not orchida_send_attempt_ids or not company_id.orchida_connector_enabled">
+                    <field name="orchida_submission_state" string="E-Invoice"/>
+                </button>
+            </xpath>
+            <xpath expr="//form/header" position="inside">
+                <button name="action_orchida_send"
+                        type="object"
+                        string="Submit E-Invoice"
+                        class="btn-primary"
+                        groups="account.group_account_user"
+                        invisible="state != 'posted' or move_type not in ('out_invoice', 'out_refund') or orchida_submission_state not in ('to_send', 'failed', 'unknown') or not company_id.orchida_connector_enabled"/>
+            </xpath>
+            <xpath expr="//notebook" position="inside">
+                <page string="UAE E-Invoicing"
+                      name="orchida_einvoice_scenario"
+                      invisible="move_type not in ('out_invoice', 'out_refund')">
+                    <group>
+                        <group string="Scenario">
+                            <field name="orchida_document_scope"/>
+                            <field name="orchida_is_free_trade_zone"/>
+                            <field name="orchida_beneficiary_id" invisible="not orchida_is_free_trade_zone"/>
+                            <field name="orchida_is_ecommerce"/>
+                        </group>
+                        <group string="Submission">
+                            <field name="orchida_original_invoice_id"
+                                   invisible="move_type != 'out_refund'"
+                                   readonly="state != 'draft'"
+                                   domain="[('company_id', '=', company_id), ('partner_id', '=', partner_id), ('move_type', '=', 'out_invoice'), ('state', '=', 'posted')]"
+                                   options="{'no_create': True}"/>
+                            <field name="orchida_credit_note_reason_code" invisible="move_type != 'out_refund'"/>
+                            <field name="orchida_rcm_readiness" readonly="1"/>
+                            <field name="orchida_submission_state" readonly="1"/>
+                        </group>
+                    </group>
+                    <field name="orchida_submission_failure_type" invisible="1"/>
+                    <field name="orchida_send_attempt_ids" invisible="1"/>
+                    <field name="orchida_payment_code" invisible="1"/>
+                </page>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="server_action_send_invoice_to_orchida" model="ir.actions.server">
+        <field name="name">Submit E-Invoice</field>
+        <field name="model_id" ref="account.model_account_move"/>
+        <field name="binding_model_id" ref="account.model_account_move"/>
+        <field name="binding_view_types">form,list</field>
+        <field name="groups_id" eval="[(4, ref('account.group_account_user'))]"/>
+        <field name="state">code</field>
+        <field name="code">action = records.action_orchida_send()</field>
+    </record>
+
+    <record id="action_orchida_invoices_to_send" model="ir.actions.act_window">
+        <field name="name">E-Invoices To Submit</field>
+        <field name="res_model">account.move</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[
+            ('state', '=', 'posted'),
+            ('move_type', 'in', ('out_invoice', 'out_refund')),
+            ('journal_id.orchida_submit_einvoice', '=', True),
+            ('orchida_submission_state', 'in', ('to_send', 'failed', 'unknown'))
+        ]</field>
+        <field name="context">{'create': False}</field>
+    </record>
+</odoo>

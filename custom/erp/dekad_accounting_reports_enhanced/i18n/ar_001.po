@@ -1,0 +1,258 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* dekad_accounting_reports_enhanced
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 18.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-10-11 14:04+0000\n"
+"PO-Revision-Date: 2026-10-11 14:04+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: ar_001\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: dekad_accounting_reports_enhanced
+#. odoo-javascript
+#: code:addons/dekad_accounting_reports_enhanced/static/src/components/warnings/warnings.xml:0
+msgid ""
+",\n"
+"        which is the earliest available exchange rate for the selected currency.\n"
+"        Please review entries before this date — today's rate was used as a fallback and results may be inaccurate."
+msgstr ""
+"،\n"
+"        وهو أقدم سعر صرف متاح للعملة المحددة.\n"
+"        يرجى مراجعة القيود قبل هذا التاريخ — تم استخدام سعر اليوم كبديل وقد تكون النتائج غير دقيقة."
+
+#. module: dekad_accounting_reports_enhanced
+#: model:ir.model,name:dekad_accounting_reports_enhanced.model_account_report
+msgid "Accounting Report"
+msgstr "تقرير المحاسبة "
+
+#. module: dekad_accounting_reports_enhanced
+#. odoo-javascript
+#: code:addons/dekad_accounting_reports_enhanced/static/src/components/warnings/warnings.xml:0
+msgid "Accounting → Configuration → Currencies"
+msgstr "المحاسبة ← التهيئة ← العملات"
+
+#. module: dekad_accounting_reports_enhanced
+#. odoo-javascript
+#: code:addons/dekad_accounting_reports_enhanced/static/src/components/custom_filters.xml:0
+msgid "Accounts"
+msgstr "الحسابات"
+
+#. module: dekad_accounting_reports_enhanced
+#: model_terms:ir.ui.view,arch_db:dekad_accounting_reports_enhanced.pdf_export_partner_account_info
+msgid "Accounts:"
+msgstr "الحسابات:"
+
+#. module: dekad_accounting_reports_enhanced
+#. odoo-python
+#: code:addons/dekad_accounting_reports_enhanced/models/account_report.py:0
+msgid "Accounts: %s"
+msgstr "الحسابات: %s"
+
+#. module: dekad_accounting_reports_enhanced
+#. odoo-python
+#: code:addons/dekad_accounting_reports_enhanced/models/account_report.py:0
+msgid "Amounts in Lakhs"
+msgstr "المبالغ باللاكس"
+
+#. module: dekad_accounting_reports_enhanced
+#. odoo-python
+#: code:addons/dekad_accounting_reports_enhanced/models/account_report.py:0
+msgid "Amounts in Millions"
+msgstr "المبالغ بالملايين"
+
+#. module: dekad_accounting_reports_enhanced
+#. odoo-python
+#: code:addons/dekad_accounting_reports_enhanced/models/account_report.py:0
+msgid "Amounts in Thousands"
+msgstr "المبالغ بالآلاف"
+
+#. module: dekad_accounting_reports_enhanced
+#: model:account.report.column,name:dekad_accounting_reports_enhanced.general_ledger_report_analytic_account
+#: model:account.report.column,name:dekad_accounting_reports_enhanced.partner_ledger_report_analytic_account
+#: model:ir.model.fields,field_description:dekad_accounting_reports_enhanced.field_account_move_line__analytic_account_id
+msgid "Analytic Account"
+msgstr "الحساب التحليلي"
+
+#. module: dekad_accounting_reports_enhanced
+#. odoo-python
+#: code:addons/dekad_accounting_reports_enhanced/models/account_report.py:0
+msgid "Analytic Account: %s"
+msgstr "الحساب التحليلي: %s"
+
+#. module: dekad_accounting_reports_enhanced
+#: model:account.report.column,name:dekad_accounting_reports_enhanced.general_ledger_report_company_name
+#: model:account.report.column,name:dekad_accounting_reports_enhanced.partner_ledger_report_company_name
+msgid "Company"
+msgstr "الشركة"
+
+#. module: dekad_accounting_reports_enhanced
+#. odoo-javascript
+#: code:addons/dekad_accounting_reports_enhanced/static/src/components/filter_secondary_currency.xml:0
+msgid "Company Currency"
+msgstr "عملة الشركة"
+
+#. module: dekad_accounting_reports_enhanced
+#. odoo-python
+#: code:addons/dekad_accounting_reports_enhanced/models/account_report.py:0
+msgid "Currency: %s"
+msgstr "العملة: %s"
+
+#. module: dekad_accounting_reports_enhanced
+#. odoo-javascript
+#: code:addons/dekad_accounting_reports_enhanced/static/src/components/custom_filters.xml:0
+msgid "Custom"
+msgstr "مخصص"
+
+#. module: dekad_accounting_reports_enhanced
+#. odoo-javascript
+#: code:addons/dekad_accounting_reports_enhanced/static/src/components/custom_filters.xml:0
+msgid "Filter by Accounts"
+msgstr "تصفية حسب الحسابات"
+
+#. module: dekad_accounting_reports_enhanced
+#: model:ir.model,name:dekad_accounting_reports_enhanced.model_account_general_ledger_report_handler
+msgid "General Ledger Custom Handler"
+msgstr "المعالج المخصص لدفتر الأستاذ العام "
+
+#. module: dekad_accounting_reports_enhanced
+#. odoo-javascript
+#: code:addons/dekad_accounting_reports_enhanced/static/src/components/custom_filters.xml:0
+msgid "Group by Analytic Account"
+msgstr "تجميع حسب الحساب التحليلي"
+
+#. module: dekad_accounting_reports_enhanced
+#. odoo-javascript
+#: code:addons/dekad_accounting_reports_enhanced/static/src/components/custom_filters.xml:0
+msgid "Group by Company"
+msgstr "تجميع حسب الشركة"
+
+#. module: dekad_accounting_reports_enhanced
+#. odoo-python
+#: code:addons/dekad_accounting_reports_enhanced/models/account_report.py:0
+msgid "Grouped by: Analytic Account"
+msgstr "مجمّع حسب: الحساب التحليلي"
+
+#. module: dekad_accounting_reports_enhanced
+#. odoo-python
+#: code:addons/dekad_accounting_reports_enhanced/models/account_report.py:0
+msgid "Grouped by: Company"
+msgstr "مجمّع حسب: الشركة"
+
+#. module: dekad_accounting_reports_enhanced
+#. odoo-javascript
+#. odoo-python
+#: code:addons/dekad_accounting_reports_enhanced/models/account_report.py:0
+#: code:addons/dekad_accounting_reports_enhanced/static/src/components/custom_filters.xml:0
+#: model:ir.model.fields,field_description:dekad_accounting_reports_enhanced.field_account_report__filter_hide_initial_balance
+#: model_terms:ir.ui.view,arch_db:dekad_accounting_reports_enhanced.account_report_form_view_secondary_currency
+msgid "Hide Initial Balance"
+msgstr "إخفاء الرصيد الافتتاحي"
+
+#. module: dekad_accounting_reports_enhanced
+#. odoo-javascript
+#: code:addons/dekad_accounting_reports_enhanced/static/src/components/custom_filters.xml:0
+#: model:ir.model.fields,field_description:dekad_accounting_reports_enhanced.field_account_report__filter_hide_zero_balance
+#: model_terms:ir.ui.view,arch_db:dekad_accounting_reports_enhanced.account_report_form_view_secondary_currency
+msgid "Hide Zero Balance"
+msgstr "إخفاء الأرصدة الصفرية"
+
+#. module: dekad_accounting_reports_enhanced
+#. odoo-javascript
+#: code:addons/dekad_accounting_reports_enhanced/static/src/components/filter_secondary_currency.js:0
+msgid "In %s"
+msgstr "بعملة %s"
+
+#. module: dekad_accounting_reports_enhanced
+#: model:ir.model,name:dekad_accounting_reports_enhanced.model_account_move_line
+msgid "Journal Item"
+msgstr "عنصر اليومية"
+
+#. module: dekad_accounting_reports_enhanced
+#. odoo-javascript
+#: code:addons/dekad_accounting_reports_enhanced/static/src/components/warnings/warnings.xml:0
+msgid "No exchange rate found"
+msgstr "لم يتم العثور على سعر صرف"
+
+#. module: dekad_accounting_reports_enhanced
+#: model:ir.model,name:dekad_accounting_reports_enhanced.model_account_partner_ledger_report_handler
+msgid "Partner Ledger Custom Handler"
+msgstr "المعالج المخصص لدفتر الأستاذ العام الخاص بالشريك "
+
+#. module: dekad_accounting_reports_enhanced
+#. odoo-javascript
+#: code:addons/dekad_accounting_reports_enhanced/static/src/components/custom_filters.xml:0
+msgid "Search accounts..."
+msgstr "ابحث عن الحسابات..."
+
+#. module: dekad_accounting_reports_enhanced
+#. odoo-javascript
+#: code:addons/dekad_accounting_reports_enhanced/static/src/components/filter_secondary_currency.js:0
+#: model:ir.model.fields,field_description:dekad_accounting_reports_enhanced.field_account_report__filter_secondary_currency
+#: model_terms:ir.ui.view,arch_db:dekad_accounting_reports_enhanced.account_report_form_view_secondary_currency
+msgid "Secondary Currency"
+msgstr "العملة الثانوية"
+
+#. module: dekad_accounting_reports_enhanced
+#. odoo-javascript
+#: code:addons/dekad_accounting_reports_enhanced/static/src/components/custom_filters.xml:0
+msgid "Show Analytic Account"
+msgstr "إظهار الحساب التحليلي"
+
+#. module: dekad_accounting_reports_enhanced
+#. odoo-javascript
+#: code:addons/dekad_accounting_reports_enhanced/static/src/components/custom_filters.xml:0
+msgid "Show Company Column"
+msgstr "إظهار عمود الشركة"
+
+#. module: dekad_accounting_reports_enhanced
+#. odoo-javascript
+#: code:addons/dekad_accounting_reports_enhanced/static/src/components/warnings/warnings.xml:0
+msgid "Some journal entries are dated before"
+msgstr "بعض القيود اليومية مؤرخة قبل"
+
+#. module: dekad_accounting_reports_enhanced
+#: model:ir.model,name:dekad_accounting_reports_enhanced.model_account_trial_balance_report_handler
+msgid "Trial Balance Custom Handler"
+msgstr "معالج مخصص لميزان المراجعة "
+
+#. module: dekad_accounting_reports_enhanced
+#. odoo-python
+#: code:addons/dekad_accounting_reports_enhanced/models/account_report.py:0
+msgid "Unknown Company"
+msgstr "شركة غير معروفة"
+
+#. module: dekad_accounting_reports_enhanced
+#. odoo-python
+#: code:addons/dekad_accounting_reports_enhanced/models/account_report.py:0
+msgid "Wrong ID for general ledger line to expand: %s"
+msgstr "معرّف غير صحيح لسطر دفتر الأستاذ العام المراد توسيعه: %s"
+
+#. module: dekad_accounting_reports_enhanced
+#. odoo-python
+#: code:addons/dekad_accounting_reports_enhanced/models/account_report.py:0
+msgid "Wrong ID for partner ledger line to expand: %s"
+msgstr "معرّف غير صحيح لسطر دفتر أستاذ الشركاء المراد توسيعه: %s"
+
+#. module: dekad_accounting_reports_enhanced
+#. odoo-javascript
+#: code:addons/dekad_accounting_reports_enhanced/static/src/components/warnings/warnings.xml:0
+msgid ""
+"for the selected secondary currency.\n"
+"        Values are displayed without conversion — please add exchange rates under"
+msgstr ""
+"للعملة الثانوية المحددة.\n"
+"        يتم عرض القيم بدون تحويل — يرجى إضافة أسعار الصرف من"
+
+#. module: dekad_accounting_reports_enhanced
+#. odoo-python
+#: code:addons/dekad_accounting_reports_enhanced/models/account_report.py:0
+msgid "∅ No Analytic Account"
+msgstr "∅ بدون حساب تحليلي"

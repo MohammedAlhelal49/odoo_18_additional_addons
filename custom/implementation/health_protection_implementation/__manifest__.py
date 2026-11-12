@@ -1,0 +1,31 @@
+{
+    'name': 'Health Protection Implementation',
+    'version': '18.0.1.0.0',
+    'summary': 'Code/batch/expiry columns, delivery note and vouchers',
+    'category': 'Sales',
+    'author': 'Dekad',
+    'depends': ['sale_management', 'account', 'stock', 'sale_stock', 'purchase'],
+    'data': [
+        'views/sale_order_views.xml',
+        'views/account_move_views.xml',
+        'views/account_payment_views.xml',
+        'views/res_company_views.xml',
+        'views/product_pricelist_views.xml',
+        'views/purchase_order_views.xml',
+        'report/sale_order_report.xml',
+        'report/invoice_report.xml',
+        'report/delivery_note_report.xml',
+        'report/delivery_slip_report.xml',
+        'report/purchase_report.xml',
+        'report/voucher_reports.xml',
+        'report/payment_receipt_voucher.xml',
+        'report/external_layout_stamp.xml',
+    ],
+    'assets': {
+        'web.report_assets_common': [
+            'health_protection_implementation/static/src/scss/report_tables.scss',
+        ],
+    },
+    'license': 'LGPL-3',
+    'installable': True,
+}

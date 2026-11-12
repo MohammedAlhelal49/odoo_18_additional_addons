@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- ======================================================================
+         Customer portal (/my/*) in the Dekad design.
+         Only the shared wrappers are touched: portal.portal_layout (used by
+         /my/home and every list/detail page of every module: Sales,
+         Invoicing, Project, Helpdesk, Purchase, ...) and portal.portal_my_home.
+         The documents entries, tables, filters and controllers stay exactly
+         as Odoo builds them - they're restyled from dekad-v4.css ("Customer
+         portal" block), so portal pages of modules installed later get the
+         design too. The entries' own d-none / counter logic (portal JS) is
+         left untouched.
+         ====================================================================== -->
+
+    <template id="portal_layout_dekad" inherit_id="portal.portal_layout" name="Dekad Portal Layout">
+
+        <!-- Page band under the site header (replaces Odoo's breadcrumbs row) -->
+        <xpath expr="//div[hasclass('o_portal') and hasclass('container')]" position="replace">
+            <!-- /my/home: profile band with quick actions -->
+            <section t-if="my_details" class="dk-portal-band dk-portal-band-home">
+                <t t-set="dk_partner" t-value="request.env.user.partner_id"/>
+                <div class="container">
+                    <div class="dk-portal-band-row">
+                        <div class="dk-portal-profile">
+                            <img class="dk-portal-avatar" t-att-src="image_data_uri(dk_partner.avatar_128)" alt=""/>
+                            <div class="dk-portal-profile-copy">
+                                <p class="dk-portal-kicker">Welcome back</p>
+                                <h1 class="dk-portal-title" t-esc="request.env.user.name"/>
+                                <div class="dk-portal-meta">
+                                    <span t-if="dk_partner.commercial_company_name" t-esc="dk_partner.commercial_company_name"/>
+                                    <span t-if="dk_partner.email" dir="ltr" t-esc="dk_partner.email"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="dk-portal-actions">
+                            <a href="/my/account" class="dk-portal-btn dk-portal-btn-light"><i class="fa fa-pencil"/> Edit profile</a>
+                            <a href="/my/security" class="dk-portal-btn dk-portal-btn-ghost"><i class="fa fa-lock"/> Security</a>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <!-- Other portal pages (logged in): title + breadcrumbs + record pager -->
+            <section t-elif="not request.env.user._is_public()" class="dk-portal-band">
+                <div class="container">
+                    <div class="dk-portal-band-row">
+                        <div class="dk-portal-band-copy">
+                            <p class="dk-portal-kicker">Customer Portal</p>
+                            <h1 class="dk-portal-title">My account</h1>
+                        </div>
+                        <t t-if="prev_record or next_record" t-call="portal.record_pager"/>
+                    </div>
+                    <div t-if="not no_breadcrumbs and not breadcrumbs_searchbar" class="dk-portal-crumbs">
+                        <t t-call="portal.portal_breadcrumbs"/>
+                    </div>
+                </div>
+            </section>
+            <!-- Public visitors (e.g. a quote/invoice opened from an email
+                 link) keep Odoo's original breadcrumbs row. -->
+            <div t-elif="not no_breadcrumbs and not breadcrumbs_searchbar" class="o_portal container mt-3">
+                <div class="d-flex justify-content-between align-items-center flex-wrap">
+                    <t t-call="portal.portal_breadcrumbs"/>
+                    <t t-if="prev_record or next_record" t-call="portal.record_pager"/>
+                </div>
+            </div>
+        </xpath>
+
+        <!-- /my/home body: full width. The profile moved into the band and
+             the account manager into the help card (portal_my_home_dekad),
+             so Odoo's side column / mobile off-canvas aren't needed. -->
+        <xpath expr="//t[@t-if='my_details']" position="replace">
+            <t t-if="my_details">
+                <div class="dk-portal-home">
+                    <t t-out="0"/>
+                </div>
+            </t>
+        </xpath>
+    </template>
+
+    <template id="portal_my_home_dekad" inherit_id="portal.portal_my_home" name="Dekad My Portal Home">
+        <xpath expr="//div[hasclass('o_portal_docs')]" position="before">
+            <h2 class="dk-portal-section-title">Your documents</h2>
+        </xpath>
+        <xpath expr="//div[hasclass('o_portal_my_home')]" position="after">
+            <div class="dk-portal-help">
+                <div class="dk-portal-help-copy">
+                    <h3>Need help with something?</h3>
+                    <p>Our support team usually replies within one business day.</p>
+                </div>
+                <div t-if="sales_user" class="dk-portal-manager">
+                    <img t-att-src="image_data_uri(sales_user.partner_id.avatar_128)" alt=""/>
+                    <div>
+                        <p class="dk-portal-manager-label">Your account manager</p>
+                        <strong t-esc="sales_user.name"/>
+                        <a t-if="sales_user.email" t-att-href="'mailto:%s' % sales_user.email" dir="ltr" t-esc="sales_user.email"/>
+                    </div>
+                </div>
+                <a href="/submit-ticket" class="dk-portal-btn dk-portal-btn-primary"><i class="fa fa-life-ring"/> Submit a Ticket</a>
+            </div>
+        </xpath>
+    </template>
+
+</odoo>

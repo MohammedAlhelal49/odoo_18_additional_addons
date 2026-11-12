@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Reusable "message sent" popup - t-call this with modal_title /
+         modal_message set, from inside a t-if="form_sent" block.
+         Pure vanilla JS (no jQuery/Bootstrap dependency) so it can never
+         break due to jQuery version/plugin conflicts elsewhere on the
+         page - only plain classList toggling. -->
+    <template id="success_modal" name="Dekad Success Popup">
+        <div class="ve-modal-overlay" id="ve-success-modal" role="dialog" aria-hidden="true">
+            <div class="ve-modal-dialog" role="document">
+                <div class="ve-modal-content">
+                    <button type="button" class="ve-modal-close" aria-label="Close">&#215;</button>
+                    <div class="ve-success-modal-body">
+                        <div class="ve-success-icon"><i class="fa fa-check"/></div>
+                        <h4><t t-esc="modal_title or 'Message Sent!'"/></h4>
+                        <p><t t-out="modal_message or 'Thank you - we will be in touch with you shortly.'"/></p>
+                        <button type="button" class="ve-btn-primary ve-modal-close-btn">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script>
+            (function () {
+                function initModal() {
+                    var el = document.getElementById('ve-success-modal');
+                    if (!el) { return; }
+
+                    // Inline styles as a safety net: the modal must always be
+                    // visible and closable even if the CSS bundle serving
+                    // .ve-modal-overlay/.ve-modal-open is stale or hasn't
+                    // regenerated yet - we never want body scroll locked
+                    // with nothing visible on screen to unlock it.
+                    function hide() {
+                        el.classList.remove('ve-modal-open');
+                        el.style.display = 'none';
+                        document.body.classList.remove('ve-modal-open-body');
+                        document.body.style.overflow = '';
+                    }
+                    function show() {
+                        el.classList.add('ve-modal-open');
+                        el.style.display = 'flex';
+                        el.style.position = 'fixed';
+                        el.style.inset = '0';
+                        el.style.zIndex = '10500';
+                        el.style.alignItems = 'center';
+                        el.style.justifyContent = 'center';
+                        el.style.background = 'rgba(13,27,42,0.7)';
+                        document.body.classList.add('ve-modal-open-body');
+                        document.body.style.overflow = 'hidden';
+                    }
+
+                    el.querySelectorAll('.ve-modal-close, .ve-modal-close-btn').forEach(function (btn) {
+                        btn.addEventListener('click', hide);
+                    });
+                    el.addEventListener('click', function (e) {
+                        if (e.target === el) { hide(); }
+                    });
+                    document.addEventListener('keydown', function (e) {
+                        if (e.key === 'Escape') { hide(); }
+                    });
+
+                    show();
+                }
+                if (document.readyState === 'loading') {
+                    document.addEventListener('DOMContentLoaded', initModal);
+                } else {
+                    initModal();
+                }
+            })();
+        </script>
+    </template>
+
+</odoo>

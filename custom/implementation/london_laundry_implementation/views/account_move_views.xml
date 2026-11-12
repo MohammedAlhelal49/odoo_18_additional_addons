@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_move_form_laundry_delivery" model="ir.ui.view">
+        <field name="name">account.move.form.laundry.delivery</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_move_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//header" position="inside">
+                <button name="action_laundry_whatsapp_ready" type="object" string="WhatsApp Ready" icon="fa-whatsapp"
+                        invisible="not pos_order_ids or move_type != 'out_invoice' or state != 'posted'"/>
+                <field name="pos_order_ids" invisible="1"/>
+            </xpath>
+            <xpath expr="//field[@name='delivery_date']" position="after">
+                <!-- التسليم المتوقع: التاريخ والساعة بسطر واحد (حقلين بالداتابيز) -->
+                <label for="laundry_expected_delivery" invisible="move_type not in ('out_invoice', 'out_refund', 'out_receipt')"/>
+                <div class="o_row" invisible="move_type not in ('out_invoice', 'out_refund', 'out_receipt')">
+                    <field name="laundry_expected_delivery" nolabel="1"/>
+                    <field name="laundry_expected_hour" nolabel="1" placeholder="Hour"
+                           invisible="not laundry_expected_delivery"/>
+                </div>
+                <field name="laundry_delivery_method_id" options="{'no_create': True}" invisible="move_type not in ('out_invoice', 'out_refund', 'out_receipt')"/>
+                <field name="laundry_packing" invisible="move_type not in ('out_invoice', 'out_refund', 'out_receipt')"/>
+                <field name="laundry_delivered" invisible="move_type not in ('out_invoice', 'out_refund', 'out_receipt')"/>
+                <field name="laundry_delivered_employee_id" invisible="move_type not in ('out_invoice', 'out_refund', 'out_receipt')"/>
+                <field name="laundry_delivery_datetime" invisible="not laundry_delivered"/>
+                <field name="laundry_shelf" invisible="move_type not in ('out_invoice', 'out_refund', 'out_receipt')"/>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- تحصيل بالـ POS لسا ما انطابق (الجلسة مفتوحة): لا تسجّل الدفعة مرة تانية -->
+    <record id="view_move_form_laundry_pending_collection" model="ir.ui.view">
+        <field name="name">account.move.form.laundry.pending.collection</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_move_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//header" position="after">
+                <div class="alert alert-warning" role="alert" invisible="not laundry_pending_collection">
+                    <field name="laundry_pending_collection" class="fw-bold" nolabel="1"/>
+                    was already collected at the POS (session <field name="laundry_pending_sessions" class="fw-bold" nolabel="1"/>).
+                    It will be matched with this invoice when the session is closed. Do not register this payment again.
+                </div>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_account_payment_register_form_laundry" model="ir.ui.view">
+        <field name="name">account.payment.register.form.laundry</field>
+        <field name="model">account.payment.register</field>
+        <field name="inherit_id" ref="account.view_account_payment_register_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//form/*[1]" position="before">
+                <div class="alert alert-warning" role="alert" invisible="not laundry_pending_collection">
+                    <field name="laundry_pending_collection" class="fw-bold" nolabel="1"/>
+                    of these invoices was already collected at the POS (session
+                    <field name="laundry_pending_sessions" class="fw-bold" nolabel="1"/>) and will be matched when
+                    the session is closed. Register only what is still due, otherwise the invoice is paid twice.
+                </div>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_out_invoice_tree_laundry_delivery" model="ir.ui.view">
+        <field name="name">account.out.invoice.list.laundry.delivery</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_out_invoice_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//list" position="attributes">
+                <attribute name="class">o_laundry_invoice_list</attribute>
+                <!-- تلوين السطر حسب التسليم والدفع (الألوان بـ invoice_list.scss):
+                     أزرق = مسلّمة ومدفوعة، أخضر = مسلّمة ومو مدفوعة، أحمر = مو مسلّمة ومو مدفوعة،
+                     أصفر = مدفوعة ولسا ما تسلّمت (جاهزة للاستلام) -->
+                <attribute name="decoration-primary">move_type in ('out_invoice', 'out_receipt') and state == 'posted' and laundry_delivered and laundry_is_paid</attribute>
+                <attribute name="decoration-success">move_type in ('out_invoice', 'out_receipt') and state == 'posted' and laundry_delivered and not laundry_is_paid</attribute>
+                <attribute name="decoration-danger">move_type in ('out_invoice', 'out_receipt') and state == 'posted' and not laundry_delivered and not laundry_is_paid</attribute>
+                <attribute name="decoration-warning">move_type in ('out_invoice', 'out_receipt') and state == 'posted' and not laundry_delivered and laundry_is_paid</attribute>
+            </xpath>
+            <field name="invoice_date_due" position="after">
+                <field name="laundry_expected_delivery" widget="laundry_expected_delivery" optional="show"/>
+                <field name="laundry_delivery_method_id" optional="show"/>
+                <field name="laundry_packing" optional="show"/>
+                <field name="laundry_shelf" widget="laundry_inline_char" optional="show"/>
+                <field name="laundry_delivered" widget="boolean_toggle" optional="show"/>
+                <field name="laundry_delivered_employee_id" optional="show"/>
+                <field name="laundry_is_paid" column_invisible="1"/>
+                <field name="laundry_delivery_datetime" optional="show"/>
+            </field>
+        </field>
+    </record>
+
+    <record id="view_account_invoice_filter_laundry_delivery" model="ir.ui.view">
+        <field name="name">account.invoice.select.laundry.delivery</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_account_invoice_filter"/>
+        <field name="arch" type="xml">
+            <xpath expr="//search/field[@name='payment_reference']" position="after">
+                <field name="laundry_shelf"/>
+                <field name="laundry_delivery_method_id"/>
+                <field name="laundry_delivered_employee_id"/>
+            </xpath>
+            <filter name="due_date" position="after">
+                <separator/>
+                <filter name="laundry_delivered" string="Delivered" domain="[('laundry_delivered', '=', True)]"/>
+                <filter name="laundry_not_delivered" string="Not Delivered" domain="[('laundry_delivered', '=', False)]"/>
+                <separator/>
+                <filter name="laundry_expected_delivery" string="Expected Delivery" date="laundry_expected_delivery"/>
+                <filter name="laundry_delivery_datetime" string="Delivery Date &amp; Time" date="laundry_delivery_datetime"/>
+                <separator/>
+                <filter name="laundry_has_shelf" string="Has Shelf" domain="[('laundry_shelf', '!=', False)]"/>
+                <filter name="laundry_no_shelf" string="No Shelf" domain="[('laundry_shelf', '=', False)]"/>
+            </filter>
+            <xpath expr="//group" position="inside">
+                <separator/>
+                <filter name="groupby_laundry_delivered" string="Delivered" context="{'group_by': 'laundry_delivered'}"/>
+                <filter name="groupby_laundry_expected_delivery" string="Expected Delivery" context="{'group_by': 'laundry_expected_delivery:day'}"/>
+                <filter name="groupby_laundry_delivery_datetime" string="Delivery Date" context="{'group_by': 'laundry_delivery_datetime:day'}"/>
+                <filter name="groupby_laundry_shelf" string="Shelf" context="{'group_by': 'laundry_shelf'}"/>
+                <filter name="groupby_laundry_delivery_method" string="Delivery Method" context="{'group_by': 'laundry_delivery_method_id'}"/>
+                <filter name="groupby_laundry_delivery_person" string="Delivered By" context="{'group_by': 'laundry_delivered_employee_id'}"/>
+                <filter name="groupby_laundry_packing" string="Hanger / Fold" context="{'group_by': 'laundry_packing'}"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

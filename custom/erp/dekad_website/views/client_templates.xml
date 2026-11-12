@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- ===== CLIENTS INDEX (/clients) ===== -->
+    <template id="clients_index_template" name="Dekad Clients Index">
+        <t t-call="dekad_website.layout">
+            <section class="ve-page-hero" style="background-image:url(/dekad_website/static/src/img/clients.jpg);">
+                <div class="ve-page-hero-overlay"></div>
+                <div class="container ve-page-hero-content">
+                    <span class="ve-section-tag ve-tag-onlight">Our Clients</span>
+                    <h1>Businesses We've Helped Grow</h1>
+                    <nav aria-label="breadcrumb"><ol class="ve-breadcrumb"><li><a href="/">Home</a></li><li class="active">Clients</li></ol></nav>
+                </div>
+            </section>
+
+            <section class="ve-section">
+                <div class="container">
+                    <div class="ve-clients-grid">
+                        <t t-foreach="clients" t-as="client">
+                            <a t-attf-href="/clients/#{client.slug}" class="ve-client-card">
+                                <div class="ve-client-logo">
+                                    <img t-attf-src="/web/image/dekad.client/#{client.id}/logo" t-att-alt="client.name"/>
+                                </div>
+                                <h5><t t-esc="client.name"/></h5>
+                                <span class="ve-client-industry" t-if="client.industry"><t t-esc="client.industry"/></span>
+                                <p t-if="client.short_description"><t t-esc="client.short_description"/></p>
+                            </a>
+                        </t>
+                    </div>
+                </div>
+            </section>
+        </t>
+    </template>
+
+    <!-- ===== CLIENT DETAIL (/clients/<slug>) ===== -->
+    <template id="client_detail_template" name="Dekad Client Detail">
+        <t t-call="dekad_website.layout">
+            <section class="ve-page-hero" style="background-image:url(/dekad_website/static/src/img/clients.jpg);">
+                <div class="ve-page-hero-overlay"></div>
+                <div class="container ve-page-hero-content">
+                    <span class="ve-section-tag ve-tag-onlight" t-if="client.industry"><t t-esc="client.industry"/></span>
+                    <h1><t t-esc="client.name"/></h1>
+                    <nav aria-label="breadcrumb"><ol class="ve-breadcrumb"><li><a href="/">Home</a></li><li><a href="/clients">Clients</a></li><li class="active"><t t-esc="client.name"/></li></ol></nav>
+                </div>
+            </section>
+
+            <section class="ve-section">
+                <div class="container">
+                    <div class="row align-items-center">
+                        <div class="col-12 col-lg-4 mb-4 mb-lg-0 text-center">
+                            <div class="ve-client-detail-logo">
+                                <img t-attf-src="/web/image/dekad.client/#{client.id}/logo" t-att-alt="client.name"/>
+                            </div>
+                        </div>
+                        <div class="col-12 col-lg-8">
+                            <h2 class="ve-app-overview-title"><t t-esc="client.name"/></h2>
+                            <p class="ve-legal-updated" t-if="client.industry">Industry: <t t-esc="client.industry"/></p>
+                            <p class="ve-app-overview-p" t-if="client.short_description"><t t-esc="client.short_description"/></p>
+                            <t t-if="client.full_description">
+                                <t t-foreach="client.full_description.split('\n')" t-as="para">
+                                    <p class="ve-app-overview-p" t-if="para.strip()"><t t-esc="para"/></p>
+                                </t>
+                            </t>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </t>
+    </template>
+
+</odoo>

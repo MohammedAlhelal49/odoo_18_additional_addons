@@ -1,0 +1,78 @@
+<odoo>
+    <record id="view_tax_tree_orchida_configuration" model="ir.ui.view">
+        <field name="name">account.tax.tree.orchida.configuration</field>
+        <field name="model">account.tax</field>
+        <field name="inherit_id" ref="account.view_tax_tree"/>
+        <field name="mode">primary</field>
+        <field name="arch" type="xml">
+            <xpath expr="//list" position="attributes">
+                <attribute name="string">Orchida Tax Configuration</attribute>
+                <attribute name="editable">bottom</attribute>
+                <attribute name="default_order">company_id, type_tax_use, amount, name</attribute>
+            </xpath>
+            <xpath expr="//list/field" position="attributes">
+                <attribute name="readonly">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='type_tax_use']" position="after">
+                <field name="amount" readonly="1"/>
+                <field name="orchida_tax_category"/>
+                <field name="orchida_exemption_code"
+                       invisible="orchida_tax_category != 'E'" required="orchida_tax_category == 'E'"/>
+                <field name="orchida_rcm_goods_type"
+                       invisible="orchida_tax_category != 'AE'" required="orchida_tax_category == 'AE'"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_tax_search_orchida_configuration" model="ir.ui.view">
+        <field name="name">account.tax.search.orchida.configuration</field>
+        <field name="model">account.tax</field>
+        <field name="inherit_id" ref="account.view_account_tax_search"/>
+        <field name="mode">primary</field>
+        <field name="arch" type="xml">
+            <xpath expr="//search" position="inside">
+                <separator/>
+                <filter string="Missing Orchida Category"
+                        name="orchida_missing_category"
+                        domain="[('orchida_tax_category', '=', False)]"/>
+                <filter string="Configured for Orchida"
+                        name="orchida_configured"
+                        domain="[('orchida_tax_category', '!=', False)]"/>
+                <group name="group_by">
+                    <filter string="Orchida Category"
+                            name="orchida_category"
+                            domain="[]"
+                            context="{'group_by': 'orchida_tax_category'}"/>
+                    <filter string="Company"
+                            name="orchida_company"
+                            domain="[]"
+                            context="{'group_by': 'company_id'}"/>
+                </group>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="action_orchida_tax_configuration" model="ir.actions.act_window">
+        <field name="name">Orchida Tax Configuration</field>
+        <field name="res_model">account.tax</field>
+        <field name="view_mode">list,form</field>
+        <field name="view_id" ref="view_tax_tree_orchida_configuration"/>
+        <field name="search_view_id" ref="view_tax_search_orchida_configuration"/>
+        <field name="context">{'active_test': False, 'search_default_sale': 1}</field>
+    </record>
+
+    <record id="view_tax_form_orchida_einvoice" model="ir.ui.view">
+        <field name="name">account.tax.form.orchida.einvoice</field>
+        <field name="model">account.tax</field>
+        <field name="inherit_id" ref="account.view_tax_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='type_tax_use']" position="after">
+                <group string="Orchida PINT AE E-Invoicing">
+                    <field name="orchida_tax_category"/>
+                    <field name="orchida_exemption_code" invisible="orchida_tax_category != 'E'" required="orchida_tax_category == 'E'"/>
+                    <field name="orchida_rcm_goods_type" invisible="orchida_tax_category != 'AE'" required="orchida_tax_category == 'AE'"/>
+                </group>
+            </xpath>
+        </field>
+    </record>
+</odoo>

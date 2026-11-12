@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 520" role="img" aria-label="Makeup">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f8e1e0"/><stop offset="1" stop-color="#eec4c4"/></linearGradient>
+    <linearGradient id="gold" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#b8894a"/><stop offset=".5" stop-color="#e6c88e"/><stop offset="1" stop-color="#b8894a"/></linearGradient>
+  </defs>
+  <rect width="800" height="520" fill="url(#bg)"/>
+  <circle cx="660" cy="90" r="120" fill="#fff" opacity=".35"/>
+  <circle cx="120" cy="460" r="140" fill="#fff" opacity=".25"/>
+  <!-- brush cup -->
+  <g>
+    <g transform="rotate(-14 230 300)"><rect x="222" y="90" width="14" height="190" rx="5" fill="#2b2b33"/><rect x="221" y="260" width="16" height="30" fill="url(#gold)"/><path d="M216 90 Q229 30 242 90 Z" fill="#e8b7a5"/></g>
+    <g transform="rotate(-2 270 300)"><rect x="262" y="80" width="16" height="200" rx="6" fill="#c86f76"/><rect x="261" y="250" width="18" height="34" fill="url(#gold)"/><path d="M254 82 Q270 10 286 82 Z" fill="#f2d2c4"/></g>
+    <g transform="rotate(12 310 300)"><rect x="302" y="100" width="12" height="180" rx="5" fill="#2b2b33"/><rect x="301" y="255" width="14" height="28" fill="url(#gold)"/><path d="M296 102 Q308 55 320 102 Z" fill="#d79b8f"/></g>
+    <path d="M200 270 L340 270 L330 420 Q270 435 210 420 Z" fill="#fff"/>
+    <path d="M200 270 L340 270 L338 292 L202 292 Z" fill="url(#gold)"/>
+  </g>
+  <!-- compact palette -->
+  <g transform="translate(400 300)">
+    <rect x="0" y="0" width="300" height="130" rx="18" fill="#2b2b33"/>
+    <rect x="10" y="10" width="280" height="110" rx="12" fill="#3b3b45"/>
+    <g>
+      <circle cx="50" cy="45" r="22" fill="#f2c9b8"/><circle cx="105" cy="45" r="22" fill="#e09a8f"/><circle cx="160" cy="45" r="22" fill="#c86f76"/><circle cx="215" cy="45" r="22" fill="#9a5a63"/><circle cx="262" cy="45" r="18" fill="#e6c88e"/>
+      <circle cx="50" cy="92" r="20" fill="#d9a77e"/><circle cx="105" cy="92" r="20" fill="#b07a5e"/><circle cx="160" cy="92" r="20" fill="#7c5a4e"/><circle cx="215" cy="92" r="20" fill="#f6dfd3"/><circle cx="262" cy="92" r="16" fill="#c9a15b"/>
+    </g>
+  </g>
+  <!-- lipsticks -->
+  <g transform="translate(470 160)">
+    <rect x="0" y="60" width="44" height="70" rx="6" fill="url(#gold)"/><rect x="6" y="20" width="32" height="44" fill="#c9a15b"/><path d="M8 22 L8 -10 Q22 -30 36 -2 L36 22 Z" fill="#b8434f"/>
+  </g>
+  <g transform="translate(540 175)">
+    <rect x="0" y="50" width="40" height="66" rx="6" fill="#2b2b33"/><rect x="6" y="16" width="28" height="38" fill="url(#gold)"/><path d="M8 18 L8 -8 Q20 -24 32 -2 L32 18 Z" fill="#d97b84"/>
+  </g>
+  <!-- mascara -->
+  <g transform="translate(620 120) rotate(18)"><rect x="0" y="0" width="28" height="150" rx="10" fill="#c86f76"/><rect x="0" y="0" width="28" height="44" rx="10" fill="url(#gold)"/></g>
+  <!-- blush puff -->
+  <ellipse cx="120" cy="330" rx="60" ry="26" fill="#f4d3cb"/><ellipse cx="120" cy="320" rx="60" ry="26" fill="#fbe8e3"/>
+  <!-- sparkles -->
+  <g fill="#fff"><path d="M680 260 l6 14 l14 6 l-14 6 l-6 14 l-6 -14 l-14 -6 l14 -6z"/><path d="M380 110 l4 10 l10 4 l-10 4 l-4 10 l-4 -10 l-10 -4 l10 -4z"/><path d="M110 150 l5 12 l12 5 l-12 5 l-5 12 l-5 -12 l-12 -5 l12 -5z"/></g>
+</svg>

@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- RTL Support for Arabic -->
+    <template id="layout_rtl_arabic" inherit_id="website.layout" name="Alomran RTL Arabic" active="True">
+        <!-- This template activates RTL for Arabic language -->
+        <xpath expr="//html" position="attributes">
+            <attribute name="t-attf-dir">#{request.env.lang and request.env.lang.startswith('ar') and 'rtl' or 'ltr'}</attribute>
+        </xpath>
+
+        <xpath expr="//head" position="inside">
+            <!-- Load RTL CSS only for Arabic -->
+            <t t-if="request.env.lang and request.env.lang.startswith('ar')">
+                <link rel="stylesheet" href="/alomran_theme/static/src/css/rtl.css"/>
+            </t>
+        </xpath>
+    </template>
+
+    <!-- Alternative: Direct RTL Template -->
+    <template id="rtl_assets" name="RTL Assets">
+        <t t-call="web.assets_common">
+            <t t-if="request.env.lang and request.env.lang.startswith('ar')">
+                <link rel="stylesheet" href="/alomran_theme/static/src/css/rtl.css"/>
+            </t>
+        </t>
+    </template>
+
+    <!-- Footer RTL for Arabic -->
+    <!-- ============================================================ -->
+    <!-- الفوتر (عربي + إنجليزي بنفس التصميم) — alf- classes بـ          -->
+    <!-- home_modern.scss. كل النصوص t-out (مش terms بـ ar.po)، فما في   -->
+    <!-- ترجمات قديمة بالداتابيز بتعلق فيه.                              -->
+    <!-- عدد الفروع: نفس controllers/site_facts.py (BRANCHES)            -->
+    <!-- ============================================================ -->
+    <template id="footer_rtl" inherit_id="alomran_theme.layout_rtl" name="Footer RTL Arabic" active="True">
+        <xpath expr="//footer" position="replace">
+            <t t-set="f_ar" t-value="bool(request.env.lang and request.env.lang.startswith('ar'))"/>
+            <t t-set="f_branches" t-value="13"/>
+            <t t-set="f_programs" t-value="[
+                ('/english-ielts', 'اللغة الإنجليزية والاختبارات' if f_ar else 'English &amp; Standardized Tests'),
+                ('/private-tutoring', 'الدروس الخصوصية والمتابعة الدراسية' if f_ar else 'Private Tutoring &amp; School Follow-up'),
+                ('/women-courses', 'الدورات المهنية للسيدات' if f_ar else 'Women\'s Professional Courses'),
+                ('/teachers', 'التدريب المهني' if f_ar else 'Professional Training'),
+                ('/languages', 'تعلم اللغات' if f_ar else 'Language Learning'),
+                ('/it-programs', 'تقنية المعلومات' if f_ar else 'Information Technology'),
+            ]"/>
+            <t t-set="f_links" t-value="[
+                ('/', 'الرئيسية' if f_ar else 'Home'),
+                ('/about', 'من نحن' if f_ar else 'About Us'),
+                ('/courses', 'جميع الدورات' if f_ar else 'All Courses'),
+                ('/branches', 'الفروع' if f_ar else 'Branches'),
+                ('/initiative', 'مبادرة المرأة الإماراتية' if f_ar else 'Emirati Women Initiative'),
+                ('/contact', 'تواصل معنا' if f_ar else 'Contact Us'),
+            ]"/>
+            <t t-set="f_social" t-value="[
+                ('https://www.facebook.com/alomran.td/', 'fab fa-facebook-f', 'Facebook'),
+                ('https://www.instagram.com/alomran.td/', 'fab fa-instagram', 'Instagram'),
+                ('https://www.tiktok.com/@alomran.td', 'fab fa-tiktok', 'TikTok'),
+                ('https://wa.me/971505829697', 'fab fa-whatsapp', 'WhatsApp'),
+            ]"/>
+            <t t-set="f_arrow" t-value="'fa-arrow-left' if f_ar else 'fa-arrow-right'"/>
+
+            <footer class="alf-footer" t-att-dir="'rtl' if f_ar else 'ltr'">
+                <span class="alf-glow" aria-hidden="true"/>
+                <div class="container position-relative">
+
+                    <div class="row g-5 alf-main">
+                        <!-- الهوية -->
+                        <div class="col-xl-3 col-lg-4 col-md-6">
+                            <a href="/" class="alf-brand">
+                                <img src="/alomran_theme/static/src/img/logo1.png"
+                                     t-att-alt="'مركز العمران للتدريب والتطوير' if f_ar else 'Al Omran Training and Development Center'"
+                                     loading="lazy" width="200" height="80"/>
+                            </a>
+                            <p class="alf-about" t-out="'مركز العمران للتدريب والتطوير — نصنع قادة الغد منذ 2010، ببرامج تدريبية معتمدة في %s فرعًا بالإمارات وأونلاين.' % f_branches if f_ar else 'Al Omran Training and Development Center — shaping tomorrow\'s leaders since 2010, with accredited programs in %s branches across the UAE and online.' % f_branches"/>
+                            <div class="alf-social">
+                                <t t-foreach="f_social" t-as="so">
+                                    <a t-att-href="so[0]" target="_blank" rel="noopener" t-att-aria-label="so[2]" t-att-title="so[2]">
+                                        <i t-att-class="so[1]" aria-hidden="true"/>
+                                    </a>
+                                </t>
+                            </div>
+                        </div>
+
+                        <!-- البرامج -->
+                        <div class="col-xl-3 col-lg-4 col-md-6">
+                            <h3 class="alf-title" t-out="'برامجنا' if f_ar else 'Our Programs'"/>
+                            <ul class="alf-links list-unstyled">
+                                <t t-foreach="f_programs" t-as="lk">
+                                    <li><a t-att-href="lk[0]"><i t-attf-class="fa #{f_arrow}" aria-hidden="true"/><span t-out="lk[1]"/></a></li>
+                                </t>
+                            </ul>
+                        </div>
+
+                        <!-- روابط سريعة -->
+                        <div class="col-xl-3 col-lg-4 col-md-6">
+                            <h3 class="alf-title" t-out="'روابط سريعة' if f_ar else 'Quick Links'"/>
+                            <ul class="alf-links list-unstyled">
+                                <t t-foreach="f_links" t-as="lk">
+                                    <li><a t-att-href="lk[0]"><i t-attf-class="fa #{f_arrow}" aria-hidden="true"/><span t-out="lk[1]"/></a></li>
+                                </t>
+                            </ul>
+                        </div>
+
+                        <!-- التواصل -->
+                        <div class="col-xl-3 col-lg-12 col-md-6">
+                            <h3 class="alf-title" t-out="'تواصل معنا' if f_ar else 'Get in Touch'"/>
+                            <ul class="alf-contact list-unstyled">
+                                <li>
+                                    <span class="alf-ic"><i class="fa fa-phone" aria-hidden="true"/></span>
+                                    <span>
+                                        <small t-out="'الهاتف' if f_ar else 'Phone'"/>
+                                        <a href="tel:+971505829697"><bdi dir="ltr">+971 50 582 9697</bdi></a>
+                                    </span>
+                                </li>
+                                <li>
+                                    <span class="alf-ic"><i class="fa fa-envelope" aria-hidden="true"/></span>
+                                    <span>
+                                        <small t-out="'البريد الإلكتروني' if f_ar else 'Email'"/>
+                                        <a href="mailto:alomran.td@gmail.com">alomran.td@gmail.com</a>
+                                    </span>
+                                </li>
+                                <li>
+                                    <span class="alf-ic"><i class="fa fa-clock" aria-hidden="true"/></span>
+                                    <span>
+                                        <small t-out="'أوقات الدوام' if f_ar else 'Working hours'"/>
+                                        <span t-out="'السبت - الخميس: 8:00 ص - 8:00 م' if f_ar else 'Sat - Thu: 8:00 AM - 8:00 PM'"/>
+                                    </span>
+                                </li>
+                                <li>
+                                    <span class="alf-ic"><i class="fa fa-location-dot" aria-hidden="true"/></span>
+                                    <span>
+                                        <small t-out="'فروعنا' if f_ar else 'Our branches'"/>
+                                        <a href="/branches" t-out="('%s فرعًا في الإمارات' if f_ar else '%s branches across the UAE') % f_branches"/>
+                                    </span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- الحقوق -->
+                    <div class="alf-bottom">
+                        <p t-out="'© %s مركز العمران للتدريب والتطوير. جميع الحقوق محفوظة.' % datetime.date.today().year if f_ar else '© %s Al Omran Training and Development Center. All rights reserved.' % datetime.date.today().year"/>
+                        <p>
+                            <span t-out="'صُنع بـ' if f_ar else 'Made with'"/>
+                            <i class="fa fa-heart" aria-hidden="true"/>
+                            <span t-out="'في الإمارات العربية المتحدة' if f_ar else 'in the United Arab Emirates'"/>
+                        </p>
+                    </div>
+                </div>
+            </footer>
+        </xpath>
+    </template>
+</odoo>

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+
+    <!-- جرد أعمى للكاشير: بس خانات العد والملاحظات.
+         pos_hr بيخبّي بلوك المبالغ الأصلي وبيحط بلوكه (نفس المبالغ + حسب الموظف): منخبّي التنين،
+         والموديول بيعتمد على pos_hr حتى يتطبّق هالتعديل بعده -->
+    <t t-inherit="point_of_sale.ClosePosPopup" t-inherit-mode="extension">
+        <xpath expr="//div[hasclass('total-orders')]" position="attributes">
+            <attribute name="t-if">!laundryBlindCount</attribute>
+        </xpath>
+        <xpath expr="//div[hasclass('payment-methods-overview')]" position="attributes">
+            <attribute name="t-if">!pos.config.module_pos_hr and !laundryBlindCount</attribute>
+        </xpath>
+        <xpath expr="//t[@t-if='pos.config.module_pos_hr']" position="attributes">
+            <attribute name="t-if">pos.config.module_pos_hr and !laundryBlindCount</attribute>
+        </xpath>
+        <xpath expr="//div[hasclass('payment-methods-overview')]" position="after">
+            <div t-if="laundryBlindCount" class="alert alert-info mb-0">
+                Count the cash in the drawer and enter what you find.
+            </div>
+        </xpath>
+        <!-- زر النسخ بيعبّي المبلغ المتوقع -->
+        <xpath expr="//button[@t-on-click='autoFillCashCount']" position="attributes">
+            <attribute name="t-if">!laundryBlindCount</attribute>
+        </xpath>
+        <!-- تقرير المبيعات بيطبع المجاميع -->
+        <xpath expr="//button[@t-on-click='downloadSalesReport']" position="attributes">
+            <attribute name="t-if">!laundryBlindCount</attribute>
+        </xpath>
+        <xpath expr="//SaleDetailsButton/.." position="attributes">
+            <attribute name="t-if">hardwareProxy.printer and !laundryBlindCount</attribute>
+        </xpath>
+    </t>
+
+</templates>

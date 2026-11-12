@@ -1,0 +1,312 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- ================= Paper format: A4 landscape ================= -->
+    <record id="paperformat_hp_a4_landscape" model="report.paperformat">
+        <field name="name">Health Protection A4 Landscape</field>
+        <field name="format">A4</field>
+        <field name="orientation">Landscape</field>
+        <field name="margin_top">40</field>
+        <field name="margin_bottom">67</field>
+        <field name="margin_left">7</field>
+        <field name="margin_right">7</field>
+        <field name="header_line" eval="False"/>
+        <field name="header_spacing">35</field>
+        <field name="dpi">90</field>
+    </record>
+
+    <!-- ================= Report actions ================= -->
+    <record id="action_report_hp_cheque_receipt" model="ir.actions.report">
+        <field name="name">Cheque Receipt Voucher (CRV)</field>
+        <field name="model">account.payment</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">health_protection_implementation.report_hp_cheque_receipt</field>
+        <field name="report_file">health_protection_implementation.report_hp_cheque_receipt</field>
+        <field name="print_report_name">'Cheque Receipt Voucher - %s' % (object.name or '')</field>
+        <field name="binding_model_id" ref="account.model_account_payment"/>
+        <field name="binding_type">report</field>
+    </record>
+
+    <record id="action_report_hp_cheque_payment" model="ir.actions.report">
+        <field name="name">Cheque Payment Voucher (CPV)</field>
+        <field name="model">account.payment</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">health_protection_implementation.report_hp_cheque_payment</field>
+        <field name="report_file">health_protection_implementation.report_hp_cheque_payment</field>
+        <field name="print_report_name">'Cheque Payment Voucher - %s' % (object.name or '')</field>
+        <field name="binding_model_id" ref="account.model_account_payment"/>
+        <field name="binding_type">report</field>
+    </record>
+
+    <record id="action_report_hp_journal_voucher" model="ir.actions.report">
+        <field name="name">Journal Voucher</field>
+        <field name="model">account.move</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">health_protection_implementation.report_hp_journal_voucher</field>
+        <field name="report_file">health_protection_implementation.report_hp_journal_voucher</field>
+        <field name="paperformat_id" ref="paperformat_hp_a4_landscape"/>
+        <field name="print_report_name">'Journal Voucher - %s' % (object.name or '')</field>
+        <field name="binding_model_id" ref="account.model_account_move"/>
+        <field name="binding_type">report</field>
+    </record>
+
+    <!-- ================= Shared signature block ================= -->
+    <template id="hp_voucher_signatures">
+        <table style="width:100%; margin-top:30px; border-collapse:separate; border-spacing:8px 0;">
+            <tr>
+                <t t-foreach="boxes" t-as="box">
+                    <td t-attf-style="width:#{100 // len(boxes)}%; border:1px solid #999; padding:8px 10px; vertical-align:top; height:90px;">
+                        <div style="overflow:hidden; font-weight:bold;"
+                             t-attf-style="color:#{sc};">
+                            <span style="float:left; white-space:nowrap;" t-out="box[0]"/>
+                            <span style="float:right; white-space:nowrap;" dir="rtl" t-out="box[1]"/>
+                        </div>
+                        <div style="margin-top:28px;">Name: ____________________</div>
+                        <div style="margin-top:8px;">Date: ____________________</div>
+                    </td>
+                </t>
+            </tr>
+        </table>
+    </template>
+
+    <!-- ================= Cheque voucher (CRV / CPV) ================= -->
+    <template id="hp_cheque_voucher_doc">
+                <t t-set="company" t-value="o.company_id"/>
+                <t t-set="pc" t-value="company.primary_color or '#555555'"/>
+                <t t-set="sc" t-value="company.secondary_color or '#222222'"/>
+                <t t-call="web.external_layout">
+                    <div class="page" style="font-size:12px; font-family:Arial, sans-serif;">
+                        <style>span[dir=rtl], td[dir=rtl] { font-size: 14px; }</style>
+
+                        <!-- Title bar -->
+                        <table style="width:100%; margin-bottom:12px;">
+                            <tr>
+                                <td t-attf-style="background:#{pc}; color:#fff; padding:8px 12px; font-size:16px; font-weight:bold; white-space:nowrap;">
+                                    <span style="float:left; white-space:nowrap;" t-out="'CHEQUE RECEIPT VOUCHER' if is_receipt else 'CHEQUE PAYMENT VOUCHER'"/>
+                                    <span style="float:right; white-space:nowrap; font-size:21px;" dir="rtl" t-out="'سند قبض شيك' if is_receipt else 'سند دفع شيك'"/>
+                                </td>
+                            </tr>
+                        </table>
+
+                        <!-- Header info -->
+                        <table style="width:100%; border:1px solid #999; margin-bottom:12px;">
+                            <tr>
+                                <td style="padding:6px 10px; width:40%;">
+                                    <div t-attf-style="color:#{sc}; font-size:11.5px;">VOUCHER NO. / رقم السند</div>
+                                    <strong t-out="o.name"/>
+                                </td>
+                                <td style="padding:6px 10px; width:30%;">
+                                    <div t-attf-style="color:#{sc}; font-size:11.5px;">VOUCHER DATE / التاريخ</div>
+                                    <strong t-out="o.date" t-options='{"widget": "date", "format": "dd/MM/yyyy"}'/>
+                                </td>
+                                <td style="padding:6px 10px; width:30%;">
+                                    <div t-attf-style="color:#{sc}; font-size:11.5px;">CURRENCY / العملة</div>
+                                    <strong t-out="o.currency_id.name"/>
+                                </td>
+                            </tr>
+                        </table>
+
+                        <!-- Party and amount -->
+                        <table style="width:100%; margin-bottom:12px; border-collapse:separate; border-spacing:0;">
+                            <tr>
+                                <td style="width:58%; border:1px solid #999; padding:8px 10px; vertical-align:top;">
+                                    <div t-attf-style="color:#{sc}; font-weight:bold; overflow:hidden;">
+                                        <span style="float:left; white-space:nowrap;" t-out="'RECEIVED FROM' if is_receipt else 'PAID TO'"/>
+                                        <span style="float:right; white-space:nowrap;" dir="rtl" t-out="'استلمنا من' if is_receipt else 'دفعنا إلى'"/>
+                                    </div>
+                                    <div style="font-size:14px; font-weight:bold; margin-top:4px;" t-out="o.partner_id.name"/>
+                                    <div t-if="o.partner_id.ref">Code: <span t-out="o.partner_id.ref"/></div>
+                                    <div>TRN: <span t-out="o.partner_id.vat or '-'"/></div>
+                                </td>
+                                <td t-attf-style="width:42%; border:1px solid #{pc}; padding:8px 10px; vertical-align:top;">
+                                    <div t-attf-style="color:#{sc}; font-weight:bold; overflow:hidden;">
+                                        <span style="float:left; white-space:nowrap;" t-out="'AMOUNT RECEIVED' if is_receipt else 'AMOUNT PAID'"/>
+                                        <span style="float:right; white-space:nowrap;" dir="rtl" t-out="'المبلغ المستلم' if is_receipt else 'المبلغ المدفوع'"/>
+                                    </div>
+                                    <div t-attf-style="font-size:20px; font-weight:bold; color:#{sc}; margin-top:4px;">
+                                        <span t-out="o.currency_id.name"/>
+                                        <span t-out="o.amount" t-options='{"widget": "float", "precision": 2}'/>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+
+                        <!-- Amount in words -->
+                        <table style="width:100%; margin-bottom:12px; border:1px solid #999;">
+                            <tr>
+                                <td style="padding:6px 10px;" t-out="o.hp_amount_words('en')"/>
+                                <td style="padding:6px 10px; text-align:right;" dir="rtl" t-out="o.hp_amount_words('ar')"/>
+                            </tr>
+                        </table>
+
+                        <!-- Cheque details -->
+                        <div t-attf-style="background:#{pc}; color:#fff; padding:5px 10px; font-weight:bold; overflow:hidden;">
+                            <span style="float:left; white-space:nowrap;">CHEQUE DETAILS</span>
+                            <span style="float:right; white-space:nowrap;" dir="rtl">بيانات الشيك</span>
+                        </div>
+                        <table style="width:100%; border:1px solid #999; border-top:none; margin-bottom:12px;">
+                            <tr>
+                                <td style="padding:6px 10px; width:25%;">
+                                    <div t-attf-style="color:#{sc}; font-size:11.5px;">Cheque No. / رقم الشيك</div>
+                                    <strong t-out="o.hp_cheque_number or '-'"/>
+                                </td>
+                                <td style="padding:6px 10px; width:25%;">
+                                    <div t-attf-style="color:#{sc}; font-size:11.5px;">Bank / البنك</div>
+                                    <strong t-out="o.hp_cheque_bank or '-'"/>
+                                </td>
+                                <td style="padding:6px 10px; width:25%;">
+                                    <div t-attf-style="color:#{sc}; font-size:11.5px;">Cheque Date / تاريخ الشيك</div>
+                                    <strong t-out="o.hp_cheque_date or o.date" t-options='{"widget": "date", "format": "dd/MM/yyyy"}'/>
+                                </td>
+                                <td style="padding:6px 10px; width:25%;">
+                                    <div t-attf-style="color:#{sc}; font-size:11.5px;">Due Date / تاريخ الاستحقاق</div>
+                                    <strong t-out="o.hp_cheque_due_date" t-options='{"widget": "date", "format": "dd/MM/yyyy"}'/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="3" style="padding:6px 10px; border-top:1px solid #999; text-align:right;">
+                                    <strong>TOTAL / الإجمالي</strong>
+                                </td>
+                                <td t-attf-style="padding:6px 10px; border-top:1px solid #999; font-weight:bold; color:#{sc};">
+                                    <span t-out="o.currency_id.name"/>
+                                    <span t-out="o.amount" t-options='{"widget": "float", "precision": 2}'/>
+                                </td>
+                            </tr>
+                        </table>
+
+                        <!-- Reference -->
+                        <table style="width:100%; border:1px solid #999; margin-bottom:6px;">
+                            <tr>
+                                <td style="padding:6px 10px; width:50%;">
+                                    <div t-attf-style="color:#{sc}; font-weight:bold; overflow:hidden;">
+                                        <span style="float:left; white-space:nowrap;">AGAINST / REFERENCE</span>
+                                        <span style="float:right; white-space:nowrap;" dir="rtl">المرجع</span>
+                                    </div>
+                                    <div><strong t-out="', '.join(o.reconciled_invoice_ids.mapped('name')) or o.memo or '-'"/></div>
+                                    <div t-if="o.memo and o.reconciled_invoice_ids" t-out="o.memo"/>
+                                </td>
+                                <td style="padding:6px 10px; width:50%;">
+                                    <div>Payment Method: <span t-out="o.payment_method_line_id.name or '-'"/></div>
+                                </td>
+                            </tr>
+                        </table>
+
+                        <p t-if="is_receipt" style="font-size:11.5px; color:#555;">
+                            Receipt of this cheque is subject to successful bank clearance.
+                            <span dir="rtl" style="float:right; white-space:nowrap;">استلام الشيك لا يعني التسوية النهائية إلا بعد التحصيل البنكي.</span>
+                        </p>
+
+                        <t t-set="boxes" t-value="[('Approved By', 'الاعتماد'), ('Received By', 'المستلم')] if is_receipt else [('Prepared By', 'أُعدّ بواسطة'), ('Approved By', 'الاعتماد'), ('Receiver', 'المستلم')]"/>
+                        <t t-call="health_protection_implementation.hp_voucher_signatures"/>
+                    </div>
+                </t>
+    </template>
+
+    <template id="report_hp_cheque_receipt">
+        <t t-call="web.html_container">
+            <t t-foreach="docs.filtered(lambda d: d.payment_type == 'inbound')" t-as="o">
+                <t t-set="is_receipt" t-value="True"/>
+                <t t-call="health_protection_implementation.hp_cheque_voucher_doc"/>
+            </t>
+        </t>
+    </template>
+
+    <template id="report_hp_cheque_payment">
+        <t t-call="web.html_container">
+            <t t-foreach="docs.filtered(lambda d: d.payment_type != 'inbound')" t-as="o">
+                <t t-set="is_receipt" t-value="False"/>
+                <t t-call="health_protection_implementation.hp_cheque_voucher_doc"/>
+            </t>
+        </t>
+    </template>
+
+    <!-- ================= Journal voucher ================= -->
+    <template id="report_hp_journal_voucher">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-set="company" t-value="o.company_id"/>
+                <t t-set="pc" t-value="company.primary_color or '#555555'"/>
+                <t t-set="sc" t-value="company.secondary_color or '#222222'"/>
+                <t t-set="cur" t-value="o.company_currency_id"/>
+                <t t-call="web.external_layout">
+                    <div class="page" style="font-size:11px; font-family:Arial, sans-serif;">
+                        <style>span[dir=rtl], td[dir=rtl] { font-size: 14px; }</style>
+
+                        <table style="width:100%; margin-bottom:12px;">
+                            <tr>
+                                <td t-attf-style="background:#{pc}; color:#fff; padding:8px 12px; font-size:16px; font-weight:bold; white-space:nowrap;">
+                                    <span style="float:left; white-space:nowrap;">JOURNAL VOUCHER</span>
+                                    <span style="float:right; white-space:nowrap; font-size:21px;" dir="rtl">سند قيد</span>
+                                </td>
+                            </tr>
+                        </table>
+
+                        <table style="width:100%; border:1px solid #999; margin-bottom:10px;">
+                            <tr>
+                                <td style="padding:6px 10px; width:34%;">
+                                    <div t-attf-style="color:#{sc}; font-size:11.5px;">VOUCHER NO. / رقم السند</div>
+                                    <strong t-out="o.name if o.name and o.name != '/' else 'Draft'"/>
+                                </td>
+                                <td style="padding:6px 10px; width:26%;">
+                                    <div t-attf-style="color:#{sc}; font-size:11.5px;">VOUCHER DATE / التاريخ</div>
+                                    <strong t-out="o.date" t-options='{"widget": "date", "format": "dd/MM/yyyy"}'/>
+                                </td>
+                                <td style="padding:6px 10px; width:24%;">
+                                    <div t-attf-style="color:#{sc}; font-size:11.5px;">JOURNAL / اليومية</div>
+                                    <strong t-out="o.journal_id.name"/>
+                                </td>
+                                <td style="padding:6px 10px; width:16%;">
+                                    <div t-attf-style="color:#{sc}; font-size:11.5px;">CURRENCY / العملة</div>
+                                    <strong t-out="cur.name"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="4" style="padding:6px 10px; border-top:1px solid #999;">
+                                    <span t-attf-style="color:#{sc}; font-size:11.5px;">REFERENCE:</span> <strong t-out="o.ref or '-'"/>
+                                    <span t-attf-style="color:#{sc}; font-size:11.5px; margin-left:20px;">NARRATION:</span> <span t-out="o.narration or '-'"/>
+                                </td>
+                            </tr>
+                        </table>
+
+                        <table style="width:100%; border-collapse:collapse;">
+                            <thead>
+                                <tr t-attf-style="background:#{pc}; color:#fff;">
+                                    <th style="padding:5px; border:1px solid #999;">Code<br/>الكود</th>
+                                    <th style="padding:5px; border:1px solid #999;">Account<br/>الحساب</th>
+                                    <th style="padding:5px; border:1px solid #999;">Partner<br/>الطرف</th>
+                                    <th style="padding:5px; border:1px solid #999;">Description<br/>البيان</th>
+                                    <th style="padding:5px; border:1px solid #999;">Analytic<br/>التحليلي</th>
+                                    <th style="padding:5px; border:1px solid #999; text-align:right;">Debit<br/>مدين</th>
+                                    <th style="padding:5px; border:1px solid #999; text-align:right;">Tax<br/>الضريبة</th>
+                                    <th style="padding:5px; border:1px solid #999; text-align:right;">Credit<br/>دائن</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <t t-foreach="o.line_ids.filtered(lambda l: l.display_type not in ('line_section', 'line_note')).sorted(lambda l: l.sequence)" t-as="l">
+                                    <tr>
+                                        <td style="padding:4px; border:1px solid #bbb;" t-out="l.account_id.with_company(o.company_id).code or '-'"/>
+                                        <td style="padding:4px; border:1px solid #bbb;" t-out="l.account_id.name"/>
+                                        <td style="padding:4px; border:1px solid #bbb;" t-out="l.partner_id.name or '-'"/>
+                                        <td style="padding:4px; border:1px solid #bbb;" t-out="l.name or '-'"/>
+                                        <td style="padding:4px; border:1px solid #bbb;" t-out="l.hp_analytic_names() or '-'"/>
+                                        <td style="padding:4px; border:1px solid #bbb; text-align:right;" t-out="l.debit" t-options='{"widget": "float", "precision": 2}'/>
+                                        <td style="padding:4px; border:1px solid #bbb; text-align:right;" t-out="l.hp_tax_amount" t-options='{"widget": "float", "precision": 2}'/>
+                                        <td style="padding:4px; border:1px solid #bbb; text-align:right;" t-out="l.credit" t-options='{"widget": "float", "precision": 2}'/>
+                                    </tr>
+                                </t>
+                                <tr style="font-weight:bold; background:#f3f3f3;">
+                                    <td colspan="5" style="padding:5px; border:1px solid #999; text-align:right;">TOTAL / الإجمالي</td>
+                                    <td style="padding:5px; border:1px solid #999; text-align:right;" t-out="sum(o.line_ids.mapped('debit'))" t-options='{"widget": "float", "precision": 2}'/>
+                                    <td style="padding:5px; border:1px solid #999; text-align:right;" t-out="sum(o.line_ids.mapped('hp_tax_amount'))" t-options='{"widget": "float", "precision": 2}'/>
+                                    <td style="padding:5px; border:1px solid #999; text-align:right;" t-out="sum(o.line_ids.mapped('credit'))" t-options='{"widget": "float", "precision": 2}'/>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <t t-set="boxes" t-value="[('Prepared By', 'أُعدّ بواسطة'), ('Checked By', 'المراجعة'), ('Approved By', 'الاعتماد')]"/>
+                        <t t-call="health_protection_implementation.hp_voucher_signatures"/>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>

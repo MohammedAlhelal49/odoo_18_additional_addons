@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Smaller company name/details block in the page header, only on our vouchers
+         (payment receipt/voucher and cheque vouchers). Other documents are untouched. -->
+    <template id="external_layout_bubble_dekad_small_header"
+              inherit_id="web.external_layout_bubble"
+              priority="99">
+        <xpath expr="//div[contains(@t-attf-class, 'header')]" position="inside">
+            <t t-if="(o and o._name in ('account.payment', 'pdc.wizard'))">
+                <style>
+                    div[name=company_address] h3,
+                    div[name=company_address] .h5-fs { font-size: 15px !important; margin: 0 0 2px 0 !important; }
+                    div[name=company_address] h6,
+                    div[name=company_address] p,
+                    div[name=company_address] li { font-size: 10.5px !important; margin: 0 0 1px 0 !important; line-height: 1.3 !important; }
+                    div[name=company_address] h5,
+                    div[name=company_address] div:empty { display: none !important; }
+                </style>
+            </t>
+            <t t-if="cp_small_header">
+                <style>
+                    div[name=company_address] h3,
+                    div[name=company_address] .h5-fs { font-size: 16px !important; margin: 0 0 2px 0 !important; }
+                    div[name=company_address] h6,
+                    div[name=company_address] p,
+                    div[name=company_address] li { font-size: 11px !important; margin: 0 0 1px 0 !important; line-height: 1.35 !important; }
+                    div[name=company_address] h5,
+                    div[name=company_address] div:empty { display: none !important; }
+                </style>
+            </t>
+        </xpath>
+    </template>
+
+    <!-- Larger header logo on every DAEM (company 4) document. -->
+    <template id="external_layout_bubble_dekad_invoice_logo"
+              inherit_id="web.external_layout_bubble"
+              priority="99">
+        <xpath expr="//div[contains(@t-attf-class, 'header')]" position="inside">
+            <t t-if="company.id == 4">
+                <style>
+                    img.o_company_logo { max-height: 9.5rem !important; max-width: 19rem !important; }
+                </style>
+            </t>
+        </xpath>
+    </template>
+
+    <!-- DEKAD (company 1) only: slightly larger company name/details in the header of the
+         receipt/payment vouchers, cheque vouchers and customer invoices (the name is long). -->
+    <template id="external_layout_bubble_dekad_header_larger"
+              inherit_id="web.external_layout_bubble"
+              priority="100">
+        <xpath expr="//div[contains(@t-attf-class, 'header')]" position="inside">
+            <t t-if="o and o._name in ('account.payment', 'pdc.wizard', 'account.move') and company.id == 1">
+                <style>
+                    div[name=company_address] h3,
+                    div[name=company_address] .h5-fs { font-size: 16px !important; margin: 0 0 3px 0 !important; }
+                    div[name=company_address] h6 { font-size: 11px !important; margin: 0 0 2px 0 !important; line-height: 1.3 !important; }
+                    div[name=company_address] p,
+                    div[name=company_address] li { font-size: 12px !important; margin: 0 0 2px 0 !important; line-height: 1.3 !important; }
+                </style>
+            </t>
+        </xpath>
+    </template>
+</odoo>

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+    <record id="cp_support_plan_essential" model="dekad.cp.support.plan">
+        <field name="name">Essential</field><field name="hours_per_year">12</field><field name="sequence">10</field>
+    </record>
+    <record id="cp_support_plan_standard" model="dekad.cp.support.plan">
+        <field name="name">Standard</field><field name="hours_per_year">24</field><field name="sequence">20</field>
+    </record>
+    <record id="cp_support_plan_business" model="dekad.cp.support.plan">
+        <field name="name">Business</field><field name="hours_per_year">48</field><field name="sequence">30</field>
+    </record>
+    <record id="cp_support_plan_premium" model="dekad.cp.support.plan">
+        <field name="name">Premium</field><field name="hours_per_year">72</field><field name="sequence">40</field>
+    </record>
+
+    <!-- Proposal modules are service products of this category (Sales > Products). -->
+    <record id="cp_categ_modules" model="product.category">
+        <field name="name">Modules</field>
+    </record>
+    <record id="cp_product_accounting" model="product.template">
+        <field name="name">Accounting</field><field name="type">service</field>
+        <field name="categ_id" ref="cp_categ_modules"/><field name="list_price">0</field>
+        <field name="sale_ok" eval="True"/><field name="purchase_ok" eval="False"/><field name="sequence">10</field>
+        <field name="cp_scope">Chart of accounts, opening balances, customer/vendor invoices and payments, bank reconciliation, VAT and financial reports.</field>
+    </record>
+    <record id="cp_product_sales" model="product.template">
+        <field name="name">Sales</field><field name="type">service</field>
+        <field name="categ_id" ref="cp_categ_modules"/><field name="list_price">0</field>
+        <field name="sale_ok" eval="True"/><field name="purchase_ok" eval="False"/><field name="sequence">20</field>
+        <field name="cp_scope">Customers and products, quotations, sales orders, pricelists, invoicing from orders.</field>
+    </record>
+    <record id="cp_product_purchase" model="product.template">
+        <field name="name">Purchase</field><field name="type">service</field>
+        <field name="categ_id" ref="cp_categ_modules"/><field name="list_price">0</field>
+        <field name="sale_ok" eval="True"/><field name="purchase_ok" eval="False"/><field name="sequence">30</field>
+        <field name="cp_scope">Vendors, RFQs, purchase orders, receipts and vendor bills.</field>
+    </record>
+    <record id="cp_product_inventory" model="product.template">
+        <field name="name">Inventory</field><field name="type">service</field>
+        <field name="categ_id" ref="cp_categ_modules"/><field name="list_price">0</field>
+        <field name="sale_ok" eval="True"/><field name="purchase_ok" eval="False"/><field name="sequence">40</field>
+        <field name="cp_scope">Warehouses and locations, receipts and deliveries, stock moves, valuation and reports.</field>
+    </record>
+    <record id="cp_product_pos" model="product.template">
+        <field name="name">Point of Sale</field><field name="type">service</field>
+        <field name="categ_id" ref="cp_categ_modules"/><field name="list_price">0</field>
+        <field name="sale_ok" eval="True"/><field name="purchase_ok" eval="False"/><field name="sequence">50</field>
+        <field name="cp_scope">POS sessions, cashier operations, payment methods, daily closing, stock and accounting integration.</field>
+    </record>
+    <record id="cp_product_hr" model="product.template">
+        <field name="name">Human Resources</field><field name="type">service</field>
+        <field name="categ_id" ref="cp_categ_modules"/><field name="list_price">0</field>
+        <field name="sale_ok" eval="True"/><field name="purchase_ok" eval="False"/><field name="sequence">60</field>
+        <field name="cp_scope">Employee records, attendance, leave and absence management, contracts and documents.</field>
+    </record>
+    <function model="product.template" name="_cp_seed_arabic"/>
+</odoo>

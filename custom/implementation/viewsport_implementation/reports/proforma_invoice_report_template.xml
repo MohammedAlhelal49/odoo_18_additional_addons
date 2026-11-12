@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Layout shared with the tax invoice: see report_vs_invoice_family_document -->
+    <template id="report_proforma_invoice_viewsport_document">
+        <t t-set="vs_kind" t-value="'proforma'"/>
+        <t t-call="viewsport_implementation.report_vs_invoice_family_document"/>
+    </template>
+</odoo>

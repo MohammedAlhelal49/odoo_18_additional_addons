@@ -1,0 +1,105 @@
+.o_sd_dashboard {
+    overflow: auto;
+    background-color: $o-webclient-background-color;
+
+    .o_sd_filters {
+        position: sticky;
+        top: 0;
+        z-index: 10;
+        padding: 0.75rem 1rem;
+        background-color: $o-view-background-color;
+    }
+
+    .o_sd_body {
+        padding: 1rem;
+        transition: opacity 0.2s;
+
+        &.o_sd_loading {
+            opacity: 0.55;
+            pointer-events: none;
+        }
+    }
+
+    // Direction-neutral spacing: logical properties are not mirrored by Odoo's RTL build,
+    // so they behave the same in LTR and in the dir="rtl" dashboard.
+    .o_sd_title {
+        margin-inline-end: 1rem;
+    }
+    .o_sd_push_end {
+        margin-inline-start: auto;
+    }
+    .o_sd_gap_start {
+        margin-inline-start: 0.35rem;
+    }
+    .o_sd_inline {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: baseline;
+        column-gap: 0.4rem;
+    }
+
+    .o_sd_date {
+        width: 9.5rem;
+    }
+
+    .o_sd_kpi {
+        .o_sd_kpi_label {
+            font-size: 0.8rem;
+        }
+        .o_sd_kpi_value {
+            font-size: 1.35rem;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+    }
+
+    .o_sd_clickable {
+        cursor: pointer;
+    }
+
+    .card.o_sd_clickable:hover {
+        box-shadow: 0 0.25rem 0.75rem rgba(0, 0, 0, 0.08);
+    }
+
+    .o_sd_chart {
+        position: relative;
+        height: 280px;
+    }
+
+
+    .o_sd_presets {
+        flex-wrap: wrap;
+    }
+
+    @include media-breakpoint-down(md) {
+        .o_sd_presets {
+            flex-wrap: nowrap;
+            overflow-x: auto;
+            max-width: 100%;
+            .btn {
+                white-space: nowrap;
+            }
+        }
+        .o_sd_body {
+            padding: 0.5rem;
+        }
+        .o_sd_kpi .o_sd_kpi_value {
+            font-size: 1.1rem;
+        }
+        .o_sd_chart {
+            height: 220px;
+        }
+    }
+}
+
+// Odoo's layout sets `overflow: hidden` (and hides the scrollbar) on
+// .o_web_client > .o_action_manager > .o_action, which beats the plain .o_sd_dashboard rule above:
+// re-enable scrolling with a more specific selector.
+.o_web_client > .o_action_manager > .o_action.o_sd_dashboard {
+    overflow-y: auto;
+    scrollbar-width: auto;
+
+    &::-webkit-scrollbar {
+        display: initial;
+    }
+}

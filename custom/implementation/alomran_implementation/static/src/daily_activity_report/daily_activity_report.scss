@@ -1,0 +1,51 @@
+.o_alomran_dar {
+    .o_alomran_dar_table {
+        th {
+            position: sticky;
+            top: 0;
+            z-index: 1;
+            background-color: $gray-200;
+            white-space: nowrap;
+        }
+        .o_alomran_dar_first {
+            min-width: 220px;
+            white-space: nowrap;
+        }
+        .o_alomran_dar_user {
+            background-color: $gray-100;
+        }
+        .o_alomran_dar_total td {
+            border-top: 2px solid $gray-600;
+            background-color: $gray-100;
+        }
+        .o_alomran_dar_clickable {
+            cursor: pointer;
+            &:hover {
+                text-decoration: underline;
+                color: $primary;
+            }
+        }
+    }
+}
+
+.o_alomran_dashboard {
+    .o_alomran_dar_clickable {
+        cursor: pointer;
+    }
+    .o_alomran_kpi.o_alomran_dar_clickable:hover {
+        border-color: $primary;
+    }
+    tr.o_alomran_dar_clickable:hover td {
+        color: $primary;
+    }
+    .o_alomran_chart {
+        position: relative;
+        height: 280px;
+        canvas {
+            cursor: pointer;
+        }
+    }
+    .o_alomran_chart_tall {
+        height: 360px;
+    }
+}

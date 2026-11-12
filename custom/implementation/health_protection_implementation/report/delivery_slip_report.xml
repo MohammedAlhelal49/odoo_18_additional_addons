@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="report_delivery_document_hp" inherit_id="stock.report_delivery_document">
+        <!-- Deliveries: left side shows "To:" customer name, then "TRN:" and "Address:" (Country, State, City, Street),
+             same as the invoice; the "Delivery Address" / "Customer Address" blocks are not printed -->
+        <xpath expr="//t[@t-set='information_block']" position="after">
+            <t t-if="o.picking_type_code == 'outgoing' and partner">
+                <t t-set="information_block" t-value="False"/>
+                <t t-set="address">
+                    <div class="d-flex">
+                        <strong class="me-2 text-nowrap" style="font-size: 1.3rem; line-height: 1.1;">To:</strong>
+                        <div t-out="partner" t-options='{"widget": "contact", "fields": ["name"], "no_marker": True}'/>
+                    </div>
+                    <t t-set="hp_vat" t-value="partner.vat or partner.commercial_partner_id.vat"/>
+                    <div t-if="hp_vat" style="margin-top: 7px;">
+                        <strong style="font-size: 1.1rem;">TRN:</strong> <span t-out="hp_vat"/>
+                    </div>
+                    <t t-set="hp_address_line" t-value="o.hp_partner_address_line(partner)"/>
+                    <div t-if="hp_address_line" style="margin-top: 7px; max-width: 80mm;">
+                        <strong style="font-size: 1.1rem;">Address:</strong> <span t-out="hp_address_line"/>
+                    </div>
+                </t>
+            </t>
+        </xpath>
+        <!-- Deliveries: centered "DELIVERY NOTE" title instead of the reference (the reference moves into the box) -->
+        <xpath expr="//div[hasclass('page')]/h2" position="attributes">
+            <attribute name="t-if">o.picking_type_code != 'outgoing'</attribute>
+        </xpath>
+        <xpath expr="//div[hasclass('page')]/h2" position="after">
+            <h2 t-if="o.picking_type_code == 'outgoing'" class="text-center">DELIVERY NOTE</h2>
+        </xpath>
+        <!-- Information box: Delivery Note No (invoice number, else the delivery reference), Date (= shipping date, no time), PO No (from the sales order or the source invoice) -->
+        <xpath expr="//div[@name='div_origin']" position="before">
+            <div t-if="o.picking_type_code == 'outgoing'" class="col col-3 mw-100 mb-2" name="div_hp_delivery_note_no">
+                <strong>Delivery Note No</strong>
+                <div t-out="o.hp_get_delivery_note_no()" class="m-0">INV/2026/00001</div>
+            </div>
+        </xpath>
+        <!-- no "Order" (source document) in the box for deliveries -->
+        <xpath expr="//div[@name='div_origin']" position="attributes">
+            <attribute name="t-if">o.origin and o.picking_type_code != 'outgoing'</attribute>
+        </xpath>
+        <!-- Date only, no time, for deliveries -->
+        <xpath expr="//div[@name='div_sched_date']/div[@t-field='o.date_done']" position="attributes">
+            <attribute name="t-options">{'widget': 'date'} if o.picking_type_code == 'outgoing' else {}</attribute>
+        </xpath>
+        <xpath expr="//div[@name='div_sched_date']/div[@t-field='o.scheduled_date']" position="attributes">
+            <attribute name="t-options">{'widget': 'date'} if o.picking_type_code == 'outgoing' else {}</attribute>
+        </xpath>
+        <xpath expr="//div[@name='div_sched_date']/strong" position="replace">
+            <strong t-if="o.picking_type_code == 'outgoing'">Date</strong>
+            <strong t-else="">Shipping Date</strong>
+        </xpath>
+        <xpath expr="//div[@name='div_sched_date']" position="after">
+            <t t-set="hp_po_number" t-value="o.picking_type_code == 'outgoing' and o.hp_get_po_number()"/>
+            <div t-if="hp_po_number" class="col col-3 mw-100 mb-2" name="div_hp_po_number">
+                <strong>PO No</strong>
+                <div t-out="hp_po_number" class="m-0">PO0001</div>
+            </div>
+        </xpath>
+        <!-- Serial number (1, 2, 3...) column on the left of the product lines -->
+        <xpath expr="//table[@name='stock_move_table']" position="before">
+            <t t-set="hp_seq_col" t-value="True"/>
+        </xpath>
+        <xpath expr="//th[@name='th_sm_product']" position="before">
+            <th name="th_hp_seq" class="text-center">#</th>
+        </xpath>
+        <xpath expr="//table[@name='stock_move_table']/tbody/tr/td[1]" position="before">
+            <td name="td_hp_seq" class="text-center"><span t-out="move_index + 1"/></td>
+        </xpath>
+        <xpath expr="//th[@name='th_sml_product']" position="before">
+            <th name="th_hp_seq" class="text-center">#</th>
+        </xpath>
+    </template>
+
+    <!-- Done deliveries: the line rows come from these sub-templates; the "#" cell is only added when called from the
+         delivery slip above (hp_seq_col), so other reports using them keep their columns -->
+    <template id="stock_report_delivery_has_serial_move_line_hp" inherit_id="stock.stock_report_delivery_has_serial_move_line">
+        <xpath expr="//td[span[@t-field='move_line.product_id']]" position="before">
+            <td t-if="hp_seq_col" name="td_hp_seq" class="text-center"><span t-out="move_line_index + 1 if move_line_index is not None else ''"/></td>
+        </xpath>
+    </template>
+    <template id="stock_report_delivery_aggregated_move_lines_hp" inherit_id="stock.stock_report_delivery_aggregated_move_lines">
+        <xpath expr="//tr/td[1]" position="before">
+            <td t-if="hp_seq_col" name="td_hp_seq" class="text-center"><span t-out="line_index + 1"/></td>
+        </xpath>
+    </template>
+</odoo>

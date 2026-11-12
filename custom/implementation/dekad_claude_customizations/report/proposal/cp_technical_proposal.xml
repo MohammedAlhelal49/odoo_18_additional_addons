@@ -1,0 +1,376 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Technical Proposal: ONE bilingual design (English left / Arabic right), drawn inside the
+         company's standard Odoo external layout (header and footer come from Odoo). -->
+    <record id="action_report_cp_technical_proposal" model="ir.actions.report">
+        <field name="name">Technical Proposal | المقترح الفني</field>
+        <field name="model">sale.order</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">dekad_claude_customizations.cp_technical_proposal</field>
+        <field name="report_file">dekad_claude_customizations.cp_technical_proposal</field>
+        <field name="print_report_name">'Technical Proposal - %s' % (object.name)</field>
+        <field name="binding_model_id" ref="sale.model_sale_order"/>
+        <field name="binding_type">report</field>
+    </record>
+    <record id="action_report_cp_quotation_proposal" model="ir.actions.report">
+        <field name="name">Quotation + Technical Proposal</field>
+        <field name="model">sale.order</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">dekad_claude_customizations.cp_quotation_proposal</field>
+        <field name="report_file">dekad_claude_customizations.cp_quotation_proposal</field>
+        <field name="print_report_name">'Quotation + Technical Proposal - %s' % (object.name)</field>
+        <field name="binding_model_id" ref="sale.model_sale_order"/>
+        <field name="binding_type">report</field>
+    </record>
+
+    <template id="cp_technical_proposal">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-set="cpl" t-value="'both'"/>
+                <t t-call="dekad_claude_customizations.cp_technical_proposal_doc"/>
+            </t>
+        </t>
+    </template>
+    <!-- Quotation inside the combined print only (flags set by cp_quotation_proposal):
+         Arabic labels under the English ones. -->
+    <template id="cp_saleorder_document_bilingual" inherit_id="sale.report_saleorder_document">
+        <xpath expr="//div[hasclass('page')]" position="inside">
+            <style t-if="cp_bilingual"><t t-out="doc.cp_font_css()"/></style>
+        </xpath>
+        <!-- all quotation prints: air above the totals, totals on a new page when the list is long,
+             payment terms / bank details a bit larger -->
+        <xpath expr="//div[@name='so_total_summary']" position="attributes">
+            <attribute name="t-attf-style">margin-top:8mm; #{'page-break-before:always;' if len(lines_to_report) &gt; 10 else ''}</attribute>
+        </xpath>
+        <xpath expr="//div[@id='total']" position="attributes">
+            <attribute name="class">row</attribute>
+        </xpath>
+        <xpath expr="//div[hasclass('page')]" position="inside">
+            <style>span[name="order_note"], span[name="order_note"] * { font-size: 12pt !important; line-height: 1.55; }</style>
+        </xpath>
+        <xpath expr="//t[@t-set='layout_document_title']/span[@t-field='doc.name']" position="after">
+            <t t-if="cp_bilingual"><span> | </span><span lang="ar" dir="rtl" style="font-family:'Cairo',Arial,sans-serif; unicode-bidi:isolate;">عرض سعر</span></t>
+        </xpath>
+        <xpath expr="//div[@name='informations_date']/div[@t-field='doc.date_order']" position="before">
+            <span t-if="cp_bilingual" lang="ar" dir="rtl" style="font-family:'Cairo',Arial,sans-serif; display:block; text-align:left;">تاريخ العرض</span>
+        </xpath>
+        <xpath expr="//div[@name='expiration_date']/div[@t-field='doc.validity_date']" position="before">
+            <span t-if="cp_bilingual" lang="ar" dir="rtl" style="font-family:'Cairo',Arial,sans-serif; display:block; text-align:left;">تاريخ الانتهاء</span>
+        </xpath>
+        <xpath expr="//div[@t-field='doc.user_id']" position="before">
+            <span t-if="cp_bilingual" lang="ar" dir="rtl" style="font-family:'Cairo',Arial,sans-serif; display:block; text-align:left;">مندوب المبيعات</span>
+        </xpath>
+        <xpath expr="//th[@name='th_description']" position="inside"><span t-if="cp_bilingual" lang="ar" dir="rtl" style="font-family:'Cairo',Arial,sans-serif; display:block; text-align:left;">الوصف</span></xpath>
+        <xpath expr="//th[@name='th_quantity']" position="inside"><span t-if="cp_bilingual" lang="ar" dir="rtl" style="font-family:'Cairo',Arial,sans-serif; display:block; text-align:left;">الكمية</span></xpath>
+        <xpath expr="//th[@name='th_priceunit']" position="inside"><span t-if="cp_bilingual" lang="ar" dir="rtl" style="font-family:'Cairo',Arial,sans-serif; display:block; text-align:left;">سعر الوحدة</span></xpath>
+        <xpath expr="//th[@name='th_taxes']" position="inside"><span t-if="cp_bilingual" lang="ar" dir="rtl" style="font-family:'Cairo',Arial,sans-serif; display:block; text-align:left;">الضرائب</span></xpath>
+        <xpath expr="//th[@name='th_subtotal']" position="inside"><span t-if="cp_bilingual" lang="ar" dir="rtl" style="font-family:'Cairo',Arial,sans-serif; display:block; text-align:left;">المبلغ</span></xpath>
+    </template>
+
+    <template id="cp_quotation_proposal">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="doc">
+                <!-- quotation part: bilingual labels (terms and bank details are kept) -->
+                <t t-set="cp_bilingual" t-value="True"/>
+                <t t-call="sale.report_saleorder_document" t-lang="doc.partner_id.lang"/>
+                <t t-set="cp_bilingual" t-value="False"/>
+                <t t-set="o" t-value="doc"/>
+                <t t-set="cpl" t-value="'both'"/>
+                <t t-call="dekad_claude_customizations.cp_technical_proposal_doc"/>
+            </t>
+        </t>
+    </template>
+
+    <!-- Paragraph: English only, Arabic only, or side by side (cpl = en / ar / both). -->
+    <template id="cp_pair">
+        <t t-if="en_on and ar_on">
+            <table class="cp-pair o_ignore_layout_styling" style="border:none; border-collapse:separate; border-spacing:0;"><tr style="border:none;">
+                <td class="cp-en" style="border:none;"><t t-out="en_body"/></td>
+                <td class="cp-ar" dir="rtl" lang="ar" style="border:none;"><t t-out="ar_body"/></td>
+            </tr></table>
+        </t>
+        <div t-elif="en_on" class="cp-single"><t t-out="en_body"/></div>
+        <div t-else="" class="cp-single" dir="rtl" lang="ar" style="text-align:right;"><t t-out="ar_body"/></div>
+    </template>
+
+    <template id="cp_heading">
+        <div style="margin-top:4mm; page-break-after:avoid;">
+            <table class="cp-head o_ignore_layout_styling" style="border:none; border-collapse:separate; border-spacing:0;"><tr style="border:none;">
+                <td t-if="en_on" class="cp-head-en" t-attf-style="border:none; font-size:13.5pt; font-weight:bold; color:#{pc}; padding-bottom:1.4mm;"><span class="cp-num"><t t-out="num"/>.</span> <t t-out="en"/></td>
+                <td t-if="ar_on" class="cp-head-ar" dir="rtl" lang="ar" t-attf-style="border:none; #{'text-align:right;' if en_on else ''} font-size:15.5pt; font-weight:bold; color:#{pc}; padding-bottom:1.4mm;"><span t-if="not en_on" class="cp-num"><t t-out="num"/>.</span> <t t-out="ar"/></td>
+            </tr></table>
+            <div style="height:1px; background-color:#d5dde7 !important; margin-bottom:2mm;"></div>
+        </div>
+    </template>
+
+    <!-- Small caption with English left / Arabic right (or one of them). -->
+    <template id="cp_cap">
+        <div class="cp-cap"><t t-if="en_on"><t t-out="en"/></t><span t-if="ar_on" lang="ar" dir="rtl" t-att-style="'float:right;' if en_on else ''"><t t-out="ar"/></span></div>
+    </template>
+
+    <!-- Short inline text: "EN / AR", or one language. -->
+    <template id="cp_bi"><t t-if="en_on"><t t-out="en"/></t><t t-if="en_on and ar_on"> / </t><span t-if="ar_on" lang="ar" dir="rtl"><t t-out="ar"/></span></template>
+
+    <!-- Optional "Additional notes" box: printed only when filled. -->
+    <template id="cp_notes">
+        <div t-if="note" class="cp-callout"><b>Additional notes / ملاحظات إضافية</b><br/><span style="white-space:pre-line;"><t t-out="note"/></span></div>
+    </template>
+
+    <template id="cp_technical_proposal_doc">
+        <t t-set="en_on" t-value="True"/>
+        <t t-set="ar_on" t-value="True"/>
+        <t t-set="lg" t-value="'en'"/>
+        <t t-set="company" t-value="o.company_id"/>
+        <t t-set="pc" t-value="company.dekad_bar_color()"/>
+        <t t-set="sec" t-value="0"/>
+        <t t-set="cp_small_header" t-value="True"/>
+        <t t-call="web.external_layout">
+            <t t-set="doc" t-value="o"/>
+            <div class="page">
+                <svg t-if="pc != company.primary_color" class="o_shape_bubble_1 z-n1 position-fixed" width="1100" height="1100" xmlns="http://www.w3.org/2000/svg"><circle cx="550" cy="550" r="550" t-att-fill="pc" fill-opacity=".1"/></svg>
+                                    <style>
+                        <t t-out="o.cp_font_css()"/>
+                        .cp-todo { background-color:#ffe94d !important; color:#272a30; padding:0 1mm; }
+                        .cp { font-family: Arial, sans-serif; font-size: 10.5pt; color: #272a30; line-height: 1.45; }
+                        .cp[lang="ar"], .cp [lang="ar"] { font-family: 'Cairo', Arial, sans-serif; line-height: 1.7; }
+                        .cp table { width: 100%; border-collapse: collapse; }
+                        .cp .cp-title td, .cp .cp-head td, .cp .cp-pair td, .cp .cp-title tr, .cp .cp-head tr, .cp .cp-pair tr, .cp table.cp-pair { border: 0 !important; }
+                        .cp table.cp-head { border: 0 !important; border-bottom: 1px solid #d5dde7 !important; }
+                        .cp table.cp-title { border: 0 !important; border-bottom: 1.7px solid <t t-out="pc"/> !important; }
+                        .cp .cp-title { border-bottom: 1.7px solid <t t-out="pc"/>; margin-bottom: 3mm; }
+                        .cp .cp-title td { padding-bottom: 3mm; vertical-align: bottom; }
+                        .cp h1 { margin: 0; font-size: 22pt; color: <t t-out="pc"/>; font-weight: bold; }
+                        .cp h1[lang="ar"] { font-size: 24pt; }
+                        .cp .cp-sub { font-size: 10.5pt; color: #75808f; }
+                        .cp .cp-sub[lang="ar"] { font-size: 13pt; }
+                        .cp .cp-meta td { background: #f7f8fa; border: 1px solid #d5dde7; padding: 2.6mm 3mm; width: 33.33%; vertical-align: top; }
+                        .cp .cp-cap { color: #75808f; font-size: 9.6pt; }
+                        .cp .cp-cap [lang="ar"] { font-size: 10.5pt; white-space: nowrap; }
+                        .cp .cp-box td div[lang="ar"], .cp .cp-box td span[lang="ar"] { font-size: 11.5pt; }
+                        .cp .cp-val { font-weight: bold; font-size: 11.5pt; }
+                        .cp .cp-head { border-bottom: 1px solid #d5dde7; margin: 4mm 0 2mm 0; page-break-after: avoid; }
+                        .cp .cp-head td { color: <t t-out="pc"/>; font-size: 13.5pt; font-weight: bold; padding-bottom: 1.4mm; }
+                        .cp .cp-head .cp-head-ar { font-size: 15.5pt; text-align: right; }
+                        .cp .cp-num { font-size: 15pt; }
+                        .cp .cp-pair { margin-bottom: 1.5mm; }
+                        .cp .cp-pair td { width: 50%; vertical-align: top; font-size: 10.5pt; padding: 0 3.5mm; }
+                        .cp .cp-pair td.cp-en { padding-left: 0; text-align: left; }
+                        .cp .cp-pair td.cp-ar { padding-right: 0; text-align: right; font-size: 12pt; }
+                        .cp .cp-pair p { margin: 0 0 1.5mm 0; }
+                        .cp .cp-box td { border: 1px solid #d5dde7; padding: 2.3mm 2.5mm; vertical-align: top; font-size: 10pt; }
+                        .cp .cp-box th { background-color: <t t-out="pc"/> !important; color: #fff; text-align: left; padding: 2mm 2.5mm; font-weight: normal; font-size: 9.2pt; }
+                        .cp .cp-box th.cp-ar-h { text-align: right; font-size: 11pt; }
+                        .cp .cp-box td.cp-ar { text-align: right; font-size: 11.5pt; }
+                        .cp .cp-box thead { display: table-header-group; }
+                        .cp .cp-box tr { page-break-inside: avoid; }
+                        .cp .cp-name { font-weight: bold; color: #344e75; }
+                        .cp .cp-callout { border-right: 3px solid <t t-out="pc"/>; background: #f7f8fa; padding: 2.5mm 3mm; margin-top: 3mm; page-break-inside: avoid; }
+                        .cp .cp-small { font-size: 9.6pt; color: #75808f; }
+                        .cp .cp-cards td { border: 1px solid #d5dde7; background: #fafbfd; padding: 2mm 3mm; width: 50%; vertical-align: top; }
+                        .cp .cp-card-label { color: <t t-out="pc"/>; font-weight: bold; font-size: 9pt; }
+                        .cp .cp-catalog td { border: 1px solid #d5dde7; padding: 2mm 2.5mm; width: 25%; font-size: 10pt; }
+                        .cp .cp-catalog b { color: <t t-out="pc"/>; font-size: 10.5pt; }
+                        .cp .cp-sign { border: 1px solid <t t-out="pc"/>; margin-top: 3mm; page-break-inside: avoid; }
+                        .cp .cp-sign td { width: 50%; padding: 3mm; vertical-align: top; font-size: 10pt; }
+                        .cp .cp-sign h3 { margin: 0 0 1mm 0; font-size: 10.5pt; color: <t t-out="pc"/>; }
+                        .cp .cp-row { margin-top:1.6mm; } .cp .cp-rl { color:#75808f; font-size:9.6pt; } .cp .cp-sign .cp-name { font-weight:bold; font-size:11pt; margin-top:1mm; }
+                        .cp .cp-sign td { padding: 5mm 5mm 4mm 5mm; }
+                        .cp .cp-logo { height: 25mm; margin-bottom: 2mm; }
+                        .cp .cp-sign .cp-name { font-size: 12.5pt !important; margin-bottom: 3mm; }
+                        .cp table.cp-sf { border-collapse: collapse; }
+                        .cp .cp-sf { margin-top: 2mm; }
+                        .cp .cp-r { overflow: hidden; margin-bottom: 1.5mm; }
+                        .cp .cp-sl { float: left; width: 28%; font-size: 10.5pt; color: #75808f; padding-top: 3mm; }
+                        .cp .cp-sl .cp-sla { font-size: 10.5pt; text-align: left; }
+                        .cp .cp-sv { float: left; width: 70%; min-height: 10mm; font-size: 12pt; border-bottom: 1px solid #aab4c3; padding: 3mm 1mm 1mm 1mm; }
+                        .cp .cp-sign-line { border-bottom: 1px solid #c3ccda; height: 9mm; margin-top: 1mm; }
+                        .cp .cp-ltr { unicode-bidi: embed; direction: ltr; }
+                        .cp .cp-single { font-size: 10.5pt; margin-bottom: 1.5mm; }
+                        .cp .cp-single p { margin: 0 0 1.5mm 0; }
+                        .cp.cp-rtl, .cp[lang="ar"] { font-family: 'Cairo', Arial, sans-serif; line-height: 1.7; text-align: right; }
+                        .cp.cp-rtl th, .cp.cp-rtl td { text-align: right; }
+                        .cp.cp-rtl .cp-sign td { border-right: 0; }
+                    </style>
+
+                <div class="cp">
+                    <table class="cp-title o_ignore_layout_styling" style="border:none; border-collapse:separate; border-spacing:0;"><tr style="border:none;">
+                        <td style="border:none; padding-bottom:3mm;"><h1>Technical Proposal</h1><div class="cp-sub">Project scope &amp; implementation</div></td>
+                        <td dir="rtl" lang="ar" style="border:none; text-align:right; padding-bottom:3mm;"><h1 lang="ar" dir="rtl">المقترح الفني</h1><div class="cp-sub" lang="ar">نطاق العمل وخطة التنفيذ</div></td>
+                    </tr></table>
+                    <div t-attf-style="height:3px; background-color:#{pc} !important; margin-bottom:3mm; font-size:1px; line-height:1px;">&#160;</div>
+
+                    <table class="cp-meta o_ignore_layout_styling" style="margin-bottom:3mm;">
+                        <tr>
+                            <td><t t-call="dekad_claude_customizations.cp_cap"><t t-set="en">Prepared for</t><t t-set="ar">مقدّم إلى</t></t>
+                                <div class="cp-val"><t t-out="o.partner_id.name"/></div></td>
+                            <td><t t-call="dekad_claude_customizations.cp_cap"><t t-set="en">Reference / revision</t><t t-set="ar">المرجع / النسخة</t></t>
+                                <div class="cp-val"><span class="cp-ltr"><t t-out="o.cp_ref()"/> / <t t-out="'%02d' % (o.cp_revision or 1)"/></span></div></td>
+                            <td><t t-call="dekad_claude_customizations.cp_cap"><t t-set="en">Proposal date</t><t t-set="ar">تاريخ المقترح</t></t>
+                                <div class="cp-val"><span class="cp-ltr"><t t-out="o.cp_d(o.cp_date())"/></span></div></td>
+                        </tr>
+                        <tr>
+                            <td><t t-call="dekad_claude_customizations.cp_cap"><t t-set="en">Prepared by</t><t t-set="ar">أعدّه</t></t>
+                                <div class="cp-val"><t t-out="o.user_id.name or ''"/></div></td>
+                            <td><t t-call="dekad_claude_customizations.cp_cap"><t t-set="en">Linked quotation</t><t t-set="ar">عرض السعر المرتبط</t></t>
+                                <div class="cp-val"><span class="cp-ltr"><t t-out="o.name"/></span></div></td>
+                            <td>&#160;</td>
+                        </tr>
+                    </table>
+
+                    <!-- 1. Overview -->
+                    <t t-set="sec" t-value="sec + 1"/>
+                    <t t-call="dekad_claude_customizations.cp_heading">
+                        <t t-set="num" t-value="sec"/><t t-set="en">Project overview</t><t t-set="ar">نبذة عن المشروع</t>
+                    </t>
+                    <t t-call="dekad_claude_customizations.cp_pair">
+                        <t t-set="en_body"><p>Implementation of the agreed scope for <b><t t-out="o.partner_id.name"/></b> &#8212; <b><t t-out="o.cp_v(o.cp_project_en)"/></b> &#8212; using <b><t t-out="o.cp_v(o.cp_label('edition', o.cp_edition))"/> <span class="cp-ltr"><t t-out="o.cp_version or ''"/></span></b>.</p></t>
+                        <t t-set="ar_body"><p>تنفيذ النطاق المتفق عليه لدى <b><t t-out="o.partner_id.name"/></b> &#8212; <b><t t-out="o.cp_v(o.cp_project_ar or o.cp_project_en, 'ar')"/></b> &#8212; باستخدام <b><t t-out="o.cp_v(o.cp_label('edition', o.cp_edition, 'ar'), 'ar')"/> <span class="cp-ltr"><t t-out="o.cp_version or ''"/></span></b>.</p></t>
+                    </t>
+
+                    <!-- 2. Functional modules -->
+                    <t t-set="sec" t-value="sec + 1"/>
+                    <t t-call="dekad_claude_customizations.cp_heading">
+                        <t t-set="num" t-value="sec"/><t t-set="en">Functional modules included</t><t t-set="ar">الوحدات الوظيفية المشمولة</t>
+                    </t>
+                    <table class="cp-box o_ignore_layout_styling">
+                        <colgroup><col style="width:22%"/><col style="width:39%"/><col style="width:39%"/></colgroup>
+                        <thead><tr><th>Module / الوحدة</th><th>Included scope</th><th class="cp-ar-h" lang="ar" dir="rtl">النطاق المشمول</th></tr></thead>
+                        <tbody>
+                            <tr t-foreach="o.cp_module_ids" t-as="m">
+                                <td><div class="cp-name"><t t-out="m.name_en"/></div><div lang="ar" dir="rtl" style="text-align:left;"><t t-out="m.name_ar or ''"/></div></td>
+                                <td><t t-out="m.scope_en or ''"/></td>
+                                <td class="cp-ar" lang="ar" dir="rtl"><t t-out="m.scope_ar or ''"/></td>
+                            </tr>
+                            <tr t-if="not o.cp_module_ids"><td colspan="3"><t t-out="o.cp_v(False)"/></td></tr>
+                        </tbody>
+                    </table>
+                    <t t-call="dekad_claude_customizations.cp_notes"><t t-set="note" t-value="o.cp_note_modules"/></t>
+
+                    <!-- 3. Delivery plan -->
+                    <div style="page-break-inside:avoid;">
+                    <t t-set="sec" t-value="sec + 1"/>
+                    <t t-call="dekad_claude_customizations.cp_heading">
+                        <t t-set="num" t-value="sec"/><t t-set="en">Estimated delivery plan</t><t t-set="ar">الجدول التقديري للتنفيذ</t>
+                    </t>
+                    <table class="cp-box o_ignore_layout_styling">
+                        <colgroup><col style="width:60%"/><col style="width:40%"/></colgroup>
+                        <thead><tr><th>Phase / المرحلة</th><th>Duration / المدة</th></tr></thead>
+                        <tbody>
+                            <tr t-foreach="o.cp_phase_ids" t-as="ph">
+                                <td><span class="cp-name"><t t-out="ph.name_en"/></span> &#160;/&#160; <span lang="ar" dir="rtl"><t t-out="ph.name_ar or ''"/></span></td>
+                                <td><t t-out="o.cp_v(ph.duration)"/></td>
+                            </tr>
+                            <tr t-if="not o.cp_phase_ids"><td colspan="2"><t t-out="o.cp_v(False)"/></td></tr>
+                        </tbody>
+                    </table>
+                    <t t-call="dekad_claude_customizations.cp_pair">
+                        <t t-set="en_body"><p><b>Overall duration:</b> <t t-out="o.cp_v(o.cp_duration_en)"/></p><p class="cp-small">The schedule is estimated and subject to the approved project plan.</p></t>
+                        <t t-set="ar_body"><p><b>المدة الإجمالية:</b> <t t-out="o.cp_v(o.cp_duration_ar or o.cp_duration_en, 'ar')"/></p><p class="cp-small">الجدول تقديري ويخضع لخطة المشروع المعتمدة.</p></t>
+                    </t>
+                    <t t-call="dekad_claude_customizations.cp_notes"><t t-set="note" t-value="o.cp_note_delivery"/></t>
+                    </div>
+
+                    <!-- 4. Training -->
+                    <div style="page-break-inside:avoid;">
+                    <t t-set="sec" t-value="sec + 1"/>
+                    <t t-call="dekad_claude_customizations.cp_heading">
+                        <t t-set="num" t-value="sec"/><t t-set="en">Training</t><t t-set="ar">التدريب</t>
+                    </t>
+                    <t t-call="dekad_claude_customizations.cp_pair">
+                        <t t-set="en_body"><p>Training is delivered online by default; on-site training may be arranged when required and agreed in advance. It includes <b><t t-out="o.cp_sessions('en')"/></b>, covering the configured workflows. Any additional sessions are quoted separately.</p></t>
+                        <t t-set="ar_body"><p>يُقدَّم التدريب عن بُعد (أونلاين) افتراضياً، وفي الحالات التي تستدعي ذلك يمكن أن يكون في موقع العميل بالاتفاق المسبق. يشمل <b><t t-out="o.cp_sessions('ar')"/></b> على المسارات التي تم إعدادها. أي جلسات إضافية تُحتسب بشكل منفصل.</p></t>
+                    </t>
+                    <t t-call="dekad_claude_customizations.cp_notes"><t t-set="note" t-value="o.cp_note_training"/></t>
+                    </div>
+
+                    <!-- 5. Data, responsibilities and acceptance (fixed text) -->
+                    <div style="page-break-inside:avoid;">
+                    <t t-set="sec" t-value="sec + 1"/>
+                    <t t-call="dekad_claude_customizations.cp_heading">
+                        <t t-set="num" t-value="sec"/><t t-set="en">Data, responsibilities &amp; acceptance</t><t t-set="ar">البيانات والمسؤوليات والقبول</t>
+                    </t>
+                    <t t-call="dekad_claude_customizations.cp_pair">
+                        <t t-set="en_body"><p><b>Data import:</b> Includes a simple import of master data (customers, vendors, products, opening balances) from structured files provided by the customer in the agreed format. <b>Full data migration from a previous system is not included and is quoted separately.</b></p>
+                            <p><b>Customer responsibilities:</b> The customer provides data, access and a project contact, and participates in testing.</p>
+                            <p><b>Acceptance:</b> Delivery is accepted once the customer tests the agreed workflows and confirms in writing.</p>
+                            <p><b>Scope changes:</b> Scope changes require written approval of cost and schedule.</p></t>
+                        <t t-set="ar_body"><p><b>استيراد البيانات:</b> يشمل استيراداً بسيطاً للبيانات الأساسية (العملاء، الموردين، المنتجات، الأرصدة الافتتاحية) من ملفات منظّمة يوفّرها العميل على الصيغة المتفق عليها. <b>لا يشمل ترحيل البيانات الكامل من نظام سابق، ويُسعَّر بشكل منفصل.</b></p>
+                            <p><b>مسؤوليات العميل:</b> توفير البيانات والصلاحيات وجهة اتصال مخصصة للمشروع، والمشاركة في الاختبار.</p>
+                            <p><b>القبول:</b> يُعتمد التسليم بعد اختبار العميل للمسارات المتفق عليها وتأكيده كتابياً.</p>
+                            <p><b>تغيير النطاق:</b> أي تعديل على النطاق يتطلب موافقة كتابية على التكلفة والجدول.</p></t>
+                    </t>
+                    <t t-call="dekad_claude_customizations.cp_notes"><t t-set="note" t-value="o.cp_note_data"/></t>
+                    </div>
+
+                    <!-- 6. Complimentary support -->
+                    <div style="page-break-inside:avoid;">
+                    <t t-set="sec" t-value="sec + 1"/>
+                    <t t-call="dekad_claude_customizations.cp_heading">
+                        <t t-set="num" t-value="sec"/><t t-set="en">Complimentary support</t><t t-set="ar">الدعم المجاني بعد التشغيل</t>
+                    </t>
+                    <t t-call="dekad_claude_customizations.cp_pair">
+                        <t t-set="en_body">
+                            <p><b>Duration:</b> Complimentary support for <b><t t-out="o.cp_v(o.cp_support_months)"/> months</b> from the actual go-live date (after project handover).</p>
+                            <p><b>Working days and hours:</b> Saturday to Thursday, from <span class="cp-ltr"><t t-out="o.cp_v(o.cp_support_from)"/></span> to <span class="cp-ltr"><t t-out="o.cp_v(o.cp_support_to)"/></span> (UAE time).</p>
+                            <p><b>Channel:</b> Remote, or on-site when required.</p>
+                            <p><b>Includes:</b> usage guidance and fixing issues. <b>Excludes:</b> new programming, third-party integrations and new modules unless agreed.</p></t>
+                        <t t-set="ar_body">
+                            <p><b>المدة:</b> دعم مجاني لمدة <b><t t-out="o.cp_v(o.cp_support_months, 'ar')"/> أشهر</b> من تاريخ التشغيل الفعلي (بعد تسليم المشروع).</p>
+                            <p><b>أيام وساعات العمل:</b> من السبت إلى الخميس، من الساعة <span class="cp-ltr"><t t-out="o.cp_v(o.cp_support_from, 'ar')"/></span> إلى <span class="cp-ltr"><t t-out="o.cp_v(o.cp_support_to, 'ar')"/></span> (توقيت الإمارات).</p>
+                            <p><b>طريقة الدعم:</b> عن بُعد، أو في الموقع عند الحاجة.</p>
+                            <p><b>يشمل:</b> الإرشاد في الاستخدام ومعالجة المشكلات. <b>لا يشمل:</b> البرمجة الجديدة وربط الأنظمة الخارجية والوحدات الإضافية ما لم يُتفق عليها.</p></t>
+                    </t>
+                    <t t-call="dekad_claude_customizations.cp_notes"><t t-set="note" t-value="o.cp_note_support"/></t>
+                    </div>
+
+                    <!-- 8. Hosting and licences (only when included) -->
+                    <div style="page-break-inside:avoid;">
+                    <t t-if="o.cp_include_hosting">
+                        <t t-set="sec" t-value="sec + 1"/>
+                        <t t-call="dekad_claude_customizations.cp_heading">
+                            <t t-set="num" t-value="sec"/><t t-set="en">Hosting &amp; licences</t><t t-set="ar">الاستضافة والتراخيص</t>
+                        </t>
+                        <t t-call="dekad_claude_customizations.cp_pair">
+                            <t t-set="en_body"><p><b>Hosting (server):</b> <span class="cp-ltr"><t t-out="o.cp_hosting_price" t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/></span> / year<br/><b>Number of users:</b> <span class="cp-ltr"><t t-out="o.cp_v(o.cp_hosting_users)"/></span></p></t>
+                            <t t-set="ar_body"><p><b>الاستضافة (الخادم):</b> <span class="cp-ltr"><t t-out="o.cp_hosting_price" t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/></span> / سنة<br/><b>عدد المستخدمين:</b> <span class="cp-ltr"><t t-out="o.cp_v(o.cp_hosting_users, 'ar')"/></span></p></t>
+                        </t>
+                        <t t-call="dekad_claude_customizations.cp_notes"><t t-set="note" t-value="o.cp_note_hosting"/></t>
+                    </t>
+                    </div>
+
+                    <!-- 9. Approval -->
+                    <div style="page-break-inside:avoid;">
+                    <t t-set="sec" t-value="sec + 1"/>
+                    <t t-call="dekad_claude_customizations.cp_heading">
+                        <t t-set="num" t-value="sec"/><t t-set="en">Approval</t><t t-set="ar">الاعتماد</t>
+                    </t>
+                    <t t-set="signer" t-value="company.dekad_signatory_id"/>
+                    <table class="cp-sign o_ignore_layout_styling"><tr>
+                        <td>
+                            <div class="cp-logo" t-att-style="'height:33mm;' if company.id == 4 else None"><img t-if="company.logo" t-att-src="image_data_uri(company.logo)" t-att-style="'max-height:32mm; max-width:85mm;' if company.id == 4 else 'max-height:24mm; max-width:70mm;'"/></div>
+                            <div class="cp-name"><t t-out="o.cp_company_label()"/></div>
+                            <div class="cp-sf">
+                                <div class="cp-r"><div class="cp-sl"><div>Name</div><div lang="ar" dir="rtl" class="cp-sla">الاسم</div></div><div class="cp-sv"><t t-out="signer.name"/></div></div>
+                                <div class="cp-r"><div class="cp-sl"><div>Position</div><div lang="ar" dir="rtl" class="cp-sla">المنصب</div></div><div class="cp-sv"><t t-out="signer.partner_id.function or ''"/></div></div>
+                                <div class="cp-r"><div style="color:#75808f; font-size:10pt; overflow:hidden;"><span style="float:left;">Signature / Stamp</span><span lang="ar" dir="rtl" style="float:right;">التوقيع والختم</span></div><div style="height:42mm; border-bottom:1px solid #aab4c3; overflow:hidden; padding-top:2mm;"><div style="float:left; width:56%; padding-top:6mm;"><img t-if="signer.dekad_signature" t-att-src="image_data_uri(signer.dekad_signature)" style="max-height:34mm; max-width:100%;"/></div><div style="float:right; width:42%; text-align:right;"><img t-if="company.dekad_stamp" t-att-src="image_data_uri(company.dekad_stamp)" style="max-height:40mm; max-width:100%;"/></div></div></div>
+                                <div class="cp-r"><div class="cp-sl"><div>Date</div><div lang="ar" dir="rtl" class="cp-sla">التاريخ</div></div><div class="cp-sv"><span class="cp-ltr"><t t-out="o.cp_d(o.cp_date())"/></span></div></div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="cp-logo"><t t-set="clogo" t-value="o.partner_id.image_1920 or o.partner_id.commercial_partner_id.image_1920"/><img t-if="clogo" t-att-src="image_data_uri(clogo)" style="max-height:24mm; max-width:70mm;"/></div>
+                            <div class="cp-name"><t t-out="o.partner_id.commercial_partner_id.name"/></div>
+                            <div class="cp-sf">
+                                <div class="cp-r"><div class="cp-sl"><div>Name</div><div lang="ar" dir="rtl" class="cp-sla">الاسم</div></div><div class="cp-sv"><t t-out="o.cp_cust_signer_name or ''"/></div></div>
+                                <div class="cp-r"><div class="cp-sl"><div>Position</div><div lang="ar" dir="rtl" class="cp-sla">المنصب</div></div><div class="cp-sv"><t t-out="o.cp_cust_signer_title or ''"/></div></div>
+                                <div class="cp-r"><div style="color:#75808f; font-size:10pt; overflow:hidden;"><span style="float:left;">Signature / Stamp</span><span lang="ar" dir="rtl" style="float:right;">التوقيع والختم</span></div><div style="height:42mm; border-bottom:1px solid #aab4c3; overflow:hidden; padding-top:2mm;"></div></div>
+                                <div class="cp-r"><div class="cp-sl"><div>Date</div><div lang="ar" dir="rtl" class="cp-sla">التاريخ</div></div><div class="cp-sv"></div></div>
+                            </div>
+                        </td>
+                    </tr></table>
+                    </div>
+
+                </div>
+            </div>
+        </t>
+    </template>
+</odoo>

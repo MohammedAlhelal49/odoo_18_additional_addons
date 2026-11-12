@@ -1,0 +1,111 @@
+<odoo>
+    <record id="paperformat_laundry_report" model="report.paperformat">
+        <field name="name">Laundry Reports (A4 landscape)</field>
+        <field name="format">A4</field>
+        <field name="orientation">Landscape</field>
+        <field name="margin_top">30</field>
+        <field name="margin_bottom">18</field>
+        <field name="margin_left">8</field>
+        <field name="margin_right">8</field>
+        <field name="header_line" eval="False"/>
+        <field name="header_spacing">24</field>
+        <field name="dpi">90</field>
+    </record>
+
+    <record id="action_report_laundry" model="ir.actions.report">
+        <field name="name">Laundry Report</field>
+        <field name="model">london.laundry.report</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">london_laundry_implementation.report_laundry_document</field>
+        <field name="report_file">london_laundry_implementation.report_laundry_document</field>
+        <field name="paperformat_id" ref="paperformat_laundry_report"/>
+    </record>
+
+    <template id="report_laundry_document">
+        <t t-call="web.html_container">
+            <t t-call="web.external_layout">
+                <div class="page o_laundry_report" t-att-dir="'rtl' if rtl else 'ltr'" t-att-style="'text-align: right;' if rtl else ''">
+                    <style>
+                        .o_laundry_report .o_ld_num { direction: ltr; unicode-bidi: embed; display: inline-block; }
+                        /* Lato has no Arabic glyphs: the PDF engine then mixes fonts inside a line and
+                           mis-measures it (overlaps, clipping). Use one font that has Arabic + Latin. */
+                        .o_laundry_report[dir="rtl"], .o_laundry_report[dir="rtl"] * {
+                            font-family: "DejaVu Sans", "FreeSans", "Noto Sans Arabic", "Arial", sans-serif !important;
+                        }
+                        .o_laundry_report .table th, .o_laundry_report .table td { padding: 3px 7px; }
+                        /* wide label column: the PDF engine under-measures mixed Arabic/Latin text and would clip it */
+                        .o_laundry_report .o_ld_labelcell { width: 30%; white-space: normal; }
+                        .o_laundry_report th, .o_laundry_report td { vertical-align: middle; }
+                        .o_laundry_report .o_ld_meta td { padding: 1px 0; border: 0; white-space: nowrap; }
+                        .o_laundry_report .o_ld_meta .o_ld_meta_label { font-weight: bold; width: 130px; min-width: 130px; padding-left: 12px; padding-right: 12px; }
+                        .o_laundry_report .o_ld_numcell { text-align: right; }
+                        .o_laundry_report[dir="rtl"] .o_ld_numcell { text-align: left; }
+                        .o_laundry_report[dir="rtl"] th, .o_laundry_report[dir="rtl"] td { text-align: right; }
+                        .o_laundry_report[dir="rtl"] th.o_ld_numcell, .o_laundry_report[dir="rtl"] td.o_ld_numcell { text-align: left; }
+                    </style>
+                    <h4 class="mb-1" t-out="report['title']"/>
+                    <table class="o_ld_meta small text-muted">
+                        <tr t-foreach="header_rows" t-as="hrow">
+                            <td class="o_ld_meta_label" t-out="hrow[0]"/>
+                            <td t-out="hrow[1]"/>
+                        </tr>
+                    </table>
+
+                    <table class="table table-sm mt-3" style="font-size: 11px;">
+                        <thead>
+                            <tr style="background-color: #e9ecef;">
+                                <th class="o_ld_labelcell"/>
+                                <th t-foreach="report['columns']" t-as="col"
+                                    class="o_ld_numcell" t-out="col['label']"/>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <t t-foreach="report['lines']" t-as="line">
+                                <t t-call="london_laundry_implementation.report_laundry_line"/>
+                                <t t-foreach="line.get('children') or []" t-as="line">
+                                    <t t-call="london_laundry_implementation.report_laundry_line"/>
+                                </t>
+                            </t>
+                            <tr style="border-top: 2px solid #333; font-weight: bold; background-color: #f8f9fa;">
+                                <td>Total</td>
+                                <td t-foreach="report['columns']" t-as="col" class="o_ld_numcell text-nowrap">
+                                    <t t-set="value" t-value="report['totals'].get(col['key'])"/>
+                                    <t t-call="london_laundry_implementation.report_laundry_value"/>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <table class="o_ld_meta small text-muted">
+                        <tr t-foreach="footer_rows" t-as="frow">
+                            <td class="o_ld_meta_label" t-out="frow[0]"/>
+                            <td t-out="frow[1]"/>
+                        </tr>
+                    </table>
+                </div>
+            </t>
+        </t>
+    </template>
+
+    <template id="report_laundry_line">
+        <tr t-att-style="'font-weight: bold;' if line['level'] == 0 and line.get('children') else ''">
+            <td class="o_ld_labelcell" t-att-style="'padding-{}: {}px;'.format('right' if rtl else 'left', 7 + 18 * line['level'])">
+                <div t-out="line['label']"/>
+                <!-- own line: this PDF engine cannot lay out Arabic and Latin words on one line -->
+                <div t-if="line.get('sublabel')" class="text-muted" style="font-weight: normal; font-size: 9px;" t-out="line['sublabel']"/>
+            </td>
+            <td t-foreach="report['columns']" t-as="col"
+                t-att-class="'o_ld_numcell text-nowrap ' + (line.get('class') or '')">
+                <t t-set="value" t-value="line['values'].get(col['key'])"/>
+                <t t-call="london_laundry_implementation.report_laundry_value"/>
+            </td>
+        </tr>
+    </template>
+
+    <template id="report_laundry_value">
+        <t t-if="value is None or value == ''"/>
+        <t t-elif="col['type'] == 'money'"><span class="o_ld_num" t-out="value" t-options="{'widget': 'monetary', 'display_currency': currency}"/></t>
+        <t t-elif="col['type'] == 'int'"><span class="o_ld_num" t-out="'{:,.0f}'.format(value)"/></t>
+        <t t-elif="col['type'] == 'pct'"><span class="o_ld_num" t-out="'{:.1f}'.format(value) + '%'"/></t>
+        <t t-else=""><t t-out="value"/></t>
+    </template>
+</odoo>

@@ -1,0 +1,2264 @@
+// ============================================================
+// English & Standardized Tests landing page (/english-ielts)
+// + بطاقة الدورات المميزة (/courses) + بانر صفحة اللغات (/languages)
+// كل الكلاسات بادئتها ale- منشان ما تتعارض مع باقي الثيم.
+// logical properties (inline-start/end) → بتشتغل RTL و LTR بدون تعديل.
+// ============================================================
+
+$ale-primary: #1a5490;
+$ale-primary-2: #2d6cb3;
+$ale-dark: #0f2f52;
+$ale-accent: #ffc107;
+$ale-wa: #25d366;
+$ale-wa-dark: #1da851;
+$ale-soft: #f4f7fb;
+$ale-text: #1f2937;
+$ale-muted: #5b6676;
+$ale-radius: 18px;
+$ale-shadow: 0 10px 30px rgba(15, 47, 82, 0.08);
+$ale-shadow-hover: 0 16px 40px rgba(15, 47, 82, 0.14);
+
+.ale-page {
+    color: $ale-text;
+    font-family: 'Tajawal', sans-serif;
+    scroll-behavior: smooth;
+
+    section[id] {
+        scroll-margin-top: 90px;
+    }
+}
+
+// ---------- Buttons ----------
+.ale-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.55rem;
+    padding: 0.7rem 1.4rem;
+    border-radius: 999px;
+    border: 2px solid transparent;
+    font-weight: 700;
+    line-height: 1.3;
+    text-decoration: none !important;
+    transition: transform 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease;
+    cursor: pointer;
+
+    &:hover {
+        transform: translateY(-2px);
+    }
+
+    &:focus-visible {
+        outline: 3px solid rgba($ale-accent, 0.7);
+        outline-offset: 2px;
+    }
+
+    &:disabled {
+        opacity: 0.7;
+        transform: none;
+        cursor: wait;
+    }
+}
+
+.ale-btn-lg {
+    padding: 0.9rem 1.8rem;
+    font-size: 1.05rem;
+}
+
+.ale-btn-icon {
+    padding: 0.7rem 0.95rem;
+    font-size: 1.2rem;
+}
+
+.ale-btn-primary {
+    background: linear-gradient(135deg, $ale-primary, $ale-primary-2);
+    color: #fff !important;
+    box-shadow: 0 8px 20px rgba($ale-primary, 0.25);
+}
+
+.ale-btn-wa {
+    background: $ale-wa;
+    color: #fff !important;
+    box-shadow: 0 8px 20px rgba($ale-wa, 0.3);
+
+    &:hover {
+        background: $ale-wa-dark;
+    }
+}
+
+.ale-btn-wa-outline {
+    border-color: $ale-wa;
+    color: $ale-wa-dark !important;
+    background: #fff;
+
+    &:hover {
+        background: $ale-wa;
+        color: #fff !important;
+    }
+}
+
+.ale-btn-outline {
+    border-color: $ale-primary;
+    color: $ale-primary !important;
+    background: transparent;
+
+    &:hover {
+        background: $ale-primary;
+        color: #fff !important;
+    }
+}
+
+.ale-btn-ghost {
+    border-color: rgba(255, 255, 255, 0.7);
+    color: #fff !important;
+    background: rgba(255, 255, 255, 0.08);
+
+    &:hover {
+        background: rgba(255, 255, 255, 0.18);
+    }
+}
+
+.ale-btn-accent {
+    background: $ale-accent;
+    color: $ale-dark !important;
+}
+
+// ---------- Typography / sections ----------
+.ale-section {
+    padding: 4.5rem 0;
+}
+
+.ale-section-soft {
+    background: $ale-soft;
+}
+
+.ale-section-head {
+    text-align: center;
+    max-width: 760px;
+    margin: 0 auto 2.75rem;
+}
+
+.ale-h2 {
+    font-size: clamp(1.6rem, 3.2vw, 2.3rem);
+    font-weight: 800;
+    color: $ale-dark;
+    margin-bottom: 0.75rem;
+}
+
+.ale-h2-icon {
+    color: $ale-primary;
+    margin-inline-end: 0.5rem;
+}
+
+.ale-h3 {
+    font-size: 1.25rem;
+    font-weight: 800;
+    color: $ale-dark;
+    margin-bottom: 0.6rem;
+}
+
+.ale-lead {
+    font-size: 1.1rem;
+    color: $ale-muted;
+    margin-bottom: 0;
+}
+
+// ---------- Chips ----------
+.ale-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.ale-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.35rem 0.85rem;
+    border-radius: 999px;
+    background: rgba($ale-primary, 0.08);
+    color: $ale-primary;
+    font-weight: 600;
+    font-size: 0.92rem;
+}
+
+.ale-chip-glass {
+    background: rgba(255, 255, 255, 0.14);
+    color: #fff;
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    backdrop-filter: blur(6px);
+}
+
+// ---------- Cards ----------
+.ale-card {
+    background: #fff;
+    border-radius: $ale-radius;
+    box-shadow: $ale-shadow;
+    padding: 1.75rem;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.ale-icon-circle {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    color: #fff;
+    background: linear-gradient(135deg, $ale-primary, $ale-primary-2);
+    margin-bottom: 1rem;
+}
+
+// ---------- Hero ----------
+.ale-hero {
+    position: relative;
+    overflow: hidden;
+    padding: 6rem 0 5rem;
+    color: #fff;
+    background: $ale-dark;
+
+    .ale-hero-bg {
+        position: absolute;
+        inset: 0;
+        background:
+            linear-gradient(135deg, rgba(15, 47, 82, 0.94), rgba(26, 84, 144, 0.86)),
+            url('/alomran_theme/static/src/img/hero-bg.jpg') center / cover no-repeat;
+    }
+}
+
+.ale-hero-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.45rem 1.1rem;
+    margin-bottom: 1.25rem;
+    border-radius: 999px;
+    background: $ale-accent;
+    color: $ale-dark;
+    font-weight: 800;
+}
+
+.ale-hero-title {
+    font-size: clamp(2rem, 5vw, 3.4rem);
+    font-weight: 900;
+    line-height: 1.3;
+    color: #fff;
+    margin-bottom: 1rem;
+}
+
+.ale-hero-subtitle {
+    font-size: clamp(1.1rem, 2.2vw, 1.4rem);
+    font-weight: 700;
+    color: $ale-accent;
+    margin-bottom: 1rem;
+}
+
+.ale-hero-intro {
+    font-size: 1.1rem;
+    color: rgba(255, 255, 255, 0.9);
+    max-width: 760px;
+    margin: 0 auto 1.75rem;
+}
+
+.ale-hero-modes-title {
+    font-weight: 700;
+    margin-bottom: 0.75rem;
+}
+
+.ale-hero-stats {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.5rem 1.5rem;
+    margin: 1.75rem 0 2rem;
+    font-size: 1.15rem;
+    font-weight: 800;
+
+    span + span {
+        padding-inline-start: 1.5rem;
+        border-inline-start: 2px solid rgba(255, 255, 255, 0.35);
+    }
+}
+
+.ale-hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.85rem;
+}
+
+.ale-hero-text {
+    text-align: center;
+}
+
+.ale-phone-num {
+    unicode-bidi: isolate;   // الرقم بيضل من اليسار لليمين جوا النص العربي
+    font-weight: 800;
+    letter-spacing: 0.02em;
+}
+
+.ale-hero-chips {
+    justify-content: center;
+}
+
+// ---------- Hero مع فيديو (عمودين) ----------
+.ale-hero-video {
+    position: relative;
+    border-radius: $ale-radius;
+    overflow: hidden;
+    background: #000;
+    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.35);
+    border: 4px solid rgba(255, 255, 255, 0.15);
+
+    video {
+        display: block;
+        width: 100%;
+        aspect-ratio: 16 / 9;
+        object-fit: cover;
+        background: #000;
+        pointer-events: none;   // بلا مشغل وبلا قائمة كليك يمين
+    }
+}
+
+// زر تشغيل/كتم الصوت فوق فيديو الهيرو
+.ale-sound-toggle {
+    position: absolute;
+    bottom: 14px;
+    inset-inline-end: 14px;
+    z-index: 2;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.55rem 1rem;
+    border: 0;
+    border-radius: 999px;
+    background: rgba(0, 0, 0, 0.6);
+    color: #fff;
+    font-weight: 700;
+    font-size: 0.95rem;
+    backdrop-filter: blur(6px);
+    cursor: pointer;
+    transition: background-color 0.15s ease, transform 0.15s ease;
+    animation: ale-sound-pulse 2s ease-in-out 3;
+
+    &:hover {
+        background: rgba(0, 0, 0, 0.8);
+        transform: scale(1.04);
+    }
+
+    &:focus-visible {
+        outline: 3px solid $ale-accent;
+        outline-offset: 2px;
+    }
+
+    &.is-on {
+        animation: none;
+        background: rgba(0, 0, 0, 0.45);
+
+        .ale-sound-label {
+            display: none;     // بعد التشغيل بيضل الأيقونة بس
+        }
+    }
+}
+
+// ---- زر "اضغط لتشغيل الصوت" الكبير بنص الفيديو (بينعمل بالـ JS) ----
+.ale-sound-big {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    z-index: 3;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 1.25rem 1.6rem;
+    border: 0;
+    border-radius: 22px;
+    background: rgba(11, 37, 69, 0.55);
+    color: #fff;
+    font-family: inherit;
+    font-weight: 800;
+    font-size: 1.05rem;
+    line-height: 1.3;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    box-shadow: 0 18px 45px rgba(0, 0, 0, 0.3);
+    cursor: pointer;
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.92);
+    transition: opacity 0.35s ease, transform 0.35s ease, background-color 0.2s ease;
+
+    &.is-visible {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+    }
+
+    &:hover {
+        background: rgba(11, 37, 69, 0.72);
+    }
+
+    &:focus-visible {
+        outline: 3px solid $ale-accent;
+        outline-offset: 3px;
+    }
+}
+
+.ale-sound-big-ring {
+    width: 68px;
+    height: 68px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.6rem;
+    color: #0b2545;
+    background: linear-gradient(135deg, #f5b82e, #ffd56b);
+    animation: ale-sound-big-pulse 1.6s ease-out infinite;
+}
+
+.ale-sound-big-label {
+    white-space: nowrap;
+}
+
+@keyframes ale-sound-big-pulse {
+    0% { box-shadow: 0 0 0 0 rgba(245, 184, 46, 0.65); }
+    70% { box-shadow: 0 0 0 18px rgba(245, 184, 46, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(245, 184, 46, 0); }
+}
+
+@media (max-width: 575.98px) {
+    .ale-sound-big {
+        padding: 0.9rem 1.1rem;
+        font-size: 0.95rem;
+
+        .ale-sound-big-ring {
+            width: 54px;
+            height: 54px;
+            font-size: 1.3rem;
+        }
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .ale-sound-big {
+        transition: none;
+    }
+
+    .ale-sound-big-ring {
+        animation: none;
+    }
+}
+
+@keyframes ale-sound-pulse {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(255, 193, 7, 0.6); }
+    50% { box-shadow: 0 0 0 10px rgba(255, 193, 7, 0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .ale-sound-toggle {
+        animation: none;
+    }
+}
+
+// الهيرو مع فيديو بياخد عرض أكبر من باقي الأقسام عالشاشات الكبيرة
+@media (min-width: 1400px) {
+    .ale-hero-split > .container {
+        max-width: 1500px;
+    }
+}
+
+@media (min-width: 992px) {
+    // الكتابة بتلزق ببداية السطر: يمين بالعربي، يسار بالإنجليزي
+    .ale-hero-split {
+        .ale-hero-text {
+            text-align: start;
+        }
+
+        .ale-hero-chips,
+        .ale-hero-stats,
+        .ale-hero-actions {
+            justify-content: flex-start;
+        }
+
+        .ale-hero-intro {
+            margin-inline: 0;
+        }
+
+        .ale-hero-title {
+            font-size: clamp(1.9rem, 3.4vw, 2.9rem);
+        }
+    }
+}
+
+// ---------- Video (facade) ----------
+.ale-video {
+    position: relative;
+    display: block;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    padding: 0;
+    border: 0;
+    border-radius: $ale-radius;
+    overflow: hidden;
+    background: #000;
+    box-shadow: $ale-shadow;
+    cursor: pointer;
+
+    img,
+    iframe {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        border: 0;
+    }
+
+    img {
+        object-fit: cover;
+        opacity: 0.85;
+        transition: opacity 0.2s ease;
+    }
+
+    &:hover img {
+        opacity: 1;
+    }
+}
+
+.ale-video-playing {
+    cursor: default;
+}
+
+.ale-video-play {
+    position: absolute;
+    inset: 0;
+    margin: auto;
+    width: 76px;
+    height: 76px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.95);
+    color: $ale-primary;
+    font-size: 1.7rem;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+}
+
+// ---------- Why ----------
+.ale-why-card {
+    text-align: center;
+
+    .ale-icon-circle {
+        margin-inline: auto;
+    }
+
+    &:hover {
+        transform: translateY(-4px);
+        box-shadow: $ale-shadow-hover;
+    }
+}
+
+.ale-why-extra {
+    margin: 0.6rem 0 0;
+    font-weight: 700;
+    color: $ale-primary;
+}
+
+// ---------- Programs ----------
+.ale-program-card {
+    display: flex;
+    flex-direction: column;
+    border-top: 4px solid $ale-primary;
+
+    &:hover {
+        transform: translateY(-4px);
+        box-shadow: $ale-shadow-hover;
+    }
+}
+
+.ale-program-top {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+}
+
+.ale-program-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 14px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba($ale-primary, 0.1);
+    color: $ale-primary;
+    font-size: 1.3rem;
+}
+
+.ale-program-tag {
+    font-weight: 900;
+    font-size: 1.15rem;
+    color: $ale-primary;
+}
+
+.ale-program-intro {
+    color: $ale-muted;
+    margin-bottom: 0.85rem;
+}
+
+.ale-program-note {
+    color: $ale-muted;
+    font-size: 0.95rem;
+    margin: 0.85rem 0 0;
+}
+
+.ale-program-actions {
+    display: flex;
+    gap: 0.6rem;
+    margin-top: auto;
+    padding-top: 1.25rem;
+}
+
+// ---------- Match ----------
+.ale-match {
+    max-width: 820px;
+    margin: 0 auto;
+    text-align: center;
+    background: #fff;
+    border-radius: $ale-radius;
+    box-shadow: $ale-shadow;
+    padding: 2.5rem 1.5rem;
+}
+
+.ale-match-q {
+    font-size: 1.2rem;
+    margin-bottom: 0.75rem;
+
+    strong {
+        color: $ale-dark;
+        margin-inline-end: 0.35rem;
+    }
+}
+
+.ale-factors {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem;
+    margin: 1.25rem 0;
+}
+
+.ale-factor {
+    padding: 0.5rem 1rem;
+    border-radius: 12px;
+    background: rgba($ale-primary, 0.08);
+    color: $ale-primary;
+    font-weight: 700;
+}
+
+.ale-factor-plus {
+    font-weight: 900;
+    color: $ale-accent;
+    font-size: 1.3rem;
+}
+
+.ale-match-tell {
+    font-weight: 800;
+    font-size: 1.15rem;
+    color: $ale-dark;
+    margin-bottom: 1rem;
+}
+
+// ---------- Modes ----------
+.ale-mode-card {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+
+    p {
+        color: $ale-muted;
+    }
+}
+
+// ---------- Reviews ----------
+.ale-review {
+    margin: 0;
+
+    blockquote {
+        font-size: 1rem;
+        color: $ale-text;
+    }
+}
+
+.ale-review-author {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+
+    img {
+        width: 56px;
+        height: 56px;
+        border-radius: 50%;
+        object-fit: cover;
+    }
+}
+
+// ---------- Gallery ----------
+.ale-gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 1rem;
+
+    img {
+        width: 100%;
+        height: 220px;
+        object-fit: cover;
+        border-radius: 14px;
+    }
+}
+
+// ---------- FAQ ----------
+.ale-faq {
+    background: #fff;
+    border-radius: 14px;
+    box-shadow: $ale-shadow;
+    margin-bottom: 0.85rem;
+    overflow: hidden;
+
+    summary {
+        cursor: pointer;
+        list-style: none;
+        padding: 1.1rem 1.4rem;
+        font-weight: 800;
+        color: $ale-dark;
+        display: flex;
+        justify-content: space-between;
+        gap: 1rem;
+
+        &::-webkit-details-marker {
+            display: none;
+        }
+
+        &::after {
+            content: '+';
+            font-size: 1.4rem;
+            line-height: 1;
+            color: $ale-primary;
+        }
+    }
+
+    &[open] summary::after {
+        content: '−';
+    }
+
+    p {
+        padding: 0 1.4rem 1.2rem;
+        margin: 0;
+        color: $ale-muted;
+    }
+}
+
+// ---------- Ready ----------
+.ale-ready {
+    padding: 4.5rem 0;
+    color: #fff;
+    background: linear-gradient(135deg, $ale-dark, $ale-primary);
+}
+
+.ale-ready-sub {
+    font-size: 1.15rem;
+    opacity: 0.92;
+    margin-bottom: 1.5rem;
+}
+
+.ale-ready-team {
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+}
+
+// ---------- Form ----------
+.ale-form-card {
+    padding: 2.25rem;
+}
+
+.ale-label {
+    display: block;
+    font-weight: 700;
+    color: $ale-dark;
+    margin-bottom: 0.45rem;
+    font-size: 1rem;
+}
+
+.ale-input {
+    width: 100%;
+    padding: 0.8rem 1rem;
+    border: 1.5px solid #d7dee8;
+    border-radius: 12px;
+    font-size: 1rem;
+    background: #fff;
+    color: $ale-text;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+
+    &:focus {
+        outline: none;
+        border-color: $ale-primary;
+        box-shadow: 0 0 0 4px rgba($ale-primary, 0.12);
+    }
+}
+
+input.ale-input[dir='ltr'] {
+    text-align: start;
+}
+
+.ale-page fieldset {
+    border: 0;
+    padding: 0;
+    margin: 0;
+}
+
+.ale-options {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.ale-option {
+    position: relative;
+    cursor: pointer;
+    margin: 0;
+
+    input {
+        position: absolute;
+        opacity: 0;
+        pointer-events: none;
+    }
+
+    span {
+        display: inline-block;
+        padding: 0.55rem 1rem;
+        border: 1.5px solid #d7dee8;
+        border-radius: 999px;
+        font-weight: 600;
+        transition: all 0.15s ease;
+    }
+
+    input:checked + span {
+        border-color: $ale-primary;
+        background: $ale-primary;
+        color: #fff;
+    }
+
+    input:focus-visible + span {
+        box-shadow: 0 0 0 4px rgba($ale-primary, 0.2);
+    }
+}
+
+.ale-form-error {
+    background: #fdecec;
+    color: #b42318;
+    border-radius: 10px;
+    padding: 0.75rem 1rem;
+    margin-bottom: 1rem;
+    font-weight: 600;
+}
+
+.ale-consent {
+    font-size: 0.85rem;
+    color: $ale-muted;
+    margin: 0.85rem 0 0;
+    text-align: center;
+}
+
+.ale-hp {
+    position: absolute !important;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+}
+
+.ale-form-success {
+    text-align: center;
+    padding: 2rem 0;
+}
+
+.ale-success-icon {
+    width: 80px;
+    height: 80px;
+    margin: 0 auto 1.25rem;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.2rem;
+    color: #fff;
+    background: linear-gradient(135deg, #4ade80, #22c55e);
+}
+
+.ale-direct-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    background: linear-gradient(160deg, #eafaf1, #fff);
+
+    p {
+        color: $ale-muted;
+        margin-bottom: 1.5rem;
+    }
+}
+
+.ale-direct-icon {
+    font-size: 3.2rem;
+    color: $ale-wa;
+    margin-bottom: 0.75rem;
+}
+
+// ---------- Closing ----------
+.ale-closing {
+    padding: 4rem 0 5rem;
+    background: $ale-dark;
+    color: #fff;
+}
+
+.ale-closing-name {
+    font-size: clamp(1.5rem, 3vw, 2rem);
+    font-weight: 900;
+    color: #fff;
+}
+
+.ale-closing-stats {
+    font-size: 1.15rem;
+    font-weight: 800;
+    color: $ale-accent;
+}
+
+.ale-closing-line {
+    opacity: 0.88;
+    margin-bottom: 0.5rem;
+
+    &:last-of-type {
+        margin-bottom: 1.75rem;
+    }
+}
+
+// ---------- Sticky mobile CTA ----------
+.ale-sticky {
+    display: none;
+}
+
+@media (max-width: 767.98px) {
+    .ale-section,
+    .ale-ready {
+        padding: 3.25rem 0;
+    }
+
+    .ale-hero {
+        padding: 4rem 0 3.5rem;
+    }
+
+    .ale-hero-stats span + span {
+        padding-inline-start: 0;
+        border-inline-start: 0;
+    }
+
+    .ale-hero-actions .ale-btn {
+        width: 100%;
+    }
+
+    .ale-form-card {
+        padding: 1.5rem;
+    }
+
+    .ale-sticky {
+        display: flex;
+        gap: 0.6rem;
+        position: fixed;
+        inset-inline: 0;
+        bottom: 0;
+        z-index: 1040;
+        padding: 0.65rem 0.75rem calc(0.65rem + env(safe-area-inset-bottom, 0px));
+        background: rgba(255, 255, 255, 0.97);
+        box-shadow: 0 -6px 20px rgba(0, 0, 0, 0.1);
+        transform: translateY(110%);
+        transition: transform 0.25s ease;
+
+        .ale-btn {
+            flex: 1;
+            padding: 0.7rem 0.5rem;
+        }
+
+        &.is-visible {
+            transform: translateY(0);
+        }
+    }
+
+    // الأزرار العائمة (اتصال/واتساب) بتتغطى بالشريط — منخفيها على صفحة الهبوط بس
+    body:has(.ale-page) .o_floating_actions_call,
+    body:has(.ale-page) .o_floating_actions_whatsapp {
+        display: none !important;
+    }
+
+    .ale-closing {
+        padding-bottom: 6.5rem;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .ale-page {
+        scroll-behavior: auto;
+    }
+
+    .ale-btn,
+    .ale-card,
+    .ale-sticky {
+        transition: none;
+    }
+}
+
+// ============================================================
+// /courses — بطاقة البرنامج المميز (عرض كامل)
+// ============================================================
+.course-card-featured {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    padding: 2rem 2.25rem;
+    border-radius: $ale-radius;
+    color: #fff;
+    text-decoration: none !important;
+    background: linear-gradient(135deg, $ale-dark, $ale-primary 60%, $ale-primary-2);
+    box-shadow: 0 18px 45px rgba(15, 47, 82, 0.25);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+
+    &:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 24px 55px rgba(15, 47, 82, 0.32);
+        color: #fff;
+    }
+
+    .ccf-icon {
+        flex: 0 0 auto;
+        width: 96px;
+        height: 96px;
+        border-radius: 24px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 2.6rem;
+        background: rgba(255, 255, 255, 0.14);
+        color: $ale-accent;
+    }
+
+    .ccf-body {
+        flex: 1 1 auto;
+    }
+
+    .ccf-title {
+        font-size: clamp(1.35rem, 2.6vw, 1.85rem);
+        font-weight: 900;
+        color: #fff;
+        margin: 0.5rem 0;
+    }
+
+    .ccf-desc {
+        color: rgba(255, 255, 255, 0.9);
+        margin-bottom: 0.85rem;
+    }
+
+    .ccf-cta {
+        flex: 0 0 auto;
+    }
+
+    @media (max-width: 767.98px) {
+        flex-direction: column;
+        text-align: center;
+        padding: 1.75rem 1.25rem;
+        gap: 1rem;
+
+        .ale-chips {
+            justify-content: center;
+        }
+
+        .ccf-cta {
+            width: 100%;
+        }
+    }
+}
+
+// ============================================================
+// /languages — بانر صفحة الإنجليزي والاختبارات
+// ============================================================
+.ale-promo-banner {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    padding: 1.75rem 2rem;
+    border-radius: $ale-radius;
+    background: linear-gradient(135deg, $ale-primary, $ale-primary-2);
+    color: #fff;
+    text-decoration: none !important;
+    box-shadow: 0 14px 35px rgba(26, 84, 144, 0.22);
+    transition: transform 0.2s ease;
+
+    &:hover {
+        transform: translateY(-3px);
+        color: #fff;
+    }
+
+    .ale-promo-icon {
+        flex: 0 0 auto;
+        width: 72px;
+        height: 72px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.9rem;
+        background: rgba(255, 255, 255, 0.15);
+        color: $ale-accent;
+    }
+
+    .ale-promo-body {
+        flex: 1 1 auto;
+
+        h3 {
+            color: #fff;
+            font-weight: 800;
+            font-size: 1.3rem;
+            margin-bottom: 0.35rem;
+        }
+
+        p {
+            margin: 0;
+            opacity: 0.9;
+        }
+    }
+
+    .ale-promo-cta {
+        flex: 0 0 auto;
+    }
+
+    @media (max-width: 767.98px) {
+        flex-direction: column;
+        text-align: center;
+
+        .ale-promo-cta {
+            width: 100%;
+        }
+    }
+}
+// ============================================================
+// /private-tutoring — صفحة الدروس الخصوصية والدعم الأكاديمي
+// الأساس من ale- فوق (نفس الألوان) + تصميم الصفحة (بادئة alt-)
+// ============================================================
+
+// ---------- Hero ----------
+.alt-hero-kicker {
+    font-weight: 800;
+    color: $ale-accent;
+    letter-spacing: 0.02em;
+    margin-bottom: 0.75rem;
+}
+
+.alt-hero-modes {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.6rem 1.6rem;
+    margin: 1.75rem 0 0;
+    padding: 0;
+    font-weight: 700;
+
+    li {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    i {
+        color: $ale-accent;
+    }
+}
+
+.ale-hero-split .alt-hero-modes {
+    @media (min-width: 992px) {
+        justify-content: flex-start;
+    }
+}
+
+// ---------- Service cards (صورة + أيقونة + checklist) ----------
+.alt-service-card {
+    display: flex;
+    flex-direction: column;
+    background: #fff;
+    border-radius: $ale-radius;
+    box-shadow: $ale-shadow;
+    overflow: hidden;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+
+    &:hover {
+        transform: translateY(-4px);
+        box-shadow: $ale-shadow-hover;
+    }
+}
+
+.alt-service-media {
+    position: relative;
+    aspect-ratio: 16 / 10;
+    background: $ale-soft;
+
+    img {
+        display: block;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+}
+
+// بديل الصورة لما الملف مش موجود
+.alt-media-fallback {
+    width: 100%;
+    height: 100%;
+    min-height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 3.5rem;
+    color: rgba(255, 255, 255, 0.85);
+    background:
+        radial-gradient(circle at 30% 20%, rgba($ale-accent, 0.35), transparent 55%),
+        linear-gradient(135deg, $ale-dark, $ale-primary 65%, $ale-primary-2);
+}
+
+.alt-service-badge {
+    position: absolute;
+    bottom: -28px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 58px;
+    height: 58px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.35rem;
+    color: #fff;
+    background: linear-gradient(135deg, $ale-primary, $ale-primary-2);
+    border: 4px solid #fff;
+    box-shadow: 0 8px 20px rgba($ale-primary, 0.3);
+    z-index: 1;
+}
+
+.alt-service-body {
+    flex: 1 1 auto;
+    display: flex;
+    flex-direction: column;
+    padding: 2.4rem 1.6rem 1.6rem;
+    text-align: center;
+
+    .ale-program-actions {
+        margin-top: auto;
+    }
+}
+
+.alt-service-lead {
+    color: $ale-muted;
+    margin-bottom: 1rem;
+}
+
+.alt-checklist {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 1.25rem;
+    text-align: start;
+
+    li {
+        position: relative;
+        padding-inline-start: 1.7rem;
+        margin-bottom: 0.5rem;
+        color: $ale-text;
+        font-weight: 600;
+
+        &::before {
+            content: '\f00c';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            position: absolute;
+            inset-inline-start: 0;
+            top: 0.1rem;
+            font-size: 0.85rem;
+            color: $ale-primary;
+        }
+    }
+}
+
+// ---------- Why / Steps (أيقونة دائرية) ----------
+.alt-round-icon {
+    position: relative;
+    width: 72px;
+    height: 72px;
+    margin: 0 auto 1rem;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.6rem;
+    color: $ale-primary;
+    background: #fff;
+    border: 2px solid rgba($ale-primary, 0.15);
+    box-shadow: $ale-shadow;
+}
+
+.alt-why,
+.alt-step {
+    text-align: center;
+
+    p {
+        color: $ale-muted;
+        font-size: 0.95rem;
+    }
+}
+
+.alt-why-title {
+    font-size: 1.05rem;
+    font-weight: 800;
+    color: $ale-dark;
+    margin-bottom: 0.4rem;
+}
+
+.alt-steps {
+    margin: 0;
+    padding: 0;
+}
+
+.alt-step {
+    position: relative;
+
+    .alt-round-icon {
+        background: $ale-soft;
+    }
+}
+
+.alt-step-num {
+    position: absolute;
+    bottom: -4px;
+    inset-inline-end: -4px;
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.85rem;
+    font-weight: 900;
+    color: $ale-dark;
+    background: $ale-accent;
+    border: 2px solid #fff;
+}
+
+// أسهم بين الخطوات (ديسكتوب) — بتتبع اتجاه الصفحة
+@media (min-width: 992px) {
+    .alt-step + .alt-step::before {
+        content: '\f061';
+        font-family: 'Font Awesome 6 Free';
+        font-weight: 900;
+        position: absolute;
+        top: 26px;
+        inset-inline-start: -0.6rem;
+        color: rgba($ale-primary, 0.35);
+        font-size: 1rem;
+    }
+
+    [dir='rtl'] .alt-step + .alt-step::before {
+        content: '\f060';
+    }
+}
+
+// ---------- Form (صورة + فورم) ----------
+.alt-form-section {
+    padding: 4.5rem 0;
+    scroll-margin-top: 90px;
+}
+
+.alt-form-wrap {
+    background: #fff;
+    border-radius: $ale-radius;
+    box-shadow: $ale-shadow;
+    overflow: hidden;
+}
+
+.alt-form-media {
+    position: relative;
+    min-height: 320px;
+
+    img,
+    .alt-media-fallback {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+}
+
+.alt-form-note {
+    position: absolute;
+    top: 1.5rem;
+    inset-inline-start: 1.5rem;
+    z-index: 1;
+    padding: 0.5rem 1.1rem;
+    border-radius: 14px;
+    background: $ale-accent;
+    color: $ale-dark;
+    font-weight: 900;
+    font-size: 1.15rem;
+    transform: rotate(-4deg);
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.18);
+}
+
+.alt-form-card {
+    height: 100%;
+    background: #fff;
+}
+
+.alt-form-help {
+    margin: 0.85rem 0 0;
+    text-align: center;
+    color: $ale-dark;
+    font-weight: 600;
+    font-size: 0.95rem;
+}
+
+// ---------- FAQ عمودين ----------
+.alt-faq-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0 1.25rem;
+    align-items: start;
+
+    @media (max-width: 767.98px) {
+        grid-template-columns: 1fr;
+    }
+}
+
+// ---------- WhatsApp band ----------
+.alt-band {
+    padding: 2rem 0;
+    background: linear-gradient(135deg, $ale-dark, $ale-primary);
+    color: #fff;
+}
+
+.alt-band-inner {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 1.25rem 2.5rem;
+}
+
+.alt-band-wa {
+    display: inline-flex;
+    align-items: center;
+    gap: 1rem;
+    color: #fff !important;
+    text-decoration: none !important;
+
+    strong {
+        font-size: 1.2rem;
+    }
+
+    &:hover .alt-band-wa-icon {
+        transform: scale(1.08);
+    }
+}
+
+.alt-band-wa-icon {
+    width: 58px;
+    height: 58px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.8rem;
+    background: $ale-wa;
+    box-shadow: 0 8px 20px rgba($ale-wa, 0.4);
+    transition: transform 0.15s ease;
+}
+
+.alt-band-sep {
+    width: 1px;
+    height: 48px;
+    background: rgba(255, 255, 255, 0.3);
+
+    @media (max-width: 767.98px) {
+        display: none;
+    }
+}
+
+.alt-band-tagline {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin: 0;
+    font-weight: 700;
+    color: $ale-accent;
+
+    i {
+        font-size: 1.6rem;
+    }
+}
+
+@media (max-width: 767.98px) {
+    .alt-form-section {
+        padding: 3.25rem 0;
+    }
+
+    .alt-form-media {
+        min-height: 240px;
+    }
+
+    .alt-band {
+        padding-bottom: 6.5rem;   // آخر قسم — مكان شريط الموبايل الثابت
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .alt-service-card {
+        transition: none;
+    }
+}
+
+// ============================================================
+// /women-courses — تصميم خاص (بادئة alw-)
+// كريمي + وردي + ذهبي، والكحلي/الأزرق تبع الموقع للعناوين والأزرار
+// ============================================================
+$alw-cream: #fcf8f4;
+$alw-blush: #f7e9e4;
+$alw-rose: #c8707a;
+$alw-rose-soft: #f3d4d2;
+$alw-gold: #c49a52;
+$alw-sage: #7fa48c;
+$alw-lilac: #9a7fc0;
+$alw-ink: $ale-dark;
+$alw-line: #eadfd6;
+
+.alw-page {
+    background: $alw-cream;
+
+    .alw-section {
+        position: relative;
+        padding: 4.5rem 0;
+    }
+
+    .alw-section-soft {
+        background: $alw-blush;
+    }
+}
+
+.alw-h1 {
+    font-size: clamp(2.1rem, 4.6vw, 3.4rem);
+    font-weight: 900;
+    line-height: 1.25;
+    color: $alw-ink;
+    margin-bottom: 1rem;
+}
+
+.alw-h2 {
+    font-size: clamp(1.6rem, 3vw, 2.15rem);
+    font-weight: 900;
+    color: $alw-ink;
+    margin-bottom: 0.5rem;
+}
+
+.alw-h3 {
+    font-size: 1.25rem;
+    font-weight: 800;
+    color: $alw-ink;
+    margin-bottom: 0.5rem;
+}
+
+.alw-head {
+    text-align: center;
+    max-width: 720px;
+    margin: 0 auto 2.75rem;
+
+    p {
+        color: $ale-muted;
+        margin: 0;
+    }
+
+    .alw-h2::after {
+        content: '';
+        display: block;
+        width: 56px;
+        height: 3px;
+        margin: 0.75rem auto 0;
+        border-radius: 3px;
+        background: linear-gradient(90deg, $alw-rose, $alw-gold);
+    }
+}
+
+// ---------- Buttons ----------
+.alw-btn-wa {
+    background: $ale-wa-dark;
+    color: #fff !important;
+    border-radius: 999px;
+
+    &:hover {
+        background: darken($ale-wa-dark, 6%);
+        transform: translateY(-2px);
+    }
+}
+
+.alw-btn-main {
+    background: $alw-ink;
+    color: #fff !important;
+    border-radius: 999px;
+
+    &:hover {
+        background: $ale-primary;
+        transform: translateY(-2px);
+    }
+}
+
+.alw-btn-line {
+    background: transparent;
+    color: $alw-ink !important;
+    border: 2px solid $alw-line;
+    border-radius: 999px;
+
+    &:hover {
+        border-color: $alw-rose;
+        color: $alw-rose !important;
+    }
+}
+
+// ---------- Leaves ----------
+.alw-leaf {
+    position: absolute;
+    width: 110px;
+    height: 200px;
+    fill: none;
+    stroke: $alw-gold;
+    stroke-width: 2;
+    opacity: 0.55;
+    pointer-events: none;
+}
+
+.alw-leaf-hero {
+    top: 2rem;
+    inset-inline-end: 47%;
+    @media (max-width: 991.98px) {
+        display: none;
+    }
+}
+
+.alw-leaf-left {
+    top: 1rem;
+    left: 1rem;
+    transform: scaleX(-1);
+}
+
+.alw-leaf-right {
+    top: 1rem;
+    right: 1rem;
+}
+
+// ---------- Hero ----------
+.alw-hero {
+    position: relative;
+    overflow: hidden;
+    padding: 3.5rem 0 4rem;
+    background:
+        radial-gradient(circle at 85% 15%, rgba($alw-rose-soft, 0.8), transparent 45%),
+        linear-gradient(180deg, #fdf6f1, $alw-cream);
+}
+
+.alw-kicker {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 0.75rem;
+    color: $alw-gold;
+    font-weight: 800;
+    font-size: 1.05rem;
+}
+
+.alw-hero-lead {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: $alw-ink;
+    margin-bottom: 0.75rem;
+}
+
+.alw-hero-intro {
+    color: $ale-muted;
+    line-height: 1.9;
+    margin-bottom: 0.75rem;
+}
+
+.alw-hero-start {
+    font-weight: 800;
+    color: $alw-rose;
+    margin-bottom: 1.5rem;
+}
+
+.alw-hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-bottom: 1.75rem;
+}
+
+.alw-hero-modes {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem 1.75rem;
+    margin: 0;
+    padding: 1.25rem 0 0;
+    border-top: 1px solid $alw-line;
+
+    li {
+        display: flex;
+        align-items: center;
+        gap: 0.6rem;
+    }
+
+    i {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: $alw-rose;
+        background: #fff;
+        box-shadow: 0 6px 16px rgba($alw-rose, 0.15);
+    }
+
+    strong {
+        display: block;
+        color: $alw-ink;
+        font-size: 0.95rem;
+    }
+
+    small {
+        color: $ale-muted;
+    }
+}
+
+.alw-hero-media {
+    position: relative;
+    border-radius: 32px 32px 32px 120px;
+    overflow: hidden;
+    box-shadow: 0 30px 60px rgba($alw-rose, 0.18);
+    aspect-ratio: 9 / 7;
+    background: $alw-blush;
+
+    img,
+    video {
+        display: block;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+}
+
+[dir='rtl'] .alw-hero-media {
+    border-radius: 32px 32px 120px 32px;
+}
+
+// ---------- Course cards ----------
+.alw-card {
+    --alw-c: #{$alw-rose};
+    display: flex;
+    flex-direction: column;
+    background: #fff;
+    border-radius: 22px;
+    box-shadow: 0 12px 32px rgba(120, 80, 70, 0.08);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+
+    &:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 20px 44px rgba(120, 80, 70, 0.14);
+    }
+}
+
+.alw-c-rose { --alw-c: #{$alw-rose}; }
+.alw-c-blush { --alw-c: #{#d9838b}; }
+.alw-c-gold { --alw-c: #{$alw-gold}; }
+.alw-c-sage { --alw-c: #{$alw-sage}; }
+.alw-c-lilac { --alw-c: #{$alw-lilac}; }
+
+.alw-card-media {
+    position: relative;
+    aspect-ratio: 16 / 10;
+    border-radius: 22px 22px 0 0;
+    background: $alw-blush;
+
+    img {
+        display: block;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 22px 22px 0 0;
+    }
+}
+
+.alw-card-icon {
+    position: absolute;
+    bottom: -28px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 58px;
+    height: 58px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.3rem;
+    color: #fff;
+    background: var(--alw-c);
+    border: 4px solid #fff;
+    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.12);
+}
+
+.alw-card-body {
+    flex: 1 1 auto;
+    display: flex;
+    flex-direction: column;
+    padding: 2.35rem 1.5rem 1.4rem;
+    text-align: center;
+}
+
+.alw-card-text {
+    min-height: 3.4em;   // سطرين — منشان البطاقات تطلع بنفس الطول
+    color: $ale-muted;
+    font-size: 0.95rem;
+    margin-bottom: 0.9rem;
+}
+
+.alw-more {
+    margin-top: auto;
+
+    summary {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4rem;
+        cursor: pointer;
+        list-style: none;
+        font-weight: 800;
+        color: var(--alw-c);
+
+        &::-webkit-details-marker {
+            display: none;
+        }
+
+        i {
+            font-size: 0.75rem;
+            transition: transform 0.2s ease;
+        }
+    }
+
+    &[open] summary i {
+        transform: rotate(180deg);
+    }
+}
+
+.alw-more-lead {
+    margin: 1rem 0 0.6rem;
+    color: $alw-ink;
+    font-weight: 700;
+}
+
+.alw-checklist {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 1rem;
+    text-align: start;
+
+    li {
+        position: relative;
+        padding-inline-start: 1.6rem;
+        margin-bottom: 0.4rem;
+        font-size: 0.95rem;
+
+        &::before {
+            content: '\f00c';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            position: absolute;
+            inset-inline-start: 0;
+            top: 0.15rem;
+            font-size: 0.8rem;
+            color: var(--alw-c);
+        }
+    }
+}
+
+.alw-card-actions {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.alw-quote {
+    position: relative;
+    min-height: 340px;
+    overflow: hidden;
+    border-radius: 22px;
+    padding: 2rem;
+    background: linear-gradient(160deg, #fbeee9, $alw-rose-soft);
+
+    p {
+        position: relative;
+        z-index: 1;
+        max-width: 230px;
+        font-size: 1.5rem;
+        font-weight: 800;
+        line-height: 1.6;
+        color: $alw-rose;
+    }
+
+    img {
+        position: absolute;
+        bottom: 0;
+        inset-inline-end: 0;
+        width: 70%;
+        height: auto;
+        opacity: 0.9;
+    }
+}
+
+// ---------- Why ----------
+.alw-why-section {
+    overflow: hidden;
+}
+
+.alw-why {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    margin: 0;
+    padding: 0;
+
+    li {
+        padding: 0.5rem 1.25rem;
+        text-align: center;
+
+        & + li {
+            border-inline-start: 1px solid rgba($alw-gold, 0.35);
+        }
+    }
+
+    i {
+        font-size: 2rem;
+        color: $alw-gold;
+        margin-bottom: 0.9rem;
+    }
+
+    h3 {
+        font-size: 1.05rem;
+        font-weight: 800;
+        color: $alw-ink;
+        margin-bottom: 0.35rem;
+    }
+
+    p {
+        margin: 0;
+        color: $ale-muted;
+        font-size: 0.92rem;
+    }
+
+    @media (max-width: 991.98px) {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 1.75rem 0;
+
+        li + li {
+            border: 0;
+        }
+    }
+}
+
+// ---------- Steps ----------
+.alw-steps {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 1.5rem;
+    margin: 0;
+    padding: 0;
+
+    li {
+        position: relative;
+        text-align: center;
+    }
+
+    @media (min-width: 992px) {
+        li + li::before {
+            content: '';
+            position: absolute;
+            top: 36px;
+            inset-inline-end: calc(50% + 48px);
+            width: calc(100% - 96px + 1.5rem);
+            border-top: 2px dashed rgba($alw-rose, 0.35);
+        }
+    }
+
+    h3 {
+        font-size: 1.05rem;
+        font-weight: 800;
+        color: $alw-ink;
+        margin-bottom: 0.3rem;
+    }
+
+    p {
+        margin: 0;
+        color: $ale-muted;
+        font-size: 0.93rem;
+    }
+
+    @media (max-width: 991.98px) {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+.alw-step-icon {
+    position: relative;
+    width: 72px;
+    height: 72px;
+    margin: 0 auto 1rem;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    color: $alw-rose;
+    background: #fff;
+    border: 2px solid $alw-rose-soft;
+}
+
+.alw-step-num {
+    position: absolute;
+    bottom: -4px;
+    inset-inline-end: -4px;
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.8rem;
+    font-weight: 900;
+    color: #fff;
+    background: $alw-gold;
+    border: 2px solid #fff;
+}
+
+// ---------- Testimonials ----------
+.alw-testimonial {
+    height: 100%;
+    margin: 0;
+    padding: 1.75rem 1.5rem;
+    text-align: center;
+    background: #fff;
+    border-radius: 22px;
+    box-shadow: 0 12px 32px rgba(120, 80, 70, 0.08);
+
+    blockquote {
+        margin: 1rem 0;
+        color: $ale-text;
+        line-height: 1.8;
+
+        &::before {
+            content: '\201C';
+            color: $alw-rose;
+            font-size: 1.6rem;
+            font-weight: 900;
+        }
+    }
+
+    strong {
+        display: block;
+        color: $alw-ink;
+    }
+
+    small {
+        color: $alw-rose;
+    }
+}
+
+.alw-avatar {
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid $alw-rose-soft;
+}
+
+.alw-avatar-letter {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.6rem;
+    font-weight: 900;
+    color: #fff;
+    background: linear-gradient(135deg, $alw-rose, $alw-gold);
+}
+
+// ---------- Start (form + text + image) ----------
+.alw-start {
+    padding: 4.5rem 0;
+    background: linear-gradient(180deg, $alw-cream, $alw-blush);
+}
+
+.alw-form-card {
+    background: #fff;
+    border-radius: 22px;
+    padding: 1.75rem;
+    box-shadow: 0 18px 44px rgba(120, 80, 70, 0.12);
+
+    .ale-input {
+        border-radius: 12px;
+        padding: 0.6rem 0.85rem;
+    }
+
+    .ale-label {
+        font-size: 0.88rem;
+        margin-bottom: 0.25rem;
+    }
+}
+
+.alw-form-sub {
+    color: $alw-rose;
+    font-weight: 700;
+    margin-bottom: 1rem;
+}
+
+.alw-start-text {
+    .alw-h2 {
+        font-size: clamp(1.5rem, 2.4vw, 1.85rem);
+        line-height: 1.5;
+    }
+
+    p {
+        color: $ale-muted;
+        line-height: 1.9;
+    }
+
+    .alw-start-sub {
+        color: $alw-ink;
+        font-weight: 600;
+    }
+}
+
+.alw-mini {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.25rem;
+    margin: 1.5rem 0 0;
+    padding: 0;
+
+    li {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.35rem;
+        font-size: 0.88rem;
+        font-weight: 700;
+        color: $alw-ink;
+    }
+
+    i {
+        font-size: 1.2rem;
+        color: $alw-rose;
+    }
+}
+
+.alw-sign {
+    margin: 1.5rem 0 0;
+
+    strong {
+        display: block;
+        color: $alw-ink;
+    }
+
+    span {
+        color: $alw-gold;
+        font-weight: 800;
+    }
+}
+
+.alw-start-media {
+    position: relative;
+    border-radius: 22px;
+    overflow: hidden;
+    box-shadow: 0 18px 40px rgba(120, 80, 70, 0.12);
+
+    img {
+        display: block;
+        width: 100%;
+        height: auto;
+    }
+}
+
+.alw-note {
+    position: absolute;
+    top: 42%;
+    left: 48.5%;
+    transform: translate(-50%, -50%) rotate(-4deg);
+    width: 32%;
+    text-align: center;
+    font-weight: 800;
+    font-size: 0.95rem;
+    line-height: 1.5;
+    color: $alw-ink;
+}
+
+@media (max-width: 767.98px) {
+    .alw-page .alw-section,
+    .alw-start {
+        padding: 3.25rem 0;
+    }
+
+    .alw-hero {
+        padding: 2.5rem 0 3rem;
+    }
+
+    .alw-hero-media {
+        aspect-ratio: 4 / 3;
+    }
+
+    .alw-steps {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .alw-start {
+        padding-bottom: 6.5rem;   // آخر قسم — مكان شريط الموبايل الثابت
+    }
+
+    .alw-leaf-left,
+    .alw-leaf-right {
+        width: 60px;
+        height: 110px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .alw-card,
+    .alw-more summary i {
+        transition: none;
+    }
+}
+
+// /courses — البطاقة المميزة التانية بلون مختلف شوي
+.course-card-featured.course-card-featured-alt {
+    background: linear-gradient(135deg, #0b3d3a, #13706a 60%, #1b9a8f);
+    box-shadow: 0 18px 45px rgba(11, 61, 58, 0.25);
+
+    &:hover {
+        box-shadow: 0 24px 55px rgba(11, 61, 58, 0.32);
+    }
+}

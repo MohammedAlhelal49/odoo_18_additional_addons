@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- ============================================================ -->
+    <!-- صفحة الدورات (/courses) — تصميم جديد                          -->
+    <!-- alh-/alb-/alc- classes بـ home_modern.scss                      -->
+    <!-- النصوص والدورات: controllers/courses_content.py (المتغير cc)    -->
+    <!-- البحث والفلترة: branches-page.js (نفس آلية صفحة الفروع)          -->
+    <!-- التسجيل: courses-page.js (فورم الموديل → /course/register)      -->
+    <!-- ============================================================ -->
+    <template id="courses_template" name="Courses">
+        <t t-call="website.layout">
+            <t t-set="arrow_icon" t-value="'fa-arrow-right' if is_en else 'fa-arrow-left'"/>
+            <div id="wrap" class="alh-page alb-page alc-page">
+
+                <!-- ================= HERO ================= -->
+                <section t-attf-class="alh-hero alb-hero #{'has-photo' if hero_photo else ''}">
+                    <div t-if="hero_photo" class="alh-hero-photo is-center" aria-hidden="true">
+                        <img t-att-src="hero_photo" alt="" fetchpriority="high" decoding="async"/>
+                    </div>
+                    <div class="alh-hero-deco" aria-hidden="true">
+                        <span class="alh-blob alh-blob-1"/>
+                        <span class="alh-blob alh-blob-2"/>
+                        <span class="alh-grid"/>
+                    </div>
+                    <div class="container position-relative">
+                        <div class="alb-hero-inner">
+                            <span class="alh-badge">
+                                <i class="fa fa-graduation-cap" aria-hidden="true"/>
+                                <span t-out="cc['hero']['badge']"/>
+                            </span>
+                            <h1 class="alh-title">
+                                <span t-out="cc['hero']['title_1']"/>
+                                <span class="alh-title-accent d-inline" t-out="cc['hero']['title_2']"/>
+                            </h1>
+                            <p class="alh-lead" t-out="cc['hero']['lead']"/>
+                            <ul class="alh-trust list-unstyled justify-content-center">
+                                <t t-foreach="cc['hero']['trust']" t-as="tr">
+                                    <li>
+                                        <i t-attf-class="fa #{tr['icon']}" aria-hidden="true"/>
+                                        <span t-out="tr['text']"/>
+                                    </li>
+                                </t>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ================= FEATURED (صفحات الهبوط) ================= -->
+                <section class="alh-section alc-featured">
+                    <div class="container">
+                        <div class="row g-4 alc-featured-row">
+                            <t t-foreach="cc['featured']['items']" t-as="p">
+                                <div class="col-lg-4 col-md-6">
+                                    <a t-att-href="p['link']" t-attf-class="alh-program alh-program-#{p['key']}">
+                                        <span class="alh-program-top">
+                                            <span class="alh-program-icon"><i t-attf-class="fa #{p['icon']}" aria-hidden="true"/></span>
+                                            <span class="alh-program-badge" t-out="p['badge']"/>
+                                        </span>
+                                        <span class="alh-program-title" t-out="p['title']"/>
+                                        <span class="alh-program-text" t-out="p['text']"/>
+                                        <span class="alh-tags">
+                                            <t t-foreach="p['tags']" t-as="tg">
+                                                <span t-out="tg"/>
+                                            </t>
+                                        </span>
+                                        <span class="alh-program-cta">
+                                            <span t-out="p['cta']"/>
+                                            <i t-attf-class="fa #{arrow_icon}" aria-hidden="true"/>
+                                        </span>
+                                    </a>
+                                </div>
+                            </t>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ================= ALL COURSES ================= -->
+                <section class="alh-section alh-section-soft" id="courses-list">
+                    <div class="container">
+                        <div class="alh-head">
+                            <span class="alh-eyebrow" t-out="cc['list']['eyebrow']"/>
+                            <h2 class="alh-h2" t-out="cc['list']['title']"/>
+                            <p t-out="cc['list']['subtitle']"/>
+                        </div>
+
+                        <div class="alb-toolbar alc-toolbar">
+                            <label class="alb-search">
+                                <i class="fa fa-magnifying-glass" aria-hidden="true"/>
+                                <input type="search" class="alb-search-input" maxlength="60" autocomplete="off"
+                                       t-att-placeholder="cc['list']['search_ph']"
+                                       t-att-aria-label="cc['list']['search_ph']"/>
+                            </label>
+                            <div class="alb-filters" role="group">
+                                <button type="button" class="alb-filter is-active" data-city="" aria-pressed="true">
+                                    <span t-out="cc['list']['all']"/>
+                                </button>
+                                <t t-foreach="cc['categories']" t-as="cat">
+                                    <button type="button" class="alb-filter" t-att-data-city="cat['key']" aria-pressed="false">
+                                        <span t-out="cat['label']"/>
+                                        <small dir="ltr" t-out="cat['count']"/>
+                                    </button>
+                                </t>
+                            </div>
+                        </div>
+
+                        <div class="row g-4">
+                            <t t-foreach="cc['courses']" t-as="c">
+                                <div class="col-xl-4 col-md-6 alb-item"
+                                     t-att-data-city="c['cat']"
+                                     t-att-data-search="' '.join([c['title'], c['text'], c['cat_label']]).lower()">
+                                    <article t-attf-class="alc-card alc-cat-#{c['cat']}">
+                                        <div class="alc-card-top">
+                                            <span class="alc-icon"><i t-attf-class="fa #{c['icon']}" aria-hidden="true"/></span>
+                                            <span class="alc-cat" t-out="c['cat_label']"/>
+                                        </div>
+                                        <h3 class="alc-title" t-out="c['title']"/>
+                                        <p class="alc-text" t-out="c['text']"/>
+                                        <a t-if="c.get('link')" t-att-href="c['link']" class="alc-btn">
+                                            <span t-out="cc['list']['more']"/>
+                                            <i t-attf-class="fa #{arrow_icon}" aria-hidden="true"/>
+                                        </a>
+                                        <button t-else="" type="button" class="alc-btn alc-btn-register"
+                                                t-att-data-register-course="c['title']">
+                                            <i class="fa fa-pen-to-square" aria-hidden="true"/>
+                                            <span t-out="cc['list']['register']"/>
+                                        </button>
+                                    </article>
+                                </div>
+                            </t>
+                        </div>
+                        <p class="alb-empty" hidden="hidden" t-out="cc['list']['empty']"/>
+                    </div>
+                </section>
+
+                <!-- ================= FEATURES ================= -->
+                <section class="alh-section">
+                    <div class="container">
+                        <div class="alh-head">
+                            <span class="alh-eyebrow" t-out="cc['features']['eyebrow']"/>
+                            <h2 class="alh-h2" t-out="cc['features']['title']"/>
+                        </div>
+                        <div class="row g-3">
+                            <t t-foreach="cc['features']['items']" t-as="f">
+                                <div class="col-lg-3 col-sm-6">
+                                    <div class="alh-feature">
+                                        <span class="alh-feature-icon"><i t-attf-class="fa #{f['icon']}" aria-hidden="true"/></span>
+                                        <span>
+                                            <strong t-out="f['title']"/>
+                                            <small t-out="f['text']"/>
+                                        </span>
+                                    </div>
+                                </div>
+                            </t>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ================= CTA ================= -->
+                <section class="alh-section alh-cta-section alb-cta-section">
+                    <div class="container">
+                        <div class="alh-cta">
+                            <div>
+                                <h2 class="alh-h2" t-out="cc['cta']['title']"/>
+                                <p t-out="cc['cta']['text']"/>
+                            </div>
+                            <div class="alh-actions">
+                                <a href="/contact" class="alh-btn alh-btn-accent">
+                                    <i class="fa fa-envelope" aria-hidden="true"/>
+                                    <span t-out="cc['cta']['contact']"/>
+                                </a>
+                                <a t-att-href="wa_link" target="_blank" rel="noopener" class="alh-btn alh-btn-wa">
+                                    <i class="fab fa-whatsapp" aria-hidden="true"/>
+                                    <span t-out="cc['cta']['whatsapp']"/>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ================= REGISTRATION MODAL ================= -->
+                <div class="modal fade alc-modal" id="registrationModalGeneral" tabindex="-1"
+                     aria-labelledby="alcModalTitle" aria-hidden="true"
+                     t-att-data-err-required="cc['modal']['err_required']"
+                     t-att-data-err-branch="cc['modal']['err_branch']"
+                     t-att-data-err-network="cc['modal']['err_network']"
+                     t-att-data-sending="cc['modal']['sending']">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="alc-modal-head">
+                                <span class="alc-icon"><i class="fa fa-graduation-cap" aria-hidden="true"/></span>
+                                <div>
+                                    <h2 class="alc-modal-title" id="alcModalTitle" t-out="cc['modal']['title']"/>
+                                    <p class="alc-modal-course" id="modalCourseNameGeneral"/>
+                                </div>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        t-att-aria-label="cc['modal']['close']"/>
+                            </div>
+                            <div class="modal-body">
+                                <div id="registrationFormGeneral">
+                                    <p class="alc-modal-note" t-out="cc['modal']['note']"/>
+                                    <form id="courseRegistrationFormGeneral" novalidate="novalidate">
+                                        <input type="hidden" id="courseNameGeneral" name="course_name"/>
+                                        <div class="mb-3">
+                                            <label class="form-label fw-semibold" for="alcName" t-out="cc['modal']['name'] + ' *'"/>
+                                            <input type="text" id="alcName" class="form-control form-control-lg" name="name"
+                                                   required="required" maxlength="100" autocomplete="name"
+                                                   t-att-placeholder="cc['modal']['name_ph']"/>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label class="form-label fw-semibold" for="alcPhone" t-out="cc['modal']['phone'] + ' *'"/>
+                                            <input type="tel" id="alcPhone" class="form-control form-control-lg" name="phone"
+                                                   required="required" maxlength="20" inputmode="tel" autocomplete="tel"
+                                                   dir="ltr" placeholder="05XXXXXXXX"/>
+                                        </div>
+                                        <!-- الفرع (إجباري لكل تسجيل) -->
+                                        <t t-set="branch_field_id" t-value="'branchGeneral'"/>
+                                        <t t-call="alomran_theme.branch_select_field"/>
+                                        <div class="mb-4">
+                                            <label class="form-label fw-semibold" for="alcEmail" t-out="cc['modal']['email']"/>
+                                            <input type="email" id="alcEmail" class="form-control form-control-lg" name="email"
+                                                   maxlength="150" autocomplete="email" dir="ltr" placeholder="example@email.com"/>
+                                        </div>
+                                        <button type="submit" class="alh-btn alh-btn-accent w-100">
+                                            <i class="fa fa-paper-plane" aria-hidden="true"/>
+                                            <span t-out="cc['modal']['submit']"/>
+                                        </button>
+                                    </form>
+                                </div>
+                                <div id="registrationSuccessGeneral" class="alc-success" style="display: none;">
+                                    <span class="alc-success-icon"><i class="fa fa-check" aria-hidden="true"/></span>
+                                    <h3 t-out="cc['modal']['success_title']"/>
+                                    <p t-out="cc['modal']['success_text']"/>
+                                    <button type="button" class="alh-btn alh-btn-outline" data-bs-dismiss="modal"
+                                            t-out="cc['modal']['close']"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+</odoo>

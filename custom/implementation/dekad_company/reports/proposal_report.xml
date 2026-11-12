@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Report Action -->
+    <record id="action_report_daem_proposal" model="ir.actions.report">
+        <field name="name">Technical Proposal (DAEM)</field>
+        <field name="model">sale.order</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">dekad_company.report_daem_proposal_document</field>
+        <field name="report_file">dekad_company.report_daem_proposal_document</field>
+        <field name="binding_model_id" ref="sale.model_sale_order"/>
+        <field name="binding_type">report</field>
+    </record>
+
+    <!-- QWeb Template -->
+    <template id="report_daem_proposal_document">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="doc">
+                <t t-call="web.external_layout">
+
+                    <style>
+                        .daem-proposal-container {
+                        font-family: Arial, sans-serif;
+                        font-size: 20px;
+                        }
+                        .page-break {
+                        page-break-before: always;
+                        }
+                        .daem-header {
+                        color: #496A92;
+                        font-weight: bold;
+                        }
+                    </style>
+
+                    <div class="daem-proposal-container">
+
+                        <div class="page">
+                            <div class="text-center mb-4">
+                                <h1 class="daem-header">Technical Proposal</h1>
+                            </div>
+
+                            <h3 class="daem-header">Introduction:</h3>
+                            <p>In this proposal, we will explain all points that are related to your requirements to
+                                process the project and clarify all details from starting with you to finishing the
+                                project.
+                            </p>
+
+                            <h3 class="daem-header mt-4">Modules Covered:</h3>
+                            <table class="table table-sm table-bordered mt-2">
+                                <thead>
+                                    <tr>
+                                        <th style="height: 32px;"><!-- Empty header with fixed height --></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <t t-foreach="doc.order_line" t-as="line">
+                                        <!-- Filtering out notes/sections to only show products -->
+                                        <t t-if="not line.display_type">
+                                            <tr>
+                                                <td>
+                                                    <span t-field="line.product_id.name"/>
+                                                </td>
+                                            </tr>
+                                        </t>
+                                    </t>
+                                </tbody>
+                            </table>
+
+                            <h3 class="daem-header mt-3">Expected Time of Completion:</h3>
+                            <ul>
+                                <li>
+                                    <strong>Implementation:</strong>
+                                    <span t-field="doc.x_implementation_period"/>
+                                </li>
+                                <li>
+                                    <strong>Training:</strong>
+                                    <span t-field="doc.x_training_period"/>
+                                </li>
+                                <li>
+                                    <strong>Testing:</strong>
+                                    <span t-field="doc.x_testing_period"/>
+                                </li>
+                            </ul>
+
+                            <h3 class="daem-header mt-4">Note:</h3>
+                            <p>
+                                <strong>The duration of this schedule is estimated, so it may change depending on the
+                                    course of action.
+                                </strong>
+                            </p>
+                        </div>
+
+                        <div class="page page-break">
+                            <h3 class="daem-header">Technical Support Policy:</h3>
+                            <ul>
+                                <li>We provide 3 months of free support upon delivery of the project, conducted in the
+                                    form of field visits when needed or online.
+                                </li>
+                                <li>Response times: Saturday to Thursday, from 10 AM to 6 PM.</li>
+                            </ul>
+
+                            <h3 class="daem-header mt-3">Technical Support Includes the Following:</h3>
+                            <ul>
+                                <li>Providing advice on how Odoo works.</li>
+                                <li>Solving any technical errors in the system.</li>
+                                <li>Training sessions for employees.</li>
+                            </ul>
+
+                            <h3 class="daem-header mt-3">Options Not Included (Within the 3-Month Support):</h3>
+                            <ul>
+                                <li>Customizing a work mechanism that requires programming.</li>
+                                <li>Integrating the system with other systems.</li>
+                                <li>Implementing other programs within Odoo.</li>
+                            </ul>
+
+                            <h3 class="daem-header mt-3">After 3 Months:</h3>
+                            <p>We provide technical support services under non-mandatory annual paid contracts, with the
+                                following options:
+                            </p>
+                            <ol>
+                                <li>Annual consulting technical support contract (including previously provided
+                                    services).
+                                </li>
+                                <li>Annual contract for integrated technical support (including advisory, technical
+                                    support, software modifications, and integrating apps with the system).
+                                </li>
+                            </ol>
+                        </div>
+
+                        <div class="page page-break">
+
+                            <h3 class="daem-header">Hosting Database:</h3>
+                            <ol>
+                                <li>Depending on the financial offer, hosting will be on a virtual private server (VPS)
+                                    for your company.
+                                </li>
+                                <li>Payment will be made annually:
+                                    <span t-field="doc.x_hosting_payment"/>
+                                    Dirhams.
+                                </li>
+                            </ol>
+
+                            <p class="mt-4">We are ready to initiate the project immediately upon your confirmation.
+                                Kindly approve the proposal to schedule the project kickoff meeting.
+                            </p>
+                            <p>We look forward to building a long-term partnership with your organization.</p>
+
+                            <!-- BORDERED SIGNATURE & LOGO BOX -->
+                            <div class="row mt-5 p-3" style="border: 1px solid #1a1a4b; border-radius: 5px;">
+                                <div class="col-6" style="border-right: 1px solid #dee2e6;">
+                                    <!-- COMPANY LOGO -->
+                                    <div class="mb-3">
+                                        <img t-if="doc.company_id.logo" t-att-src="image_data_uri(doc.company_id.logo)"
+                                             style="max-height: 55px; max-width: 200px;" alt="Company Logo"/>
+                                    </div>
+                                    <strong>Name:</strong>
+                                    <span t-field="doc.company_id.name"/>
+                                    <br/>
+                                    <strong>Date:</strong>
+                                    <br/>
+                                    <br/>
+                                    <strong>Signature:</strong>
+                                </div>
+                                <div class="col-6 pl-4">
+                                    <div style="height: 65px;"><!-- Spacer matching logo height --></div>
+                                    <strong>Name:</strong>
+                                    <span t-field="doc.partner_id.name"/>
+                                    <br/>
+                                    <strong>Date:</strong>
+                                    <br/>
+                                    <br/>
+                                    <strong>Signature:</strong>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>

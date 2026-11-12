@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Standard units printed as on the Viewsport templates (only filled when empty) -->
+    <function model="uom.uom" name="_vs_set_default_report_names"/>
+    <!-- Project Code (without the leading J) for the projects that do not have one yet -->
+    <function model="account.analytic.account" name="_vs_fill_existing_project_codes"/>
+
+    <data noupdate="1">
+    <!-- Extra units of the Viewsport templates (same size as one unit) -->
+    <record id="uom_nos" model="uom.uom">
+        <field name="name">Nos.</field>
+        <field name="category_id" ref="uom.product_uom_categ_unit"/>
+        <field name="uom_type">bigger</field>
+        <field name="factor_inv">1.0</field>
+    </record>
+    <record id="uom_set" model="uom.uom">
+        <field name="name">Set</field>
+        <field name="category_id" ref="uom.product_uom_categ_unit"/>
+        <field name="uom_type">bigger</field>
+        <field name="factor_inv">1.0</field>
+    </record>
+    <record id="uom_item" model="uom.uom">
+        <field name="name">Item</field>
+        <field name="category_id" ref="uom.product_uom_categ_unit"/>
+        <field name="uom_type">bigger</field>
+        <field name="factor_inv">1.0</field>
+    </record>
+    <record id="uom_case" model="uom.uom">
+        <field name="name">Case</field>
+        <field name="category_id" ref="uom.product_uom_categ_unit"/>
+        <field name="uom_type">bigger</field>
+        <field name="factor_inv">1.0</field>
+    </record>
+    <record id="uom_bottle_1l" model="uom.uom">
+        <field name="name">Btl 1Ltr</field>
+        <field name="category_id" ref="uom.product_uom_categ_unit"/>
+        <field name="uom_type">bigger</field>
+        <field name="factor_inv">1.0</field>
+    </record>
+    <record id="uom_lump_sum" model="uom.uom">
+        <field name="name">L.S</field>
+        <field name="category_id" ref="uom.product_uom_categ_unit"/>
+        <field name="uom_type">bigger</field>
+        <field name="factor_inv">1.0</field>
+    </record>
+    <record id="uom_month" model="uom.uom">
+        <field name="name">Mth</field>
+        <field name="category_id" ref="uom.product_uom_categ_unit"/>
+        <field name="uom_type">bigger</field>
+        <field name="factor_inv">1.0</field>
+    </record>
+    </data>
+</odoo>

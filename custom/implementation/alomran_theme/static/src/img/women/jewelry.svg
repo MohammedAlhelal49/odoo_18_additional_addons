@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 520" role="img" aria-label="Jewelry design">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fbf6ef"/><stop offset="1" stop-color="#f1e6d6"/></linearGradient>
+    <linearGradient id="gold" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#e9cf95"/><stop offset=".5" stop-color="#c9a15b"/><stop offset="1" stop-color="#a8813f"/></linearGradient>
+    <linearGradient id="gem" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f6c9cf"/><stop offset="1" stop-color="#c86f76"/></linearGradient>
+  </defs>
+  <rect width="800" height="520" fill="url(#bg)"/>
+  <!-- sketch paper -->
+  <g transform="rotate(-5 300 260)">
+    <rect x="90" y="70" width="380" height="300" rx="6" fill="#fff"/>
+    <g stroke="#8b7f86" stroke-width="2" fill="none">
+      <path d="M150 130 Q250 260 350 130"/>
+      <circle cx="250" cy="215" r="18"/>
+      <path d="M238 205 L250 190 L262 205 L250 232 Z"/>
+      <circle cx="400" cy="170" r="34"/><circle cx="400" cy="170" r="24"/>
+      <path d="M390 134 L400 118 L410 134"/>
+      <path d="M150 300 Q190 260 230 300 Q270 340 310 300 Q350 260 390 300" stroke-dasharray="6 6"/>
+    </g>
+    <path d="M238 205 L250 190 L262 205 L250 232 Z" fill="url(#gem)" opacity=".6"/>
+  </g>
+  <!-- pencil -->
+  <g transform="rotate(30 520 160)"><rect x="470" y="150" width="170" height="14" rx="3" fill="#1a5490"/><path d="M640 150 L670 157 L640 164 Z" fill="#e7cfa6"/><rect x="460" y="150" width="14" height="14" fill="#c86f76"/></g>
+  <!-- necklace -->
+  <path d="M470 230 Q600 420 730 230" stroke="url(#gold)" stroke-width="5" fill="none"/>
+  <g fill="url(#gold)"><circle cx="520" cy="300" r="5"/><circle cx="560" cy="335" r="5"/><circle cx="640" cy="335" r="5"/><circle cx="680" cy="300" r="5"/></g>
+  <path d="M584 348 L600 330 L616 348 L600 384 Z" fill="url(#gem)" stroke="url(#gold)" stroke-width="4"/>
+  <!-- rings -->
+  <g transform="translate(600 440)">
+    <ellipse cx="0" cy="0" rx="46" ry="20" fill="none" stroke="url(#gold)" stroke-width="9"/>
+    <path d="M-14 -22 L0 -40 L14 -22 L0 -12 Z" fill="#cfe3ec" stroke="#a8813f" stroke-width="2"/>
+  </g>
+  <g transform="translate(470 450)"><ellipse cx="0" cy="0" rx="36" ry="16" fill="none" stroke="#d9d9de" stroke-width="7"/><circle cx="0" cy="-18" r="9" fill="url(#gem)"/></g>
+  <!-- earrings -->
+  <g fill="url(#gold)"><circle cx="160" cy="430" r="8"/><path d="M160 438 L148 470 L172 470 Z"/><circle cx="210" cy="430" r="8"/><path d="M210 438 L198 470 L222 470 Z"/></g>
+  <!-- pliers -->
+  <g transform="translate(300 430) rotate(-10)"><path d="M0 0 L90 -10 L90 10 Z" fill="#7d8691"/><rect x="-70" y="-8" width="72" height="12" rx="6" fill="#c86f76" transform="rotate(-8)"/><rect x="-70" y="2" width="72" height="12" rx="6" fill="#c86f76" transform="rotate(8)"/></g>
+  <g fill="#c9a15b" opacity=".7"><path d="M720 80 l5 12 l12 5 l-12 5 l-5 12 l-5 -12 l-12 -5 l12 -5z"/><path d="M60 40 l4 9 l9 4 l-9 4 l-4 9 l-4 -9 l-9 -4 l9 -4z"/></g>
+</svg>

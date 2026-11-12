@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="fcm_notification_view_tree" model="ir.ui.view">
+        <field name="name">fcm.notification.view.tree</field>
+        <field name="model">fcm.notification</field>
+        <field name="arch" type="xml">
+            <list string="FCM Notifications" decoration-danger="status == 'failed'" decoration-success="status == 'sent'" decoration-info="status == 'pending'" decoration-muted="is_read == 'read'" create="false">
+                <header>
+                    <button name="action_mark_as_read" string="Mark as Read" type="object" class="oe_highlight"/>
+                    <button name="action_mark_as_not_read" string="Mark as Not Read" type="object"/>
+                </header>
+                <field name="create_date" string="Log Date"/>
+                <field name="partner_id"/>
+                <field name="device_id"/>
+                <field name="title"/>
+                <field name="notification_type"/>
+                <field name="res_model"/>
+                <field name="res_id"/>
+                <field name="is_read" widget="badge" decoration-success="is_read == 'read'" decoration-warning="is_read == 'notread'"/>
+                <field name="expiration_date"/>
+                <field name="status"/>
+                <field name="error_message" invisible="status != 'failed'"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="fcm_notification_view_form" model="ir.ui.view">
+        <field name="name">fcm.notification.view.form</field>
+        <field name="model">fcm.notification</field>
+        <field name="arch" type="xml">
+            <form string="FCM Notification" create="false" edit="false">
+                <header>
+                    <button name="action_mark_as_read" string="Mark as Read" type="object" invisible="is_read == 'read'" class="oe_highlight"/>
+                    <button name="action_mark_as_not_read" string="Mark as Not Read" type="object" invisible="is_read == 'notread'"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="partner_id"/>
+                            <field name="device_id"/>
+                            <field name="notification_type"/>
+                            <field name="title"/>
+                            <field name="is_read" widget="badge" decoration-success="is_read == 'read'" decoration-warning="is_read == 'notread'"/>
+                            <field name="status"/>
+                        </group>
+                        <group>
+                            <field name="res_model"/>
+                            <field name="res_id"/>
+                            <field name="record_name"/>
+                            <field name="click_url" widget="url"/>
+                            <field name="create_date" string="Log Date"/>
+                            <field name="expiration_date"/>
+                        </group>
+                    </group>
+                    <group>
+                        <field name="server_url"/>
+                        <field name="dbname"/>
+                        <field name="error_message" invisible="status != 'failed'"/>
+                    </group>
+                    <notebook>
+                        <page string="Body">
+                            <field name="body" readonly="1"/>
+                        </page>
+                        <page string="Raw Data">
+                            <field name="fcm_data" readonly="1"/>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="fcm_notification_view_search" model="ir.ui.view">
+        <field name="name">fcm.notification.view.search</field>
+        <field name="model">fcm.notification</field>
+        <field name="arch" type="xml">
+            <search string="Search FCM Notifications">
+                <field name="partner_id"/>
+                <field name="title"/>
+                <field name="notification_type"/>
+                <field name="res_model"/>
+                <filter string="Not Read" name="notread" domain="[('is_read', '=', 'notread')]"/>
+                <filter string="Read" name="read" domain="[('is_read', '=', 'read')]"/>
+                <separator/>
+                <filter string="Sent" name="sent" domain="[('status', '=', 'sent')]"/>
+                <filter string="Failed" name="failed" domain="[('status', '=', 'failed')]"/>
+                <group expand="0" string="Group By">
+                    <filter string="Is Read" name="group_is_read" context="{'group_by': 'is_read'}"/>
+                    <filter string="Status" name="group_status" context="{'group_by': 'status'}"/>
+                    <filter string="Notification Type" name="group_type" context="{'group_by': 'notification_type'}"/>
+                    <filter string="Recipient" name="group_partner" context="{'group_by': 'partner_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="fcm_notification_action" model="ir.actions.act_window">
+        <field name="name">FCM Notifications</field>
+        <field name="res_model">fcm.notification</field>
+        <field name="view_mode">list,form</field>
+        <field name="search_view_id" ref="fcm_notification_view_search"/>
+    </record>
+
+    <menuitem id="fcm_notification_menu"
+              name="FCM Notification History"
+              parent="base.menu_administration"
+              action="fcm_notification_action"
+              sequence="101"/>
+</odoo>

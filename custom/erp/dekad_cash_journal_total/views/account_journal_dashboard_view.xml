@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="account_journal_dashboard_kanban_view_cash_total" model="ir.ui.view">
+        <field name="name">account.journal.dashboard.kanban.cash.total</field>
+        <field name="model">account.journal</field>
+        <field name="inherit_id" ref="account.account_journal_dashboard_kanban_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[@id='dashboard_bank_cash_misc_total']/.." position="after">
+                <div class="row" t-if="journal_type == 'cash' and dashboard.total_balance">
+                    <div id="dashboard_bank_cash_total" class="col overflow-hidden text-start">
+                        <span>Total</span>
+                    </div>
+                    <div class="col-auto text-end">
+                        <span dir="ltr" class="fw-bolder"><t t-out="dashboard.total_balance"/></span>
+                    </div>
+                </div>
+            </xpath>
+            <xpath expr="//div[@id='dashboard_bank_cash_total']/.." position="after">
+                <div class="row" t-if="dashboard.account_total">
+                    <div id="dashboard_bank_cash_account_total" class="col overflow-hidden text-start">
+                        <span>Account Total</span>
+                    </div>
+                    <div class="col-auto text-end">
+                        <span dir="ltr" class="fw-bolder"><t t-out="dashboard.account_total"/></span>
+                    </div>
+                </div>
+            </xpath>
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Report Action -->
+    <record id="action_report_daem_proposal_arabic" model="ir.actions.report">
+        <field name="name">العرض الفني (DAEM)</field>
+        <field name="model">sale.order</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">dekad_company.report_daem_proposal_document_arabic</field>
+        <field name="report_file">dekad_company.report_daem_proposal_document_arabic</field>
+        <field name="binding_model_id" ref="sale.model_sale_order"/>
+        <field name="binding_type">report</field>
+    </record>
+
+    <!-- QWeb Template -->
+    <template id="report_daem_proposal_document_arabic">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="doc">
+                <t t-call="web.external_layout">
+
+                    <style>
+                        @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&amp;display=swap');
+
+                        .daem-proposal-container {
+                        font-family: 'Cairo', Arial, sans-serif;
+                        font-size: 20px;
+                        direction: rtl;
+                        text-align: right;
+                        }
+                        .page-break {
+                        page-break-before: always;
+                        }
+                        .daem-header {
+                        color: #496A92;
+                        font-weight: bold;
+                        }
+                    </style>
+
+                    <div class="daem-proposal-container">
+
+                        <div class="page">
+                            <div class="text-center mb-4">
+                                <h1 class="daem-header">العرض الفني</h1>
+                            </div>
+
+                            <h3 class="daem-header">مقدمة:</h3>
+                            <p>ﻳﻬﺪف ﻫﺬا اﻟﻌﺮض إﻟﻰ ﺗﻮﺿﻴﺢ ﺟﻤﻴﻊ اﻟﺠﻮاﻧﺐ اﻟﻤﺘﻌﻠﻘﺔ ﺑﻤﺘﻄﻠﺒﺎﺗﻜﻢ ﻟﺘﻨﻔﻴﺬ اﻟﻤشروع، ﻣﻊ ﺗﻘﺪﻳﻢ شرح
+                                ﺗﻔﺼﻴﻠﻲ ﻟﻜﺎﻓﺔ ﻣﺮاﺣﻞ اﻟﻌﻤﻞ ﺑﺪءًا ﻣﻦ ﻣﺮﺣﻠﺔ اﻻﻧﻄﻼق وﺣﺘﻰ إﺗﻤﺎم اﻟﻤشروع ﺑﺎﻟﻜﺎﻣﻞ.
+                            </p>
+
+                            <h3 class="daem-header mt-4">الوحدات المغطاة:</h3>
+                            <table class="table table-sm table-bordered mt-2" dir="ltr" style="text-align: left;">
+                                <thead>
+                                    <tr>
+                                        <th style="height: 32px;"><!-- Empty header with fixed height --></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <t t-foreach="doc.order_line" t-as="line">
+                                        <!-- Filtering out notes/sections to only show products -->
+                                        <t t-if="not line.display_type">
+                                            <tr>
+                                                <td>
+                                                    <span t-field="line.product_id.name"/>
+                                                </td>
+                                            </tr>
+                                        </t>
+                                    </t>
+                                </tbody>
+                            </table>
+
+                            <h3 class="daem-header mt-3">الوقت المتوقع للإنجاز:</h3>
+                            <ul>
+                                <li>
+                                    <strong>التنفيذ:</strong>
+                                    <span t-field="doc.x_implementation_period"/>
+                                </li>
+                                <li>
+                                    <strong>التدريب:</strong>
+                                    <span t-field="doc.x_training_period"/>
+                                </li>
+                                <li>
+                                    <strong>الاختبار:</strong>
+                                    <span t-field="doc.x_testing_period"/>
+                                </li>
+                            </ul>
+
+                            <h3 class="daem-header mt-4">ملاحظة:</h3>
+                            <p>
+                                <strong>اﻟﻤﺪة اﻟﺰﻣﻨﻴﺔ اﻟﻤﺬﻛﻮرة ﻓﻲ ﻫﺬا اﻟﺠﺪول ﺗﻘﺪﻳﺮﻳﺔ، وﻗﺪ ﺗﺘﻐير ﺗﺒﻌًﺎ ﻟﺴير اﻟﻌﻤﻞ
+                                    وﻣﺘﻄﻠﺒﺎت اﻟﺘﻨﻔﻴﺬ ﺧﻼل ﻣﺮاﺣﻞ اﻟﻤشروع.
+                                </strong>
+                            </p>
+                        </div>
+
+                        <div class="page page-break">
+                            <h3 class="daem-header">سياسة الدعم الفني:</h3>
+                            <ul>
+                                <li>نقدم دعماً مجانياً لمدة 3 أشهر عند تسليم المشروع، يتم تنفيذه على شكل زيارات ميدانية
+                                    عند الحاجة أو عبر الإنترنت.
+                                </li>
+                                <li>أوقات الاستجابة: من السبت إلى الخميس، من الساعة 10 صباحاً حتى 6 مساءً.</li>
+                            </ul>
+
+                            <h3 class="daem-header mt-3">يشمل الدعم الفني ما يلي:</h3>
+                            <ul>
+                                <li>تقديم المشورة حول كيفية عمل نظام أودو.</li>
+                                <li>حل أي أخطاء فنية في النظام.</li>
+                                <li>جلسات تدريبية للموظفين.</li>
+                            </ul>
+
+                            <h3 class="daem-header mt-3">الخيارات غير المشمولة (خلال فترة الدعم لمدة 3 أشهر):</h3>
+                            <ul>
+                                <li>تخصيص آلية عمل تتطلب برمجة.</li>
+                                <li>ربط النظام مع أنظمة أخرى.</li>
+                                <li>تنفيذ برامج أخرى داخل أودو.</li>
+                            </ul>
+
+                            <h3 class="daem-header mt-3">بعد 3 أشهر:</h3>
+                            <p>نقدم خدمات الدعم الفني بموجب عقود سنوية مدفوعة غير إلزامية، مع الخيارات التالية:</p>
+                            <ol>
+                                <li>عقد دعم فني استشاري سنوي (يشمل الخدمات المقدمة سابقاً).</li>
+                                <li>عقد سنوي للدعم الفني المتكامل (يشمل الاستشارات، الدعم الفني، التعديلات البرمجية،
+                                    وربط التطبيقات مع النظام).
+                                </li>
+                            </ol>
+                        </div>
+
+                        <div class="page page-break">
+
+                            <h3 class="daem-header">استضافة قاعدة البيانات:</h3>
+                            <ol>
+                                <li>بناءً على العرض المالي، ستكون الاستضافة على خادم افتراضي خاص (VPS) لشركتكم.</li>
+                                <li>يتم الدفع سنوياً:
+                                    <span t-field="doc.x_hosting_payment"/>
+                                    درهم.
+                                </li>
+                            </ol>
+
+                            <p class="mt-4">نحن مستعدون للبدء في المشروع فور تأكيدكم. يرجى الموافقة على العرض لتحديد
+                                موعد الاجتماع الافتتاحي للمشروع.
+                            </p>
+                            <p>نتطلع إلى بناء شراكة طويلة الأمد مع مؤسستكم.</p>
+
+                            <!-- BORDERED SIGNATURE & LOGO BOX -->
+                            <div class="row mt-5 p-3" style="border: 1px solid #1a1a4b; border-radius: 5px;">
+                                <div class="col-6" style="border-left: 1px solid #dee2e6;">
+                                    <!-- COMPANY LOGO -->
+                                    <div class="mb-3">
+                                        <img t-if="doc.company_id.logo" t-att-src="image_data_uri(doc.company_id.logo)"
+                                             style="max-height: 55px; max-width: 200px;" alt="شعار الشركة"/>
+                                    </div>
+                                    <strong>الاسم:</strong>
+                                    <span t-field="doc.company_id.name"/>
+                                    <br/>
+                                    <strong>التاريخ:</strong>
+                                    <br/>
+                                    <br/>
+                                    <strong>التوقيع:</strong>
+                                </div>
+                                <div class="col-6 pr-4">
+                                    <div style="height: 65px;"><!-- Spacer matching logo height --></div>
+                                    <strong>الاسم:</strong>
+                                    <span t-field="doc.partner_id.name"/>
+                                    <br/>
+                                    <strong>التاريخ:</strong>
+                                    <br/>
+                                    <br/>
+                                    <strong>التوقيع:</strong>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>

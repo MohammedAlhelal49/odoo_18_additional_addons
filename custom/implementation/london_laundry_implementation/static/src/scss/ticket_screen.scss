@@ -1,0 +1,63 @@
+// شاشة الطلبات بالـ POS: مع أعمدة المغسلة صارت الأعمدة كتيرة على عرض الشاشة، فكل سطر
+// كان يضغط أعمدته حسب محتواه وتطلع السطور مش محاذية. هون كل الأعمدة بتلتزم بعرضها
+// (والنص بينكسر بين الكلمات)، وأعمدة المغسلة وStatus بعرض ثابت، والمبلغ ما بينكسر.
+.ticket-screen .orders .col {
+    min-width: 0;
+    overflow-wrap: break-word;
+
+    &.end {
+        white-space: nowrap;
+    }
+
+    &.lry-col {
+        flex: 0 0 5.25rem;
+    }
+
+    &.lry-status {
+        flex: 0 0 6rem;
+    }
+
+    .lry-nowrap {
+        white-space: nowrap;
+    }
+}
+
+// نافذة "Collect Payment"
+.lry-collect-table {
+    .lry-collect-amount {
+        width: 9rem;
+    }
+    td, th {
+        white-space: nowrap;
+    }
+}
+
+// أزرار الطلب المحدد (Details / Print / Collect / Delivered By…): بالسطر بيتقاسموا العرض،
+// وإذا ما وسعوا بينزلوا لسطر تاني بعرض مقروء
+.ticket-screen .control-buttons.flex-wrap > .control-button {
+    flex: 1 1 9rem;
+    white-space: nowrap;
+}
+
+// تلوين سطور الطلبات متل لائحة الفواتير (نفس الألوان بـ invoice_list.scss)
+$lry-order-row-colors: (
+    "blue": #9fc5f8,   // مسلّم ومدفوع
+    "green": #9fdcae,  // مسلّم ومو مدفوع
+    "red": #f4a3a3,    // مو مسلّم ومو مدفوع
+    "yellow": #f7d774, // مدفوع ولسا ما تسلّم
+);
+
+.ticket-screen .order-row {
+    @each $name, $bg in $lry-order-row-colors {
+        &.lry-row-#{$name} {
+            background-color: $bg !important;
+            color: #212529 !important;
+            border-bottom: 1px solid darken($bg, 12%);
+
+            &:hover {
+                background-color: darken($bg, 8%) !important;
+            }
+        }
+    }
+}
+

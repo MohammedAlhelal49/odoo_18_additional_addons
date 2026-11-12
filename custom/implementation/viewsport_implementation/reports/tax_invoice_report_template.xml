@@ -1,0 +1,368 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!--
+        Shared layout of the Viewsport invoice family (Tax Invoice, Proforma, Commercial, Credit Note, Debit Note).
+        Each document template sets `vs_kind` and calls this one; the differences between the client's
+        templates are described in `kinds` below.
+    -->
+    <template id="report_vs_invoice_family_document">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="web.basic_layout">
+                    <t t-set="cur" t-value="o.currency_id"/>
+                    <t t-set="fmt" t-value="lambda v: '{:,.2f}'.format(v or 0.0)"/>
+                    <t t-set="fmt_cur" t-value="lambda v: '%s %s' % (cur.name, '{:,.2f}'.format(v or 0.0))"/>
+                    <t t-set="fmt_date" t-value="lambda d: d.strftime('%d/%m/%Y') if d else ''"/>
+                    <t t-set="p" t-value="o.partner_id"/>
+                    <t t-set="cp" t-value="o.partner_id.commercial_partner_id"/>
+                    <t t-set="num" t-value="o.name if o.name and o.name != '/' else ''"/>
+                    <t t-set="kinds" t-value="{
+                        'tax': {
+                            'title': 'TAX INVOICE', 'title_ar': 'فـاتــورة ضــريبية', 'info': 'Invoice Information',
+                            'rows': [('Invoice Number #', num), ('Invoice Date:', fmt_date(o.invoice_date)), ('Invoice Period:', o._get_invoice_period_label()),
+                                     ('Due Payment:', fmt_date(o.invoice_date_due)), ('Payment Terms:', o.invoice_payment_term_id.name or '-'),
+                                     ('Contract Ref. Number:', o._get_contract_ref())],
+                            'to': ('BILL-TO ADDRESS', 'فاتورة إلى'), 'from': ('Bill FROM', 'الفاتورة من'),
+                            'trn_first': True, 'band': True, 'total': 'payable', 'words': 'Grand Total', 'reason': False, 'bank': True},
+                        'proforma': {
+                            'title': 'PROFORMA INVOICE', 'title_ar': 'فـاتـــــورة إولــية', 'info': 'Invoice Information',
+                            'rows': [('PI Number #', num), ('PI Invoice Date:', fmt_date(o.invoice_date)), ('PI Period:', o._get_invoice_period_label()),
+                                     ('Due Payment:', fmt_date(o.invoice_date_due)), ('Payment Terms:', o.invoice_payment_term_id.name or '-'),
+                                     ('Contract Ref. number:', o._get_contract_ref())],
+                            'to': ('BILL-TO ADDRESS', 'فاتورة إلى'), 'from': ('Bill FROM', 'الفاتورة من'),
+                            'trn_first': False, 'band': True, 'total': 'payable', 'words': 'Grand Total', 'reason': False, 'bank': True},
+                        'commercial': {
+                            'title': 'COMMERCIAL INVOICE', 'title_ar': 'فـاتــورة تجـــارية', 'info': 'Invoice Information',
+                            'rows': [('CI Number #', num), ('CI Date:', fmt_date(o.invoice_date)), ('CI Period:', o._get_invoice_period_label()),
+                                     ('Due Payment:', fmt_date(o.invoice_date_due)), ('Payment Terms:', o.invoice_payment_term_id.name or '-'),
+                                     ('Contract Ref. number:', o._get_contract_ref())],
+                            'to': ('BILL-TO ADDRESS', 'فاتورة إلى'), 'from': ('Bill FROM', 'الفاتورة من'),
+                            'trn_first': False, 'band': True, 'total': 'payable', 'words': 'GRAND TOTAL', 'reason': False, 'bank': True},
+                        'credit': {
+                            'title': 'CREDIT NOTE', 'title_ar': 'إشـــــــــــعار دائـــن', 'info': 'Credit Note Information',
+                            'rows': [('CN Number #', num), ('CN Date:', fmt_date(o.invoice_date)), ('Original Invoice No.:', o._get_original_invoice_ref()),
+                                     ('Contract Ref. number:', o._get_contract_ref())],
+                            'to': ('TO', 'إلي'), 'from': ('FROM', 'من'),
+                            'trn_first': False, 'band': False, 'total': 'grand', 'words': 'Grand Total', 'reason': ('Reason of Issuing:', 3), 'bank': False},
+                        'debit': {
+                            'title': 'DEBIT NOTE', 'title_ar': 'إشعار مـــــــــدين', 'info': 'Invoice Information',
+                            'rows': [('Debit Note Number #', num), ('Debit Note Date:', fmt_date(o.invoice_date)), ('Original invoice No.:', o._get_original_invoice_ref()),
+                                     ('Contract Ref. number:', o._get_contract_ref()), ('Customer Ref:', o.ref or o._get_contract_ref())],
+                            'to': ('DN-TO ADDRESS', 'إلى'), 'from': ('FROM', 'من'),
+                            'trn_first': False, 'band': False, 'total': 'grand', 'words': 'Grand Total', 'reason': ('Reason of Return:', 2), 'bank': True},
+                    }"/>
+                    <t t-set="k" t-value="kinds[vs_kind]"/>
+                    <t t-set="cols" t-value="['6.9', '6.4', '38.7', '4.7', '5.5', '7.3', '9.9', '8.2', '12.4'] if vs_kind == 'tax' else ['7.4', '6.9', '33.1', '5.9', '7.6', '8.8', '9.5', '10.4', '10.4']"/>
+                    <t t-set="lbl_w" t-value="('23.6', '29.7') if vs_kind == 'tax' else ('27', '31')"/>
+                    <t t-call="viewsport_implementation.vs_report_fonts"/>
+                    <style>
+                        body.o_body_pdf, body.container { padding-left: 0 !important; padding-right: 0 !important; }
+                        .vs-ti { font-family: 'VS Sans', 'VS Arabic', Arial, sans-serif; font-size: 14px; color: #000; line-height: 1.2; }
+                        .vs-ti table, .vs-ti tr, .vs-ti td, .vs-ti th { border: 0 none; border-color: transparent; }
+                        .vs-ti table { border-collapse: collapse; width: 100%; }
+                        .vs-ti .vs-info td { padding: 0 2px; font-weight: bold; font-size: 12.2px; line-height: 1.3; white-space: nowrap; }
+                        .vs-ti .vs-box td { border: 1px solid #c0c0c0 !important; padding: 2px 3px; height: 20px; font-size: 13.3px; vertical-align: middle; }
+                        .vs-ti .vs-lbl { background-color: #dddddd; font-weight: bold; text-align: right; white-space: nowrap; color: #333; }
+                        .vs-ti .vs-ph { color: #666; }
+                        .vs-ti .vs-red { color: #d0021b; font-weight: bold; }
+                        .vs-ti .vs-blue { color: #1a73c8; }
+                        .vs-ti .vs-sec { font-weight: bold; font-size: 14px; padding: 0 0 3px 3px; }
+                        .vs-ti .vs-items th { background-color: #d9d9d9; border: 1px solid #000 !important; text-align: center; font-weight: bold; font-size: 13.5px; padding: 2px 1px; line-height: 1.1; }
+                        .vs-ti .vs-items th small { display: block; font-size: 9.5px; font-weight: bold; white-space: nowrap; }
+                        .vs-ti .vs-items td { border: 1px solid #7a7a7a !important; padding: 1px 3px; vertical-align: middle; font-size: 13.4px; }
+                        .vs-ti .vs-items tr.vs-alt td { background-color: #f0f0f0; }
+                        .vs-ti .vs-num { font-family: 'VS Narrow', 'VS Arabic', 'Arial Narrow', sans-serif; text-align: center; font-size: 14.5px; white-space: nowrap; }
+                        .vs-ti .vs-band td { background-color: #40baec !important; font-weight: bold; font-size: 17px; padding: 6px 3px !important; }
+                        .vs-ti .vs-bank-l { font-weight: bold; font-size: 14.5px; padding: 9px 0 1px 2px; }
+                        .vs-ti .vs-bank-v { font-weight: bold; font-size: 14.5px; padding: 2px 0 2px 2px; border-bottom: 1.5px solid #bbb !important; }
+                        .vs-fam .vs-box td { height: 17px; padding: 1px 3px; line-height: 1.1; }
+                        .vs-fam .vs-gap-words { margin-top: 12px !important; }
+                        .vs-fam .vs-gap-bank { margin-top: 12px !important; }
+                        .vs-fam .vs-bank-l { padding-top: 6px; }
+                        .vs-fam .vs-gap-title { margin: 8px 0 6px 0 !important; }
+                        .vs-fam .vs-gap-sign { margin-top: 16px !important; }
+                        .vs-ti .vs-cert td { border: 1px solid #000 !important; padding: 3px 6px; font-size: 13.5px; text-align: center; vertical-align: top; }
+                    </style>
+                    <div t-att-class="'page vs-ti' + ('' if vs_kind == 'tax' else ' vs-fam')">
+
+                        <!-- 1. HEADER: logo + document information -->
+                        <table>
+                            <tr>
+                                <td style="width: 64.5%; vertical-align: top; padding-left: 2px;">
+                                    <img t-if="o.company_id.vs_report_logo" t-att-src="image_data_uri(o.company_id.vs_report_logo)" style="height: 88px;" alt="Viewsport Pitches"/><img t-else="" src="/viewsport_implementation/static/src/img/viewsport_logo.png" style="height: 88px;" alt="Viewsport Pitches"/>
+                                </td>
+                                <td style="width: 35.5%; vertical-align: top;">
+                                    <div style="font-weight: bold; font-size: 16.5px; border-bottom: 1px solid #000; padding: 0 2px 1px 2px;" t-esc="k['info']"/>
+                                    <table class="vs-info">
+                                        <tr t-foreach="k['rows']" t-as="row">
+                                            <td style="width: 41%;" t-esc="row[0]"/>
+                                            <td t-if="row_first" style="color: #d0021b; font-family: 'VS Script', cursive; font-size: 16px; font-weight: bold;" t-esc="row[1] or ''"/>
+                                            <td t-else="" t-esc="row[1] or ''"/>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                        </table>
+
+                        <!-- 2. TITLE -->
+                        <div class="vs-gap-title" style="text-align: center; font-weight: bold; line-height: 1.15; margin: 14px 0 8px 0;">
+                            <div style="font-size: 25px;" t-esc="k['title']"/>
+                            <div style="font-size: 23px;" dir="rtl" t-esc="k['title_ar']"/>
+                        </div>
+
+                        <!-- 3. TO / FROM -->
+                        <table>
+                            <tr>
+                                <td style="width: 56.6%; vertical-align: bottom;" class="vs-sec"><t t-esc="k['to'][0]"/> <span dir="rtl" style="unicode-bidi: embed; font-size: 13px;" t-esc="k['to'][1]"/></td>
+                                <td style="width: 43.4%; vertical-align: bottom;" class="vs-sec"><t t-esc="k['from'][0]"/> <span dir="rtl" style="unicode-bidi: embed; font-size: 13px;" t-esc="k['from'][1]"/></td>
+                            </tr>
+                            <tr>
+                                <td style="vertical-align: top; padding: 0;">
+                                    <t t-set="cust_address" t-value="', '.join(x for x in [cp.street, cp.street2, cp.city, cp.country_id.name] if x) or '-'"/>
+                                    <table class="vs-box">
+                                        <tr>
+                                            <td class="vs-lbl" t-att-style="'width: ' + lbl_w[0] + '%;'">Customer:</td>
+                                            <td class="vs-ph" style="font-weight: bold;">M/s <t t-esc="cp.name"/></td>
+                                        </tr>
+                                        <tr><td class="vs-lbl">Atten.:</td><td class="vs-ph" t-esc="o.invoice_attention or '-'"/></tr>
+                                        <t t-if="k['trn_first']">
+                                            <tr><td class="vs-lbl">Customer TRN:</td><td class="vs-red" t-esc="cp.vat or '-'"/></tr>
+                                            <tr><td class="vs-lbl">Address:</td><td class="vs-ph" style="font-weight: bold;" t-esc="cust_address"/></tr>
+                                        </t>
+                                        <t t-else="">
+                                            <tr><td class="vs-lbl">Address:</td><td class="vs-ph" style="font-weight: bold;" t-esc="cust_address"/></tr>
+                                            <tr><td class="vs-lbl">Customer TRN:</td><td class="vs-red" t-esc="cp.vat or '-'"/></tr>
+                                        </t>
+                                        <tr><td class="vs-lbl">Customer Code:</td><td class="vs-ph" t-esc="cp.ref or '-'"/></tr>
+                                        <tr>
+                                            <td class="vs-lbl">Customer Email:</td>
+                                            <td t-att-class="'vs-ph' if vs_kind == 'tax' else 'vs-blue'" t-esc="cp.email or p.email or '-'"/>
+                                        </tr>
+                                    </table>
+                                </td>
+                                <td style="vertical-align: top; padding: 0;">
+                                    <table class="vs-box">
+                                        <tr>
+                                            <td class="vs-lbl" t-att-style="'width: ' + lbl_w[1] + '%;'">Company Name:</td>
+                                            <td style="font-weight: bold; white-space: nowrap; font-size: 13.1px;" t-esc="o.company_id.vs_legal_name or o.company_id.name"/>
+                                        </tr>
+                                        <tr><td class="vs-lbl">From:</td><td t-esc="o.company_id.vs_bill_from_dept or ''"/></tr>
+                                        <tr><td class="vs-lbl">VSP TRN:</td><td class="vs-red" t-esc="o.company_id.vat or ''"/></tr>
+                                        <tr><td class="vs-lbl">Address:</td><td t-esc="o.company_id.vs_bill_from_address or ''"/></tr>
+                                        <tr><td class="vs-lbl">Phone:</td><td t-esc="o.company_id.vs_bill_from_phone or ''"/></tr>
+                                        <tr><td class="vs-lbl">Email:</td><td class="vs-blue" t-esc="o.company_id.vs_bill_from_email or ''"/></tr>
+                                    </table>
+                                </td>
+                            </tr>
+                        </table>
+
+                        <!-- 4. LINES -->
+                        <table class="vs-items" style="margin-top: 12px;">
+                            <thead>
+                                <tr>
+                                    <th t-att-style="'width: ' + cols[0] + '%;'">Ser. No.<small><span class="vs-ar">التسلسل</span></small></th>
+                                    <th t-att-style="'width: ' + cols[1] + '%;'">Item Ref.<small><span class="vs-ar">مرجع البند</span></small></th>
+                                    <th t-att-style="'width: ' + cols[2] + '%;'">Bill Description<small><span class="vs-ar">الوصــــــــــف</span></small></th>
+                                    <th t-att-style="'width: ' + cols[3] + '%;'">QTY<small><span class="vs-ar">الكمية</span></small></th>
+                                    <th t-att-style="'width: ' + cols[4] + '%;'">UOM<small><span class="vs-ar">الوحدة</span></small></th>
+                                    <th t-att-style="'width: ' + cols[5] + '%;'">Unit Price<small><span class="vs-ar">سعر الوحدة</span></small></th>
+                                    <th t-att-style="'width: ' + cols[6] + '%;'">Taxable Amount<small><span class="vs-ar">الإجمالي</span></small></th>
+                                    <th t-att-style="'width: ' + cols[7] + '%;'">VAT<t t-if="o._vs_vat_label()"> (<t t-esc="o._vs_vat_label()"/>)</t><small><span class="vs-ar">الضريبة</span></small></th>
+                                    <th t-att-style="'width: ' + cols[8] + '%;'">Total With VAT<small><t t-if="vs_kind == 'debit'"><span class="vs-ar">الإجمالي بالضريبة</span></t><t t-else=""><span class="vs-ar">الإجمالي</span></t></small></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr t-if="k['band']" class="vs-band">
+                                    <td colspan="9">
+                                        <t t-esc="o._get_payment_band()"/>
+                                        <span t-if="not o.payment_band" dir="rtl" style="unicode-bidi: embed;"><span class="vs-ar">دفعة رقم</span></span>
+                                    </td>
+                                </tr>
+                                <t t-set="item_index" t-value="1"/>
+                                <t t-foreach="o.invoice_line_ids" t-as="line">
+                                    <tr t-if="line.display_type == 'line_section'">
+                                        <td colspan="9" style="font-weight: bold;" t-esc="line.name"/>
+                                    </tr>
+                                    <tr t-elif="line.display_type == 'line_note'">
+                                        <td colspan="9" style="font-style: italic;" t-esc="line.name"/>
+                                    </tr>
+                                    <tr t-elif="line.display_type == 'product'" t-att-class="'vs-alt' if item_index % 2 == 0 else ''">
+                                        <td class="vs-num" t-att-style="'font-weight: bold; font-family: VS Sans, VS Arabic, Arial, sans-serif; font-size: 14px; height: ' + ('36' if vs_kind == 'tax' else '48') + 'px;'" t-esc="'%.2f' % item_index"/>
+                                        <td style="text-align: center;" t-esc="line.product_id.default_code or ''"/>
+                                        <td style="line-height: 1.18;">
+                                            <t t-foreach="(line.name or '').split('\n')" t-as="dl"><t t-esc="dl"/><br t-if="not dl_last"/></t>
+                                        </td>
+                                        <td class="vs-num" style="font-weight: bold; font-family: 'VS Sans', 'VS Arabic', Arial, sans-serif; font-size: 14px;" t-esc="'%.1f' % line.quantity"/>
+                                        <td style="text-align: center;" t-esc="line.product_uom_id._vs_label()"/>
+                                        <td class="vs-num"><t t-esc="fmt(line.price_unit) if (line.price_unit or vs_kind != 'tax') else ''"/><div t-if="line.discount" style="font-size: 10px; color: #c00000; white-space: nowrap;">-<t t-esc="'{:g}'.format(line.discount)"/>% disc.</div></td>
+                                        <td class="vs-num" style="font-weight: bold;" t-esc="fmt(line.price_subtotal)"/>
+                                        <td class="vs-num" t-esc="fmt(line.price_total - line.price_subtotal)"/>
+                                        <td class="vs-num" style="font-weight: bold;" t-esc="fmt_cur(line.price_total)"/>
+                                        <t t-set="item_index" t-value="item_index + 1"/>
+                                    </tr>
+                                </t>
+                            </tbody>
+                        </table>
+                        <t t-set="symbol"><img t-if="cur.name == 'AED'" src="/viewsport_implementation/static/src/img/dirham_symbol.svg" style="height: 13px; width: 13px; vertical-align: -1px;"/><t t-else="" t-esc="cur.symbol"/></t>
+                        <table style="page-break-inside: avoid;">
+                            <tr t-if="k['total'] == 'payable'">
+                                <td t-att-style="'width: ' + str(round(sum(float(c) for c in cols[:3]), 1)) + '%;'"/>
+                                <td t-att-style="'width: ' + str(round(sum(float(c) for c in cols[3:8]), 1)) + '%; text-align: right; font-weight: bold; font-size: 14.5px; line-height: 1.15; padding: 2px 3px; border-bottom: 1px solid #000 !important; white-space: nowrap;'">
+                                    Total Amount Payable (Including VAT)<br/>
+                                    <span style="font-size: 12px;">&gt;&gt;&gt; <span dir="rtl" style="unicode-bidi: embed;"><span class="vs-ar">اجمالي المبلغ شامل قيمة الضريبة المضافة</span></span></span>
+                                </td>
+                                <td class="vs-num" t-att-style="'width: ' + cols[8] + '%; font-weight: bold; font-size: 16px; vertical-align: middle; border: 1px solid #000 !important; border-top: 0 none !important;'" t-esc="fmt_cur(o.amount_total)"/>
+                            </tr>
+                            <tr t-else="">
+                                <td t-att-style="'width: ' + str(round(sum(float(c) for c in cols[:5]), 1)) + '%;'"/>
+                                <td t-att-style="'width: ' + str(round(sum(float(c) for c in cols[5:8]), 1)) + '%; text-align: right; font-size: 16px; color: #444; padding: 9px 6px; border-bottom: 1px solid #000 !important; white-space: nowrap;'">GRAND TOTAL (<t t-out="symbol"/>)</td>
+                                <td class="vs-num" t-att-style="'width: ' + cols[8] + '%; font-weight: bold; font-size: 16px; vertical-align: middle; border: 1px solid #000 !important; border-top: 0 none !important;'" t-esc="fmt(o.amount_total)"/>
+                            </tr>
+                        </table>
+
+                        <!-- 5. GRAND TOTAL IN WORDS -->
+                        <div class="vs-gap-words" style="margin-top: 22px; border-top: 1px solid #999; border-bottom: 1px solid #999; padding: 6px 0 6px 0; font-weight: bold; font-size: 15px;">
+                            <t t-esc="k['words']"/> (<t t-out="symbol"/>) <t t-esc="o._get_amount_in_words()"/>
+                        </div>
+
+                        <!-- 6. REASON (credit / debit notes) -->
+                        <t t-if="k['reason']">
+                            <t t-set="reasons" t-value="[r for r in (o.vs_note_reason or '').splitlines() if r.strip()]"/>
+                            <table style="margin-top: 20px; width: 62%;">
+                                <tr t-foreach="range(max(k['reason'][1], len(reasons)))" t-as="ri">
+                                    <td style="width: 1%; white-space: nowrap; font-weight: bold; font-size: 12.5px; padding: 0 6px 0 22px; vertical-align: bottom;"><t t-if="ri == 0" t-esc="k['reason'][0]"/></td>
+                                    <td style="font-weight: bold; font-size: 14px; padding: 6px 0;">
+                                        <t t-esc="ri + 1"/>.<t t-if="ri &lt; len(reasons)" t-esc="' ' + reasons[ri]"/><t t-else="">....................................................................................</t>
+                                    </td>
+                                </tr>
+                            </table>
+                        </t>
+
+                        <!-- 7. BANK ACCOUNT INFORMATION (invoice recipient bank, else first company account) -->
+                        <t t-set="bank" t-value="o._get_report_bank_account() if k['bank'] else False"/>
+                        <t t-if="bank">
+                        <div style="page-break-inside: avoid;">
+                        <div class="vs-gap-bank" style="margin-top: 22px; color: #1a73c8; font-weight: bold; font-size: 17.5px; text-decoration: underline; padding-left: 4px;">Bank account information:</div>
+                        <table style="margin-top: 4px;">
+                            <tr>
+                                <td style="width: 52%; vertical-align: top;">
+                                    <table>
+                                        <tr><td class="vs-bank-l">Title of Account:</td></tr>
+                                        <tr><td class="vs-bank-v" t-esc="bank.acc_holder_name or o.company_id.vs_legal_name or o.company_id.name"/></tr>
+                                        <tr><td class="vs-bank-l">Bank Name:</td></tr>
+                                        <tr><td class="vs-bank-v" t-esc="bank.bank_id.name or '-'"/></tr>
+                                        <tr><td class="vs-bank-l">Account No:</td></tr>
+                                        <tr><td class="vs-bank-v" t-esc="bank.vs_account_no or '-'"/></tr>
+                                    </table>
+                                </td>
+                                <td style="width: 10.5%;"/>
+                                <td style="width: 37.5%; vertical-align: top;">
+                                    <table>
+                                        <tr><td class="vs-bank-l">IBAN No.:</td></tr>
+                                        <tr><td class="vs-bank-v" t-esc="bank._vs_iban_display() or '-'"/></tr>
+                                        <tr><td class="vs-bank-l">Swift Code:</td></tr>
+                                        <tr><td class="vs-bank-v" t-esc="bank.bank_bic or '-'"/></tr>
+                                        <tr><td class="vs-bank-l">Account Class:</td></tr>
+                                        <tr><td class="vs-bank-v" t-esc="bank.vs_account_class or '-'"/></tr>
+                                    </table>
+                                </td>
+                            </tr>
+                        </table>
+                        </div>
+                        </t>
+
+                        <!-- 8. SIGNATURES -->
+                        <t t-set="accountant" t-value="o.company_id.accountant_id.name or 'Insert Accountant name'"/>
+                        <table t-if="vs_kind == 'tax'" style="margin-top: 26px; page-break-inside: avoid; font-size: 14.5px;">
+                            <tr>
+                                <td style="width: 21%; vertical-align: top; font-weight: bold; padding-left: 18px;">Prepared by</td>
+                                <td style="width: 25%; vertical-align: top; text-align: center;">
+                                    <div style="font-weight: bold;">Accountant</div>
+                                    <div t-esc="accountant"/>
+                                    <div style="margin-top: 22px;">Sign: …..........................</div>
+                                </td>
+                                <td style="width: 8%; vertical-align: bottom;"><div style="color: #aaa; font-weight: bold; font-size: 11.5px; white-space: nowrap; margin-left: -10px;">VSP Stamp</div></td>
+                                <td style="width: 21%; vertical-align: top; text-align: center;">
+                                    <div style="font-weight: bold;">Authorized by</div>
+                                    <div style="text-decoration: underline;">Managing Director</div>
+                                </td>
+                                <td style="width: 25%; vertical-align: top; text-align: center;">
+                                    <div style="font-weight: bold; text-decoration: underline;">Received By* </div>
+                                    <div>Name: ........................</div>
+                                    <div>Contact no…................</div>
+                                </td>
+                            </tr>
+                        </table>
+                        <t t-elif="vs_kind == 'commercial'">
+                            <table class="vs-cert vs-gap-sign" style="margin-top: 26px; page-break-inside: avoid;">
+                                <tr>
+                                    <td style="width: 55%;">
+                                        <strong>For <t t-esc="o.company_id.vs_legal_name or o.company_id.name"/></strong><br/>
+                                        We here by confirm the invoices is in all respects correct and true and the Origin of Goods are of UAE
+                                        <span style="color: #d0021b;">and / or ….. and / or …….</span>
+                                    </td>
+                                    <td colspan="2" style="text-align: left; font-weight: bold;">Signed &amp; Stamp</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="3">
+                                        <strong>For M/s. <span style="color: #d0021b;" t-esc="cp.name"/></strong><br/>
+                                        We here by Certifying that the goods have been received in good order and condition at Applicant's Site in
+                                        <t t-esc="cp.state_id.name or cp.city or 'UAE'"/>, UAE and Delivered on / before
+                                        <span style="color: #d0021b;" t-esc="(o._vs_delivery_date() or o.invoice_date) and (o._vs_delivery_date() or o.invoice_date).strftime('%d.%m.%Y') or ''"/>
+                                    </td>
+                                </tr>
+                                <tr><td colspan="3" style="font-weight: bold; padding: 12px 6px;">Signed and confirmed by</td></tr>
+                                <tr>
+                                    <td style="font-weight: bold; height: 46px;">Mr./ Mrs.</td>
+                                    <td style="width: 26%;">...................................................................</td>
+                                    <td style="width: 19%; text-align: left; font-weight: bold;">Date:</td>
+                                </tr>
+                            </table>
+                        </t>
+                        <t t-else="">
+                            <t t-set="sign_cols" t-value="{
+                                'proforma': [('Prepared by:', [], True), ('Accountant', [accountant, '', 'Sign: ….........................'], False),
+                                             ('Approved by:', ['u:Managing Director'], False), ('Received By*:', ['Name: ........................', 'Contact no…................'], True)],
+                                'credit': [('Prepared by:', ['Nmae:…..............'], False), ('Accountant', [accountant, '', 'Sign: ….........................'], False),
+                                           ('Authorized By', ['u:Managing Director'], False)],
+                                'debit': [('Prepared by:', ['Nmae:…..............'], False), ('Accountant', [accountant, '', 'Sign: ….........................'], False),
+                                          ('Approved by:', ['u:Managing Director'], False)],
+                            }[vs_kind]"/>
+                            <table class="vs-gap-sign" style="margin-top: 30px; page-break-inside: avoid; font-size: 14.5px;">
+                                <tr>
+                                    <td t-foreach="sign_cols" t-as="col" t-att-style="'width: ' + str(100 // len(sign_cols)) + '%; vertical-align: top; text-align: center;'">
+                                        <div t-att-style="'font-weight: bold;' + (' text-decoration: underline;' if col[2] else '')" t-esc="col[0]"/>
+                                        <t t-foreach="col[1]" t-as="sl">
+                                            <div t-if="sl.startswith('u:')" style="text-decoration: underline;" t-esc="sl[2:]"/>
+                                            <div t-elif="sl" t-esc="sl"/>
+                                            <div t-else="" style="height: 14px;"/>
+                                        </t>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td t-att-colspan="len(sign_cols)" style="text-align: center; padding-top: 12px;">
+                                        <span style="color: #aaa; font-weight: bold; font-size: 11.5px; margin-left: 18%;">VSP Stamp</span>
+                                    </td>
+                                </tr>
+                            </table>
+                        </t>
+                    </div>
+
+                    <!-- 9. FOOTER (every page) -->
+                    <div class="footer" style="font-family: 'VS Sans', 'VS Arabic', Arial, sans-serif; text-align: center; font-weight: bold; font-size: 15.5px; line-height: 1.3; border-top: 1.5px solid #000; padding-top: 3px;">
+                        <style>body.o_body_pdf, body.container { padding-left: 0 !important; padding-right: 0 !important; }</style><t t-call="viewsport_implementation.vs_report_fonts"/>
+                        <t t-foreach="o.company_id._vs_footer_lines()" t-as="fl">
+                            <div t-if="fl[1]" dir="rtl" style="font-size: 14px;" t-esc="fl[0]"/>
+                            <div t-else="" t-esc="fl[0]"/>
+                        </t>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+
+    <template id="report_tax_invoice_viewsport_document">
+        <t t-set="vs_kind" t-value="'tax'"/>
+        <t t-call="viewsport_implementation.report_vs_invoice_family_document"/>
+    </template>
+</odoo>
