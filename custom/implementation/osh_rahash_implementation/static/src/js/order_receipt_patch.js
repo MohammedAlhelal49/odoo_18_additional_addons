@@ -64,6 +64,11 @@ patch(PosOrder.prototype, {
         // الصافي = الإجمالي + التقريب (إذا في تقريب نقدي)
         result.osh_net = result.taxTotals.order_total + (result.show_rounding ? result.order_rounding : 0);
         result.osh_payment_names = result.paymentlines.map((p) => p.name).join(" + ");
+
+        // رقم الطلب المطبوع = تسلسل السيرفر (POS/0042 -> 0042)، متسلسل وما بيتكرر بين الأجهزة والجلسات.
+        // السيرفر بيعطي الاسم وقت الـ sync عند الدفع؛ إذا الطلب لسا ما انبعت (أوفلاين) منطبع رقم مؤقت.
+        const serverNo = typeof this.id === "number" && /(\d+)$/.exec(this.name || "");
+        result.osh_order_no = serverNo ? serverNo[1].padStart(4, "0") : "";
         return result;
     },
 });

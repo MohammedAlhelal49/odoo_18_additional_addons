@@ -52,7 +52,10 @@
             <table class="osh-info">
                 <tr>
                     <td class="osh-info-en">No</td>
-                    <td class="osh-info-val osh-strong"><t t-esc="d.headerData.trackingNumber"/></td>
+                    <td class="osh-info-val osh-strong">
+                        <t t-if="d.osh_order_no" t-esc="d.osh_order_no"/>
+                        <t t-else=""><t t-esc="d.headerData.trackingNumber"/> (Temp مؤقت)</t>
+                    </td>
                     <td class="osh-info-ar">الرقم</td>
                 </tr>
                 <tr>
