@@ -17,13 +17,17 @@ class _VsGuardedReport(models.AbstractModel):
     def _vs_is_allowed(self, record):
         return True
 
+    _vs_applies_to = None
+
     @api.model
     def _get_report_values(self, docids, data=None):
-        docs = self.env[self._vs_model].browse(docids)
-        wrong = docs.filtered(lambda r: not self._vs_is_allowed(r))
-        if wrong:
-            raise UserError(_('The "%(document)s" cannot be printed for: %(records)s',
-                              document=self._vs_document, records=', '.join(wrong.mapped('display_name'))))
+        records = self.env[self._vs_model].browse(docids)
+        docs = records.filtered(self._vs_is_allowed)
+        if not docs:
+            # Normally unreachable: the report only shows in the Print menu of the documents it describes.
+            raise UserError(_('The "%(document)s" is printed for %(applies)s only.\n'
+                              'Please choose the report that matches this document from the Print menu.',
+                              document=self._vs_document, applies=self._vs_applies_to or _('other documents')))
         return {'doc_ids': docs.ids, 'doc_model': self._vs_model, 'docs': docs, 'data': data}
 
 
@@ -34,6 +38,7 @@ class ReportTaxInvoice(models.AbstractModel):
     _table = 'vs_rpt_tax_invoice'
     _vs_model = 'account.move'
     _vs_document = 'Tax Invoice'
+    _vs_applies_to = 'customer invoices'
 
     def _vs_is_allowed(self, move):
         return move.move_type == 'out_invoice'
@@ -70,6 +75,7 @@ class ReportCreditNote(models.AbstractModel):
     _table = 'vs_rpt_credit_note'
     _vs_model = 'account.move'
     _vs_document = 'Credit Note'
+    _vs_applies_to = 'customer credit notes'
 
     def _vs_is_allowed(self, move):
         return move.move_type == 'out_refund'
@@ -82,6 +88,7 @@ class ReportReceiptVoucher(models.AbstractModel):
     _table = 'vs_rpt_receipt_voucher'
     _vs_model = 'account.payment'
     _vs_document = 'Receipt Voucher'
+    _vs_applies_to = 'customer payments'
 
     def _vs_is_allowed(self, payment):
         return payment.payment_type == 'inbound' and payment.partner_type == 'customer'
@@ -94,6 +101,7 @@ class ReportDeliveryNote(models.AbstractModel):
     _table = 'vs_rpt_delivery_note'
     _vs_model = 'stock.picking'
     _vs_document = 'Delivery Note'
+    _vs_applies_to = 'outgoing deliveries'
 
     def _vs_is_allowed(self, picking):
         return picking.picking_type_code == 'outgoing'
@@ -114,6 +122,7 @@ class ReportChequeAcknowledgement(models.AbstractModel):
     _table = 'vs_rpt_cheque_ack'
     _vs_model = 'pdc.wizard'
     _vs_document = 'Cheque Acknowledgement'
+    _vs_applies_to = 'cheques issued to vendors (Send Money)'
 
     def _vs_is_allowed(self, cheque):
         return cheque.payment_type == 'send_money'

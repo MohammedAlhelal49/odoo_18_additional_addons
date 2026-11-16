@@ -20,7 +20,7 @@ class AccountMove(models.Model):
     payment_band = fields.Char(
         string='Payment Label',
         help='Blue band above the invoice lines, e.g. "Construction Progress Payment No [01]". '
-             'Left empty, "Payment No [NN]" is printed with the rank of this invoice for the customer.')
+             'Left empty, "Payment No [NN]" is printed with the rank of this invoice among the customer\'s invoices of the same project.')
 
     @api.depends('invoice_date')
     def _compute_invoice_period(self):
@@ -56,17 +56,24 @@ class AccountMove(models.Model):
         return project.custom_project_code or project.code or '-'
 
     def _get_payment_band(self):
+        """'Payment No [NN]': rank of this invoice among the customer's posted invoices of the SAME project
+        (analytic account on the lines), so every contract is numbered from [01]. A typed Payment Label wins."""
         self.ensure_one()
         if self.payment_band:
             return self.payment_band
-        previous = self.search_count([
-            ('partner_id', '=', self.partner_id.id),
+        if not self.invoice_date:
+            return 'Payment No [01]'
+        earlier = self.search([
+            ('partner_id.commercial_partner_id', '=', self.partner_id.commercial_partner_id.id),
             ('move_type', '=', self.move_type),
             ('state', '=', 'posted'),
+            ('id', '!=', self.id),
             '|', ('invoice_date', '<', self.invoice_date),
             '&', ('invoice_date', '=', self.invoice_date), ('id', '<', self.id),
-        ]) if self.invoice_date else 0
-        return 'Payment No [%02d]' % (previous + 1)
+        ])
+        project = self._get_invoice_project()
+        same = earlier.filtered(lambda m: m._get_invoice_project() == project)
+        return 'Payment No [%02d]' % (len(same) + 1)
 
     def _get_original_invoice_ref(self):
         """Invoice a credit / debit note refers to."""

@@ -89,6 +89,7 @@
         <field name="print_report_name">'VSP_DN_%s' % (object.vs_dln_seq or object.name).replace('/', '_')</field>
         <field name="binding_model_id" ref="stock.model_stock_picking"/>
         <field name="binding_type">report</field>
+        <field name="domain">[('picking_type_code', '=', 'outgoing')]</field>
         <field name="paperformat_id" ref="paperformat_viewsport_delivery"/>
     </record>
 
@@ -115,6 +116,7 @@
         <field name="print_report_name">'VSP_DO_%s' % (object.vs_do_seq or object.name).replace('/', '_')</field>
         <field name="binding_model_id" ref="stock.model_stock_picking"/>
         <field name="binding_type">report</field>
+        <field name="domain">[('picking_type_code', '=', 'outgoing')]</field>
         <field name="paperformat_id" ref="paperformat_viewsport_delivery_order"/>
     </record>
 
@@ -166,6 +168,7 @@
         <field name="report_file">viewsport_implementation.report_tax_invoice_viewsport_document</field>
         <field name="binding_model_id" ref="account.model_account_move"/>
         <field name="binding_type">report</field>
+        <field name="domain">[('move_type', '=', 'out_invoice')]</field>
         <field name="print_report_name">(object._get_report_base_filename())</field>
         <field name="paperformat_id" ref="viewsport_implementation.paperformat_viewsport_invoice"/>
     </record>
@@ -192,6 +195,7 @@
         <field name="report_file">viewsport_implementation.report_proforma_invoice_viewsport_document</field>
         <field name="binding_model_id" ref="account.model_account_move"/>
         <field name="binding_type">report</field>
+        <field name="domain">[('move_type', '=', 'out_invoice')]</field>
         <field name="print_report_name">(object._get_report_base_filename())</field>
         <field name="paperformat_id" ref="viewsport_implementation.paperformat_viewsport_invoice_wide"/>
     </record>
@@ -204,6 +208,7 @@
         <field name="report_file">viewsport_implementation.report_commercial_invoice_viewsport_document</field>
         <field name="binding_model_id" ref="account.model_account_move"/>
         <field name="binding_type">report</field>
+        <field name="domain">[('move_type', '=', 'out_invoice')]</field>
         <field name="print_report_name">(object._get_report_base_filename() + ' - Commercial')</field>
         <field name="paperformat_id" ref="viewsport_implementation.paperformat_viewsport_invoice_wide"/>
     </record>
@@ -216,6 +221,7 @@
         <field name="report_file">viewsport_implementation.report_credit_note_viewsport_document</field>
         <field name="binding_model_id" ref="account.model_account_move"/>
         <field name="binding_type">report</field>
+        <field name="domain">[('move_type', '=', 'out_refund')]</field>
         <field name="print_report_name">(object._get_report_base_filename() + ' - Credit Note')</field>
         <field name="paperformat_id" ref="viewsport_implementation.paperformat_viewsport_invoice_wide"/>
     </record>
@@ -228,6 +234,7 @@
         <field name="report_file">viewsport_implementation.report_debit_note_viewsport_document</field>
         <field name="binding_model_id" ref="account.model_account_move"/>
         <field name="binding_type">report</field>
+        <field name="domain">[('move_type', '=', 'out_invoice')]</field>
         <field name="print_report_name">(object._get_report_base_filename() + ' - Debit Note')</field>
         <field name="paperformat_id" ref="viewsport_implementation.paperformat_viewsport_invoice_wide"/>
     </record>
@@ -253,6 +260,7 @@
         <field name="report_file">viewsport_implementation.report_receipt_voucher_viewsport_document</field>
         <field name="binding_model_id" ref="account.model_account_payment"/>
         <field name="binding_type">report</field>
+        <field name="domain">[('payment_type', '=', 'inbound'), ('partner_type', '=', 'customer')]</field>
         <field name="print_report_name">'Receipt Voucher - %s' % (object.receipt_voucher_no or object.name)</field>
         <field name="paperformat_id" ref="viewsport_implementation.paperformat_viewsport_receipt"/>
     </record>
@@ -278,6 +286,7 @@
         <field name="report_file">viewsport_implementation.report_cheque_ack_viewsport_document</field>
         <field name="binding_model_id" ref="sh_pdc.model_pdc_wizard"/>
         <field name="binding_type">report</field>
+        <field name="domain">[('payment_type', '=', 'send_money')]</field>
         <field name="print_report_name">'Cheque Acknowledgement - %s' % (object.reference or object.name)</field>
         <field name="paperformat_id" ref="viewsport_implementation.paperformat_viewsport_cheque_ack"/>
     </record>

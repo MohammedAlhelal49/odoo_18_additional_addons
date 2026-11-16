@@ -1,6 +1,6 @@
 {
     'name': 'Viewsport Implementation',
-    'version': '18.0.4.4.0',
+    'version': '18.0.4.6.0',
     'category': 'Purchase',
     'summary': 'Custom PO PDF Report matching Viewsport layout',
     'author': 'Dekad (Mofeed Dozkanji)',
