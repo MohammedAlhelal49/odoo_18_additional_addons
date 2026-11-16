@@ -18,20 +18,29 @@ class PdcWizard(models.Model):
         self.ensure_one()
         return self.due_date or self.payment_date
 
-    def _vs_bills(self):
+    def _vs_is_incoming(self):
+        """Cheque received from a customer, rather than issued to a vendor."""
         self.ensure_one()
-        return (self.invoice_ids | self.invoice_id).filtered(lambda m: m.move_type in ('in_invoice', 'in_refund'))
+        return self.payment_type == 'receive_money'
+
+    def _vs_bills(self):
+        """Documents paid by this cheque: customer invoices when it is received, vendor bills when it is issued."""
+        self.ensure_one()
+        types = ('out_invoice', 'out_refund') if self._vs_is_incoming() else ('in_invoice', 'in_refund')
+        return (self.invoice_ids | self.invoice_id).filtered(lambda m: m.move_type in types)
 
     def _vs_vendor_invoice_ref(self):
-        """Vendor's own invoice numbers (Bill Reference), else the bill numbers."""
+        """Vendor's own invoice numbers (Bill Reference), else the bill numbers; our invoice numbers for a customer cheque."""
         self.ensure_one()
+        if self._vs_is_incoming():
+            return ', '.join(self._vs_bills().mapped('name'))
         return ', '.join(b.ref or b.name for b in self._vs_bills())
 
     def _vs_detail_text(self):
         self.ensure_one()
         if self.vs_detail:
             return self.vs_detail
-        if self.vs_ack_type == 'petty_cash':
+        if self.vs_ack_type == 'petty_cash' and not self._vs_is_incoming():
             return 'Issued cheque %s as petty cash fund to %s.' % (self.reference or '', self.partner_id.name or '')
         bills = self._vs_bills()
         if not bills:
@@ -39,8 +48,11 @@ class PdcWizard(models.Model):
         full = all(b.payment_state in ('paid', 'in_payment') for b in bills) or \
             abs(sum(bills.mapped('amount_total')) - self.payment_amount) < 0.01
         origins = [o for o in bills.mapped('invoice_origin') if o]
-        text = '%s against %s' % ('100% Full Payment' if full else 'Partial Payment',
-                                  ('PO#' + ', '.join(origins)) if origins else 'Bill No. ' + ', '.join(bills.mapped('name')))
+        if self._vs_is_incoming():
+            against = 'Invoice No. ' + ', '.join(bills.mapped('name'))
+        else:
+            against = ('PO#' + ', '.join(origins)) if origins else 'Bill No. ' + ', '.join(bills.mapped('name'))
+        text = '%s against %s' % ('100% Full Payment' if full else 'Partial Payment', against)
         if self.memo:
             text += ', ' + self.memo
         return text + '.'

@@ -8,7 +8,8 @@
                     <t t-set="fmt" t-value="lambda v: '{:,.2f}'.format(v or 0.0)"/>
                     <t t-set="payee" t-value="o.partner_id.commercial_partner_id.name or ''"/>
                     <t t-set="chq_date" t-value="o._vs_cheque_date()"/>
-                    <t t-set="petty" t-value="o.vs_ack_type == 'petty_cash'"/>
+                    <t t-set="incoming" t-value="o._vs_is_incoming()"/>
+                    <t t-set="petty" t-value="o.vs_ack_type == 'petty_cash' and not incoming"/>
                     <t t-set="image" t-value="o._vs_cheque_image()"/>
                     <t t-call="viewsport_implementation.vs_report_fonts"/>
                     <style>
@@ -40,9 +41,9 @@
                         <!-- 3. CHEQUE INFORMATION -->
                         <table class="vs-info" style="margin-top: 14px;">
                             <tr>
-                                <td class="vs-en">Payee:</td>
+                                <td class="vs-en"><t t-if="incoming">Received From:</t><t t-else="">Payee:</t></td>
                                 <td class="vs-v" t-esc="payee"/>
-                                <td class="vs-ar" dir="rtl"><span class="vs-ar">أسم المستفيد</span>:</td>
+                                <td class="vs-ar" dir="rtl"><span class="vs-ar" t-if="incoming">إستلمنا من</span><span class="vs-ar" t-else="">أسم المستفيد</span>:</td>
                             </tr>
                             <tr>
                                 <td class="vs-en">Cheque Date:</td>
@@ -75,7 +76,7 @@
                             </t>
                             <table t-else="">
                                 <tr>
-                                    <td style="width: 24%; text-align: right; line-height: 1.2; padding-right: 8px;">Vendor Tax Invoice<br/>Reference:</td>
+                                    <td style="width: 24%; text-align: right; line-height: 1.2; padding-right: 8px;"><t t-if="incoming">Tax Invoice</t><t t-else="">Vendor Tax Invoice</t><br/>Reference:</td>
                                     <td style="vertical-align: bottom; color: #c00000;" t-esc="o._vs_vendor_invoice_ref()"/>
                                 </tr>
                             </table>
@@ -91,7 +92,8 @@
 
                         <!-- 6. RECEIVED + AMOUNT IN WORDS -->
                         <div style="border-top: 1px solid #000; border-bottom: 1px solid #000; padding: 3px 2px; font-weight: bold; font-size: 14.5px; color: #e00000;">
-                            <t t-esc="payee"/> received full amount against cheque <t t-esc="o.reference or ''"/>.
+                            <t t-if="incoming"><t t-esc="o.company_id.name"/> received cheque <t t-esc="o.reference or ''"/> from <t t-esc="payee"/>.</t>
+                            <t t-else=""><t t-esc="payee"/> received full amount against cheque <t t-esc="o.reference or ''"/>.</t>
                         </div>
                         <table style="border-bottom: 1px solid #000;">
                             <tr>
@@ -116,9 +118,16 @@
                         </table>
                         <table class="vs-sign" style="margin-top: 66px;">
                             <tr>
-                                <td style="width: 24%;">Receiver<br/><small><span class="vs-ar">المستلم</span></small></td>
-                                <td class="vs-mid" style="width: 52%;">Contact Number<br/><small><span class="vs-ar">رقم التواصل</span></small></td>
-                                <td style="width: 24%;">Received Date<br/><small><span class="vs-ar">تاريخ الاستلام</span></small></td>
+                                <t t-if="incoming">
+                                    <td style="width: 24%;">Delivered By<br/><small><span class="vs-ar">المُسلِّم</span></small></td>
+                                    <td class="vs-mid" style="width: 52%;">Contact Number<br/><small><span class="vs-ar">رقم التواصل</span></small></td>
+                                    <td style="width: 24%;">Delivery Date<br/><small><span class="vs-ar">تاريخ التسليم</span></small></td>
+                                </t>
+                                <t t-else="">
+                                    <td style="width: 24%;">Receiver<br/><small><span class="vs-ar">المستلم</span></small></td>
+                                    <td class="vs-mid" style="width: 52%;">Contact Number<br/><small><span class="vs-ar">رقم التواصل</span></small></td>
+                                    <td style="width: 24%;">Received Date<br/><small><span class="vs-ar">تاريخ الاستلام</span></small></td>
+                                </t>
                             </tr>
                         </table>
 

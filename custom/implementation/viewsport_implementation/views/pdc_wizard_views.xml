@@ -6,10 +6,10 @@
         <field name="inherit_id" ref="sh_pdc.sh_pdc_payment_form_view"/>
         <field name="arch" type="xml">
             <xpath expr="//notebook" position="inside">
-                <page string="Cheque Acknowledgement" name="viewsport_cheque_ack" invisible="payment_type != 'send_money'">
+                <page string="Cheque Acknowledgement" name="viewsport_cheque_ack">
                     <group>
-                        <field name="vs_ack_type"/>
-                        <field name="vs_detail" placeholder="Leave empty to describe the paid bills automatically"/>
+                        <field name="vs_ack_type" invisible="payment_type != 'send_money'"/>
+                        <field name="vs_detail" placeholder="Leave empty to describe the paid bills / invoices automatically"/>
                     </group>
                 </page>
             </xpath>

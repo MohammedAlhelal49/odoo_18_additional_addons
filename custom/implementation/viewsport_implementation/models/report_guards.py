@@ -122,7 +122,7 @@ class ReportChequeAcknowledgement(models.AbstractModel):
     _table = 'vs_rpt_cheque_ack'
     _vs_model = 'pdc.wizard'
     _vs_document = 'Cheque Acknowledgement'
-    _vs_applies_to = 'cheques issued to vendors (Send Money)'
+    _vs_applies_to = 'cheques issued to vendors or received from customers'
 
     def _vs_is_allowed(self, cheque):
-        return cheque.payment_type == 'send_money'
+        return cheque.payment_type in ('send_money', 'receive_money')
