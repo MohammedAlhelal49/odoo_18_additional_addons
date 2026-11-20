@@ -8,7 +8,7 @@
 {
     "name": "Dekad Pos sale enhancement",
     "summary": "Dekad Pos sale enhancement",
-    "version": "18.0",
+    "version": "18.0.18.1",
     "author": "Dekad (Mohammed alhelal)",
     "license": "LGPL-3",
     "installable": True,

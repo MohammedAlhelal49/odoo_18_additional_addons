@@ -12,8 +12,8 @@
         <field name="inherit_id" ref="product.product_template_form_view"/>
         <field name="arch" type="xml">
             <xpath expr="//div[@name='list_price_uom']" position="after">
-                <field name="min_price"/>
-                <field name="max_price"/>
+                <field name="min_price" widget="monetary"/>
+                <field name="max_price" widget="monetary"/>
             </xpath>
             <xpath expr="//field[@name='available_in_pos']" position="before">
                     <field name="is_additional_charge"/>

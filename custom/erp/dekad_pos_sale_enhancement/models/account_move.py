@@ -1,5 +1,14 @@
 from odoo import models, fields, api
 
+
+class StockLocation(models.Model):
+    _inherit = 'stock.location'
+
+    def handle_old_stock_location_name(self):
+        for record in self.search([]):
+            record.barcode = record.name
+
+
 class AccountMove(models.Model):
     _inherit = 'account.move'
 

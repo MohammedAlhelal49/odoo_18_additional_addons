@@ -63,6 +63,13 @@ class PosConfig(models.Model):
         string="Restriction Type",
         default=False,
     )
+    stock_warning_external = fields.Boolean(compute="_compute_stock_warning_external")
+
+    def _compute_stock_warning_external(self):
+        installed = bool(self.env['ir.module.module'].sudo().search_count(
+            [('name', '=', 'pos_stock_warning'), ('state', '=', 'installed')]))
+        for rec in self:
+            rec.stock_warning_external = installed
 
     @api.depends('allowed_cashier_ids', 'basic_employee_ids', 'advanced_employee_ids')
     def compute_allowed_employee_user_ids(self):
@@ -127,7 +134,8 @@ class PosConfig(models.Model):
         params = super()._load_pos_data_fields(config_id)
         if not params:
             return params
-        for field_name in ('price_control_allowed_employee_ids', 'use_strict_price_control_list'):
+        for field_name in ('price_control_allowed_employee_ids', 'use_strict_price_control_list',
+                           'stock_warning_external'):
             if field_name not in params:
                 params = params + [field_name]
         return params

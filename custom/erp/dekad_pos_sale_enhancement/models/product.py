@@ -8,13 +8,26 @@ from odoo.exceptions import UserError, ValidationError
 
 class ProductTemplate(models.Model):
     _inherit = 'product.template'
-
+    arabic_name = fields.Char(string='Arabic name')
     min_price = fields.Float(string='Minimum Sale Price')
     max_price = fields.Float(string='Maximum Sale Price')
     is_additional_charge = fields.Boolean(
         string="Additional Charge Product",
         help="This product will be used when applying an additional charge in POS.",
     )
+
+    def handle_product_name(self):
+        """Copy arabic_name into the Arabic translation of the Name field."""
+        products = self.search([
+            ('arabic_name', '!=', False)
+        ])
+
+        for product in products:
+            product.with_context(lang='ar_001').write({
+                'name': product.arabic_name,
+            })
+
+        return True
 
     @api.constrains('min_price', 'max_price')
     def _check_price_limits(self):
@@ -71,17 +84,6 @@ class ProductProduct(models.Model):
         "product_id",
         string="UOM Prices",
     )
-
-    def _load_pos_data_fields(self, config_id):
-        """
-        إضافة حقل qty_available إلى البيانات
-        المرسلة إلى POS session عند التحميل
-        """
-        fields = super()._load_pos_data_fields(config_id)
-        if "qty_available" not in fields:
-            fields.append("qty_available")
-        return fields
-
 
     @api.constrains("multi_uom_price_ids")
     def validate_multi_uom_price_ids(self):

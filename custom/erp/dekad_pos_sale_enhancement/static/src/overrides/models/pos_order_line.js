@@ -55,7 +55,7 @@ patch(PosOrderline.prototype, {
 
         if (name_ar && name_ar !== name_en) {
 
-            const bilingualName = `${name_en} `;
+            const bilingualName = `${name_en} / ${name_ar}`;
 
             /**
              * IMPORTANT:

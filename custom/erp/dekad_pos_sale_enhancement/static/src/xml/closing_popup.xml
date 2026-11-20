@@ -12,7 +12,6 @@
         -->
         <xpath expr="//div"
                position="after">
- <span> Test</span>
             <!--            <attribute name="t-att-class">-->
             <!--            {-->
             <!--                'w-100 mb-3': true,-->

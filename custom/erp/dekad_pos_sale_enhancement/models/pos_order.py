@@ -24,7 +24,9 @@ class PosOrder(models.Model):
         if not (pos_order_line.order_id.amount_total < 0.0):
             return result
 
-        refund_account = self.env.company.refund_income_account_id
+        # refund_income_account_id only exists in newer dekad_account_enhancement versions
+        refund_account = self.env.company['refund_income_account_id'] \
+            if 'refund_income_account_id' in self.env.company._fields else False
         if not refund_account:
             return result
 

@@ -32,7 +32,8 @@
                 </setting>
             </xpath>
             <xpath expr="//sheet" position="inside">
-                    <group string="Stock Quantity Restriction">
+                    <field name="stock_warning_external" invisible="1"/>
+                    <group string="Stock Quantity Restriction" invisible="stock_warning_external">
                         <group>
                             <field name="stock_restriction_enabled"/>
                         </group>

@@ -20,6 +20,8 @@ function t(en, ar) {
 // Helper: اقرأ نوع الـ restriction من إعدادات POS
 // ============================================================
 function getRestrictionType(pos) {
+    // pos_stock_warning module installed: it handles the restriction itself
+    if (pos.config.stock_warning_external) return false;
     if (!pos.config.stock_restriction_enabled) return false;
     return pos.config.stock_restriction_type || false;
 }
@@ -61,6 +63,9 @@ patch(ProductScreen.prototype, {
     },
 
     async addProductToOrder(product) {
+        if (!getRestrictionType(this.pos)) {
+            return super.addProductToOrder(...arguments);
+        }
         const hasVariants = product.isConfigurable
             ? product.isConfigurable()
             : (product.variants && product.variants.length > 1);
@@ -105,6 +110,9 @@ patch(ProductConfiguratorPopup.prototype, {
     },
 
     async confirm() {
+        if (!getRestrictionType(this.pos)) {
+            return super.confirm(...arguments);
+        }
         // نحسب الـ variant الفعلي
         this.computeProductProduct();
         const product = this.state.product;

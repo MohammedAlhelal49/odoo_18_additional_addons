@@ -29,7 +29,7 @@ class PosSession(models.Model):
 
         # Get mail template
         template = self.env.ref(
-            'pos_cash_difference_notification.mail_template_cash_difference',
+            'dekad_pos_sale_enhancement.mail_template_cash_difference',
             raise_if_not_found=False
         )
 
