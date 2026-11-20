@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="account_invoice_filter_paid_by" model="ir.ui.view">
+        <field name="name">account.invoice.select.paid.by</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_account_invoice_filter"/>
+        <field name="arch" type="xml">
+            <xpath expr="//filter[@name='preferred_payment_method_line']" position="after">
+                <filter string="Paid By" name="group_by_paid_by" context="{'group_by': 'paid_by'}"/>
+            </xpath>
+            <xpath expr="//field[@name='payment_reference']" position="after">
+                <field name="paid_by"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="account_out_invoice_list_paid_by" model="ir.ui.view">
+        <field name="name">account.out.invoice.list.paid.by</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_out_invoice_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//list//field[@name='amount_total_in_currency_signed']" position="before">
+                <field name="paid_by" optional="show"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

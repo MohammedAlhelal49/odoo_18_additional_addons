@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+
+    <!-- الملاحظة الداخلية تحت المنتج بإيصال الزبون -->
+    <t t-name="best_store_implementation.OrderReceiptNotes" t-inherit="the_best_store_pos_receipt.OrderReceipt" t-inherit-mode="extension">
+        <!-- هاتف الزبون ولوحة السيارة وسيريالها تحت اسم الزبون -->
+        <xpath expr="//t[@t-if='props.data.partner_name']/div" position="after">
+            <div t-if="props.data.bsPartnerPhone" class="pos-receipt-order-data">
+                Phone: <span dir="ltr" t-esc="props.data.bsPartnerPhone"/>
+            </div>
+            <div t-if="props.data.bsCarPlate" class="pos-receipt-order-data">
+                Car Plate: <t t-esc="props.data.bsCarPlate"/>
+            </div>
+            <div t-if="props.data.bsCarSerial" class="pos-receipt-order-data">
+                Car Serial (VIN): <t t-esc="props.data.bsCarSerial"/>
+            </div>
+        </xpath>
+        <xpath expr="//table[hasclass('tbs-table')]/tbody/t[@t-foreach='props.data.orderlines']/tr" position="after">
+            <tr t-if="line.bsNote">
+                <td colspan="5" class="tbs-td-desc fst-italic small">Note / ملاحظة: <t t-esc="line.bsNote"/></td>
+            </tr>
+        </xpath>
+    </t>
+
+</templates>

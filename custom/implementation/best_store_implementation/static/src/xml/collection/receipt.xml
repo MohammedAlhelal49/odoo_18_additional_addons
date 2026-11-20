@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+
+    <!-- إيصال تحصيل دين الزبون (Collect Payment) وإلغائه، على إيصال بيست ستور -->
+    <t t-name="best_store_implementation.OrderReceiptCollection" t-inherit="the_best_store_pos_receipt.OrderReceipt" t-inherit-mode="extension">
+        <xpath expr="//div[hasclass('pos-receipt-title') and hasclass('mt-1')]" position="attributes">
+            <attribute name="t-esc">props.data.is_collection_reversal ? 'COLLECTION CANCELLED - إلغاء تحصيل' : props.data.is_collection ? 'PAYMENT RECEIPT - إيصال قبض' : props.data.headerData.company.id === 7 ? 'SALES INVOICE' : 'TAX INVOICE'</attribute>
+        </xpath>
+        <xpath expr="//table[hasclass('tbs-table')]" position="attributes">
+            <attribute name="t-if">!props.data.is_collection</attribute>
+        </xpath>
+        <xpath expr="//div[hasclass('pos-receipt-taxes')]" position="attributes">
+            <attribute name="t-if">!props.data.is_collection and taxTotals and taxTotals.has_tax_groups and props.data.headerData.company.id != 7</attribute>
+        </xpath>
+        <xpath expr="//div[hasclass('receipt-total')]" position="attributes">
+            <attribute name="t-if">!props.data.is_collection</attribute>
+        </xpath>
+
+        <xpath expr="//div[hasclass('paymentlines')]" position="before">
+            <t t-if="props.data.is_collection">
+                <div t-if="props.data.reversed_order_name" class="pos-receipt-order-data">
+                    Cancels receipt / إلغاء الإيصال: <t t-esc="props.data.reversed_order_name"/>
+                </div>
+                <t t-foreach="props.data.collections" t-as="col" t-key="col_index">
+                    <div class="fw-bold mt-1">* <t t-esc="col.name"/></div>
+                    <t t-if="col.details">
+                        <div t-if="col.details.date" class="small">Date / التاريخ: <t t-esc="col.details.date"/></div>
+                        <t t-foreach="col.details.lines" t-as="dl" t-key="dl_index">
+                            <div class="d-flex small">
+                                <span class="me-1" t-esc="dl.name"/>
+                                <span class="ms-auto text-nowrap"><t t-esc="dl.qtyPlain"/> × <t t-esc="dl.unitPricePlain"/> = <t t-esc="dl.pricePlain"/></span>
+                            </div>
+                        </t>
+                        <div class="d-flex small">
+                            <span>Order Total / مجموع الطلب</span>
+                            <span class="ms-auto" t-esc="props.formatCurrency(col.details.total)"/>
+                        </div>
+                    </t>
+                    <t t-if="!props.data.is_collection_reversal">
+                        <div class="d-flex">
+                            <span>Due / المستحق</span>
+                            <span class="ms-auto" t-esc="props.formatCurrency(col.due)"/>
+                        </div>
+                        <div class="d-flex">
+                            <span>Paid / المدفوع</span>
+                            <span class="ms-auto" t-esc="props.formatCurrency(col.paid)"/>
+                        </div>
+                        <div class="d-flex fw-bold">
+                            <span>Remaining / المتبقي</span>
+                            <span class="ms-auto" t-esc="props.formatCurrency(col.remaining)"/>
+                        </div>
+                    </t>
+                    <div t-else="" class="d-flex">
+                        <span>Refunded / المسترد</span>
+                        <span class="ms-auto" t-esc="props.formatCurrency(-col.paid)"/>
+                    </div>
+                </t>
+                <div class="text-center">--------------------------------</div>
+                <div class="pos-receipt-amount receipt-total">
+                    <t t-if="props.data.is_collection_reversal">Total Refunded / إجمالي المسترد</t>
+                    <t t-else="">Total Paid / إجمالي المدفوع</t>
+                    <span class="pos-receipt-right-align"
+                          t-esc="props.formatCurrency(props.data.is_collection_reversal ? -props.data.collected_total : props.data.collected_total)"/>
+                </div>
+                <t t-foreach="props.data.collection_payments" t-as="cp" t-key="cp_index">
+                    <div class="d-flex">
+                        <span t-esc="cp.name"/>
+                        <span class="ms-auto" t-esc="props.formatCurrency(props.data.is_collection_reversal ? -cp.amount : cp.amount)"/>
+                    </div>
+                </t>
+                <div t-if="props.data.change" class="d-flex">
+                    <span>Change / الباقي</span>
+                    <span class="ms-auto" t-esc="props.formatCurrency(props.data.change)"/>
+                </div>
+                <div class="text-center">--------------------------------</div>
+                <div class="d-flex fw-bold">
+                    <span>Your Balance / المتبقي على حسابك</span>
+                    <span class="ms-auto" t-esc="props.formatCurrency(props.data.partner_balance)"/>
+                </div>
+                <br/>
+            </t>
+        </xpath>
+    </t>
+
+</templates>

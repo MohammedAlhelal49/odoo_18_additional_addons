@@ -49,4 +49,3 @@ class StockMoveInherited(models.Model):
                 move.location_id = False
 
 
-

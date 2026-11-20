@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- رقم السيارة وسيريال السيارة (من بطاقة الزبون) بطباعة الفاتورة -->
+
+    <!-- فاتورة دول الخليج (عربي / إنكليزي): المستخدمة لشركات الإمارات -->
+    <template id="report_invoice_gcc_car_info" inherit_id="l10n_gcc_invoice.arabic_english_invoice">
+        <xpath expr="//div[@id='informations']" position="inside">
+            <div class="row" t-if="o.partner_id.car_plate_number" name="car_plate_number">
+                <div class="col-2 offset-6">
+                    <strong style="white-space:nowrap">Car Plate No:</strong>
+                </div>
+                <div class="col-2">
+                    <span t-field="o.partner_id.car_plate_number"/>
+                </div>
+                <div class="col-2 text-end">
+                    <strong style="white-space:nowrap">: رقم السيارة</strong>
+                </div>
+            </div>
+            <div class="row" t-if="o.partner_id.car_serial_number" name="car_serial_number">
+                <div class="col-2 offset-6">
+                    <strong style="white-space:nowrap">Car Serial (VIN):</strong>
+                </div>
+                <div class="col-2">
+                    <span t-field="o.partner_id.car_serial_number"/>
+                </div>
+                <div class="col-2 text-end">
+                    <strong style="white-space:nowrap">: رقم الشاصي</strong>
+                </div>
+            </div>
+        </xpath>
+    </template>
+
+    <!-- فاتورة Odoo العادية (لأي شركة برا الخليج) -->
+    <template id="report_invoice_document_car_info" inherit_id="account.report_invoice_document">
+        <xpath expr="//div[@id='informations']" position="inside">
+            <div class="col" t-if="o.partner_id.car_plate_number" name="car_plate_number">
+                <strong>Car Plate No:</strong><br/>
+                <span t-field="o.partner_id.car_plate_number"/>
+            </div>
+            <div class="col" t-if="o.partner_id.car_serial_number" name="car_serial_number">
+                <strong>Car Serial (VIN):</strong><br/>
+                <span t-field="o.partner_id.car_serial_number"/>
+            </div>
+        </xpath>
+    </template>
+</odoo>

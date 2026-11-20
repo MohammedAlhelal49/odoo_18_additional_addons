@@ -19,9 +19,14 @@
 
             </xpath>
 
+            <xpath expr="//list/field[1]" position="before">
+                 <field name="line_index" string="#" readonly="1" optional="show"/>
+            </xpath>
+
         </field>
     </record>
      <function model="sale.order.line" name="handle_old_order_line_images" eval="[[]]"/>
+<!--    <function model="sale.order" name="handle_order_names" eval="[[]]"/>-->
 </odoo>
 
 

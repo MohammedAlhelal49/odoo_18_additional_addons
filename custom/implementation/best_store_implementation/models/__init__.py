@@ -2,3 +2,9 @@ from . import sale_order_line
 from . import purchase_order_line
 from . import account_move_cost_profit
 from . import stock_move_line
+from . import stock_picking
+from . import account_move_paid_by
+from . import res_partner
+from . import pos_collection
+from . import pos_order_notes
+from . import pos_invoice_guard

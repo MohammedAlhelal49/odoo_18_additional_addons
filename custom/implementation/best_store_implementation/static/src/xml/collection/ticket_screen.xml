@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+
+    <t t-name="best_store_implementation.TicketScreenCollection" t-inherit="point_of_sale.TicketScreen" t-inherit-mode="extension">
+        <xpath expr="//div[hasclass('control-buttons')]" position="attributes">
+            <attribute name="class" add="flex-wrap" separator=" "/>
+        </xpath>
+        <!-- تحصيل دين على طلب On Credit -->
+        <xpath expr="//div[hasclass('control-buttons')]" position="inside">
+            <button t-if="canBsCollect(_selectedSyncedOrder)"
+                    class="control-button btn btn-primary btn-lg lh-lg flex-grow-1 flex-shrink-1"
+                    t-on-click="() => this.onBsCollect(_selectedSyncedOrder)">
+                <i class="fa fa-money me-1"/> Collect Payment
+            </button>
+        </xpath>
+        <!-- طلب التحصيل ما فيه أصناف، وOdoo ما بيعرض تفاصيل وأزرار الطلب إلا إذا فيه أصناف
+             (بيطلع "Select an order"): منعرض لوحة صغيرة للتحصيل فيها إعادة الطباعة والإلغاء -->
+        <xpath expr="//CenteredIcon[@icon=&quot;'fa-shopping-cart fa-4x'&quot;]" position="before">
+            <t t-set="_bsCollection"
+               t-value="_selectedSyncedOrder?.finalized and _selectedSyncedOrder.isBsCollection() ? _selectedSyncedOrder : false"/>
+            <div t-if="_bsCollection" class="d-flex flex-column flex-grow-1 bg-100 rounded-3 p-3 gap-3">
+                <div class="d-flex justify-content-between align-items-start">
+                    <div>
+                        <div class="fs-4 fw-bold" t-esc="_bsCollection.name"/>
+                        <div t-esc="_bsCollection.get_partner()?.name or ''"/>
+                    </div>
+                    <span class="badge text-bg-secondary fs-6" t-esc="getStatus(_bsCollection)"/>
+                </div>
+                <div class="d-flex flex-column gap-1">
+                    <div t-foreach="_bsCollection.payment_ids" t-as="payment" t-key="payment.uuid"
+                         class="d-flex justify-content-between border-bottom py-1">
+                        <span>
+                            <t t-esc="payment.payment_method_id?.name"/>
+                            <t t-if="payment.bs_collected_order_id or payment.bs_collected_order_name">
+                                (<t t-esc="payment.bs_collected_order_id?.name or payment.bs_collected_order_name"/>)
+                            </t>
+                        </span>
+                        <span t-esc="env.utils.formatCurrency(payment.get_amount())"/>
+                    </div>
+                </div>
+                <div class="control-buttons d-flex flex-wrap gap-2 mt-auto">
+                    <button class="control-button btn btn-light btn-lg lh-lg flex-grow-1 flex-shrink-1"
+                            t-on-click="() => doPrint.call(_bsCollection)">
+                        <i t-attf-class="fa {{doPrint.status === 'loading' ? 'fa-fw fa-spin fa-circle-o-notch' : 'fa-print'}} me-1"/>Print Receipt
+                    </button>
+                    <button t-if="canBsCancelCollection(_bsCollection)"
+                            class="control-button btn btn-danger btn-lg lh-lg flex-grow-1 flex-shrink-1"
+                            t-on-click="() => this.onBsCancelCollection(_bsCollection)">
+                        <i class="fa fa-undo me-1"/> Cancel Collection
+                    </button>
+                </div>
+            </div>
+        </xpath>
+        <xpath expr="//CenteredIcon[@icon=&quot;'fa-shopping-cart fa-4x'&quot;]" position="attributes">
+            <attribute name="t-if">!_bsCollection</attribute>
+        </xpath>
+    </t>
+
+</templates>

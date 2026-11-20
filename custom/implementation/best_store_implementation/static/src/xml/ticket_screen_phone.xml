@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+
+    <!-- رقم هاتف الزبون تحت اسمه بقائمة الطلبات -->
+    <t t-name="best_store_implementation.TicketScreenPartnerPhone" t-inherit="point_of_sale.TicketScreen" t-inherit-mode="extension">
+        <xpath expr="//div[t[@t-esc='order.partner_id?.name']]" position="after">
+            <div t-if="bsPartnerPhone(order)" class="small opacity-75" dir="ltr" t-esc="bsPartnerPhone(order)"/>
+        </xpath>
+    </t>
+
+</templates>

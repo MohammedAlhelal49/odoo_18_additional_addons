@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_partner_form_car_info" model="ir.ui.view">
+        <field name="name">res.partner.form.car.info</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='vat']" position="after">
+                <field name="car_plate_number"/>
+                <field name="car_serial_number"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_res_partner_filter_car_info" model="ir.ui.view">
+        <field name="name">res.partner.select.car.info</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_res_partner_filter"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='name']" position="after">
+                <field name="car_plate_number"/>
+                <field name="car_serial_number"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_partner_list_car_info" model="ir.ui.view">
+        <field name="name">res.partner.list.car.info</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='phone']" position="after">
+                <field name="car_plate_number" optional="show"/>
+                <field name="car_serial_number" optional="hide"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

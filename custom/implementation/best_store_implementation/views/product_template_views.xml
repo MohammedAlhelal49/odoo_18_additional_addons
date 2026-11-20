@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- POS UOM items: support team only, with the Arabic name -->
+    <record id="product_template_form_uom_prices_pos_best_store" model="ir.ui.view">
+        <field name="name">product.template.form.uom.prices.pos.best.store</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="dekad_pos_sale_enhancement.product_template_form_inherit_uom_prices_pos_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//group[@name='multi_uom']" position="attributes">
+                <attribute name="groups">dekad_super_user.group_de_support</attribute>
+            </xpath>
+            <xpath expr="//field[@name='multi_uom_price_ids']" position="before">
+                <field name="arabic_name"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

@@ -11,7 +11,13 @@ class SaleOrderLine(models.Model):
     link = fields.Char(string='Link')
 
     barcode = fields.Char(related='product_id.barcode', store=False, readonly=True)
+    line_index = fields.Integer(string='Line #', compute='_compute_line_index', store=False)
 
+    @api.depends('order_id.order_line')
+    def _compute_line_index(self):
+        for order in self.mapped('order_id'):
+            for idx, line in enumerate(order.order_line.sorted('sequence'), start=1):
+                line.line_index = idx
 
     @api.depends('product_id.image_128')
     def _compute_product_image(self):
