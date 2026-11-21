@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="stock_accounting_correction_line_list" model="ir.ui.view">
+        <field name="name">stock.accounting.correction.line.list</field>
+        <field name="model">stock.accounting.correction.line</field>
+        <field name="arch" type="xml">
+            <list editable="bottom" create="0" delete="0" decoration-muted="not selected">
+                <field name="selected" widget="boolean_toggle"/>
+                <field name="correction_type" column_invisible="1"/>
+                <field name="date"/>
+                <field name="move_id" optional="show"/>
+                <field name="partner_id" optional="show"/>
+                <field name="product_id" optional="show"/>
+                <field name="quantity" optional="show"/>
+                <field name="unit_price" optional="hide"/>
+                <field name="debit_account_id"/>
+                <field name="credit_account_id"/>
+                <field name="amount" sum="Total"/>
+                <field name="note"/>
+                <field name="currency_id" column_invisible="1"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="stock_accounting_correction_wizard_form" model="ir.ui.view">
+        <field name="name">stock.accounting.correction.wizard.form</field>
+        <field name="model">stock.accounting.correction.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Stock Accounting Correction">
+                <header>
+                    <button name="action_analyze" type="object" string="Analyze" class="btn-primary"
+                            invisible="state != 'draft'"/>
+                    <button name="action_analyze" type="object" string="Analyze Again"
+                            invisible="state != 'preview'"/>
+                    <button name="action_create_entries" type="object" string="Create Correction Entries" class="btn-primary"
+                            invisible="state != 'preview' or not line_ids"
+                            confirm="Create the selected correction entries? They are posted immediately."/>
+                    <button name="action_open_entries" type="object" string="Open Created Entries" class="btn-primary"
+                            invisible="state != 'done'"/>
+                    <field name="state" widget="statusbar"/>
+                </header>
+                <sheet>
+                    <div class="alert alert-info" role="alert" invisible="state != 'draft'">
+                        Finds vendor bills of stored products (automated valuation) whose product lines were posted
+                        to an expense account instead of Stock Input. Nothing is changed until you press
+                        "Create Correction Entries". The bills themselves are never edited.
+                    </div>
+                    <group>
+                        <field name="mode" widget="radio" readonly="state != 'draft'"/>
+                        <field name="redate_batch" invisible="mode != 'redate'" required="mode == 'redate'" readonly="state != 'draft'"/>
+                    </group>
+                    <group>
+                        <group>
+                            <field name="company_id" readonly="state != 'draft'" options="{'no_create': True}"/>
+                            <field name="date_from" readonly="state == 'done'" invisible="mode == 'redate'"/>
+                            <field name="date_to" readonly="state == 'done'" invisible="mode == 'redate'"/>
+                        </group>
+                        <group>
+                            <field name="journal_id" readonly="state == 'done'" options="{'no_create': True}"/>
+                            <field name="reclass_date_mode" widget="radio" readonly="state == 'done'" invisible="mode == 'redate'"/>
+                            <field name="correction_date" readonly="state == 'done'"/>
+                            <field name="batch" invisible="not batch"/>
+                        </group>
+                    </group>
+                    <div class="alert alert-warning" role="alert" invisible="state != 'preview'">
+                        Entries are created and saved in batches. If the creation stops before the end
+                        (for example the server time limit), press "Analyze Again" then "Create Correction Entries":
+                        it continues with what is left, without duplicating anything.
+                    </div>
+                    <notebook invisible="state == 'draft'">
+                        <page string="Summary" name="summary">
+                            <field name="summary_html" nolabel="1"/>
+                        </page>
+                        <page string="1. Reclassification (bills)" name="reclass">
+                            <field name="reclass_line_ids" readonly="state == 'done'"
+                                   context="{'list_view_ref': 'dekad_best_store_correction.stock_accounting_correction_line_list'}"/>
+                        </page>
+                        <page string="2. Revaluation (stock on hand)" name="revalue">
+                            <field name="revalue_line_ids" readonly="state == 'done'"
+                                   context="{'list_view_ref': 'dekad_best_store_correction.stock_accounting_correction_line_list'}"/>
+                        </page>
+                        <page string="3. Sold Part" name="sold">
+                            <field name="sold_line_ids" readonly="state == 'done'"
+                                   context="{'list_view_ref': 'dekad_best_store_correction.stock_accounting_correction_line_list'}"/>
+                        </page>
+                        <page string="4. Stock Output (missing COGS)" name="output">
+                            <field name="output_line_ids" readonly="state == 'done'"
+                                   context="{'list_view_ref': 'dekad_best_store_correction.stock_accounting_correction_line_list'}"/>
+                        </page>
+                        <page string="5. Missing Valuation Entries" name="layer">
+                            <field name="layer_line_ids" readonly="state == 'done'"
+                                   context="{'list_view_ref': 'dekad_best_store_correction.stock_accounting_correction_line_list'}"/>
+                        </page>
+                        <page string="6. Customer Payments Matching" name="match">
+                            <field name="match_line_ids" readonly="state == 'done'"
+                                   context="{'list_view_ref': 'dekad_best_store_correction.stock_accounting_correction_line_list'}"/>
+                        </page>
+                    </notebook>
+                    <field name="line_ids" invisible="1"/>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_stock_accounting_correction" model="ir.actions.act_window">
+        <field name="name">Stock Accounting Correction</field>
+        <field name="res_model">stock.accounting.correction.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">current</field>
+    </record>
+
+</odoo>

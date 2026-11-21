@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_move_form_best_store_correction" model="ir.ui.view">
+        <field name="name">account.move.form.best.store.correction</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_move_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='ref']" position="after">
+                <field name="stock_correction_type" invisible="not stock_correction_type"/>
+                <field name="stock_correction_source_id" invisible="not stock_correction_source_id"/>
+                <field name="stock_correction_batch" invisible="not stock_correction_batch"/>
+                <field name="pos_correction_type" invisible="not pos_correction_type"/>
+                <field name="pos_correction_source_id" invisible="not pos_correction_source_id"/>
+                <field name="pos_correction_batch" invisible="not pos_correction_batch"/>
+                <field name="bs_correction_batch" invisible="not bs_correction_batch"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_account_move_filter_best_store_correction" model="ir.ui.view">
+        <field name="name">account.move.select.best.store.correction</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_account_move_filter"/>
+        <field name="arch" type="xml">
+            <xpath expr="//filter[@name='unposted']" position="before">
+                <field name="stock_correction_batch"/>
+                <field name="pos_correction_batch"/>
+                <field name="bs_correction_batch"/>
+                <filter string="Best Store Corrections" name="best_store_corrections"
+                        domain="['|', '|', ('stock_correction_batch', '!=', False), ('pos_correction_batch', '!=', False), ('bs_correction_batch', '!=', False)]"/>
+                <separator/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

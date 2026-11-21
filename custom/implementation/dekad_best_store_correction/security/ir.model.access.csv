@@ -1,0 +1,15 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_stock_accounting_correction_wizard,stock.accounting.correction.wizard,model_stock_accounting_correction_wizard,account.group_account_manager,1,1,1,1
+access_stock_accounting_correction_line,stock.accounting.correction.line,model_stock_accounting_correction_line,account.group_account_manager,1,1,1,1
+access_pos_receivable_correction_wizard,pos.receivable.correction.wizard,model_pos_receivable_correction_wizard,account.group_account_manager,1,1,1,1
+access_pos_receivable_correction_line,pos.receivable.correction.line,model_pos_receivable_correction_line,account.group_account_manager,1,1,1,1
+access_bs_correction_center,bs.correction.center,model_bs_correction_center,account.group_account_manager,1,1,1,1
+access_bs_correction_check,bs.correction.check,model_bs_correction_check,account.group_account_manager,1,1,1,1
+access_bs_stock_input_fix,bs.stock.input.fix,model_bs_stock_input_fix,account.group_account_manager,1,1,1,1
+access_bs_stock_input_fix_line,bs.stock.input.fix.line,model_bs_stock_input_fix_line,account.group_account_manager,1,1,1,1
+access_bs_asset_create,bs.asset.create,model_bs_asset_create,account.group_account_manager,1,1,1,1
+access_bs_asset_create_line,bs.asset.create.line,model_bs_asset_create_line,account.group_account_manager,1,1,1,1
+access_bs_cash_difference_fix,bs.cash.difference.fix,model_bs_cash_difference_fix,account.group_account_manager,1,1,1,1
+access_bs_cash_difference_fix_line,bs.cash.difference.fix.line,model_bs_cash_difference_fix_line,account.group_account_manager,1,1,1,1
+access_bs_duplicate_invoice_fix,bs.duplicate.invoice.fix,model_bs_duplicate_invoice_fix,account.group_account_manager,1,1,1,1
+access_bs_duplicate_invoice_fix_line,bs.duplicate.invoice.fix.line,model_bs_duplicate_invoice_fix_line,account.group_account_manager,1,1,1,1

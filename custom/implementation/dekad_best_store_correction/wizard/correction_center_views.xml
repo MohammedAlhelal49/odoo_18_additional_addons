@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="bs_correction_check_list" model="ir.ui.view">
+        <field name="name">bs.correction.check.list</field>
+        <field name="model">bs.correction.check</field>
+        <field name="arch" type="xml">
+            <list create="0" delete="0" edit="0"
+                  decoration-danger="state == 'issue'" decoration-warning="state == 'decision'"
+                  decoration-info="state == 'review'" decoration-success="state == 'ok'">
+                <field name="state" widget="badge"
+                       decoration-danger="state == 'issue'" decoration-warning="state == 'decision'"
+                       decoration-info="state == 'review'" decoration-success="state == 'ok'"/>
+                <field name="name"/>
+                <field name="count"/>
+                <field name="amount" invisible="not amount"/>
+                <field name="note"/>
+                <field name="fixable" column_invisible="1"/>
+                <field name="code" column_invisible="1"/>
+                <field name="currency_id" column_invisible="1"/>
+                <button name="action_fix" type="object" string="Fix" icon="fa-wrench" class="btn-primary"
+                        invisible="not fixable"
+                        confirm="Run this correction? Automatic fixes are applied immediately; the others open a screen to review first."/>
+                <button name="action_open_records" type="object" string="Open" icon="fa-list" invisible="not count"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="bs_correction_center_form" model="ir.ui.view">
+        <field name="name">bs.correction.center.form</field>
+        <field name="model">bs.correction.center</field>
+        <field name="arch" type="xml">
+            <form string="Best Store Correction Center">
+                <header>
+                    <button name="action_refresh" type="object" string="Check Again" class="btn-primary" icon="fa-refresh"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1>Best Store Correction Center</h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="company_id" options="{'no_create': True}"/>
+                            <field name="checked_at"/>
+                        </group>
+                        <group>
+                            <field name="summary" nolabel="1" colspan="2" class="fw-bold"/>
+                        </group>
+                    </group>
+                    <div class="alert alert-info" role="alert">
+                        Every problem found in the database, checked live. "Fix" applies an automatic correction or opens a
+                        screen to review and choose first; "Open" lists the records. After a correction, press "Check Again".
+                        Recommended order: account types, AVCO, stock accounting, POS receivable, then the decisions.
+                    </div>
+                    <notebook>
+                        <page string="Automatic Fixes" name="auto">
+                            <field name="auto_line_ids" nolabel="1"
+                                   context="{'list_view_ref': 'dekad_best_store_correction.bs_correction_check_list'}"/>
+                        </page>
+                        <page string="Fixes After a Decision" name="decision">
+                            <field name="decision_line_ids" nolabel="1"
+                                   context="{'list_view_ref': 'dekad_best_store_correction.bs_correction_check_list'}"/>
+                        </page>
+                        <page string="Review Lists (Branch)" name="branch">
+                            <field name="branch_line_ids" nolabel="1"
+                                   context="{'list_view_ref': 'dekad_best_store_correction.bs_correction_check_list'}"/>
+                        </page>
+                    </notebook>
+                    <field name="line_ids" invisible="1"/>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_bs_correction_center" model="ir.actions.server">
+        <field name="name">Best Store Correction Center</field>
+        <field name="model_id" ref="model_bs_correction_center"/>
+        <field name="state">code</field>
+        <field name="code">action = model.action_open_center()</field>
+    </record>
+
+    <menuitem id="menu_bs_correction_center"
+              name="Best Store Correction Center"
+              parent="account.menu_finance_entries"
+              action="action_bs_correction_center"
+              groups="account.group_account_manager"
+              sequence="90"/>
+
+    <!-- ===================================================== decision wizards -->
+    <record id="bs_stock_input_fix_form" model="ir.ui.view">
+        <field name="name">bs.stock.input.fix.form</field>
+        <field name="model">bs.stock.input.fix</field>
+        <field name="arch" type="xml">
+            <form string="Stock Input Balance">
+                <header>
+                    <button name="action_create" type="object" string="Create Entries" class="btn-primary"
+                            invisible="state != 'draft'" confirm="Create and post the selected entries?"/>
+                    <field name="state" widget="statusbar"/>
+                </header>
+                <sheet>
+                    <div class="alert alert-info" role="alert">
+                        Each line brings the product's Stock Input balance to zero against the account you choose
+                        (cost of goods sold for a price difference on sold stock, the opening balance account for opening stock, ...).
+                    </div>
+                    <group>
+                        <group>
+                            <field name="company_id" readonly="1"/>
+                            <field name="journal_id" readonly="state != 'draft'"/>
+                        </group>
+                        <group>
+                            <field name="date" readonly="state != 'draft'"/>
+                            <field name="batch" invisible="not batch"/>
+                        </group>
+                    </group>
+                    <field name="line_ids" readonly="state != 'draft'">
+                        <list editable="bottom" create="0" delete="0">
+                            <field name="selected" widget="boolean_toggle"/>
+                            <field name="product_id"/>
+                            <field name="account_id"/>
+                            <field name="balance" sum="Total"/>
+                            <field name="counter_account_id" options="{'no_create': True}"/>
+                            <field name="currency_id" column_invisible="1"/>
+                        </list>
+                    </field>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="bs_asset_create_form" model="ir.ui.view">
+        <field name="name">bs.asset.create.form</field>
+        <field name="model">bs.asset.create</field>
+        <field name="arch" type="xml">
+            <form string="Create Fixed Assets">
+                <header>
+                    <button name="action_create" type="object" string="Create Draft Assets" class="btn-primary"
+                            invisible="state != 'draft'" confirm="Create a draft asset for each selected line?"/>
+                    <field name="state" widget="statusbar"/>
+                </header>
+                <sheet>
+                    <div class="alert alert-info" role="alert">
+                        A draft asset is created for each selected bill line, with the useful life and accounts of the chosen
+                        model. Open the assets afterwards to check them and confirm (the depreciation starts on confirmation).
+                    </div>
+                    <group>
+                        <field name="company_id" readonly="1"/>
+                        <field name="model_id" readonly="state != 'draft'" options="{'no_create': True}"/>
+                    </group>
+                    <field name="line_ids" readonly="state != 'draft'">
+                        <list editable="bottom" create="0" delete="0">
+                            <field name="selected" widget="boolean_toggle"/>
+                            <field name="date"/>
+                            <field name="move_id"/>
+                            <field name="name"/>
+                            <field name="account_id"/>
+                            <field name="amount" sum="Total"/>
+                            <field name="currency_id" column_invisible="1"/>
+                        </list>
+                    </field>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="bs_cash_difference_fix_form" model="ir.ui.view">
+        <field name="name">bs.cash.difference.fix.form</field>
+        <field name="model">bs.cash.difference.fix</field>
+        <field name="arch" type="xml">
+            <form string="POS Cash Differences">
+                <header>
+                    <button name="action_create" type="object" string="Create Entries" class="btn-primary"
+                            invisible="state != 'draft'" confirm="Create and post the entries of the lines to move?"/>
+                    <field name="state" widget="statusbar"/>
+                </header>
+                <sheet>
+                    <div class="alert alert-info" role="alert">
+                        A cash difference counted at a session closing was booked on another account (for example an employee
+                        account). Keep it if the employee really took the money; otherwise move it to the cash difference
+                        loss / profit account (entry on the same date).
+                    </div>
+                    <group>
+                        <field name="company_id" readonly="1"/>
+                        <field name="journal_id" readonly="state != 'draft'"/>
+                        <field name="batch" invisible="not batch"/>
+                    </group>
+                    <field name="line_ids" readonly="state != 'draft'">
+                        <list editable="bottom" create="0" delete="0">
+                            <field name="date"/>
+                            <field name="move_id"/>
+                            <field name="account_id"/>
+                            <field name="amount"/>
+                            <field name="decision"/>
+                            <field name="target_account_id" options="{'no_create': True}" required="decision == 'reclass'"/>
+                            <field name="currency_id" column_invisible="1"/>
+                        </list>
+                    </field>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="bs_duplicate_invoice_fix_form" model="ir.ui.view">
+        <field name="name">bs.duplicate.invoice.fix.form</field>
+        <field name="model">bs.duplicate.invoice.fix</field>
+        <field name="arch" type="xml">
+            <form string="Duplicate POS Invoices">
+                <header>
+                    <button name="action_create" type="object" string="Cancel Selected Invoices" class="btn-primary"
+                            invisible="state != 'draft'"
+                            confirm="Cancel the selected invoices with their POS payment and sales reversal entries?"/>
+                    <field name="state" widget="statusbar"/>
+                </header>
+                <sheet>
+                    <div class="alert alert-info" role="alert">
+                        These POS orders have more than one posted invoice. The newer invoice is cancelled together with its POS
+                        payment entry and its sales reversal entry, so sales and customer balances do not change. Check the bank
+                        statement too: the customer may have been charged twice.
+                    </div>
+                    <group>
+                        <field name="company_id" readonly="1"/>
+                    </group>
+                    <field name="line_ids" readonly="state != 'draft'">
+                        <list editable="bottom" create="0" delete="0">
+                            <field name="cancel" widget="boolean_toggle"/>
+                            <field name="origin"/>
+                            <field name="invoice_id"/>
+                            <field name="invoice_date"/>
+                            <field name="amount"/>
+                            <field name="payment_state"/>
+                            <field name="related_move_ids" widget="many2many_tags"/>
+                            <field name="note"/>
+                            <field name="currency_id" column_invisible="1"/>
+                        </list>
+                    </field>
+                </sheet>
+            </form>
+        </field>
+    </record>
+</odoo>

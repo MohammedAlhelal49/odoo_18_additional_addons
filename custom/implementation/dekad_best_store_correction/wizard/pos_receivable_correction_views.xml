@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="pos_receivable_correction_line_list" model="ir.ui.view">
+        <field name="name">pos.receivable.correction.line.list</field>
+        <field name="model">pos.receivable.correction.line</field>
+        <field name="arch" type="xml">
+            <list editable="bottom" create="0" delete="0" decoration-muted="not selected">
+                <field name="selected" widget="boolean_toggle"/>
+                <field name="correction_type" column_invisible="1"/>
+                <field name="date"/>
+                <field name="session_name"/>
+                <field name="order_name" optional="show"/>
+                <field name="source_move_id" optional="show"/>
+                <field name="invoice_id" optional="show"/>
+                <field name="partner_id" optional="show"/>
+                <field name="amount" sum="Total"/>
+                <field name="note"/>
+                <field name="currency_id" column_invisible="1"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="pos_receivable_correction_match_list" model="ir.ui.view">
+        <field name="name">pos.receivable.correction.line.match.list</field>
+        <field name="model">pos.receivable.correction.line</field>
+        <field name="arch" type="xml">
+            <list editable="bottom" create="0" delete="0" decoration-muted="not selected">
+                <field name="selected" widget="boolean_toggle"/>
+                <field name="session_name"/>
+                <field name="amount" string="Open Now" sum="Total"/>
+                <field name="residual_after" sum="Total"/>
+                <field name="match_line_ids" widget="many2many_tags" optional="hide"/>
+                <field name="note"/>
+                <field name="currency_id" column_invisible="1"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="pos_receivable_correction_wizard_form" model="ir.ui.view">
+        <field name="name">pos.receivable.correction.wizard.form</field>
+        <field name="model">pos.receivable.correction.wizard</field>
+        <field name="arch" type="xml">
+            <form string="POS Receivable Correction">
+                <header>
+                    <button name="action_analyze" type="object" string="Analyze" class="btn-primary"
+                            invisible="state != 'draft'"/>
+                    <button name="action_analyze" type="object" string="Analyze Again"
+                            invisible="state != 'preview'"/>
+                    <button name="action_create_entries" type="object" string="Create Correction Entries" class="btn-primary"
+                            invisible="state != 'preview' or not line_ids"
+                            confirm="Create the selected correction entries and matchings? Entries are posted immediately."/>
+                    <button name="action_open_entries" type="object" string="Open Created Entries" class="btn-primary"
+                            invisible="state != 'done'"/>
+                    <field name="state" widget="statusbar"/>
+                </header>
+                <sheet>
+                    <div class="alert alert-info" role="alert" invisible="state != 'draft'">
+                        Explains and fixes the open balance of the Point of Sale receivable account, after POS invoices
+                        were cancelled, issued again or edited. Nothing is changed until you press
+                        "Create Correction Entries". Session closing entries are never edited.
+                    </div>
+                    <group>
+                        <group>
+                            <field name="company_id" readonly="state != 'draft'" options="{'no_create': True}"/>
+                            <field name="account_id" readonly="state != 'draft'" options="{'no_create': True}"/>
+                        </group>
+                        <group>
+                            <field name="journal_id" readonly="state == 'done'" options="{'no_create': True}"/>
+                            <field name="batch" invisible="not batch"/>
+                        </group>
+                    </group>
+                    <div class="alert alert-warning" role="alert" invisible="state != 'preview'">
+                        Lines turned off by default need a decision: a duplicate invoice to review (1), a cancelled invoice
+                        whose amount differs from its order (2), or a manual payment that will stay open on the customer
+                        and must be cancelled if it is a duplicate (3).
+                    </div>
+                    <notebook invisible="state == 'draft'">
+                        <page string="Summary" name="summary">
+                            <field name="summary_html" nolabel="1"/>
+                        </page>
+                        <page string="1. Wrong Sales Reversals" name="reverse">
+                            <field name="reverse_line_ids" readonly="state == 'done'"
+                                   context="{'list_view_ref': 'dekad_best_store_correction.pos_receivable_correction_line_list'}"/>
+                        </page>
+                        <page string="2. Cancelled Invoices" name="reinvoice">
+                            <field name="reinvoice_line_ids" readonly="state == 'done'"
+                                   context="{'list_view_ref': 'dekad_best_store_correction.pos_receivable_correction_line_list'}"/>
+                        </page>
+                        <page string="3. Missing POS Payment Entries" name="missing">
+                            <field name="missing_line_ids" readonly="state == 'done'"
+                                   context="{'list_view_ref': 'dekad_best_store_correction.pos_receivable_correction_line_list'}"/>
+                        </page>
+                        <page string="4. Matching by Session" name="match">
+                            <field name="match_line_ids" readonly="state == 'done'"
+                                   context="{'list_view_ref': 'dekad_best_store_correction.pos_receivable_correction_match_list'}"/>
+                        </page>
+                    </notebook>
+                    <field name="line_ids" invisible="1"/>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_pos_receivable_correction" model="ir.actions.act_window">
+        <field name="name">POS Receivable Correction</field>
+        <field name="res_model">pos.receivable.correction.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">current</field>
+    </record>
+
+</odoo>
