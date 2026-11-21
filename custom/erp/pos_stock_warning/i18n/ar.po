@@ -1,0 +1,98 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* pos_stock_warning
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 18.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-03-14 17:40+0000\n"
+"PO-Revision-Date: 2026-03-14 17:40+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: pos_stock_warning
+#: model:ir.model.fields.selection,name:pos_stock_warning.selection__pos_config__stock_restriction_type__alert
+msgid "Alert"
+msgstr "تنبيه"
+
+#. module: pos_stock_warning
+#: model:ir.model.fields.selection,name:pos_stock_warning.selection__pos_config__stock_restriction_type__block
+msgid "Block"
+msgstr "منع"
+
+#. module: pos_stock_warning
+#. odoo-javascript
+#: code:addons/pos_stock_warning/static/src/js/pos_stock_warning.js:0
+msgid "Do you want to proceed anyway?"
+msgstr "هل تريد المتابعة رغم ذلك؟"
+
+#. module: pos_stock_warning
+#: model:ir.model.fields,help:pos_stock_warning.field_pos_config__stock_restriction_enabled
+msgid "Enable stock quantity restriction in POS"
+msgstr "تفعيل تقييد الكمية في نقطة البيع"
+
+#. module: pos_stock_warning
+#. odoo-javascript
+#: code:addons/pos_stock_warning/static/src/js/pos_stock_warning.js:0
+msgid "Please adjust the quantities before proceeding."
+msgstr "يرجى تعديل الكميات قبل المتابعة."
+
+#. module: pos_stock_warning
+#: model:ir.model,name:pos_stock_warning.model_pos_config
+msgid "Point of Sale Configuration"
+msgstr "تهيئة نقطة البيع"
+
+#. module: pos_stock_warning
+#: model:ir.model,name:pos_stock_warning.model_product_product
+msgid "Product Variant"
+msgstr "متغير المنتج"
+
+#. module: pos_stock_warning
+#: model:ir.model.fields,field_description:pos_stock_warning.field_pos_config__stock_restriction_type
+msgid "Restriction Type"
+msgstr "نوع التقييد"
+
+#. module: pos_stock_warning
+#: model:ir.model.fields,field_description:pos_stock_warning.field_pos_config__stock_restriction_enabled
+msgid "Restriction based on QTY"
+msgstr "تقييد بناءً على الكمية"
+
+#. module: pos_stock_warning
+#: model_terms:ir.ui.view,arch_db:pos_stock_warning.pos_config_view_form_stock_restriction
+msgid "Stock Quantity Restriction"
+msgstr "تقييد كمية المخزون"
+
+#. module: pos_stock_warning
+#. odoo-javascript
+#: code:addons/pos_stock_warning/static/src/js/pos_stock_warning.js:0
+msgid "The following products exceed available quantity:"
+msgstr "المواد التالية تتجاوز الكمية المتوفرة:"
+
+#. module: pos_stock_warning
+#. odoo-javascript
+#: code:addons/pos_stock_warning/static/src/js/pos_stock_warning.js:0
+msgid "⚠️ Stock Warning - Before Completing Sale"
+msgstr "⚠️ تنبيه مخزون - قبل إتمام البيع"
+
+#. module: pos_stock_warning
+#. odoo-javascript
+#: code:addons/pos_stock_warning/static/src/js/pos_stock_warning.js:0
+msgid "🚫 Cannot Complete Sale"
+msgstr "🚫 لا يمكن إتمام البيع"
+
+#. module: pos_stock_warning
+#. odoo-javascript
+#: code:addons/pos_stock_warning/static/src/js/pos_stock_warning.js:0
+msgid "Available"
+msgstr "متوفر"
+
+#. module: pos_stock_warning
+#. odoo-javascript
+#: code:addons/pos_stock_warning/static/src/js/pos_stock_warning.js:0
+msgid "Requested"
+msgstr "مطلوب"

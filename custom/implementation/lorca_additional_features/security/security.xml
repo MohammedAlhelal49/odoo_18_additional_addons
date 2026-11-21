@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="group_credit_limit_visibility" model="res.groups">
+        <field name="name">Credit Limit Visibility</field>
+        <field name="category_id" ref="base.module_category_hidden"/>
+        <field name="comment">Users in this group can see the credit limit on the contact form.</field>
+    </record>
+
+    <!-- Administrators keep seeing it so they can grant the group -->
+    <record id="base.group_system" model="res.groups">
+        <field name="implied_ids" eval="[(4, ref('group_credit_limit_visibility'))]"/>
+    </record>
+</odoo>

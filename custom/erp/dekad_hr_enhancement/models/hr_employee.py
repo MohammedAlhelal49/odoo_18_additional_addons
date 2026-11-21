@@ -144,7 +144,7 @@ class HrEmployee(models.Model):
                 pass
 
         employees = self.search([
-            "|", "|", "|",
+            "|", "|", "|", "|",
             ("id_expiry_date", "!=", False),
             ("visa_expire", "!=", False),
             ("passport_expiry_date", "!=", False),

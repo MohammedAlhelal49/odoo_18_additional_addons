@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_partner_form_credit_limit_visibility" model="ir.ui.view">
+        <field name="name">res.partner.form.credit.limit.visibility</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="account.view_partner_property_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//group[@name='credit_limits']" position="attributes">
+                <attribute name="groups">lorca_additional_features.group_credit_limit_visibility</attribute>
+            </xpath>
+        </field>
+    </record>
+</odoo>
