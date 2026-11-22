@@ -8,14 +8,15 @@
 {
     "name": "Diamond smile Implementation",
     "summary": "Diamond smile Implementation",
-    "version": "18.0",
+    "version": "18.0.1.1.0",
     'category': 'Dekad',
     "author": "Dekad (Mohammed alhelal)",
     "license": "LGPL-3",
     "installable": True,
-    "depends": ["base", "web", "account"],
+    "depends": ["base", "web", "account", "sale_stock"],
     "data": [
         "views/account_report.xml",
+        "views/proforma_report.xml",
     ],
 
     "assets": {

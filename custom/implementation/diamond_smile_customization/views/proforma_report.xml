@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- One report action per model: the report controller looks reports up by
+         report_name, so each model needs its own (thin) entry template. -->
+    <record id="action_report_proforma_sale_order" model="ir.actions.report">
+        <field name="name">Pro Forma Invoice</field>
+        <field name="model">sale.order</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">diamond_smile_customization.report_proforma_sale_order</field>
+        <field name="report_file">diamond_smile_customization.report_proforma_sale_order</field>
+        <field name="print_report_name">'Pro Forma - %s' % object.name</field>
+        <field name="binding_model_id" ref="sale.model_sale_order"/>
+        <field name="binding_type">report</field>
+    </record>
+
+    <record id="action_report_proforma_picking" model="ir.actions.report">
+        <field name="name">Pro Forma Invoice</field>
+        <field name="model">stock.picking</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">diamond_smile_customization.report_proforma_picking</field>
+        <field name="report_file">diamond_smile_customization.report_proforma_picking</field>
+        <field name="print_report_name">'Pro Forma - %s' % object.name</field>
+        <field name="binding_model_id" ref="stock.model_stock_picking"/>
+        <field name="binding_type">report</field>
+        <field name="domain">[('picking_type_code', '=', 'outgoing')]</field>
+    </record>
+
+    <record id="action_report_proforma_invoice" model="ir.actions.report">
+        <field name="name">Pro Forma Invoice</field>
+        <field name="model">account.move</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">diamond_smile_customization.report_proforma_invoice</field>
+        <field name="report_file">diamond_smile_customization.report_proforma_invoice</field>
+        <field name="print_report_name">'Pro Forma - %s' % object.name</field>
+        <field name="binding_model_id" ref="account.model_account_move"/>
+        <field name="binding_type">report</field>
+        <field name="domain">[('move_type', '=', 'out_invoice')]</field>
+    </record>
+
+    <template id="report_proforma_sale_order">
+        <t t-call="diamond_smile_customization.report_proforma_document"/>
+    </template>
+
+    <template id="report_proforma_picking">
+        <t t-call="diamond_smile_customization.report_proforma_document"/>
+    </template>
+
+    <template id="report_proforma_invoice">
+        <t t-call="diamond_smile_customization.report_proforma_document"/>
+    </template>
+
+    <!-- Shared body: every model provides the same dict through _get_proforma_values() -->
+    <template id="report_proforma_document">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-set="lang" t-value="o.partner_id.lang"/>
+                <t t-call="web.external_layout" t-lang="lang">
+                    <t t-set="o" t-value="o.with_context(lang=lang)"/>
+                    <t t-set="vals" t-value="o._get_proforma_values()"/>
+                    <t t-set="partner" t-value="vals['partner']"/>
+                    <t t-set="currency" t-value="vals['currency']"/>
+
+                    <div class="text-center mb-4">
+                        <h3 class="mb-0" style="direction:rtl;">فاتورة مبدئية</h3>
+                        <h3 class="mt-0">Pro Forma Invoice</h3>
+                    </div>
+
+                    <div class="row mb-4">
+                        <div class="col-6 pe-3" name="proforma_customer_info_block">
+                            <p class="mb-1">
+                                <strong>Customer :</strong>
+                                <span t-esc="partner.name"/>
+                            </p>
+                            <p class="mb-1" t-if="partner.mobile or partner.phone">
+                                <strong>Customer Mobile :</strong>
+                                <span t-esc="' / '.join(p for p in (partner.mobile, partner.phone) if p)"/>
+                            </p>
+                            <p class="mb-1" t-if="partner.vat">
+                                <strong>Customer TRN :</strong>
+                                <span t-esc="partner.vat"/>
+                            </p>
+                            <t t-set="partner_address" t-value="', '.join(p for p in (partner.street, partner.street2, partner.city, partner.state_id.name, partner.country_id.name) if p)"/>
+                            <p class="mb-1" t-if="partner_address">
+                                <strong>Customer Address :</strong>
+                                <span t-esc="partner_address"/>
+                            </p>
+                        </div>
+                        <div class="col-6 ps-3" name="proforma_document_info_block">
+                            <p class="mb-1" t-foreach="vals['info']" t-as="row">
+                                <strong t-esc="row[0] + ' :'"/>
+                                <span t-esc="row[1]"/>
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="page mb-4">
+                        <t t-set="display_discount" t-value="any(l['discount'] for l in vals['lines'])"/>
+                        <table class="table o_main_table table-borderless" name="proforma_line_table">
+                            <thead>
+                                <tr>
+                                    <th class="text-start"><span>#</span></th>
+                                    <th class="text-start"><span>Description</span></th>
+                                    <th class="text-end"><span>Quantity</span></th>
+                                    <th class="text-end text-nowrap"><span>Unit Price</span></th>
+                                    <th class="text-end" t-if="display_discount"><span>Disc.%</span></th>
+                                    <th class="text-end"><span>Taxes</span></th>
+                                    <th class="text-end"><span>Amount</span></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <t t-set="line_counter" t-value="0"/>
+                                <t t-foreach="vals['lines']" t-as="line">
+                                    <tr t-if="line['display_type'] == 'product'">
+                                        <t t-set="line_counter" t-value="line_counter + 1"/>
+                                        <td class="text-start"><span t-esc="line_counter"/></td>
+                                        <td><span t-esc="line['name']" t-options="{'widget': 'text'}"/></td>
+                                        <td class="text-end text-nowrap">
+                                            <span t-esc="line['qty']" t-options="{'widget': 'float', 'decimal_precision': 'Product Unit of Measure'}"/>
+                                            <span t-if="line['uom']" t-esc="line['uom'].name" groups="uom.group_uom"/>
+                                        </td>
+                                        <td class="text-end text-nowrap">
+                                            <span t-esc="line['price_unit']" t-options="{'widget': 'float', 'decimal_precision': 'Product Price'}"/>
+                                        </td>
+                                        <td class="text-end text-nowrap" t-if="display_discount">
+                                            <span t-esc="line['discount']" t-options="{'widget': 'float', 'decimal_precision': 'Discount'}"/>
+                                        </td>
+                                        <td class="text-end"><span t-esc="line['taxes']"/></td>
+                                        <td class="text-end text-nowrap">
+                                            <span t-esc="line['subtotal']" t-options="{'widget': 'monetary', 'display_currency': currency}"/>
+                                        </td>
+                                    </tr>
+                                    <tr t-elif="line['display_type'] == 'line_section'" class="fw-bold o_line_section">
+                                        <td colspan="99"><span t-esc="line['name']" t-options="{'widget': 'text'}"/></td>
+                                    </tr>
+                                    <tr t-else="" class="fst-italic o_line_note">
+                                        <td colspan="99"><span t-esc="line['name']" t-options="{'widget': 'text'}"/></td>
+                                    </tr>
+                                </t>
+                            </tbody>
+                        </table>
+
+                        <div class="clearfix">
+                            <div class="col-5 ms-5 d-inline-block float-end">
+                                <table class="o_total_table table table-borderless avoid-page-break-inside">
+                                    <tr>
+                                        <td><span>Untaxed Amount</span></td>
+                                        <td class="text-end">
+                                            <span t-esc="vals['amount_untaxed']" t-options="{'widget': 'monetary', 'display_currency': currency}"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><span>VAT</span></td>
+                                        <td class="text-end">
+                                            <span t-esc="vals['amount_tax']" t-options="{'widget': 'monetary', 'display_currency': currency}"/>
+                                        </td>
+                                    </tr>
+                                    <tr class="fw-bold o_total">
+                                        <td><span>Total</span></td>
+                                        <td class="text-end">
+                                            <span t-esc="vals['amount_total']" t-options="{'widget': 'monetary', 'display_currency': currency}"/>
+                                        </td>
+                                    </tr>
+                                </table>
+                                <p class="mb-3" t-if="o.company_id.display_invoice_amount_total_words">
+                                    Total amount in words:<br/>
+                                    <span class="text-muted lh-sm" t-esc="currency.amount_to_text(vals['amount_total'])"/>
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="text-muted mt-3" t-if="not is_html_empty(vals['note'])">
+                            <span t-out="vals['note']"/>
+                        </div>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>
