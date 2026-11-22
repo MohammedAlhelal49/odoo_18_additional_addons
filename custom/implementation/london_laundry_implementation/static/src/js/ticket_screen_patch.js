@@ -368,6 +368,34 @@ patch(TicketScreen.prototype, {
         }
     },
 
+    // المرتجع على زبون الطلب الأصلي: pos_set_default_customer بيحط "Default Customer" على كل طلب جديد،
+    // وOdoo ما بيحط زبون الطلب الأصلي إلا إذا الطلب الجديد بلا زبون
+    _getEmptyOrder(partner) {
+        const defaultPartner = this.pos.config.default_partner_id;
+        if (partner && defaultPartner && partner.id !== defaultPartner.id) {
+            const empty = this.pos.models["pos.order"].find(
+                (o) =>
+                    !o.finalized &&
+                    !o.get_orderlines().length &&
+                    !o.payment_ids.length &&
+                    (!o.get_partner() || o.get_partner().id === defaultPartner.id)
+            );
+            if (empty) {
+                return empty;
+            }
+        }
+        return super._getEmptyOrder(...arguments);
+    },
+
+    setPartnerToRefundOrder(partner, destinationOrder) {
+        const defaultPartner = this.pos.config.default_partner_id;
+        if (partner && defaultPartner && destinationOrder.get_partner()?.id === defaultPartner.id) {
+            destinationOrder.set_partner(partner);
+            return;
+        }
+        return super.setPartnerToRefundOrder(...arguments);
+    },
+
     // مرتجع طلب على الحساب انحصّل منه شي: المحاسب لازم يصلّح الدفعة بعدين
     async onDoRefund() {
         const order = this.getSelectedOrder();
