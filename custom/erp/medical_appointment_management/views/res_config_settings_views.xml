@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="res_config_settings_view_form_medical_appointment" model="ir.ui.view">
+        <field name="name">res.config.settings.view.form.inherit.medical.appointment</field>
+        <field name="model">res.config.settings</field>
+        <field name="priority" eval="70"/>
+        <field name="inherit_id" ref="base.res_config_settings_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//form" position="inside">
+                <app data-string="Medical Appointments" string="Medical Appointments" name="medical_appointment_management">
+                    <block title="Scheduling &amp; Conflict Management">
+                        <setting help="Default duration for consultations when not defined on a service">
+                            <field name="appointment_default_duration" widget="float_time"/>
+                        </setting>
+                        <setting help="Allow authorized supervisors to override doctor scheduling conflicts">
+                            <field name="allow_conflict_override"/>
+                        </setting>
+                        <setting help="Enforce entering a justification whenever a conflict is overridden">
+                            <field name="require_override_reason"/>
+                        </setting>
+                    </block>
+                    <block title="Sales Calls &amp; Follow-up Scheduling">
+                        <setting help="Default number of days ahead to set follow-up activity deadlines on unanswered calls">
+                            <field name="auto_followup_call_days"/>
+                        </setting>
+                    </block>
+                    <block title="CRM Access Permissions per Role">
+                        <setting help="When disabled, Doctors cannot view the CRM app and are directed to Medical Appointments">
+                            <field name="crm_enable_doctor"/>
+                        </setting>
+                        <setting help="When disabled, Nurses cannot view the CRM app and are directed to Medical Appointments">
+                            <field name="crm_enable_nurse"/>
+                        </setting>
+                        <setting help="Permit Receptionists to access CRM leads to confirm bookings and arrivals">
+                            <field name="crm_enable_receptionist"/>
+                        </setting>
+                        <setting help="Permit Sales staff to access CRM leads and log calls">
+                            <field name="crm_enable_sales"/>
+                        </setting>
+                        <setting help="Enforce Sales employees to see ONLY unassigned leads or leads assigned to them">
+                            <field name="crm_sales_only_unassigned_and_own"/>
+                        </setting>
+                    </block>
+                </app>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="action_medical_appointment_config_settings" model="ir.actions.act_window">
+        <field name="name">Settings</field>
+        <field name="res_model">res.config.settings</field>
+        <field name="view_mode">form</field>
+        <field name="target">inline</field>
+        <field name="context">{'module': 'medical_appointment_management', 'bin_size': False}</field>
+    </record>
+</odoo>

@@ -8,6 +8,7 @@
             <td class="o_list_record_copy text-center"
                 t-if="this.onCopyRecord">
                 <button
+                        t-if="this.canCopyRecord and this.canCopyRecord()"
                         type="button"
                         class="btn btn-link p-0"
                         t-on-pointerdown.stop=""
@@ -37,6 +38,7 @@
             <span class="d-inline-flex align-items-center ms-2">
 
                 <button
+                    t-if="this.canCopyRecord and this.canCopyRecord()"
                     type="button"
                     class="btn btn-link p-0 me-2"
                     title="Duplicate line"

@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Dashboard Form View -->
+        <record id="medical_dashboard_form_view" model="ir.ui.view">
+            <field name="name">medical.dashboard.form</field>
+            <field name="model">medical.dashboard</field>
+            <field name="arch" type="xml">
+                <form string="Medical Dashboard">
+                    <sheet>
+                        <!-- Date Range Filter -->
+                        <group string="Period">
+                            <field name="date_from"/>
+                            <field name="date_to"/>
+                        </group>
+
+                        <!-- Appointment Summary Section -->
+                        <group string="Appointment Summary">
+                            <field name="total_appointments"/>
+                            <field name="completed_appointments"/>
+                            <field name="upcoming_appointments"/>
+                            <field name="cancelled_appointments"/>
+                            <field name="no_show_appointments"/>
+                        </group>
+
+                        <!-- Performance vs Previous Period -->
+                        <group string="Performance Change">
+                            <field name="appointments_change_pct" widget="float"/>
+                            <field name="completed_change_pct" widget="float"/>
+                            <field name="revenue_change_pct" widget="float"/>
+                        </group>
+
+                        <!-- Financial Summary -->
+                        <group string="Financial Summary">
+                            <field name="total_revenue" widget="monetary"/>
+                            <field name="total_revenue_prev" widget="monetary"/>
+                            <field name="total_commission" widget="monetary"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!-- Dashboard Action -->
+        <record id="action_medical_dashboard" model="ir.actions.act_window">
+            <field name="name">Dashboard</field>
+            <field name="res_model">medical.dashboard</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="medical_dashboard_form_view"/>
+            <field name="target">new</field>
+        </record>
+
+        <!-- Menu Item -->
+        <menuitem id="menu_medical_dashboard"
+                  name="Dashboard"
+                  parent="menu_medical_appointment_main"
+                  action="action_medical_dashboard"
+                  sequence="1"/>
+    </data>
+</odoo>

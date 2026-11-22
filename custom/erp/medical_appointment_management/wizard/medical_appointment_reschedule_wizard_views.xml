@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_appointment_reschedule_wizard_form" model="ir.ui.view">
+        <field name="name">appointment.reschedule.wizard.form</field>
+        <field name="model">appointment.reschedule.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Reschedule Appointment">
+                <field name="appointment_id" invisible="1"/>
+
+                <!-- Current Schedule Section -->
+                <div class="alert alert-info mb-4">
+                    <h4 class="mb-3">📅 Current Schedule</h4>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <strong>Doctor:</strong>
+                            <span class="ms-2">
+                                <field name="current_doctor_id" readonly="1" nolabel="1"/>
+                            </span>
+                        </div>
+                        <div class="col-md-6">
+                            <strong>Date &amp; Time:</strong>
+                            <span class="ms-2 badge bg-primary">
+                                <field name="current_appointment_date" readonly="1" nolabel="1"/>
+                                <field name="current_start_time_display" readonly="1" nolabel="1"/>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- New Schedule Section -->
+                <group string="🗓️ New Schedule Details">
+                    <group>
+                        <field name="new_doctor_id" options="{'no_create': True}" required="1"/>
+                    </group>
+                    <group>
+                        <field name="new_appointment_date" required="1"/>
+                        <field name="new_start_time" widget="float_time" required="1"/>
+                    </group>
+                </group>
+
+                <!-- Reason Section -->
+                <group string="✏️ Reschedule Reason">
+                    <field name="reschedule_reason" placeholder="Explain why this reschedule is necessary..." required="1" nolabel="1"/>
+                </group>
+
+                <footer>
+                    <button name="action_confirm_reschedule"
+                            string="✓ Confirm Reschedule"
+                            type="object"
+                            class="btn-success"
+                            icon="fa-check"/>
+                    <button string="✕ Cancel"
+                            class="btn-secondary"
+                            special="cancel"
+                            icon="fa-times"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_crm_lead_log_call_wizard_form" model="ir.ui.view">
+        <field name="name">crm.lead.log.call.wizard.form</field>
+        <field name="model">crm.lead.log.call.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Log Sales Call">
+                <sheet>
+                    <group>
+                        <group string="Call Details">
+                            <field name="lead_id" readonly="1"/>
+                            <field name="partner_id"/>
+                            <field name="caller_id" readonly="1"/>
+                            <field name="call_date"/>
+                        </group>
+                        <group string="Outcome &amp; Follow-up">
+                            <field name="outcome" widget="radio"/>
+                            <field name="is_followup_required" invisible="1"/>
+                            <field name="next_followup_date" invisible="not is_followup_required" required="is_followup_required"/>
+                        </group>
+                    </group>
+                    <group string="Notes &amp; Requirements">
+                        <field name="notes" placeholder="Summarize the discussion, customer requests, or reason for no answer..." nolabel="1"/>
+                    </group>
+                </sheet>
+                <footer>
+                    <button name="action_save_call_log" string="Save Call Log" type="object" class="btn-primary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+</odoo>

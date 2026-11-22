@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <!-- Appointment Status Reference Documentation -->
+        <!-- Note: Status values are Selection fields on medical.appointment, not model records -->
+        <!-- This file documents the appointment lifecycle -->
+
+        <!-- Appointment Lifecycle:
+             draft → tentative (booked by sales) 
+                  → confirmed (confirmed by receptionist)
+                  → checked_in (patient arrives)
+                  → ready_for_doctor (nurse marks ready)
+                  → in_consultation (doctor starts)
+                  → completed (doctor finishes)
+             
+             Alternative paths:
+             - cancelled (any role can cancel)
+             - no_show (patient didn't arrive)
+        -->
+    </data>
+</odoo>

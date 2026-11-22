@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Book Appointment from Lead Wizard View -->
+    <record id="view_appointment_from_lead_wizard_form" model="ir.ui.view">
+        <field name="name">appointment.from.lead.wizard.form</field>
+        <field name="model">appointment.from.lead.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Book Medical Appointment">
+                <sheet>
+                    <field name="has_conflict" invisible="1"/>
+                    <div class="alert alert-danger" role="alert" invisible="not has_conflict">
+                        <strong>⚠️ Scheduling Conflict Detected:</strong>
+                        <field name="conflict_details" readonly="1" nolabel="1"/>
+                    </div>
+
+                    <group>
+                        <group string="Patient &amp; Lead">
+                            <field name="lead_id" readonly="1"/>
+                            <field name="partner_id" required="1"/>
+                            <field name="salesperson_id" readonly="1"/>
+                        </group>
+                        <group string="Medical Services &amp; Doctor">
+                            <field name="currency_id" invisible="1"/>
+                            <field name="service_ids" widget="many2many_tags" options="{'no_create': True}" placeholder="Select one or multiple services..."/>
+                            <field name="doctor_id" options="{'no_create': True}"/>
+                            <field name="total_service_price" widget="monetary" readonly="1"/>
+                        </group>
+                    </group>
+
+                    <group>
+                        <group string="Date &amp; Schedule">
+                            <field name="appointment_date"/>
+                            <field name="start_time" widget="float_time"/>
+                            <field name="duration" widget="float_time"/>
+                        </group>
+                        <group string="Clinical Notes">
+                            <field name="special_requirements" placeholder="Allergies, wheelchair access, previous history..."/>
+                            <field name="notes" placeholder="Internal remarks..."/>
+                        </group>
+                    </group>
+
+                    <group string="Conflict Exception (Supervisor Only)" invisible="not has_conflict" groups="medical_employee_management.group_medical_hr_manager,base.group_system">
+                        <field name="conflict_override"/>
+                        <field name="conflict_override_reason" invisible="not conflict_override" required="conflict_override" placeholder="Specify clinical justification or emergency approval reason..."/>
+                    </group>
+                </sheet>
+                <footer>
+                    <button name="action_create_appointment" string="Confirm Booking" type="object" class="btn-primary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <!-- Cancel Appointment Wizard View -->
+    <record id="view_medical_appointment_cancel_wizard_form" model="ir.ui.view">
+        <field name="name">medical.appointment.cancel.wizard.form</field>
+        <field name="model">medical.appointment.cancel.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Cancel Appointment">
+                <sheet>
+                    <group>
+                        <field name="appointment_id" readonly="1"/>
+                        <field name="cancellation_reason" required="1" placeholder="State reason for cancellation (e.g. Patient requested reschedule, Patient sickness, Emergency)..."/>
+                    </group>
+                </sheet>
+                <footer>
+                    <button name="action_confirm_cancellation" string="Confirm Cancellation" type="object" class="btn-danger"/>
+                    <button string="Close" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+</odoo>

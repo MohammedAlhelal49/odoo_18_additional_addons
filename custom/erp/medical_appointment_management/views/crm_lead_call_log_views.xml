@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_crm_lead_call_log_tree" model="ir.ui.view">
+        <field name="name">crm.lead.call.log.list</field>
+        <field name="model">crm.lead.call_log</field>
+        <field name="arch" type="xml">
+            <list string="Call Logs" default_order="call_date desc">
+                <field name="call_date"/>
+                <field name="lead_id"/>
+                <field name="partner_id"/>
+                <field name="called_by_id"/>
+                <field name="outcome" widget="badge"
+                       decoration-success="outcome in ('contacted', 'interested', 'booked')"
+                       decoration-warning="outcome in ('no_answer', 'followup_required')"
+                       decoration-danger="outcome in ('not_interested', 'invalid_contact')"/>
+                <field name="next_followup_date"/>
+                <field name="notes"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_crm_lead_call_log_form" model="ir.ui.view">
+        <field name="name">crm.lead.call.log.form</field>
+        <field name="model">crm.lead.call_log</field>
+        <field name="arch" type="xml">
+            <form string="Sales Call Log">
+                <sheet>
+                    <group>
+                        <group string="Call Information">
+                            <field name="lead_id"/>
+                            <field name="partner_id"/>
+                            <field name="called_by_id"/>
+                            <field name="call_date"/>
+                        </group>
+                        <group string="Outcome &amp; Follow-up">
+                            <field name="outcome"/>
+                            <field name="next_followup_date"/>
+                            <field name="activity_id" readonly="1"/>
+                        </group>
+                    </group>
+                    <group string="Notes &amp; Requirements">
+                        <field name="notes" nolabel="1"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_crm_lead_call_log_search" model="ir.ui.view">
+        <field name="name">crm.lead.call.log.search</field>
+        <field name="model">crm.lead.call_log</field>
+        <field name="arch" type="xml">
+            <search string="Search Call Logs">
+                <field name="lead_id"/>
+                <field name="partner_id"/>
+                <field name="called_by_id"/>
+                <field name="outcome"/>
+                <filter name="today_calls" string="Today's Calls" domain="[('call_date', '&gt;=', context_today().strftime('%Y-%m-%d 00:00:00'))]"/>
+                <filter name="followup_needed" string="Follow-up Needed" domain="[('outcome', 'in', ('no_answer', 'followup_required'))]"/>
+                <group expand="0" string="Group By">
+                    <filter string="Outcome" name="group_by_outcome" context="{'group_by': 'outcome'}"/>
+                    <filter string="Caller" name="group_by_caller" context="{'group_by': 'called_by_id'}"/>
+                    <filter string="Call Date" name="group_by_date" context="{'group_by': 'call_date:day'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_crm_lead_call_log" model="ir.actions.act_window">
+        <field name="name">Sales Call Logs</field>
+        <field name="res_model">crm.lead.call_log</field>
+        <field name="view_mode">list,form</field>
+        <field name="search_view_id" ref="view_crm_lead_call_log_search"/>
+    </record>
+</odoo>

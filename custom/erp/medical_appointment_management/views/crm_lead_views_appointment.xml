@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="crm_lead_view_form_appointment_extension" model="ir.ui.view">
+        <field name="name">crm.lead.form.appointment.extension</field>
+        <field name="model">crm.lead</field>
+        <field name="inherit_id" ref="crm.crm_lead_view_form"/>
+        <field name="priority" eval="30"/>
+        <field name="arch" type="xml">
+            <!-- Header Action Buttons -->
+            <xpath expr="//header" position="inside">
+                <button name="action_log_call" string="Log Call" type="object" class="btn-secondary"/>
+                <button name="action_book_appointment" string="Book Appointment" type="object" class="btn-primary"/>
+            </xpath>
+
+            <!-- Stat Button in Button Box -->
+            <xpath expr="//div[@name='button_box']" position="inside">
+                <button name="action_view_appointments" type="object" class="oe_stat_button" icon="fa-calendar">
+                    <field name="appointment_count" widget="statinfo" string="Appointments"/>
+                </button>
+            </xpath>
+
+            <!-- Medical Staff & Salesperson on Opportunity Form -->
+            <xpath expr="//group[@invisible=&quot;type == 'lead'&quot;]/field[@name='user_id']" position="before">
+                <field name="medical_staff_user_ids" invisible="1"/>
+                <field name="medical_staff_id" options="{'no_create': True}" placeholder="Select Medical Staff Salesperson..."/>
+            </xpath>
+            <xpath expr="//group[@invisible=&quot;type == 'lead'&quot;]/field[@name='user_id']" position="attributes">
+                <attribute name="domain">['&amp;', ('share', '=', False), ('id', 'in', medical_staff_user_ids)]</attribute>
+                <attribute name="placeholder">Select Medical Staff User...</attribute>
+            </xpath>
+            <xpath expr="//group[@invisible=&quot;type == 'lead'&quot;]" position="inside">
+                <field name="medical_service_id" string="Requested Medical Service" placeholder="Select or search medical service..."/>
+                <field name="doctor_id" string="Assigned Doctor" options="{'no_create': True}" placeholder="Select Assigned Doctor..."/>
+                <field name="service_final_price" widget="monetary" invisible="not medical_service_id"/>
+                <field name="service_duration" widget="float_time" invisible="not medical_service_id"/>
+                <field name="service_period_between_sessions" invisible="not service_period_between_sessions"/>
+            </xpath>
+
+            <!-- Medical Staff & Salesperson on Lead Form -->
+            <xpath expr="//group[@invisible=&quot;type == 'opportunity'&quot;]/field[@name='user_id']" position="before">
+                <field name="medical_staff_user_ids" invisible="1"/>
+                <field name="medical_staff_id" options="{'no_create': True}" placeholder="Select Medical Staff Salesperson..."/>
+            </xpath>
+            <xpath expr="//group[@invisible=&quot;type == 'opportunity'&quot;]/field[@name='user_id']" position="attributes">
+                <attribute name="domain">['&amp;', ('share', '=', False), ('id', 'in', medical_staff_user_ids)]</attribute>
+                <attribute name="placeholder">Select Medical Staff User...</attribute>
+            </xpath>
+
+            <!-- Add medical_service_id field on Lead Form (multiselect from extension is already shown) -->
+            <xpath expr="//group[@invisible=&quot;type == 'opportunity'&quot;]" position="inside">
+                <field name="medical_service_id" string="Select Single Service" placeholder="Optional: Select primary medical service..."/>
+                <field name="doctor_id" string="Assigned Doctor" options="{'no_create': True}" placeholder="Select Assigned Doctor..."/>
+                <field name="service_final_price" widget="monetary" invisible="not medical_service_id"/>
+                <field name="service_duration" widget="float_time" invisible="not medical_service_id"/>
+                <field name="service_period_between_sessions" invisible="not service_period_between_sessions"/>
+            </xpath>
+
+            <!-- Add medical_service_id field in Medical & Contact Details page -->
+            <xpath expr="//page[@name='medical_details']/group/group[last()]" position="after">
+                <group string="Service Selection">
+                    <field name="medical_service_id" string="Select Single Service" placeholder="Optional: Select primary medical service..."/>
+                    <field name="doctor_id" string="Assigned Doctor" options="{'no_create': True}"/>
+                </group>
+            </xpath>
+
+            <!-- Notebook Pages for Appointments & Call History -->
+            <xpath expr="//notebook" position="inside">
+                <page string="Appointments" name="lead_appointments">
+                    <field name="appointment_ids" readonly="1">
+                        <list string="Appointments"
+                               decoration-info="status == 'tentative'"
+                               decoration-success="status == 'confirmed'"
+                               decoration-muted="status == 'completed'"
+                               decoration-danger="status in ('cancelled', 'no_show')">
+                            <field name="name"/>
+                            <field name="appointment_date"/>
+                            <field name="start_time" widget="float_time"/>
+                            <field name="doctor_id"/>
+                            <field name="service_id"/>
+                            <field name="status" widget="badge"/>
+                        </list>
+                    </field>
+                    <button name="action_book_appointment" string="+ Book Another Appointment" type="object" class="btn-link mt-2"/>
+                </page>
+
+                <page string="Call History" name="lead_call_history">
+                    <field name="call_log_ids" readonly="1">
+                        <list string="Call Logs" default_order="call_date desc">
+                            <field name="call_date"/>
+                            <field name="called_by_id"/>
+                            <field name="outcome" widget="badge"
+                                   decoration-success="outcome in ('contacted', 'interested', 'booked')"
+                                   decoration-warning="outcome in ('no_answer', 'followup_required')"
+                                   decoration-danger="outcome in ('not_interested', 'invalid_contact')"/>
+                            <field name="next_followup_date"/>
+                            <field name="notes"/>
+                        </list>
+                    </field>
+                    <button name="action_log_call" string="+ Log Call Attempt" type="object" class="btn-link mt-2"/>
+                </page>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Add medical_service_id to CRM Leads List View -->
+    <record id="crm_case_tree_view_leads_medical" model="ir.ui.view">
+        <field name="name">crm.lead.list.lead.medical.service</field>
+        <field name="model">crm.lead</field>
+        <field name="inherit_id" ref="crm.crm_case_tree_view_leads"/>
+        <field name="arch" type="xml">
+            <field name="user_id" position="after">
+                <field name="medical_service_id" optional="show" string="Primary Service"/>
+                <field name="doctor_id" optional="show" string="Assigned Doctor"/>
+            </field>
+        </field>
+    </record>
+
+    <!-- Medical Staff Columns on CRM Opportunity List View -->
+    <record id="crm_case_tree_view_oppor_medical" model="ir.ui.view">
+        <field name="name">crm.lead.list.opportunity.medical</field>
+        <field name="model">crm.lead</field>
+        <field name="inherit_id" ref="crm.crm_case_tree_view_oppor"/>
+        <field name="arch" type="xml">
+            <field name="user_id" position="after">
+                <field name="medical_staff_id" optional="show"/>
+                <field name="medical_service_id" optional="show"/>
+                <field name="doctor_id" optional="show" string="Assigned Doctor"/>
+            </field>
+        </field>
+    </record>
+
+    <!-- Medical Staff Filter on CRM Opportunity Search View -->
+    <record id="view_crm_case_opportunities_filter_medical" model="ir.ui.view">
+        <field name="name">crm.lead.search.opportunity.medical</field>
+        <field name="model">crm.lead</field>
+        <field name="inherit_id" ref="crm.view_crm_case_opportunities_filter"/>
+        <field name="arch" type="xml">
+            <field name="user_id" position="after">
+                <field name="medical_staff_id"/>
+                <field name="medical_service_id"/>
+                <field name="doctor_id" string="Assigned Doctor"/>
+            </field>
+
+            <!-- Sales Representative Dashboard Filters -->
+            <xpath expr="//filter[@name='assigned_to_me']" position="after">
+                <separator/>
+                <filter string="My Doctor Leads" name="filter_my_doctor_leads"
+                        domain="[('doctor_id.user_id', '=', uid)]"/>
+                <filter string="Unassigned Doctor" name="filter_unassigned_doctor"
+                        domain="[('doctor_id', '=', False)]"/>
+                <separator/>
+                <filter string="New Leads (Not Contacted)" name="filter_new_leads"
+                        domain="[('call_log_ids', '=', False), ('active', '=', True), ('probability', '&lt;', 100)]"/>
+                <filter string="Should Call Today" name="filter_should_call"
+                        domain="[('next_followup_date', '=', context_today()), ('active', '=', True)]"/>
+                <filter string="Not Called" name="filter_not_called"
+                        domain="[('call_log_ids', '=', False), ('active', '=', True)]"/>
+                <filter string="Overdue Follow-Up" name="filter_overdue"
+                        domain="[('is_overdue', '=', True)]"/>
+                <filter string="Follow-Up Due" name="filter_followup_due"
+                        domain="['&amp;', ('next_followup_date', '!=', False), ('next_followup_date', '&lt;=', context_today()), ('active', '=', True)]"/>
+                <filter string="Converted" name="filter_converted"
+                        domain="['|', ('probability', '=', 100), ('appointment_ids', '!=', False)]"/>
+                <filter string="Lost Leads" name="filter_lost_leads"
+                        domain="[('active', '=', False), ('probability', '=', 0)]"/>
+                <separator/>
+            </xpath>
+
+            <filter name="salesperson" position="after">
+                <filter string="Medical Staff Salesperson" name="group_by_medical_staff" context="{'group_by': 'medical_staff_id'}"/>
+                <filter string="Medical Service" name="group_by_medical_service" context="{'group_by': 'medical_service_id'}"/>
+            </filter>
+        </field>
+    </record>
+
+    <!-- Sales Representative Workspace List View -->
+    <record id="crm_lead_view_tree_medical_sales_workspace" model="ir.ui.view">
+        <field name="name">crm.lead.list.medical.sales.workspace</field>
+        <field name="model">crm.lead</field>
+        <field name="arch" type="xml">
+            <list string="Medical Sales Leads"
+                  decoration-danger="is_overdue == True"
+                  decoration-warning="next_followup_date == context_today()"
+                  decoration-success="probability == 100"
+                  decoration-muted="probability == 0">
+                <field name="is_overdue" column_invisible="True"/>
+                <field name="priority" widget="priority"/>
+                <field name="name" string="Inquiry / Opportunity"/>
+                <field name="contact_name"/>
+                <field name="phone"/>
+                <field name="mobile" optional="show"/>
+                <field name="medical_service_id" optional="show"/>
+                <field name="expected_revenue" widget="monetary" optional="show"/>
+                <field name="source_platform" optional="show"/>
+                <field name="campaign_name" optional="hide"/>
+                <field name="next_followup_date"/>
+                <field name="last_call_date" optional="show"/>
+                <field name="last_call_outcome" widget="badge" optional="show"
+                       decoration-success="last_call_outcome in ('contacted', 'booked')"
+                       decoration-warning="last_call_outcome in ('no_answer', 'followup_required')"
+                       decoration-danger="last_call_outcome in ('not_interested', 'invalid_contact')"/>
+                <field name="call_log_count" string="Calls" optional="show"/>
+                <field name="appointment_count" string="Bookings" optional="show"/>
+                <field name="stage_id" widget="badge"/>
+                <field name="user_id" optional="show"/>
+                <field name="medical_staff_id" optional="hide"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Sales Representative Workspace Window Action -->
+    <record id="action_medical_sales_workspace" model="ir.actions.act_window">
+        <field name="name">Sales Representative Workspace</field>
+        <field name="res_model">crm.lead</field>
+        <field name="view_mode">list,kanban,form</field>
+        <field name="view_id" ref="crm_lead_view_tree_medical_sales_workspace"/>
+        <field name="search_view_id" ref="crm.view_crm_case_opportunities_filter"/>
+        <field name="context">{
+            'search_default_assigned_to_me': 1,
+            'search_default_filter_should_call': 1,
+            'default_type': 'opportunity',
+        }</field>
+    </record>
+</odoo>

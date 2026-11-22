@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Medical Staff Performance Dashboard Form View -->
+    <record id="view_medical_staff_performance_dashboard_form" model="ir.ui.view">
+        <field name="name">medical.staff.performance.dashboard.form</field>
+        <field name="model">medical.staff.performance.dashboard</field>
+        <field name="arch" type="xml">
+            <form string="Staff Performance Reports &amp; Analytics Dashboard">
+                <header>
+                    <button name="action_apply_filters" string="Apply Filters" type="object" class="btn-primary" icon="fa-filter"/>
+                    <button name="action_reset_filters" string="Reset Filters" type="object" class="btn-secondary" icon="fa-refresh"/>
+                    <button name="action_view_charts" string="View Live Charts &amp; Pivots" type="object" class="btn-outline-primary" icon="fa-bar-chart"/>
+                    <button name="action_export_excel" string="Export to Excel" type="object" class="btn-outline-success" icon="fa-file-excel-o"/>
+                    <button name="action_export_pdf" string="Print PDF Report" type="object" class="btn-outline-danger" icon="fa-file-pdf-o"/>
+                    <button name="action_view_targets" string="Manage Targets &amp; Goals" type="object" class="btn-outline-info" icon="fa-bullseye" groups="medical_employee_management.group_medical_doctor_manager,medical_employee_management.group_medical_sales_manager,base.group_system"/>
+                </header>
+                <sheet>
+                    <!-- REPORT FILTERS BAR -->
+                    <div class="card mb-3 shadow-sm border-0 bg-light p-3">
+                        <div class="row g-2">
+                            <div class="col-md-2">
+                                <label for="date_range_preset" class="form-label fw-bold text-muted small">Date Range</label>
+                                <field name="date_range_preset" class="form-select form-select-sm"/>
+                            </div>
+                            <div class="col-md-2">
+                                <label for="start_date" class="form-label fw-bold text-muted small">Start Date</label>
+                                <field name="start_date" class="form-control form-control-sm"/>
+                            </div>
+                            <div class="col-md-2">
+                                <label for="end_date" class="form-label fw-bold text-muted small">End Date</label>
+                                <field name="end_date" class="form-control form-control-sm"/>
+                            </div>
+                            <div class="col-md-3">
+                                <label for="employee_id" class="form-label fw-bold text-muted small">Employee / Staff</label>
+                                <field name="employee_id" placeholder="All Employees" options="{'no_create': True}" class="form-control form-control-sm"/>
+                            </div>
+                            <div class="col-md-3">
+                                <label for="department_id" class="form-label fw-bold text-muted small">Department / Team</label>
+                                <field name="department_id" placeholder="All Departments" options="{'no_create': True}" class="form-control form-control-sm"/>
+                            </div>
+                        </div>
+                        <div class="row g-2 mt-2">
+                            <div class="col-md-3">
+                                <label for="role" class="form-label fw-bold text-muted small">Medical Role</label>
+                                <field name="role" class="form-select form-select-sm"/>
+                            </div>
+                            <div class="col-md-3">
+                                <label for="appointment_status" class="form-label fw-bold text-muted small">Appointment Status</label>
+                                <field name="appointment_status" class="form-select form-select-sm"/>
+                            </div>
+                            <div class="col-md-3">
+                                <label for="comparison_type" class="form-label fw-bold text-muted small">Comparison Period</label>
+                                <field name="comparison_type" class="form-select form-select-sm"/>
+                            </div>
+                            <div class="col-md-3" invisible="comparison_type != 'custom'">
+                                <span class="o_form_label fw-bold text-muted small d-block">Custom Comparison Range</span>
+                                <div class="d-flex gap-1">
+                                    <field name="comparison_start_date" placeholder="From" class="form-control form-control-sm"/>
+                                    <field name="comparison_end_date" placeholder="To" class="form-control form-control-sm"/>
+                                </div>
+                            </div>
+                            <div class="col-md-3" invisible="comparison_type == 'custom'">
+                                <span class="o_form_label fw-bold text-muted small d-block">Calculated Comparison Period</span>
+                                <div class="text-muted small pt-1">
+                                    <field name="comparison_start_date" readonly="1" class="d-inline"/> to <field name="comparison_end_date" readonly="1" class="d-inline"/>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- FILTERS ACTION BUTTONS BAR -->
+                        <div class="d-flex gap-2 mt-3 pt-2 border-top align-items-center">
+                            <button name="action_apply_filters" string="Apply Filters" type="object" class="btn btn-primary btn-sm" icon="fa-filter"/>
+                            <button name="action_reset_filters" string="Reset Filters" type="object" class="btn btn-secondary btn-sm" icon="fa-refresh"/>
+                            <button name="action_view_charts" string="View Live Charts" type="object" class="btn btn-outline-primary btn-sm" icon="fa-bar-chart"/>
+                            <button name="action_export_excel" string="Export Excel" type="object" class="btn btn-outline-success btn-sm ms-auto" icon="fa-file-excel-o"/>
+                            <button name="action_export_pdf" string="Print PDF" type="object" class="btn btn-outline-danger btn-sm" icon="fa-file-pdf-o"/>
+                            <button name="action_view_targets" string="Manage Targets" type="object" class="btn btn-outline-info btn-sm" icon="fa-bullseye" groups="medical_employee_management.group_medical_doctor_manager,medical_employee_management.group_medical_sales_manager,base.group_system"/>
+                        </div>
+                    </div>
+
+                    <!-- VISUAL ANALYTICS & CHARTS -->
+                    <field name="dashboard_html" widget="html" readonly="1" nolabel="1" class="w-100 d-block mb-3"/>
+
+                    <!-- NOTEBOOK: DETAILED EMPLOYEE PERFORMANCE TABLE & TOTALS -->
+                    <notebook>
+                        <page string="Employee Performance Report" name="employee_lines">
+                            <field name="line_ids" readonly="1">
+                                <list decoration-success="performance_trend == 'improving'"
+                                      decoration-info="performance_trend == 'stable'"
+                                      decoration-danger="performance_trend == 'declining'">
+                                    <field name="employee_id"/>
+                                    <field name="department_id"/>
+                                    <field name="role"/>
+                                    <field name="assigned_leads"/>
+                                    <field name="converted_leads"/>
+                                    <field name="conversion_rate" string="Conv. %"/>
+                                    <field name="total_appointments" string="Appts"/>
+                                    <field name="completed_appointments" string="Completed"/>
+                                    <field name="cancellation_rate" string="Cancel %"/>
+                                    <field name="no_show_rate" string="No-Show %"/>
+                                    <field name="total_revenue" widget="monetary" string="Revenue"/>
+                                    <field name="avg_revenue_per_completed" widget="monetary" string="Avg / Session"/>
+                                    <field name="prev_revenue" widget="monetary" string="Prev Rev" optional="show"/>
+                                    <field name="revenue_growth" string="Rev Growth %"/>
+                                    <field name="appointment_growth" string="Appt Growth %" optional="show"/>
+                                    <field name="conversion_rate_change_pp" string="Conv Δ pp" optional="hide"/>
+                                    <field name="cancellation_rate_change_pp" string="Cancel Δ pp" optional="hide"/>
+                                    <field name="no_show_rate_change_pp" string="No-Show Δ pp" optional="hide"/>
+                                    <field name="revenue_target" widget="monetary" string="Target Rev" optional="show"/>
+                                    <field name="revenue_target_progress" widget="progressbar" string="Target %" optional="show"/>
+                                    <field name="trend_badge" string="Trajectory"/>
+                                    <field name="performance_trend" column_invisible="True"/>
+                                </list>
+                            </field>
+                        </page>
+
+                        <page string="Comparison Period Breakdown (Side-by-Side)" name="comparison_breakdown">
+                            <group>
+                                <group string="Financial Performance">
+                                    <field name="total_revenue" widget="monetary"/>
+                                    <field name="prev_total_revenue" widget="monetary"/>
+                                    <field name="revenue_growth_amount" widget="monetary"/>
+                                    <field name="revenue_growth"/>
+                                    <field name="avg_revenue_per_completed" widget="monetary"/>
+                                    <field name="prev_avg_revenue_per_completed" widget="monetary"/>
+                                </group>
+                                <group string="Appointment Production">
+                                    <field name="total_appointments"/>
+                                    <field name="prev_total_appointments"/>
+                                    <field name="appointment_growth"/>
+                                    <field name="completed_appointments"/>
+                                    <field name="prev_completed_appointments"/>
+                                    <field name="completed_growth"/>
+                                    <field name="in_progress_appointments"/>
+                                </group>
+                            </group>
+                            <group>
+                                <group string="Quality &amp; Retention">
+                                    <field name="cancelled_appointments"/>
+                                    <field name="cancellation_rate"/>
+                                    <field name="prev_cancellation_rate"/>
+                                    <field name="cancellation_rate_change_pp"/>
+                                    <field name="no_show_appointments"/>
+                                    <field name="no_show_rate"/>
+                                    <field name="prev_no_show_rate"/>
+                                    <field name="no_show_rate_change_pp"/>
+                                </group>
+                                <group string="Lead Conversion">
+                                    <field name="total_leads"/>
+                                    <field name="prev_total_leads"/>
+                                    <field name="converted_leads"/>
+                                    <field name="prev_converted_leads"/>
+                                    <field name="lead_conversion_rate"/>
+                                    <field name="prev_lead_conversion_rate"/>
+                                    <field name="conversion_rate_change_pp"/>
+                                </group>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Action Window for Performance Dashboard -->
+    <record id="action_medical_staff_performance_dashboard_window" model="ir.actions.act_window">
+        <field name="name">Staff Performance Reports &amp; Analytics</field>
+        <field name="res_model">medical.staff.performance.dashboard</field>
+        <field name="view_mode">form</field>
+        <field name="target">current</field>
+    </record>
+
+    <!-- Medical Staff Performance Dashboard Server Action to launch initialized dashboard -->
+    <record id="action_medical_staff_performance_dashboard_init" model="ir.actions.server">
+        <field name="name">Staff Performance &amp; Analytics</field>
+        <field name="model_id" ref="model_medical_staff_performance_dashboard"/>
+        <field name="state">code</field>
+        <field name="code">
+dash = model.create({})
+action = {
+    'name': 'Staff Performance Reports and Analytics Dashboard',
+    'type': 'ir.actions.act_window',
+    'res_model': 'medical.staff.performance.dashboard',
+    'res_id': dash.id,
+    'view_mode': 'form',
+    'target': 'current',
+}
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Root App Menu on Home Screen / App Switcher -->
+    <menuitem id="menu_medical_appointment_root"
+              name="Medical Appointments"
+              web_icon="medical_appointment_management,static/description/icon.png"
+              sequence="25"/>
+
+    <!-- 0. Dashboards Menu -->
+    <menuitem id="menu_medical_dashboards_main"
+              name="Dashboards"
+              parent="menu_medical_appointment_root"
+              sequence="5"/>
+
+    <menuitem id="menu_medical_manager_dashboard"
+              name="Executive Operations"
+              parent="menu_medical_dashboards_main"
+              action="action_medical_manager_dashboard_init"
+              sequence="5"
+              groups="medical_appointment_management.group_medical_appointment_manager,base.group_system"/>
+
+    <menuitem id="menu_medical_receptionist_dashboard"
+              name="Reception Operations"
+              parent="menu_medical_dashboards_main"
+              action="action_medical_receptionist_dashboard_init"
+              sequence="10"
+              groups="medical_employee_management.group_medical_receptionist,medical_appointment_management.group_medical_appointment_manager,base.group_system"/>
+
+    <menuitem id="menu_medical_reporting_staff_perf_top"
+              name="Staff Performance &amp; Analytics"
+              parent="menu_medical_dashboards_main"
+              action="action_medical_staff_performance_dashboard_init"
+              sequence="15"/>
+
+    <!-- 1. Appointments Menu -->
+    <menuitem id="menu_medical_appointment_main"
+              name="Appointments"
+              parent="menu_medical_appointment_root"
+              sequence="10"/>
+
+    <menuitem id="menu_medical_appointment_calendar_item"
+              name="Calendar"
+              parent="menu_medical_appointment_main"
+              action="action_medical_appointment_calendar_view"
+              sequence="5"/>
+
+    <menuitem id="menu_medical_doctor_consultation_queue"
+              name="Doctor Consultation Queue"
+              parent="menu_medical_appointment_main"
+              action="action_medical_doctor_today_appointments"
+              sequence="10"
+              groups="medical_employee_management.group_medical_doctor,medical_appointment_management.group_medical_appointment_manager,base.group_system"/>
+
+    <menuitem id="menu_medical_appointment_waiting_room"
+              name="Waiting Room &amp; Nurse Triage"
+              parent="menu_medical_appointment_main"
+              action="action_medical_nurse_triage_queue"
+              sequence="15"
+              groups="medical_employee_management.group_medical_nurse,medical_employee_management.group_medical_receptionist,medical_appointment_management.group_medical_appointment_manager,base.group_system"/>
+
+    <menuitem id="menu_medical_receptionist_daily_queue"
+              name="Reception - Today's Visits"
+              parent="menu_medical_appointment_main"
+              action="action_medical_receptionist_today_appointments"
+              sequence="20"
+              groups="medical_employee_management.group_medical_receptionist,medical_appointment_management.group_medical_appointment_manager,base.group_system"/>
+
+    <menuitem id="menu_medical_tomorrow_confirmations_queue"
+              name="Tomorrow's Confirmations Queue"
+              parent="menu_medical_appointment_main"
+              action="action_medical_appointment_tomorrow_confirmations"
+              sequence="25"
+              groups="medical_employee_management.group_medical_receptionist,medical_appointment_management.group_medical_appointment_manager,base.group_system"/>
+
+    <menuitem id="menu_medical_appointment_list_item"
+              name="All Appointments"
+              parent="menu_medical_appointment_main"
+              action="action_medical_appointment"
+              sequence="30"/>
+
+    <!-- 2. Patients Menu -->
+    <menuitem id="menu_medical_patients_main"
+              name="Patients"
+              parent="menu_medical_appointment_root"
+              sequence="15"/>
+
+    <menuitem id="menu_medical_patients_list"
+              name="All Patients"
+              parent="menu_medical_patients_main"
+              action="action_medical_patient"
+              sequence="10"/>
+
+    <!-- 3. Sales & Leads Menu -->
+    <menuitem id="menu_medical_sales_calls"
+              name="Sales &amp; Leads"
+              parent="menu_medical_appointment_root"
+              sequence="20"/>
+
+    <menuitem id="menu_medical_sales_workspace"
+              name="Sales Representative Workspace"
+              parent="menu_medical_sales_calls"
+              action="action_medical_sales_workspace"
+              sequence="5"
+              groups="medical_employee_management.group_medical_sales,medical_appointment_management.group_medical_appointment_manager,base.group_system"/>
+
+    <menuitem id="menu_medical_call_logs"
+              name="Call Logs"
+              parent="menu_medical_sales_calls"
+              action="action_crm_lead_call_log"
+              sequence="10"/>
+
+    <menuitem id="menu_medical_crm_leads"
+              name="CRM Pipeline"
+              parent="menu_medical_sales_calls"
+              action="crm.crm_lead_action_pipeline"
+              sequence="20"/>
+
+    <!-- 4. Reporting Menu -->
+    <menuitem id="menu_medical_reporting_main"
+              name="Reporting"
+              parent="menu_medical_appointment_root"
+              sequence="30"/>
+
+    <menuitem id="menu_medical_staff_performance_dashboard"
+              name="Staff Performance &amp; Analytics"
+              parent="menu_medical_reporting_main"
+              action="action_medical_staff_performance_dashboard_init"
+              sequence="10"/>
+
+    <menuitem id="menu_medical_staff_targets"
+              name="Performance Targets &amp; Goals"
+              parent="menu_medical_reporting_main"
+              action="action_medical_staff_target"
+              sequence="20"/>
+
+    <!-- 5. Configuration Menu -->
+    <menuitem id="menu_medical_configuration"
+              name="Configuration"
+              parent="menu_medical_appointment_root"
+              sequence="100"/>
+
+    <menuitem id="menu_medical_services"
+              name="Medical Services"
+              parent="menu_medical_configuration"
+              action="action_medical_service"
+              sequence="10"/>
+
+    <menuitem id="menu_medical_appointment_settings"
+              name="Settings"
+              parent="menu_medical_configuration"
+              action="action_medical_appointment_config_settings"
+              sequence="100"
+              groups="base.group_system"/>
+</odoo>

@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- QWeb PDF Report Action -->
+    <record id="action_report_medical_staff_performance" model="ir.actions.report">
+        <field name="name">Staff Performance &amp; Analytics Report</field>
+        <field name="model">medical.staff.performance.dashboard</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">medical_appointment_management.report_staff_performance_document</field>
+        <field name="report_file">medical_appointment_management.report_staff_performance_document</field>
+        <field name="print_report_name">'Staff_Performance_Report_' + (object.start_date.strftime('%Y%m%d'))</field>
+        <field name="binding_model_id" ref="model_medical_staff_performance_dashboard"/>
+        <field name="binding_type">report</field>
+    </record>
+
+    <!-- QWeb PDF Report Template Document -->
+    <template id="report_staff_performance_document">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="doc">
+                <t t-call="web.external_layout">
+                    <div class="page" style="font-family: Arial, sans-serif; font-size: 11px;">
+                        <!-- Report Header -->
+                        <div class="text-center mb-4">
+                            <h2 style="font-weight: bold; color: #1e293b; margin-bottom: 4px;">Medical Staff Performance &amp; Analytics Report</h2>
+                            <p class="text-muted" style="margin-bottom: 2px;">
+                                <strong>Period:</strong> <span t-field="doc.start_date"/> to <span t-field="doc.end_date"/> |
+                                <strong>Comparison:</strong> <span t-field="doc.comparison_start_date"/> to <span t-field="doc.comparison_end_date"/>
+                            </p>
+                            <p class="text-muted" style="font-size: 10px;">
+                                Generated on <span t-esc="context_timestamp(datetime.datetime.now()).strftime('%Y-%m-%d %H:%M:%S')"/> | Strictly Confidential
+                            </p>
+                        </div>
+
+                        <!-- 1. Executive KPI Summary -->
+                        <div class="mb-4">
+                            <h4 style="border-bottom: 2px solid #0d6efd; padding-bottom: 4px; color: #0d6efd; font-size: 13px; font-weight: bold;">
+                                1. Executive Performance Summary
+                            </h4>
+                            <table class="table table-sm table-bordered mt-2">
+                                <thead class="table-light">
+                                    <tr style="background-color: #f8f9fa;">
+                                        <th>Metric</th>
+                                        <th class="text-end">Current Period</th>
+                                        <th class="text-end">Comparison Period</th>
+                                        <th class="text-end">Growth / Rate Difference</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><strong>Total Confirmed Revenue</strong></td>
+                                        <td class="text-end"><span t-field="doc.total_revenue" t-options='{"widget": "monetary", "display_currency": doc.company_id.currency_id}'/></td>
+                                        <td class="text-end"><span t-field="doc.prev_total_revenue" t-options='{"widget": "monetary", "display_currency": doc.company_id.currency_id}'/></td>
+                                        <td class="text-end">
+                                            <span t-att-style="'color: ' + ('#198754' if doc.revenue_growth >= 0 else '#dc3545') + '; font-weight: bold;'">
+                                                <t t-esc="doc.revenue_growth >= 0 and '+' or ''"/><t t-esc="doc.revenue_growth"/>%
+                                            </span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Total Appointments</strong></td>
+                                        <td class="text-end"><span t-field="doc.total_appointments"/></td>
+                                        <td class="text-end"><span t-field="doc.prev_total_appointments"/></td>
+                                        <td class="text-end">
+                                            <span t-att-style="'color: ' + ('#198754' if doc.appointment_growth >= 0 else '#dc3545') + '; font-weight: bold;'">
+                                                <t t-esc="doc.appointment_growth >= 0 and '+' or ''"/><t t-esc="doc.appointment_growth"/>%
+                                            </span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Completed Appointments</strong></td>
+                                        <td class="text-end"><span t-field="doc.completed_appointments"/></td>
+                                        <td class="text-end"><span t-field="doc.prev_completed_appointments"/></td>
+                                        <td class="text-end">
+                                            <span t-att-style="'color: ' + ('#198754' if doc.completed_growth >= 0 else '#dc3545') + '; font-weight: bold;'">
+                                                <t t-esc="doc.completed_growth >= 0 and '+' or ''"/><t t-esc="doc.completed_growth"/>%
+                                            </span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>In-Progress / Waiting Consultations</td>
+                                        <td class="text-end"><span t-field="doc.in_progress_appointments"/></td>
+                                        <td class="text-end">-</td>
+                                        <td class="text-end">-</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Cancellation Rate</td>
+                                        <td class="text-end"><span t-field="doc.cancellation_rate"/>% (<span t-field="doc.cancelled_appointments"/> appts)</td>
+                                        <td class="text-end"><span t-field="doc.prev_cancellation_rate"/>%</td>
+                                        <td class="text-end">
+                                            <span t-att-style="'color: ' + ('#198754' if doc.cancellation_rate_change_pp &lt;= 0 else '#dc3545') + '; font-weight: bold;'">
+                                                <t t-esc="doc.cancellation_rate_change_pp &gt;= 0 and '+' or ''"/><t t-esc="doc.cancellation_rate_change_pp"/> pp
+                                            </span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>No-Show Rate</td>
+                                        <td class="text-end"><span t-field="doc.no_show_rate"/>% (<span t-field="doc.no_show_appointments"/> appts)</td>
+                                        <td class="text-end"><span t-field="doc.prev_no_show_rate"/>%</td>
+                                        <td class="text-end">
+                                            <span t-att-style="'color: ' + ('#198754' if doc.no_show_rate_change_pp &lt;= 0 else '#dc3545') + '; font-weight: bold;'">
+                                                <t t-esc="doc.no_show_rate_change_pp &gt;= 0 and '+' or ''"/><t t-esc="doc.no_show_rate_change_pp"/> pp
+                                            </span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Total Leads &amp; Conversion Rate</td>
+                                        <td class="text-end"><span t-field="doc.lead_conversion_rate"/>% (<span t-field="doc.converted_leads"/> / <span t-field="doc.total_leads"/>)</td>
+                                        <td class="text-end"><span t-field="doc.prev_lead_conversion_rate"/>%</td>
+                                        <td class="text-end">
+                                            <span t-att-style="'color: ' + ('#198754' if doc.conversion_rate_change_pp >= 0 else '#dc3545') + '; font-weight: bold;'">
+                                                <t t-esc="doc.conversion_rate_change_pp >= 0 and '+' or ''"/><t t-esc="doc.conversion_rate_change_pp"/> pp
+                                            </span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Average Revenue / Completed Session</td>
+                                        <td class="text-end"><span t-field="doc.avg_revenue_per_completed" t-options='{"widget": "monetary", "display_currency": doc.company_id.currency_id}'/></td>
+                                        <td class="text-end"><span t-field="doc.prev_avg_revenue_per_completed" t-options='{"widget": "monetary", "display_currency": doc.company_id.currency_id}'/></td>
+                                        <td class="text-end">-</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <!-- 2. Detailed Employee Performance Table -->
+                        <div class="mb-4">
+                            <h4 style="border-bottom: 2px solid #0d6efd; padding-bottom: 4px; color: #0d6efd; font-size: 13px; font-weight: bold;">
+                                2. Individual Employee Performance Breakdown
+                            </h4>
+                            <table class="table table-sm table-striped table-bordered mt-2" style="font-size: 9.5px;">
+                                <thead style="background-color: #f1f5f9;">
+                                    <tr>
+                                        <th>Staff Name</th>
+                                        <th>Role</th>
+                                        <th class="text-end">Leads</th>
+                                        <th class="text-end">Conv %</th>
+                                        <th class="text-end">Appts</th>
+                                        <th class="text-end">Done</th>
+                                        <th class="text-end">Cancel %</th>
+                                        <th class="text-end">No-Show %</th>
+                                        <th class="text-end">Revenue</th>
+                                        <th class="text-end">Growth %</th>
+                                        <th class="text-end">Target ($)</th>
+                                        <th class="text-end">Progress</th>
+                                        <th class="text-center">Trend</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <t t-foreach="doc.line_ids" t-as="line">
+                                        <tr>
+                                            <td><strong><span t-field="line.employee_id.name"/></strong></td>
+                                            <td><span t-field="line.role"/></td>
+                                            <td class="text-end"><span t-field="line.assigned_leads"/></td>
+                                            <td class="text-end"><span t-field="line.conversion_rate"/>%</td>
+                                            <td class="text-end"><span t-field="line.total_appointments"/></td>
+                                            <td class="text-end"><span t-field="line.completed_appointments"/></td>
+                                            <td class="text-end"><span t-field="line.cancellation_rate"/>%</td>
+                                            <td class="text-end"><span t-field="line.no_show_rate"/>%</td>
+                                            <td class="text-end"><span t-field="line.total_revenue" t-options='{"widget": "monetary", "display_currency": doc.company_id.currency_id}'/></td>
+                                            <td class="text-end">
+                                                <span t-att-style="'color: ' + ('#198754' if line.revenue_growth >= 0 else '#dc3545')">
+                                                    <t t-esc="line.revenue_growth >= 0 and '+' or ''"/><t t-esc="line.revenue_growth"/>%
+                                                </span>
+                                            </td>
+                                            <td class="text-end"><span t-field="line.revenue_target" t-options='{"widget": "monetary", "display_currency": doc.company_id.currency_id}'/></td>
+                                            <td class="text-end"><span t-field="line.revenue_target_progress"/>%</td>
+                                            <td class="text-center">
+                                                <span t-att-style="'font-weight: bold; color: ' + ('#198754' if line.performance_trend == 'improving' else ('#0d6efd' if line.performance_trend == 'stable' else '#dc3545'))">
+                                                    <t t-esc="line.trend_badge"/>
+                                                </span>
+                                            </td>
+                                        </tr>
+                                    </t>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <!-- Confidentiality Notice -->
+                        <div style="font-size: 8.5px; color: #64748b; margin-top: 25px; border-top: 1px solid #e2e8f0; padding-top: 6px;">
+                            * Notice: This management analytics report contains aggregated performance statistics, financial metrics, and operational counts. In compliance with patient privacy policies, no patient names, diagnoses, prescriptions, or clinical medical observations are disclosed herein.
+                        </div>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>

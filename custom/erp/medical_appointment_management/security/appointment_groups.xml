@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="0">
+        <!-- Appointment groups (inherit from employee management groups) -->
+        <!-- These groups are defined in medical_employee_management and reused here -->
+    </data>
+</odoo>

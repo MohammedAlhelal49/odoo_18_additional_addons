@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- ========== ADMIN COMMISSION REPORT ========== -->
+        <record id="medical_staff_commission_report_graph" model="ir.ui.view">
+            <field name="name">medical.staff.commission.report.graph</field>
+            <field name="model">medical.staff.commission.report</field>
+            <field name="arch" type="xml">
+                <graph string="Staff Commission Overview" type="bar">
+                    <field name="employee_type" type="row"/>
+                    <field name="total_commission" type="measure" widget="monetary"/>
+                </graph>
+            </field>
+        </record>
+
+        <record id="medical_staff_commission_report_list" model="ir.ui.view">
+            <field name="name">medical.staff.commission.report.list</field>
+            <field name="model">medical.staff.commission.report</field>
+            <field name="arch" type="xml">
+                <list string="Staff Commission Report" create="0" edit="0">
+                    <field name="employee_id" decoration-success="total_appointments > 10" decoration-warning="total_appointments > 5" decoration-muted="total_appointments = 0"/>
+                    <field name="employee_type" widget="badge"/>
+                    <field name="total_appointments" widget="integer"/>
+                    <field name="completed_appointments" widget="integer"/>
+                    <field name="total_revenue" widget="monetary"/>
+                    <field name="total_commission" widget="monetary"/>
+                    <field name="average_commission" widget="monetary"/>
+                </list>
+            </field>
+        </record>
+
+        <record id="medical_staff_commission_report_search" model="ir.ui.view">
+            <field name="name">medical.staff.commission.report.search</field>
+            <field name="model">medical.staff.commission.report</field>
+            <field name="arch" type="xml">
+                <search string="Staff Commission Report">
+                    <field name="employee_id"/>
+                    <field name="employee_type"/>
+                    <separator/>
+                    <filter name="filter_doctor" string="Doctors" domain="[('employee_type', '=', 'doctor')]"/>
+                    <filter name="filter_nurse" string="Nurses" domain="[('employee_type', '=', 'nurse')]"/>
+                    <filter name="filter_receptionist" string="Receptionists" domain="[('employee_type', '=', 'receptionist')]"/>
+                    <filter name="filter_sales" string="Sales Staff" domain="[('employee_type', '=', 'sales')]"/>
+                    <separator/>
+                    <filter name="filter_active" string="Active Staff" domain="[('total_appointments', '&gt;', 0)]"/>
+                    <separator/>
+                    <group string="Group By">
+                        <filter name="group_by_type" string="Staff Type" context="{'group_by': 'employee_type'}"/>
+                        <filter name="group_by_employee" string="Employee" context="{'group_by': 'employee_id'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <record id="action_medical_staff_commission_report" model="ir.actions.act_window">
+            <field name="name">Staff Commission Report</field>
+            <field name="res_model">medical.staff.commission.report</field>
+            <field name="view_mode">graph,list</field>
+            <field name="view_id" ref="medical_staff_commission_report_graph"/>
+            <field name="search_view_id" ref="medical_staff_commission_report_search"/>
+            <field name="context">{
+                'search_default_group_by_type': 1,
+                'search_default_filter_active': 1
+            }</field>
+            <field name="groups">base.group_system</field>
+        </record>
+
+        <!-- ========== DOCTOR PERSONAL REPORT ========== -->
+        <record id="medical_appointment_report_doctor_graph" model="ir.ui.view">
+            <field name="name">medical.appointment.report.doctor.graph</field>
+            <field name="model">medical.appointment.report</field>
+            <field name="arch" type="xml">
+                <graph string="My Appointments &amp; Earnings" type="line" stacked="0">
+                    <field name="appointment_date" type="row" interval="week"/>
+                    <field name="doctor_commission" type="measure" widget="monetary"/>
+                </graph>
+            </field>
+        </record>
+
+        <record id="medical_appointment_report_doctor_list" model="ir.ui.view">
+            <field name="name">medical.appointment.report.doctor.list</field>
+            <field name="model">medical.appointment.report</field>
+            <field name="arch" type="xml">
+                <list string="My Appointments" create="0" edit="0">
+                    <field name="name"/>
+                    <field name="appointment_date"/>
+                    <field name="patient_id"/>
+                    <field name="service_id"/>
+                    <field name="status" widget="badge"/>
+                    <field name="appointment_total" widget="monetary"/>
+                    <field name="doctor_commission" widget="monetary"/>
+                </list>
+            </field>
+        </record>
+
+        <record id="medical_appointment_report_doctor_search" model="ir.ui.view">
+            <field name="name">medical.appointment.report.doctor.search</field>
+            <field name="model">medical.appointment.report</field>
+            <field name="arch" type="xml">
+                <search string="My Appointments">
+                    <field name="name" string="Appointment"/>
+                    <field name="patient_id"/>
+                    <field name="service_id"/>
+                    <field name="appointment_date"/>
+                    <separator/>
+                    <filter name="filter_completed" string="Completed" domain="[('status', '=', 'completed')]"/>
+                    <filter name="filter_pending" string="Pending" domain="[('status', '&lt;&gt;', 'completed')]"/>
+                    <separator/>
+                    <filter name="filter_this_month" string="This Month" domain="[('appointment_date', '&gt;=', context_today().strftime('%Y-%m-01'))]"/>
+                    <filter name="date_filter" string="Appointment Date" date="appointment_date"/>
+                    <separator/>
+                    <group string="Group By">
+                        <filter name="group_by_service" string="Service" context="{'group_by': 'service_id'}"/>
+                        <filter name="group_by_status" string="Status" context="{'group_by': 'status'}"/>
+                        <filter name="group_by_date" string="Appointment Date" context="{'group_by': 'appointment_date:week'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <record id="action_medical_appointment_doctor_report" model="ir.actions.act_window">
+            <field name="name">My Appointments &amp; Earnings</field>
+            <field name="res_model">medical.appointment.report</field>
+            <field name="view_mode">graph,list</field>
+            <field name="view_id" ref="medical_appointment_report_doctor_graph"/>
+            <field name="search_view_id" ref="medical_appointment_report_doctor_search"/>
+            <field name="domain">[('doctor_user_id', '=', uid)]</field>
+            <field name="context">{
+                'search_default_filter_this_month': 1,
+                'search_default_group_by_date': 1
+            }</field>
+            <field name="groups">medical_employee_management.group_medical_doctor</field>
+        </record>
+
+        <!-- ========== SALES COMMISSION REPORT ========== -->
+        <record id="medical_appointment_report_sales_graph" model="ir.ui.view">
+            <field name="name">medical.appointment.report.sales.graph</field>
+            <field name="model">medical.appointment.report</field>
+            <field name="arch" type="xml">
+                <graph string="My Sales Performance" type="bar">
+                    <field name="appointment_date" type="row" interval="month"/>
+                    <field name="sales_commission" type="measure" widget="monetary"/>
+                </graph>
+            </field>
+        </record>
+
+        <record id="medical_appointment_report_sales_list" model="ir.ui.view">
+            <field name="name">medical.appointment.report.sales.list</field>
+            <field name="model">medical.appointment.report</field>
+            <field name="arch" type="xml">
+                <list string="My Leads & Sales" create="0" edit="0">
+                    <field name="name"/>
+                    <field name="appointment_date"/>
+                    <field name="patient_id"/>
+                    <field name="service_id"/>
+                    <field name="status" widget="badge" decoration-success="status = 'completed'" decoration-danger="status = 'cancelled'"/>
+                    <field name="appointment_total" widget="monetary"/>
+                    <field name="sales_commission" widget="monetary"/>
+                </list>
+            </field>
+        </record>
+
+        <record id="medical_appointment_report_sales_search" model="ir.ui.view">
+            <field name="name">medical.appointment.report.sales.search</field>
+            <field name="model">medical.appointment.report</field>
+            <field name="arch" type="xml">
+                <search string="My Sales">
+                    <field name="name" string="Appointment"/>
+                    <field name="patient_id"/>
+                    <field name="service_id"/>
+                    <field name="appointment_date"/>
+                    <separator/>
+                    <filter name="filter_booked" string="Booked (Completed)" domain="[('status', '=', 'completed')]"/>
+                    <filter name="filter_pending" string="Pending" domain="[('status', 'in', ['tentative', 'confirmed', 'checked_in', 'ready_for_doctor', 'in_consultation'])]"/>
+                    <filter name="filter_lost" string="Lost (Cancelled/No-show)" domain="[('status', 'in', ['cancelled', 'no_show'])]"/>
+                    <separator/>
+                    <filter name="filter_this_month" string="This Month" domain="[('appointment_date', '&gt;=', context_today().strftime('%Y-%m-01'))]"/>
+                    <filter name="date_filter" string="Appointment Date" date="appointment_date"/>
+                    <separator/>
+                    <group string="Group By">
+                        <filter name="group_by_service" string="Service" context="{'group_by': 'service_id'}"/>
+                        <filter name="group_by_status" string="Status" context="{'group_by': 'status'}"/>
+                        <filter name="group_by_date" string="Month" context="{'group_by': 'appointment_date:month'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <record id="action_medical_appointment_sales_report" model="ir.actions.act_window">
+            <field name="name">My Sales Performance</field>
+            <field name="res_model">medical.appointment.report</field>
+            <field name="view_mode">graph,list</field>
+            <field name="view_id" ref="medical_appointment_report_sales_graph"/>
+            <field name="search_view_id" ref="medical_appointment_report_sales_search"/>
+            <field name="domain">[('sales_employee_id.user_id', '=', uid)]</field>
+            <field name="context">{
+                'search_default_filter_this_month': 1,
+                'search_default_group_by_date': 1
+            }</field>
+            <field name="groups">medical_employee_management.group_medical_sales</field>
+        </record>
+    </data>
+</odoo>

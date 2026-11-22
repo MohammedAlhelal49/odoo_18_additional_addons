@@ -1,0 +1,482 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Medical Appointment Form View -->
+        <record id="medical_appointment_form_view" model="ir.ui.view">
+            <field name="name">medical.appointment.form</field>
+            <field name="model">medical.appointment</field>
+            <field name="arch" type="xml">
+                <form string="Appointment">
+                    <header>
+                        <button name="action_confirm_appointment" type="object" string="Confirm"
+                                invisible="status != 'tentative'" class="oe_highlight"
+                                groups="medical_employee_management.group_medical_receptionist"/>
+                        <button name="action_check_in" type="object" string="✓ Check In Patient (within 15 mins)"
+                                invisible="(status not in ('tentative', 'confirmed') or not can_receptionist_checkin) and not (is_started and status in ('tentative', 'confirmed'))" class="oe_highlight"
+                                groups="medical_employee_management.group_medical_receptionist"/>
+                        <button name="action_ready_for_doctor" type="object" string="✓ Mark Ready for Doctor (within 10 mins)"
+                                invisible="(status != 'checked_in' or not can_nurse_mark_ready) and not (is_started and status in ('tentative', 'confirmed', 'checked_in'))" class="oe_highlight"
+                                groups="medical_employee_management.group_medical_nurse"/>
+                        <button name="action_start_consultation" type="object" string="✓ Start Consultation (within 5 mins)"
+                                invisible="(status not in ('ready_for_doctor', 'checked_in', 'confirmed', 'tentative') or not can_doctor_start_consultation) and not (is_started and status in ('tentative', 'confirmed', 'checked_in', 'ready_for_doctor'))" class="oe_highlight"
+                                groups="medical_employee_management.group_medical_doctor"/>
+                        <button name="action_complete" type="object" string="Complete Consultation"
+                                invisible="status != 'in_consultation'" class="oe_highlight"
+                                groups="medical_employee_management.group_medical_doctor"/>
+                        <button name="action_no_show" type="object" string="Mark No-Show"
+                                invisible="status in ('completed', 'cancelled', 'no_show')"
+                                groups="medical_employee_management.group_medical_receptionist"/>
+                        <button name="action_cancel" type="object" string="Cancel"
+                                invisible="status in ('completed', 'cancelled')"
+                                groups="medical_employee_management.group_medical_receptionist"/>
+                        <button name="action_open_reschedule_wizard" type="object" string="Reschedule"
+                                invisible="status not in ('tentative', 'confirmed') or is_started or is_time_passed"
+                                class="btn-outline-warning" icon="fa-calendar"/>
+                        <button name="action_open_patient_record" type="object" string="Patient Details &amp; History"
+                                class="btn-outline-info" icon="fa-user-md" invisible="not patient_id"/>
+                        <field name="status" widget="statusbar" statusbar_visible="tentative,confirmed,checked_in,ready_for_doctor,in_consultation,completed" invisible="not id"/>
+                    </header>
+                    <sheet>
+                        <field name="is_started" invisible="1"/>
+                        <field name="is_time_passed" invisible="1"/>
+                        <field name="can_doctor_start_consultation" invisible="1"/>
+                        <field name="can_doctor_complete_consultation" invisible="1"/>
+                        <field name="can_receptionist_confirm" invisible="1"/>
+                        <field name="can_receptionist_checkin" invisible="1"/>
+                        <field name="can_nurse_mark_ready" invisible="1"/>
+                        <field name="action_message" invisible="1"/>
+                        <widget name="web_ribbon" title="Past Time" bg_color="text-bg-secondary" invisible="not is_time_passed"/>
+                        <widget name="web_ribbon" title="In Progress" bg_color="text-bg-warning" invisible="not is_started or is_time_passed or status in ('completed', 'cancelled', 'no_show')"/>
+
+                        <!-- Countdown Display -->
+                        <div class="alert alert-primary py-3 mb-2 d-flex align-items-center" role="alert" invisible="not appointment_datetime_start">
+                            <i class="fa fa-clock-o me-2 fs-4" title="Countdown" role="img" aria-label="Countdown"/>
+                            <div>
+                                <h5 class="mb-0"><field name="appointment_status_display" nolabel="1"/></h5>
+                            </div>
+                        </div>
+
+                        <!-- Appointment Locked Alert -->
+                        <div class="alert alert-secondary py-2 mb-2 d-flex align-items-center" role="alert" invisible="not is_time_passed">
+                            <i class="fa fa-lock me-2 fs-5" title="Locked" role="img" aria-label="Locked"/>
+                            <div>
+                                <strong>Appointment Locked:</strong> This appointment has passed its scheduled time. Editing is disabled.
+                            </div>
+                        </div>
+                        <div class="alert alert-warning py-2 mb-2 d-flex align-items-center" role="alert" invisible="not is_started or is_time_passed">
+                            <i class="fa fa-clock-o me-2 fs-5" title="In Progress" role="img" aria-label="In Progress"/>
+                            <div>
+                                <strong>Appointment Started:</strong> Booking details, schedule date/time, doctor, and patient cannot be modified.
+                            </div>
+                        </div>
+
+                        <!-- Action Message with Dynamic Countdown -->
+                        <div class="alert alert-warning py-3 mb-2 d-flex align-items-center" role="alert" invisible="not action_message">
+                            <i class="fa fa-info-circle me-2 fs-5" title="Action Status" role="img" aria-label="Action Status"/>
+                            <div>
+                                <h5 class="mb-0"><field name="action_message" nolabel="1"/></h5>
+                            </div>
+                        </div>
+
+                        <div class="oe_button_box" name="button_box">
+                            <button name="action_open_patient_record" type="object" class="oe_stat_button" icon="fa-id-card-o"
+                                    invisible="not patient_id">
+                                <div class="o_stat_info">
+                                    <span class="o_stat_value"><field name="patient_history_count"/></span>
+                                    <span class="o_stat_text">Past Visits</span>
+                                </div>
+                            </button>
+                        </div>
+                        <div class="oe_title">
+                            <h1>
+                                <field name="name" readonly="1"/>
+                            </h1>
+                        </div>
+                        <group>
+                            <group string="Appointment Details">
+                                <field name="patient_id" required="1" readonly="is_started or is_time_passed"/>
+                                <field name="doctor_id" required="1" readonly="is_started or is_time_passed"/>
+                                <field name="service_id" readonly="is_started or is_time_passed"/>
+                                <field name="medical_service" readonly="is_started or is_time_passed"/>
+                                <field name="appointment_date" required="1" readonly="is_started or is_time_passed"/>
+                                <field name="appointment_time" readonly="is_started or is_time_passed"/>
+                                <field name="estimated_duration" readonly="is_started or is_time_passed"/>
+                            </group>
+                            <group string="Attribution">
+                                <field name="lead_id" readonly="is_started or is_time_passed"/>
+                                <field name="created_by_sales" readonly="1"/>
+                                <field name="source_type" readonly="is_started or is_time_passed"/>
+                                <field name="marketing_platform" readonly="is_started or is_time_passed"/>
+                                <field name="campaign_name" readonly="is_started or is_time_passed"/>
+                            </group>
+                        </group>
+
+                        <notebook>
+                            <page string="Reception" name="reception">
+                                <group>
+                                    <group string="Confirmation">
+                                        <field name="confirmation_call_status" readonly="is_started or is_time_passed"/>
+                                    </group>
+                                    <group string="Check-In">
+                                        <field name="checked_in_date"/>
+                                        <field name="checked_in_by"/>
+                                    </group>
+                                </group>
+                            </page>
+
+                            <page string="Nurse Triage" name="triage">
+                                <group string="Vital Signs" readonly="is_time_passed or status in ('ready_for_doctor', 'in_consultation', 'completed', 'cancelled', 'no_show')">
+                                    <group>
+                                        <field name="vital_blood_pressure_systolic"/>
+                                        <field name="vital_blood_pressure_diastolic"/>
+                                        <field name="vital_temperature"/>
+                                        <field name="vital_heart_rate"/>
+                                    </group>
+                                    <group>
+                                        <field name="vital_respiratory_rate"/>
+                                        <field name="vital_oxygen_saturation"/>
+                                        <field name="vital_height"/>
+                                        <field name="vital_weight"/>
+                                    </group>
+                                    <group>
+                                        <field name="vital_bmi"/>
+                                        <field name="vital_blood_sugar"/>
+                                        <field name="vitals_recorded_by"/>
+                                    </group>
+                                </group>
+                                <field name="nurse_notes" placeholder="Triage notes, presenting symptoms, patient readiness..."
+                                       readonly="is_time_passed or status in ('ready_for_doctor', 'in_consultation', 'completed', 'cancelled', 'no_show')"/>
+                            </page>
+
+                            <page string="Clinical" name="clinical">
+                                <group>
+                                    <group>
+                                        <field name="mrn"/>
+                                        <field name="consultation_started_date"/>
+                                        <field name="consultation_completed_date"/>
+                                    </group>
+                                </group>
+                                <field name="diagnosis" placeholder="Clinical findings and diagnosis..."
+                                       readonly="is_time_passed or status in ('completed', 'cancelled', 'no_show')"/>
+                                <field name="prescription" placeholder="Medications and prescriptions..."
+                                       readonly="is_time_passed or status in ('completed', 'cancelled', 'no_show')"/>
+                                <field name="treatment_plan" placeholder="Treatment plan and instructions..."
+                                       readonly="is_time_passed or status in ('completed', 'cancelled', 'no_show')"/>
+                                <field name="doctor_notes" placeholder="Confidential doctor notes..."
+                                       readonly="is_time_passed or status in ('completed', 'cancelled', 'no_show')"/>
+                            </page>
+
+                            <page string="Billing &amp; Commission" name="billing">
+                                <group readonly="is_time_passed">
+                                    <group>
+                                        <field name="appointment_total"/>
+                                        <field name="invoice_id"/>
+                                    </group>
+                                </group>
+                                <group string="Commissions" readonly="is_time_passed">
+                                    <field name="sales_commission_id"/>
+                                    <field name="reception_commission_id"/>
+                                    <field name="nurse_commission_id"/>
+                                    <field name="doctor_commission_id"/>
+                                </group>
+                            </page>
+
+                            <page string="Patient History" name="patient_history" invisible="not patient_id">
+                                <div class="alert alert-info d-flex justify-content-between align-items-center" role="status">
+                                    <span>Detailed medical history and clinical records for this patient.</span>
+                                    <button name="action_open_patient_record" type="object" string="Open Full Patient Record" class="btn btn-primary btn-sm" icon="fa-external-link"/>
+                                </div>
+                                <field name="patient_history_ids" readonly="1">
+                                    <list string="Previous Appointments" create="0" delete="0">
+                                        <field name="name"/>
+                                        <field name="appointment_date"/>
+                                        <field name="doctor_id"/>
+                                        <field name="service_id"/>
+                                        <field name="status"/>
+                                        <field name="diagnosis"/>
+                                    </list>
+                                </field>
+                            </page>
+
+                            <page string="Documents" name="documents">
+                                <field name="document_ids">
+                                    <list string="Documents" create="1" edit="1" delete="1">
+                                        <field name="name"/>
+                                        <field name="document_type" widget="badge"/>
+                                        <field name="created_by"/>
+                                    </list>
+                                </field>
+                            </page>
+                        </notebook>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids"/>
+                        <field name="activity_ids"/>
+                        <field name="message_ids"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+        <!-- Medical Appointment List View -->
+        <record id="medical_appointment_list_view" model="ir.ui.view">
+            <field name="name">medical.appointment.list</field>
+            <field name="model">medical.appointment</field>
+            <field name="arch" type="xml">
+                <list string="Appointments" create="1">
+                    <field name="name"/>
+                    <field name="patient_id"/>
+                    <field name="doctor_id"/>
+                    <field name="service_id" optional="show"/>
+                    <field name="appointment_date"/>
+                    <field name="appointment_time" widget="float_time"/>
+                    <field name="is_started" column_invisible="True"/>
+                    <field name="is_time_passed" column_invisible="True"/>
+                    <field name="status" decoration-info="status == 'tentative'" 
+                           decoration-success="status == 'confirmed'"
+                           decoration-warning="status in ('checked_in', 'ready_for_doctor')"
+                           decoration-muted="is_time_passed or status == 'completed'"
+                           decoration-danger="status in ('cancelled', 'no_show')"/>
+                    <button name="action_open_patient_record" type="object" string="Patient Details" icon="fa-id-card-o" title="View Patient Details &amp; History"/>
+                </list>
+            </field>
+        </record>
+
+        <!-- Medical Appointment Search View -->
+        <record id="medical_appointment_search_view" model="ir.ui.view">
+            <field name="name">medical.appointment.search</field>
+            <field name="model">medical.appointment</field>
+            <field name="arch" type="xml">
+                <search string="Appointments">
+                    <field name="name"/>
+                    <field name="patient_id"/>
+                    <field name="doctor_id"/>
+                    <field name="appointment_date"/>
+                    <separator/>
+                    <filter name="filter_tentative" string="Tentative" domain="[('status', '=', 'tentative')]"/>
+                    <filter name="filter_confirmed" string="Confirmed" domain="[('status', '=', 'confirmed')]"/>
+                    <filter name="filter_checked_in" string="Checked In" domain="[('status', '=', 'checked_in')]"/>
+                    <filter name="filter_ready" string="Ready for Doctor" domain="[('status', '=', 'ready_for_doctor')]"/>
+                    <filter name="filter_in_consultation" string="In Consultation" domain="[('status', '=', 'in_consultation')]"/>
+                    <filter name="filter_completed" string="Completed" domain="[('status', '=', 'completed')]"/>
+                    <filter name="filter_no_show" string="No-Show" domain="[('status', '=', 'no_show')]"/>
+                    <filter name="filter_cancelled" string="Cancelled" domain="[('status', '=', 'cancelled')]"/>
+                    <separator/>
+                    <filter name="filter_started" string="Started" domain="[('is_started', '=', True)]"/>
+                    <filter name="filter_time_passed" string="Time Passed (Locked)" domain="[('is_time_passed', '=', True)]"/>
+                    <filter name="filter_editable" string="Active / Editable" domain="[('is_time_passed', '=', False), ('status', 'not in', ['completed', 'cancelled', 'no_show'])]"/>
+                    <separator/>
+                    <filter name="filter_today" string="Today" domain="[('appointment_date', '=', context_today().strftime('%Y-%m-%d'))]"/>
+                    <filter name="filter_this_week" string="This Week" domain="[('appointment_date', '&gt;=', context_today().strftime('%Y-%m-%d')), ('appointment_date', '&lt;=', (context_today() + datetime.timedelta(days=7)).strftime('%Y-%m-%d'))]"/>
+                    <filter name="date_filter" string="Appointment Date" date="appointment_date"/>
+                    <filter name="filter_this_month" string="Current Month" domain="[('appointment_date', '&gt;=', context_today().strftime('%Y-%m-01'))]"/>
+                    <filter name="filter_this_year" string="This Year" domain="[('appointment_date', '&gt;=', context_today().strftime('%Y-01-01')), ('appointment_date', '&lt;=', context_today().strftime('%Y-12-31'))]"/>
+                    <separator/>
+                    <group expand="0" string="Group By">
+                        <filter name="group_by_doctor" string="Doctor" context="{'group_by': 'doctor_id'}"/>
+                        <filter name="group_by_nurse" string="Triage Nurse" context="{'group_by': 'nurse_id'}"/>
+                        <filter name="group_by_sales" string="Sales Employee" context="{'group_by': 'sales_employee_id'}"/>
+                        <filter name="group_by_receptionist" string="Receptionist" context="{'group_by': 'receptionist_id'}"/>
+                        <filter name="group_by_status" string="Status" context="{'group_by': 'status'}"/>
+                        <filter name="group_by_service" string="Service" context="{'group_by': 'service_id'}"/>
+                        <filter name="group_by_date" string="Appointment Month" context="{'group_by': 'appointment_date:month'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <!-- Medical Appointment Graph View: Staff & Appointment Production -->
+        <record id="view_medical_appointment_graph" model="ir.ui.view">
+            <field name="name">medical.appointment.graph</field>
+            <field name="model">medical.appointment</field>
+            <field name="arch" type="xml">
+                <graph string="Appointments by Staff" type="bar" sample="1">
+                    <field name="doctor_id"/>
+                    <field name="status"/>
+                    <field name="appointment_total" type="measure"/>
+                </graph>
+            </field>
+        </record>
+
+        <!-- Medical Appointment Pivot View: Staff & Production Analysis -->
+        <record id="view_medical_appointment_pivot" model="ir.ui.view">
+            <field name="name">medical.appointment.pivot</field>
+            <field name="model">medical.appointment</field>
+            <field name="arch" type="xml">
+                <pivot string="Appointments &amp; Staff Analysis" sample="1">
+                    <field name="doctor_id" type="row"/>
+                    <field name="status" type="col"/>
+                    <field name="appointment_total" type="measure"/>
+                    <field name="commission_amount" type="measure"/>
+                </pivot>
+            </field>
+        </record>
+
+        <!-- Medical Appointment Financial Graph View -->
+        <record id="view_medical_appointment_financial_graph" model="ir.ui.view">
+            <field name="name">medical.appointment.financial.graph</field>
+            <field name="model">medical.appointment</field>
+            <field name="arch" type="xml">
+                <graph string="Financial &amp; Revenue Chart" type="bar" sample="1">
+                    <field name="appointment_date" interval="month"/>
+                    <field name="doctor_id"/>
+                    <field name="appointment_total" type="measure"/>
+                    <field name="commission_amount" type="measure"/>
+                </graph>
+            </field>
+        </record>
+
+        <!-- Medical Appointment Financial Pivot View -->
+        <record id="view_medical_appointment_financial_pivot" model="ir.ui.view">
+            <field name="name">medical.appointment.financial.pivot</field>
+            <field name="model">medical.appointment</field>
+            <field name="arch" type="xml">
+                <pivot string="Financial &amp; Revenue Analysis" sample="1">
+                    <field name="doctor_id" type="row"/>
+                    <field name="service_id" type="row"/>
+                    <field name="appointment_date" interval="month" type="col"/>
+                    <field name="appointment_total" type="measure"/>
+                    <field name="commission_amount" type="measure"/>
+                </pivot>
+            </field>
+        </record>
+
+        <!-- Medical Appointment Calendar View -->
+        <record id="view_medical_appointment_calendar" model="ir.ui.view">
+            <field name="name">medical.appointment.calendar</field>
+            <field name="model">medical.appointment</field>
+            <field name="arch" type="xml">
+                <calendar string="Appointments"
+                          date_start="appointment_datetime_start"
+                          date_stop="appointment_datetime_end"
+                          color="doctor_id"
+                          mode="week"
+                          scales="day,week,month"
+                          event_open_popup="true"
+                          quick_create="true">
+                    <field name="calendar_display" string="Appointment"/>
+                    <field name="patient_id" string="Patient" avatar_field="avatar_128"/>
+                    <field name="doctor_id" avatar_field="avatar_128"/>
+                    <field name="service_id" string="Service"/>
+                    <field name="medical_service" string="Services"/>
+                    <field name="appointment_time" widget="float_time"/>
+                    <field name="status" widget="badge"/>
+                </calendar>
+            </field>
+        </record>
+
+        <!-- Action: All Medical Appointments -->
+        <record id="action_medical_appointments" model="ir.actions.act_window">
+            <field name="name">All Appointments</field>
+            <field name="res_model">medical.appointment</field>
+            <field name="view_mode">calendar,list,kanban,graph,pivot,form</field>
+            <field name="search_view_id" ref="medical_appointment_search_view"/>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Create a new appointment
+                </p>
+            </field>
+        </record>
+
+        <!-- Action: Appointments & Staff Analysis (Reporting) -->
+        <record id="action_medical_appointment_report_analysis" model="ir.actions.act_window">
+            <field name="name">Appointments by Staff</field>
+            <field name="res_model">medical.appointment</field>
+            <field name="view_mode">graph,pivot,list,form</field>
+            <field name="search_view_id" ref="medical_appointment_search_view"/>
+            <field name="context">{
+                'search_default_filter_this_month': 1,
+                'search_default_group_by_doctor': 1,
+            }</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    No appointments found to display analysis.
+                </p>
+            </field>
+        </record>
+
+        <!-- Action: Financial & Revenue Analysis (Reporting) -->
+        <record id="action_medical_appointment_financial_analysis" model="ir.actions.act_window">
+            <field name="name">Financial &amp; Revenue Chart</field>
+            <field name="res_model">medical.appointment</field>
+            <field name="view_mode">graph,pivot,list,form</field>
+            <field name="view_ids" eval="[(5, 0, 0),
+                (0, 0, {'view_mode': 'graph', 'view_id': ref('view_medical_appointment_financial_graph')}),
+                (0, 0, {'view_mode': 'pivot', 'view_id': ref('view_medical_appointment_financial_pivot')}),
+                (0, 0, {'view_mode': 'list', 'view_id': ref('medical_appointment_list_view')})]"/>
+            <field name="search_view_id" ref="medical_appointment_search_view"/>
+            <field name="context">{
+                'search_default_filter_this_month': 1,
+                'search_default_group_by_doctor': 1,
+            }</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    No financial data found to display analysis.
+                </p>
+            </field>
+        </record>
+
+        <!-- Action: Today's Appointments -->
+        <record id="action_today_appointments" model="ir.actions.act_window">
+            <field name="name">Today's Appointments</field>
+            <field name="res_model">medical.appointment</field>
+            <field name="view_mode">calendar,list,kanban,form</field>
+            <field name="domain">[('appointment_date', '=', context_today().strftime('%Y-%m-%d'))]</field>
+            <field name="context">{'default_appointment_date': context_today().strftime('%Y-%m-%d')}</field>
+            <field name="search_view_id" ref="medical_appointment_search_view"/>
+        </record>
+
+        <!-- Action: Reception Queue -->
+        <record id="action_reception_queue" model="ir.actions.act_window">
+            <field name="name">Reception Queue</field>
+            <field name="res_model">medical.appointment</field>
+            <field name="view_mode">list,form,kanban</field>
+            <field name="domain">[('status', 'in', ['tentative', 'confirmed']), ('appointment_date', '=', context_today().strftime('%Y-%m-%d'))]</field>
+            <field name="context">{'search_default_filter_today': 1}</field>
+            <field name="search_view_id" ref="medical_appointment_search_view"/>
+        </record>
+
+        <!-- Action: Nurse Triage Queue -->
+        <record id="action_nurse_queue" model="ir.actions.act_window">
+            <field name="name">Nurse Triage Queue</field>
+            <field name="res_model">medical.appointment</field>
+            <field name="view_mode">list,form,kanban</field>
+            <field name="domain">[('status', '=', 'checked_in'), ('appointment_date', '=', context_today().strftime('%Y-%m-%d'))]</field>
+            <field name="context">{'search_default_filter_checked_in': 1, 'search_default_filter_today': 1}</field>
+            <field name="search_view_id" ref="medical_appointment_search_view"/>
+        </record>
+
+        <!-- Action: Doctor Consultation Queue -->
+        <record id="action_doctor_queue" model="ir.actions.act_window">
+            <field name="name">Doctor Consultation Queue</field>
+            <field name="res_model">medical.appointment</field>
+            <field name="view_mode">list,form,kanban</field>
+            <field name="domain">[('status', 'in', ['ready_for_doctor', 'in_consultation']), ('appointment_date', '=', context_today().strftime('%Y-%m-%d'))]</field>
+            <field name="context">{'search_default_filter_ready': 1, 'search_default_filter_today': 1}</field>
+            <field name="search_view_id" ref="medical_appointment_search_view"/>
+        </record>
+
+        <!-- Action: Book / Add Appointment (Direct Form View) -->
+        <record id="action_new_appointment" model="ir.actions.act_window">
+            <field name="name">Book Appointment</field>
+            <field name="res_model">medical.appointment</field>
+            <field name="view_mode">form</field>
+            <field name="target">current</field>
+            <field name="context">{'default_status': 'tentative'}</field>
+        </record>
+
+        <!-- Server Action: Cancel Selected Appointments -->
+        <record id="action_server_cancel_appointment" model="ir.actions.server">
+            <field name="name">Cancel Appointment</field>
+            <field name="model_id" ref="model_medical_appointment"/>
+            <field name="binding_model_id" ref="model_medical_appointment"/>
+            <field name="binding_view_types">list,form</field>
+            <field name="state">code</field>
+            <field name="code">
+for rec in records:
+    if rec.status not in ('completed', 'cancelled'):
+        rec.action_cancel()
+            </field>
+        </record>
+    </data>
+</odoo>

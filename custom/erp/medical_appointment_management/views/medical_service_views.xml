@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Medical Service List View -->
+    <record id="view_medical_service_tree" model="ir.ui.view">
+        <field name="name">medical.service.list</field>
+        <field name="model">medical.service</field>
+        <field name="arch" type="xml">
+            <list string="Medical Services" decoration-muted="not active">
+                <field name="name"/>
+                <field name="code"/>
+                <field name="category"/>
+                <field name="price" widget="monetary"/>
+                <field name="discount" string="Discount %"/>
+                <field name="final_price" widget="monetary" string="Net Price"/>
+                <field name="duration_minutes" string="Duration (Min)"/>
+                <field name="period_between_sessions" string="Wait Days Between Sessions"/>
+                <field name="active" widget="boolean_toggle"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Medical Service Form View -->
+    <record id="view_medical_service_form" model="ir.ui.view">
+        <field name="name">medical.service.form</field>
+        <field name="model">medical.service</field>
+        <field name="arch" type="xml">
+            <form string="Medical Service">
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                    </div>
+                    <widget name="web_ribbon" title="Archived" bg_color="text-bg-danger" invisible="active"/>
+                    <div class="oe_title">
+                        <label for="name" string="Service Name"/>
+                        <h1>
+                            <field name="name" placeholder="e.g. Laser Skin Resurfacing, Cardiology Consultation..."/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group string="Service Identification">
+                            <field name="code" placeholder="e.g. MED-DERM-01"/>
+                            <field name="category"/>
+                            <field name="active"/>
+                        </group>
+                        <group string="Pricing &amp; Discounts">
+                            <field name="price" widget="monetary"/>
+                            <field name="discount"/>
+                            <field name="final_price" widget="monetary" readonly="1"/>
+                            <field name="product_id" options="{'no_create': True}"/>
+                        </group>
+                    </group>
+                    <group>
+                        <group string="Clinical Session Rules">
+                            <field name="duration" widget="float_time"/>
+                            <field name="duration_minutes"/>
+                            <field name="period_between_sessions"/>
+                        </group>
+                        <group string="Authorized Staff">
+                            <field name="doctor_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Description &amp; Instructions" name="description">
+                            <field name="description" placeholder="Preparation instructions, clinical guidelines, notes for sales team..."/>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Medical Service Search View -->
+    <record id="view_medical_service_search" model="ir.ui.view">
+        <field name="name">medical.service.search</field>
+        <field name="model">medical.service</field>
+        <field name="arch" type="xml">
+            <search string="Search Medical Services">
+                <field name="name"/>
+                <field name="code"/>
+                <field name="category"/>
+                <filter name="active_services" string="Active" domain="[('active', '=', True)]"/>
+                <filter name="archived_services" string="Archived" domain="[('active', '=', False)]"/>
+                <separator/>
+                <filter name="discounted" string="Has Discount" domain="[('discount', '>', 0)]"/>
+                <group expand="0" string="Group By">
+                    <filter string="Category" name="group_by_category" context="{'group_by': 'category'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Action for Medical Services -->
+    <record id="action_medical_service" model="ir.actions.act_window">
+        <field name="name">Medical Services</field>
+        <field name="res_model">medical.service</field>
+        <field name="view_mode">list,form</field>
+        <field name="search_view_id" ref="view_medical_service_search"/>
+        <field name="context">{'search_default_active_services': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create your first Medical Service!
+            </p>
+            <p>
+                Configure clinical services, session durations, discounts, and treatment intervals.
+            </p>
+        </field>
+    </record>
+</odoo>

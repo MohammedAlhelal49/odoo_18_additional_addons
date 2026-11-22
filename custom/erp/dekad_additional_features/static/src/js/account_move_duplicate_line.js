@@ -2,6 +2,9 @@
 
 import { registry } from "@web/core/registry";
 
+// States of the parent journal entry / invoice in which lines can still be duplicated
+const ALLOWED_COPY_STATES = ["draft"];
+
 const fieldRegistry = registry.category("fields");
 const amlO2M = fieldRegistry.get("one2many");
 
@@ -22,8 +25,23 @@ function formatDate(value) {
 }
 
 class AccountMoveLineListRendererWithCopy extends amlO2M.component.components.ListRenderer {
+    /**
+     * The copy button is only allowed while the document is still a draft
+     * (allowed states below) and the lines are editable. Once it is
+     * confirmed / posted, duplicating lines is not allowed.
+     */
+    canCopyRecord() {
+        if (this.props.readonly || !this.props.activeActions?.create) {
+            return false;
+        }
+        const state = this.props.list.evalContext.parent?.state;
+        return ALLOWED_COPY_STATES.includes(state);
+    }
 
     async onCopyRecord(record) {
+        if (!this.canCopyRecord()) {
+            return;
+        }
         const r = record.data;
 
         const context = {
