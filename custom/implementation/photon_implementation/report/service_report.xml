@@ -1,0 +1,267 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Full-width page: the header/footer artwork already carries its own side margins -->
+    <record id="paperformat_photon_form" model="report.paperformat">
+        <field name="name">Photon Form (A4)</field>
+        <field name="format">A4</field>
+        <field name="orientation">Portrait</field>
+        <field name="margin_top">48</field>
+        <field name="margin_bottom">22</field>
+        <field name="margin_left">0</field>
+        <field name="margin_right">0</field>
+        <field name="header_line" eval="False"/>
+        <field name="header_spacing">31</field>
+        <field name="disable_shrinking" eval="True"/>
+        <field name="dpi">96</field>
+    </record>
+
+    <record id="action_report_photon_service_report" model="ir.actions.report">
+        <field name="name">Customer Service Report</field>
+        <field name="model">photon.service.report</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">photon_implementation.report_photon_service_report</field>
+        <field name="report_file">photon_implementation.report_photon_service_report</field>
+        <field name="print_report_name">'Service Report - %s' % object.name.replace('/', '-')</field>
+        <field name="paperformat_id" ref="paperformat_photon_form"/>
+        <field name="binding_model_id" ref="model_photon_service_report"/>
+        <field name="binding_type">report</field>
+    </record>
+
+    <!-- Square check box used across the Photon forms -->
+    <template id="photon_check_box">
+        <span class="ph-box"><t t-if="checked">&#10003;</t></span>
+    </template>
+
+    <template id="photon_form_fonts">
+        <style>
+            @font-face { font-family: 'Photon Serif'; font-weight: normal; src: url('/photon_implementation/static/src/fonts/LiberationSerif-Regular.ttf') format('truetype'); }
+            @font-face { font-family: 'Photon Serif'; font-weight: bold; src: url('/photon_implementation/static/src/fonts/LiberationSerif-Bold.ttf') format('truetype'); }
+        </style>
+    </template>
+
+    <!-- Layout of the Photon paper forms: the letterhead artwork of the printed form -->
+    <template id="photon_form_layout">
+        <div class="header" style="margin: 0; padding: 0;">
+            <style>html, body, body.container { margin: 0 !important; padding: 0 !important; max-width: none !important; }</style>
+            <img src="/photon_implementation/static/src/img/csr_header.png" style="width: 100%; display: block;" alt="Header"/>
+        </div>
+        <div class="article" t-att-data-oe-model="o and o._name" t-att-data-oe-id="o and o.id" t-att-data-oe-lang="o and o.env.context.get('lang')">
+            <t t-call="photon_implementation.photon_form_fonts"/>
+            <t t-out="0"/>
+        </div>
+        <div class="footer" style="margin: 0; padding: 0;">
+            <style>html, body, body.container { margin: 0 !important; padding: 0 !important; max-width: none !important; }</style>
+            <img src="/photon_implementation/static/src/img/csr_footer.png" style="width: 100%; display: block;" alt="Footer"/>
+        </div>
+    </template>
+
+    <template id="photon_csr_styles">
+        <style>
+            body.o_body_pdf, body.container { padding-left: 0 !important; padding-right: 0 !important; margin: 0 !important; max-width: none !important; }
+            .ph-csr { position: relative; margin: 0 17.9mm 0 20.3mm; font-family: 'Photon Serif', 'Liberation Serif', 'Times New Roman', serif; font-size: 12pt; color: #000; }
+            .ph-csr .ph-title { text-align: center; font-weight: bold; font-size: 18pt; line-height: 1; margin: 1.5mm 0 4mm 0; position: relative; }
+            .ph-csr .ph-ref { position: absolute; right: 0; bottom: 0; font-size: 8.5pt; font-weight: normal; }
+            .ph-csr table { width: 100%; border-collapse: collapse; table-layout: fixed; margin: 0; }
+            .ph-csr td { font-size: 12pt; border: 0.3mm solid #000; padding: 0.6mm 2mm; vertical-align: top; background-color: transparent; line-height: 1.15; }
+            .ph-csr table.ph-blk { border: 0.75mm solid #000; }
+            .ph-csr .bl { border-left: 0.75mm solid #000; }
+            .ph-csr .bt { border-top: 0.75mm solid #000; }
+            .ph-csr .bb { border-bottom: 0.75mm solid #000; }
+            .ph-csr .ph-lbl { font-weight: bold; }
+            .ph-csr .ph-val, .ph-csr td.ph-val { font-weight: normal; font-size: 10.5pt; }
+            .ph-csr .ph-small, .ph-csr td.ph-small { font-size: 9pt; }
+            .ph-csr .ph-tiny { font-size: 7pt; line-height: 1.1; }
+            .ph-csr .ph-chk { font-weight: bold; vertical-align: bottom; padding-left: 5.3mm; white-space: nowrap; }
+            .ph-csr .ph-box { display: inline-block; width: 4.2mm; height: 4.2mm; border: 1px solid #666; margin-right: 3.2mm; vertical-align: 0; text-align: center; line-height: 4.2mm; font-family: 'DejaVu Sans', sans-serif; font-size: 9pt; font-weight: bold; }
+            .ph-csr .ph-chk .ph-box { vertical-align: 0; }
+            .ph-csr .ph-rule { border-bottom: 0.3mm solid #000; min-height: 6mm; line-height: 4.6mm; padding-top: 1.2mm; -webkit-box-sizing: border-box; box-sizing: border-box; }
+            .ph-csr .ph-rule .ph-val { padding-left: 1mm; }
+            .ph-csr .ph-wm { position: absolute; top: 78.1mm; left: 1.4mm; width: 171mm; max-width: none; z-index: 0; }
+            .ph-csr table.ph-blk, .ph-csr .ph-title { position: relative; z-index: 1; }
+        </style>
+    </template>
+
+    <!-- A label followed by ruled writing lines, the value written on them -->
+    <template id="photon_ruled_text">
+        <t t-set="text_lines" t-value="(text or '').splitlines()"/>
+        <t t-foreach="range(max(rows, len(text_lines) + 1))" t-as="i">
+            <div class="ph-rule">
+                <span t-if="i == 0" class="ph-lbl" t-esc="label"/>
+                <span t-if="0 &lt; i &lt;= len(text_lines)" class="ph-val" t-esc="text_lines[i - 1]"/>
+            </div>
+        </t>
+    </template>
+
+    <template id="report_photon_service_report_document">
+        <t t-call="photon_implementation.photon_form_layout">
+            <t t-set="o" t-value="o.with_context(lang=o.partner_id.lang or o.env.lang)"/>
+            <t t-set="local_dt" t-value="o.report_date and context_timestamp(o.report_date)"/>
+            <t t-set="addr" t-value="(o.address or '').splitlines()"/>
+            <t t-call="photon_implementation.photon_csr_styles"/>
+            <div class="page ph-csr">
+                <img class="ph-wm" src="/photon_implementation/static/src/img/csr_watermark.png" alt=""/>
+                <div class="ph-title">CUSTOMER SERVICE REPORT<span class="ph-ref" t-field="o.name"/></div>
+
+                <!-- Visit details and checklist -->
+                <table class="ph-blk">
+                    <colgroup>
+                        <col style="width: 29.2%;"/>
+                        <col style="width: 20.6%;"/>
+                        <col style="width: 24.2%;"/>
+                        <col style="width: 26%;"/>
+                    </colgroup>
+                    <tr>
+                        <td class="ph-lbl" style="height: 10.3mm;">Clinic:</td>
+                        <td rowspan="2" class="bl">
+                            <div class="ph-lbl">Model:</div>
+                            <div class="ph-val ph-small" t-esc="o.model_name or o.product_id.display_name or ''"/>
+                        </td>
+                        <td class="bl bb"><span class="ph-lbl">Date: </span><span class="ph-val" t-esc="local_dt and local_dt.strftime('%d/%m/%Y') or ''"/></td>
+                        <td class="bl bb"><span class="ph-lbl">Time: </span><span class="ph-val" t-esc="local_dt and local_dt.strftime('%I:%M %p') or ''"/></td>
+                    </tr>
+                    <tr>
+                        <td class="ph-val" t-esc="o.partner_id.name or ''" style="height: 8.0mm;"/>
+                        <td class="ph-chk bl"><t t-call="photon_implementation.photon_check_box"><t t-set="checked" t-value="o.is_ppm"/></t>PPM</td>
+                        <td class="ph-chk bl"><t t-call="photon_implementation.photon_check_box"><t t-set="checked" t-value="o.check_cleaning"/></t>Cleaning</td>
+                    </tr>
+                    <tr>
+                        <td class="ph-val" t-esc="o.partner_id.phone or o.partner_id.mobile or ''" style="height: 12.7mm;"/>
+                        <td rowspan="2" class="bl">
+                            <div class="ph-lbl">PPM No.:</div>
+                            <div class="ph-val ph-small" t-esc="o.ppm_no or ''"/>
+                        </td>
+                        <td class="ph-chk bl"><t t-call="photon_implementation.photon_check_box"><t t-set="checked" t-value="o.is_installation"/></t>Installation</td>
+                        <td class="ph-chk bl">
+                            <table style="width: auto; table-layout: auto;"><tr>
+                                <td style="border: 0 none; padding: 0;"><t t-call="photon_implementation.photon_check_box"><t t-set="checked" t-value="o.check_laser_head"/></t></td>
+                                <td style="border: 0 none; padding: 0; font-weight: bold;">Laser Head<br/>Check</td>
+                            </tr></table>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="ph-lbl" style="height: 8.0mm;">Address:</td>
+                        <td class="ph-chk bl"><t t-call="photon_implementation.photon_check_box"><t t-set="checked" t-value="o.is_warranty"/></t>Warranty</td>
+                        <td class="ph-chk bl"><t t-call="photon_implementation.photon_check_box"><t t-set="checked" t-value="o.check_energy"/></t>Energy check</td>
+                    </tr>
+                    <tr>
+                        <td class="ph-val ph-small" t-esc="addr and addr[0] or ''" style="height: 8.0mm;"/>
+                        <td rowspan="2" class="bl">
+                            <div class="ph-lbl">S No:</div>
+                            <t t-set="sno" t-value="o.analytic_account_id.code or o.analytic_account_id.name or ''"/>
+                            <div t-attf-class="ph-val {{ 'ph-tiny' if len(sno) &gt; 60 else 'ph-small' }}" t-esc="sno"/>
+                        </td>
+                        <td class="ph-chk bl"><t t-call="photon_implementation.photon_check_box"><t t-set="checked" t-value="o.is_contract"/></t>Contract</td>
+                        <td class="ph-chk bl"><t t-call="photon_implementation.photon_check_box"><t t-set="checked" t-value="o.check_fiber"/></t>Fiber Check</td>
+                    </tr>
+                    <tr>
+                        <td class="ph-val ph-small" t-esc="', '.join(addr[1:])" style="height: 8.0mm;"/>
+                        <td class="ph-chk bl"><t t-call="photon_implementation.photon_check_box"><t t-set="checked" t-value="o.is_paid_service"/></t>Paid Service</td>
+                        <td class="ph-chk bl"><t t-call="photon_implementation.photon_check_box"><t t-set="checked" t-value="o.check_hp"/></t>HP Check</td>
+                    </tr>
+                    <tr>
+                        <td colspan="3" rowspan="4" class="bt" style="padding-right: 2.5mm;">
+                            <t t-call="photon_implementation.photon_ruled_text">
+                                <t t-set="label" t-value="'Error:'"/><t t-set="text" t-value="o.error"/><t t-set="rows" t-value="3"/>
+                            </t>
+                            <div style="height: 2mm;"/>
+                            <t t-call="photon_implementation.photon_ruled_text">
+                                <t t-set="label" t-value="'Work Report:'"/><t t-set="text" t-value="o.work_report"/><t t-set="rows" t-value="4"/>
+                            </t>
+                        </td>
+                        <td class="ph-chk bl bt" style="height: 8.7mm;"><t t-call="photon_implementation.photon_check_box"><t t-set="checked" t-value="o.check_hose"/></t>Hose Check</td>
+                    </tr>
+                    <tr>
+                        <td class="ph-chk bl" style="height: 10.1mm;"><t t-call="photon_implementation.photon_check_box"><t t-set="checked" t-value="o.check_water_refilling"/></t>Water Refilling</td>
+                    </tr>
+                    <tr>
+                        <td class="ph-chk bl" style="height: 9.9mm;"><t t-call="photon_implementation.photon_check_box"><t t-set="checked" t-value="o.check_hvps"/></t>Hvps Check</td>
+                    </tr>
+                    <tr>
+                        <td class="ph-chk bl" style="height: 14.6mm; vertical-align: top; padding-top: 4mm;"><t t-call="photon_implementation.photon_check_box"><t t-set="checked" t-value="o.check_power"/></t>Power Check</td>
+                    </tr>
+                </table>
+
+                <!-- Parts and laser readings -->
+                <t t-set="readings" t-value="[('LC', o.alex_lc, o.yag_lc), ('V', o.alex_v, o.yag_v), ('Tx', o.alex_tx, o.yag_tx), ('Energy', o.alex_energy, o.yag_energy)]"/>
+                <table class="ph-blk" style="border-top: 0 none;">
+                    <colgroup>
+                        <col style="width: 15%;"/>
+                        <col style="width: 42%;"/>
+                        <col style="width: 9.8%;"/>
+                        <col style="width: 16%;"/>
+                        <col style="width: 17.2%;"/>
+                    </colgroup>
+                    <tr>
+                        <td class="ph-lbl" style="height: 4.6mm; border-top: 0 none;">Qty.</td>
+                        <td class="ph-lbl" style="border-top: 0 none;">Part Description</td>
+                        <td class="bl" style="border-top: 0 none;"/>
+                        <td class="ph-lbl" style="border-top: 0 none;">Alex</td>
+                        <td class="ph-lbl" style="border-top: 0 none;">Yag</td>
+                    </tr>
+                    <t t-foreach="o._report_lines()" t-as="line">
+                        <tr>
+                            <td class="ph-val" style="height: 5.2mm; padding-top: 0; padding-bottom: 0;">
+                                <t t-if="line" t-esc="('%.2f' % line.quantity).rstrip('0').rstrip('.')"/>
+                            </td>
+                            <td class="ph-val" style="padding-top: 0; padding-bottom: 0;"><t t-if="line" t-esc="line.name"/></td>
+                            <t t-if="line_index &lt; len(readings)">
+                                <td class="ph-lbl bl" style="padding: 0 1mm; white-space: nowrap;" t-esc="readings[line_index][0]"/>
+                                <td class="ph-val" style="padding-top: 0; padding-bottom: 0;" t-esc="readings[line_index][1] or ''"/>
+                                <td class="ph-val" style="padding-top: 0; padding-bottom: 0;" t-esc="readings[line_index][2] or ''"/>
+                            </t>
+                            <t t-else="">
+                                <td class="bl"/><td/><td/>
+                            </t>
+                        </tr>
+                    </t>
+                </table>
+
+                <!-- Notes -->
+                <table class="ph-blk" style="border-top: 0 none;">
+                    <tr>
+                        <td style="height: 29.9mm; padding: 0.6mm 3.5mm 0 2mm;">
+                            <t t-call="photon_implementation.photon_ruled_text">
+                                <t t-set="label" t-value="'Note:'"/><t t-set="text" t-value="o.note"/><t t-set="rows" t-value="4"/>
+                            </t>
+                        </td>
+                    </tr>
+                </table>
+
+                <!-- Closing -->
+                <t t-set="closing" t-value="[('Work Complete', o.work_complete), ('Need Follow-up', o.need_follow_up), ('Enclosed', o.enclosed), ('Engineer', o.engineer_ok)]"/>
+                <table class="ph-blk" style="page-break-inside: avoid;">
+                    <colgroup>
+                        <col style="width: 28%;"/>
+                        <col style="width: 16.4%;"/>
+                        <col style="width: 12.6%;"/>
+                        <col style="width: 43%;"/>
+                    </colgroup>
+                    <t t-foreach="closing" t-as="row">
+                        <tr>
+                            <td class="ph-lbl" t-esc="row[0]" style="height: 8.4mm;"/>
+                            <td class="ph-chk bl"><t t-call="photon_implementation.photon_check_box"><t t-set="checked" t-value="row[1] == 'yes'"/></t>Yes</td>
+                            <td class="ph-chk bl"><t t-call="photon_implementation.photon_check_box"><t t-set="checked" t-value="row[1] == 'no'"/></t>No</td>
+                            <td t-if="row_first" rowspan="4" class="bl">
+                                <div class="ph-lbl">Note: Customer</div>
+                                <div class="ph-val ph-small" style="min-height: 7mm;" t-esc="o.customer_note or ''"/>
+                                <div class="ph-lbl" style="margin-top: 1mm;">Date:</div>
+                                <div class="ph-lbl" style="margin-top: 2.5mm;">Stamp:</div>
+                                <div class="ph-lbl" style="margin-top: 2.5mm;">Signature:</div>
+                            </td>
+                        </tr>
+                    </t>
+                </table>
+            </div>
+        </t>
+    </template>
+
+    <template id="report_photon_service_report">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="photon_implementation.report_photon_service_report_document"/>
+            </t>
+        </t>
+    </template>
+
+</odoo>

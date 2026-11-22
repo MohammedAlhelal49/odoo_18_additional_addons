@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_photon_service_report_user,photon.service.report user,model_photon_service_report,base.group_user,1,1,1,0
+access_photon_service_report_manager,photon.service.report manager,model_photon_service_report,base.group_system,1,1,1,1
+access_photon_service_report_line_user,photon.service.report.line user,model_photon_service_report_line,base.group_user,1,1,1,1

@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="action_report_photon_foc_delivery" model="ir.actions.report">
+        <field name="name">FOC Delivery Note</field>
+        <field name="model">stock.picking</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">photon_implementation.report_photon_foc_delivery</field>
+        <field name="report_file">photon_implementation.report_photon_foc_delivery</field>
+        <field name="print_report_name">'FOC Delivery Note - %s' % object.name.replace('/', '-')</field>
+        <field name="binding_model_id" ref="stock.model_stock_picking"/>
+        <field name="binding_type">report</field>
+    </record>
+
+    <template id="photon_form_styles">
+        <style>
+            .ph-form { font-family: 'Times New Roman', Times, serif; font-size: 13px; color: #000; }
+            .ph-form table { width: 100%; border-collapse: collapse; margin: 0; }
+            .ph-form td, .ph-form th { border: 1px solid #000 !important; background-color: transparent !important; padding: 3px 6px; vertical-align: top; }
+            .ph-form .ph-outer { border: 2px solid #000 !important; }
+            .ph-form .ph-lbl { font-weight: bold; }
+            .ph-form .ph-val { font-family: Arial, Helvetica, sans-serif; font-size: 12px; white-space: pre-wrap; }
+            .ph-form td.ph-val { white-space: normal; }
+            .ph-form table.ph-sign, .ph-form table.ph-sign tr, .ph-form table.ph-sign td { border: 0 none !important; }
+            .ph-form .ph-box { display: inline-block; width: 13px; height: 13px; line-height: 12px; border: 1px solid #555; text-align: center; font-family: 'DejaVu Sans', sans-serif; font-size: 11px; font-weight: bold; margin-right: 8px; vertical-align: middle; }
+            .ph-form .ph-chk { font-weight: bold; white-space: nowrap; }
+            .ph-form .ph-lines { border-bottom: 1px solid #000; min-height: 18px; }
+            .ph-form .ph-title { text-align: center; font-weight: bold; font-size: 22px; margin: 4px 0 2px 0; }
+            .ph-form .ph-sub { text-align: center; font-family: Arial, Helvetica, sans-serif; font-size: 11px; margin-bottom: 8px; }
+        </style>
+    </template>
+
+    <template id="report_photon_foc_delivery_document">
+        <t t-call="web.external_layout">
+            <t t-set="o" t-value="o.with_context(lang=o.partner_id.lang or o.env.lang)"/>
+            <t t-set="photon_hide_signature" t-value="True"/>
+            <t t-set="partner" t-value="o.partner_id"/>
+            <t t-set="moves" t-value="o.move_ids.filtered(lambda m: m.state != 'cancel' and (m.quantity if o.state == 'done' else m.product_uom_qty))"/>
+            <t t-call="photon_implementation.photon_form_styles"/>
+            <div class="page ph-form" style="font-family: Arial, Helvetica, sans-serif;">
+                <div class="ph-title" style="font-family: 'Times New Roman', Times, serif;">FOC DELIVERY NOTE</div>
+                <div class="ph-sub">(Free of Charge)</div>
+
+                <table class="ph-outer o_ignore_layout_styling">
+                    <colgroup>
+                        <col style="width: 55%;"/>
+                        <col style="width: 45%;"/>
+                    </colgroup>
+                    <tr>
+                        <td>
+                            <div class="ph-lbl">Customer:</div>
+                            <div t-if="partner.commercial_partner_id != partner" t-esc="partner.commercial_partner_id.name"/>
+                            <div t-esc="partner.name"/>
+                            <div class="ph-val" t-esc="'\n'.join(l for l in partner._display_address(without_company=True).splitlines() if l.strip())"/>
+                            <div t-if="partner.phone or partner.mobile">Contact: <t t-esc="' / '.join(p for p in [partner.phone, partner.mobile] if p)"/></div>
+                            <div t-if="partner.commercial_partner_id.vat">TRN: <t t-esc="partner.commercial_partner_id.vat"/></div>
+                        </td>
+                        <td>
+                            <div><span class="ph-lbl">DN No: </span><span t-field="o.name"/></div>
+                            <div><span class="ph-lbl">Date: </span><span t-esc="context_timestamp(o.date_done or o.scheduled_date).strftime('%d/%m/%Y')"/></div>
+                            <div t-if="o.origin"><span class="ph-lbl">Source: </span><span t-field="o.origin"/></div>
+                            <div t-if="o.sale_id.client_order_ref"><span class="ph-lbl">Customer Ref: </span><span t-field="o.sale_id.client_order_ref"/></div>
+                        </td>
+                    </tr>
+                </table>
+
+                <table class="ph-outer o_ignore_layout_styling" style="margin-top: 10px;">
+                    <colgroup>
+                        <col style="width: 6%;"/>
+                        <col style="width: 50%;"/>
+                        <col style="width: 12%;"/>
+                        <col style="width: 10%;"/>
+                        <col style="width: 11%;"/>
+                        <col style="width: 11%;"/>
+                    </colgroup>
+                    <tr style="text-align: center;">
+                        <td class="ph-lbl">#</td>
+                        <td class="ph-lbl">Description</td>
+                        <td class="ph-lbl">Qty</td>
+                        <td class="ph-lbl">Unit</td>
+                        <td class="ph-lbl">Unit Price</td>
+                        <td class="ph-lbl">Amount</td>
+                    </tr>
+                    <tr t-foreach="moves" t-as="move">
+                        <td style="text-align: center;" t-esc="move_index + 1"/>
+                        <td>
+                            <span t-field="move.product_id"/>
+                            <div t-if="move.description_picking and move.description_picking != move.product_id.name" style="font-size: 11px;" t-esc="move.description_picking"/>
+                            <div t-if="move.lot_ids" style="font-size: 11px;">S/N: <t t-esc="', '.join(move.lot_ids.mapped('name'))"/></div>
+                        </td>
+                        <td style="text-align: center;" t-esc="('%.2f' % (o.state == 'done' and move.quantity or move.product_uom_qty)).rstrip('0').rstrip('.')"/>
+                        <td style="text-align: center;" t-esc="move.product_uom.name"/>
+                        <td style="text-align: center; font-weight: bold;">FOC</td>
+                        <td style="text-align: center; font-weight: bold;">FOC</td>
+                    </tr>
+                </table>
+
+                <p style="margin-top: 10px; font-weight: bold;">
+                    The above items are delivered Free of Charge (FOC). No payment is due for this delivery.
+                </p>
+                <p t-if="o.note" t-field="o.note"/>
+
+                <table class="ph-sign o_ignore_layout_styling" style="margin-top: 40px; page-break-inside: avoid;">
+                    <tr>
+                        <td style="width: 50%; border: 0 none !important; text-align: center;">
+                            <strong>Delivered By</strong>
+                            <br/><br/><br/>
+                            _______________________
+                            <br/>
+                            <img src="/photon_implementation/static/src/img/stamp.png" style="max-height: 110px; max-width: 200px; margin-top: 8px;"/>
+                        </td>
+                        <td style="width: 50%; border: 0 none !important; text-align: center;">
+                            <strong>Received By (Name, Signature &amp; Stamp)</strong>
+                            <br/><br/><br/>
+                            _______________________
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </t>
+    </template>
+
+    <template id="report_photon_foc_delivery">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="photon_implementation.report_photon_foc_delivery_document"/>
+            </t>
+        </t>
+    </template>
+
+</odoo>

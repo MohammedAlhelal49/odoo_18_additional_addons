@@ -22,7 +22,7 @@
         <xpath expr="//div[contains(@t-attf-class, 'article o_report_layout_striped')]"
                position="inside">
 
-                <div class="mt-5"
+                <div class="mt-5" t-if="not photon_hide_signature"
                      style="background-color:#fff !important; padding:15px;">
 
                     <table style="width:100%; margin-top:50px; background-color:#fff !important;border-top:2px solid #fff;border-bottom:2px solid #fff;">

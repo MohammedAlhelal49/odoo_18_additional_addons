@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="photon_service_report_view_form" model="ir.ui.view">
+        <field name="name">photon.service.report.form</field>
+        <field name="model">photon.service.report</field>
+        <field name="arch" type="xml">
+            <form string="Customer Service Report">
+                <header>
+                    <button name="action_done" type="object" string="Mark as Done" class="btn-primary" invisible="state != 'draft'"/>
+                    <button name="%(photon_implementation.action_report_photon_service_report)d" type="action" string="Print" invisible="state == 'cancel'"/>
+                    <button name="action_draft" type="object" string="Reset to Draft" invisible="state == 'draft'"/>
+                    <button name="action_cancel" type="object" string="Cancel" invisible="state != 'draft'"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,done"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1><field name="name" readonly="1"/></h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="partner_id"/>
+                            <field name="address"/>
+                            <field name="product_id"/>
+                            <field name="model_name"/>
+                            <field name="analytic_account_id"/>
+                            <field name="ppm_no"/>
+                        </group>
+                        <group>
+                            <field name="report_date"/>
+                            <field name="engineer_id"/>
+                            <field name="company_id" groups="base.group_multi_company"/>
+                        </group>
+                    </group>
+                    <group>
+                        <group string="Visit Type">
+                            <field name="is_ppm"/>
+                            <field name="is_installation"/>
+                            <field name="is_warranty"/>
+                            <field name="is_contract"/>
+                            <field name="is_paid_service"/>
+                        </group>
+                        <group string="Checklist">
+                            <field name="check_cleaning"/>
+                            <field name="check_laser_head"/>
+                            <field name="check_energy"/>
+                            <field name="check_fiber"/>
+                            <field name="check_hp"/>
+                            <field name="check_hose"/>
+                            <field name="check_water_refilling"/>
+                            <field name="check_hvps"/>
+                            <field name="check_power"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Work" name="work">
+                            <group>
+                                <field name="error"/>
+                                <field name="work_report"/>
+                            </group>
+                        </page>
+                        <page string="Parts &amp; Readings" name="parts">
+                            <field name="line_ids">
+                                <list editable="bottom">
+                                    <field name="sequence" widget="handle"/>
+                                    <field name="quantity"/>
+                                    <field name="product_id"/>
+                                    <field name="name"/>
+                                </list>
+                            </field>
+                            <group string="Readings">
+                                <group string="Alex">
+                                    <field name="alex_lc" string="LC"/>
+                                    <field name="alex_v" string="V"/>
+                                    <field name="alex_tx" string="Tx"/>
+                                    <field name="alex_energy" string="Energy"/>
+                                </group>
+                                <group string="Yag">
+                                    <field name="yag_lc" string="LC"/>
+                                    <field name="yag_v" string="V"/>
+                                    <field name="yag_tx" string="Tx"/>
+                                    <field name="yag_energy" string="Energy"/>
+                                </group>
+                            </group>
+                        </page>
+                        <page string="Closing" name="closing">
+                            <group>
+                                <group>
+                                    <field name="work_complete" widget="radio" options="{'horizontal': true}"/>
+                                    <field name="need_follow_up" widget="radio" options="{'horizontal': true}"/>
+                                    <field name="enclosed" widget="radio" options="{'horizontal': true}"/>
+                                    <field name="engineer_ok" widget="radio" options="{'horizontal': true}"/>
+                                </group>
+                                <group>
+                                    <field name="customer_note"/>
+                                </group>
+                            </group>
+                            <group>
+                                <field name="note"/>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <record id="photon_service_report_view_list" model="ir.ui.view">
+        <field name="name">photon.service.report.list</field>
+        <field name="model">photon.service.report</field>
+        <field name="arch" type="xml">
+            <list string="Customer Service Reports" decoration-muted="state == 'cancel'" decoration-success="state == 'done'">
+                <field name="name"/>
+                <field name="report_date"/>
+                <field name="partner_id"/>
+                <field name="model_name"/>
+                <field name="analytic_account_id"/>
+                <field name="engineer_id" widget="many2one_avatar_user"/>
+                <field name="state" widget="badge" decoration-success="state == 'done'" decoration-info="state == 'draft'"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="photon_service_report_view_search" model="ir.ui.view">
+        <field name="name">photon.service.report.search</field>
+        <field name="model">photon.service.report</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                <field name="partner_id"/>
+                <field name="analytic_account_id"/>
+                <field name="model_name"/>
+                <field name="engineer_id"/>
+                <filter name="draft" string="Draft" domain="[('state', '=', 'draft')]"/>
+                <filter name="done" string="Done" domain="[('state', '=', 'done')]"/>
+                <filter name="follow_up" string="Need Follow-up" domain="[('need_follow_up', '=', 'yes')]"/>
+                <separator/>
+                <filter name="report_date" string="Date" date="report_date"/>
+                <group expand="0" string="Group By">
+                    <filter name="group_partner" string="Clinic" context="{'group_by': 'partner_id'}"/>
+                    <filter name="group_engineer" string="Engineer" context="{'group_by': 'engineer_id'}"/>
+                    <filter name="group_state" string="Status" context="{'group_by': 'state'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_photon_service_report" model="ir.actions.act_window">
+        <field name="name">Service Reports</field>
+        <field name="res_model">photon.service.report</field>
+        <field name="view_mode">list,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">Create your first customer service report</p>
+        </field>
+    </record>
+
+    <menuitem id="menu_photon_service_root" name="Maintenance"
+              web_icon="photon_implementation,static/description/icon.png" sequence="45"/>
+    <menuitem id="menu_photon_service_report" name="Service Reports"
+              parent="menu_photon_service_root" action="action_photon_service_report" sequence="10"/>
+
+</odoo>
