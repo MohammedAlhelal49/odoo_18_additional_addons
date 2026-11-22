@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- الدفعات: الفواتير المرتبطة بكل دفعة، والبحث والفلترة فيها -->
+    <record id="view_account_payment_list_bs_invoices" model="ir.ui.view">
+        <field name="name">account.payment.list.bs.invoices</field>
+        <field name="model">account.payment</field>
+        <field name="inherit_id" ref="account.view_account_payment_tree"/>
+        <field name="arch" type="xml">
+            <field name="partner_id" position="after">
+                <field name="bs_invoice_ids" widget="many2many_tags" optional="show" string="Invoices"/>
+            </field>
+        </field>
+    </record>
+
+    <record id="view_account_payment_form_bs_invoices" model="ir.ui.view">
+        <field name="name">account.payment.form.bs.invoices</field>
+        <field name="model">account.payment</field>
+        <field name="inherit_id" ref="account.view_account_payment_form"/>
+        <field name="arch" type="xml">
+            <field name="memo" position="after">
+                <field name="bs_invoice_ids" widget="many2many_tags" string="Linked Invoices"
+                       invisible="not bs_invoice_ids" readonly="1"/>
+            </field>
+        </field>
+    </record>
+
+    <record id="view_account_payment_search_bs_invoices" model="ir.ui.view">
+        <field name="name">account.payment.search.bs.invoices</field>
+        <field name="model">account.payment</field>
+        <field name="inherit_id" ref="account.view_account_payment_search"/>
+        <field name="arch" type="xml">
+            <field name="partner_id" position="after">
+                <field name="bs_invoice_ids" string="Invoice"/>
+            </field>
+            <filter name="reconciled" position="after">
+                <separator/>
+                <filter string="Linked to an Invoice" name="bs_with_invoice" domain="[('bs_invoice_ids', '!=', False)]"/>
+                <filter string="Not Linked to an Invoice" name="bs_without_invoice" domain="[('bs_invoice_ids', '=', False)]"/>
+            </filter>
+        </field>
+    </record>
+
+    <!-- التسليمات والاستلامات: الفواتير المرتبطة، والبحث والفلترة فيها -->
+    <record id="view_picking_list_bs_invoices" model="ir.ui.view">
+        <field name="name">stock.picking.list.bs.invoices</field>
+        <field name="model">stock.picking</field>
+        <field name="inherit_id" ref="stock.vpicktree"/>
+        <field name="arch" type="xml">
+            <field name="origin" position="after">
+                <field name="bs_invoice_ids" widget="many2many_tags" optional="show" string="Invoices"/>
+            </field>
+        </field>
+    </record>
+
+    <record id="view_picking_form_bs_invoices" model="ir.ui.view">
+        <field name="name">stock.picking.form.bs.invoices</field>
+        <field name="model">stock.picking</field>
+        <field name="inherit_id" ref="stock.view_picking_form"/>
+        <field name="arch" type="xml">
+            <field name="origin" position="after">
+                <field name="bs_invoice_ids" widget="many2many_tags" string="Invoices"
+                       invisible="not bs_invoice_ids" readonly="1"/>
+            </field>
+        </field>
+    </record>
+
+    <record id="view_picking_search_bs_invoices" model="ir.ui.view">
+        <field name="name">stock.picking.search.bs.invoices</field>
+        <field name="model">stock.picking</field>
+        <field name="inherit_id" ref="stock.view_picking_internal_search"/>
+        <field name="arch" type="xml">
+            <field name="origin" position="after">
+                <field name="bs_invoice_ids" string="Invoice"/>
+            </field>
+            <filter name="backorder" position="after">
+                <separator/>
+                <filter string="Invoiced" name="bs_invoiced" domain="[('bs_invoice_ids', '!=', False)]"/>
+                <filter string="Not Invoiced" name="bs_not_invoiced" domain="[('bs_invoice_ids', '=', False)]"/>
+            </filter>
+        </field>
+    </record>
+</odoo>
