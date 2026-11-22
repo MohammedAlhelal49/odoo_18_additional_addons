@@ -1,0 +1,256 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="0">
+        <!-- Record-Level Access Rules for Medical Center Roles -->
+
+        <!-- Doctor: Can view all employees (for schedule checking), edit only own record -->
+        <record id="rule_hr_employee_doctor_visibility" model="ir.rule">
+            <field name="name">Doctor: View All Employees</field>
+            <field name="model_id" ref="hr.model_hr_employee"/>
+            <field name="domain_force">[(1, '=', 1)]</field>
+            <field name="perm_read">1</field>
+            <field name="perm_write">0</field>
+            <field name="perm_create">0</field>
+            <field name="perm_unlink">0</field>
+            <field name="groups" eval="[(4, ref('group_medical_doctor'))]"/>
+        </record>
+
+        <!-- Doctor: Can edit own employee record -->
+        <record id="rule_hr_employee_doctor_self_edit" model="ir.rule">
+            <field name="name">Doctor: Edit Own Record</field>
+            <field name="model_id" ref="hr.model_hr_employee"/>
+            <field name="domain_force">['|', ('user_id', '=', user.id), ('id', '=', user.employee_id.id)]</field>
+            <field name="perm_read">1</field>
+            <field name="perm_write">1</field>
+            <field name="perm_create">0</field>
+            <field name="perm_unlink">0</field>
+            <field name="groups" eval="[(4, ref('group_medical_doctor'))]"/>
+        </record>
+
+        <!-- Nurse: Can view all employees, edit only own record -->
+        <record id="rule_hr_employee_nurse_visibility" model="ir.rule">
+            <field name="name">Nurse: View All Employees</field>
+            <field name="model_id" ref="hr.model_hr_employee"/>
+            <field name="domain_force">[(1, '=', 1)]</field>
+            <field name="perm_read">1</field>
+            <field name="perm_write">0</field>
+            <field name="perm_create">0</field>
+            <field name="perm_unlink">0</field>
+            <field name="groups" eval="[(4, ref('group_medical_nurse'))]"/>
+        </record>
+
+        <!-- Nurse: Can edit own employee record -->
+        <record id="rule_hr_employee_nurse_self_edit" model="ir.rule">
+            <field name="name">Nurse: Edit Own Record</field>
+            <field name="model_id" ref="hr.model_hr_employee"/>
+            <field name="domain_force">['|', ('user_id', '=', user.id), ('id', '=', user.employee_id.id)]</field>
+            <field name="perm_read">1</field>
+            <field name="perm_write">1</field>
+            <field name="perm_create">0</field>
+            <field name="perm_unlink">0</field>
+            <field name="groups" eval="[(4, ref('group_medical_nurse'))]"/>
+        </record>
+
+        <!-- Receptionist: Can view all employees (for scheduling), edit only own record -->
+        <record id="rule_hr_employee_receptionist_visibility" model="ir.rule">
+            <field name="name">Receptionist: View All Employees (for scheduling)</field>
+            <field name="model_id" ref="hr.model_hr_employee"/>
+            <field name="domain_force">[(1, '=', 1)]</field>
+            <field name="perm_read">1</field>
+            <field name="perm_write">0</field>
+            <field name="perm_create">0</field>
+            <field name="perm_unlink">0</field>
+            <field name="groups" eval="[(4, ref('group_medical_receptionist'))]"/>
+        </record>
+
+        <!-- Receptionist: Can edit own employee record -->
+        <record id="rule_hr_employee_receptionist_self_edit" model="ir.rule">
+            <field name="name">Receptionist: Edit Own Record</field>
+            <field name="model_id" ref="hr.model_hr_employee"/>
+            <field name="domain_force">['|', ('user_id', '=', user.id), ('id', '=', user.employee_id.id)]</field>
+            <field name="perm_read">1</field>
+            <field name="perm_write">1</field>
+            <field name="perm_create">0</field>
+            <field name="perm_unlink">0</field>
+            <field name="groups" eval="[(4, ref('group_medical_receptionist'))]"/>
+        </record>
+
+        <!-- Sales: Can view all employees, edit only own record -->
+        <record id="rule_hr_employee_sales_visibility" model="ir.rule">
+            <field name="name">Sales: View All Employees</field>
+            <field name="model_id" ref="hr.model_hr_employee"/>
+            <field name="domain_force">[(1, '=', 1)]</field>
+            <field name="perm_read">1</field>
+            <field name="perm_write">0</field>
+            <field name="perm_create">0</field>
+            <field name="perm_unlink">0</field>
+            <field name="groups" eval="[(4, ref('group_medical_sales'))]"/>
+        </record>
+
+        <!-- Sales: Can edit own employee record -->
+        <record id="rule_hr_employee_sales_self_edit" model="ir.rule">
+            <field name="name">Sales: Edit Own Record</field>
+            <field name="model_id" ref="hr.model_hr_employee"/>
+            <field name="domain_force">['|', ('user_id', '=', user.id), ('id', '=', user.employee_id.id)]</field>
+            <field name="perm_read">1</field>
+            <field name="perm_write">1</field>
+            <field name="perm_create">0</field>
+            <field name="perm_unlink">0</field>
+            <field name="groups" eval="[(4, ref('group_medical_sales'))]"/>
+        </record>
+
+        <!-- HR Manager: Can see all employees -->
+        <record id="rule_hr_employee_hr_manager_visibility" model="ir.rule">
+            <field name="name">HR Manager: All Employees</field>
+            <field name="model_id" ref="hr.model_hr_employee"/>
+            <field name="domain_force">[(1, '=', 1)]</field>
+            <field name="perm_read">1</field>
+            <field name="perm_write">1</field>
+            <field name="perm_create">1</field>
+            <field name="perm_unlink">0</field>
+            <field name="groups" eval="[(4, ref('group_medical_hr_manager'))]"/>
+        </record>
+
+        <!-- Resource Calendar Access Rules -->
+        <!-- NOTE: Resource calendar rules are simplified to avoid complex relationship issues -->
+        <!-- Full calendar access control will be managed via hr_employee_medical employee access -->
+        <!-- Since hr_employee has resource_calendar_id, controlling employee access controls calendar access -->
+
+        <!-- Doctor: Limited calendar access (via employee record control) -->
+        <record id="rule_resource_calendar_doctor" model="ir.rule">
+            <field name="name">Doctor: Own Calendar (via employee)</field>
+            <field name="model_id" ref="resource.model_resource_calendar"/>
+            <field name="domain_force">[(1, '=', 1)]</field>
+            <field name="perm_read">1</field>
+            <field name="perm_write">0</field>
+            <field name="perm_create">0</field>
+            <field name="perm_unlink">0</field>
+            <field name="groups" eval="[(4, ref('group_medical_doctor'))]"/>
+        </record>
+
+        <!-- Nurse: Limited calendar access (via employee record control) -->
+        <record id="rule_resource_calendar_nurse" model="ir.rule">
+            <field name="name">Nurse: Own Calendar (via employee)</field>
+            <field name="model_id" ref="resource.model_resource_calendar"/>
+            <field name="domain_force">[(1, '=', 1)]</field>
+            <field name="perm_read">1</field>
+            <field name="perm_write">0</field>
+            <field name="perm_create">0</field>
+            <field name="perm_unlink">0</field>
+            <field name="groups" eval="[(4, ref('group_medical_nurse'))]"/>
+        </record>
+
+        <!-- Receptionist: Can view all calendars for scheduling -->
+        <record id="rule_resource_calendar_receptionist" model="ir.rule">
+            <field name="name">Receptionist: All Calendars (for scheduling)</field>
+            <field name="model_id" ref="resource.model_resource_calendar"/>
+            <field name="domain_force">[(1, '=', 1)]</field>
+            <field name="perm_read">1</field>
+            <field name="perm_write">0</field>
+            <field name="perm_create">0</field>
+            <field name="perm_unlink">0</field>
+            <field name="groups" eval="[(4, ref('group_medical_receptionist'))]"/>
+        </record>
+
+        <!-- Sales: View calendar access (for employee schedules) -->
+        <record id="rule_resource_calendar_sales" model="ir.rule">
+            <field name="name">Sales: View Resource Calendars</field>
+            <field name="model_id" ref="resource.model_resource_calendar"/>
+            <field name="domain_force">[(1, '=', 1)]</field>
+            <field name="perm_read">1</field>
+            <field name="perm_write">0</field>
+            <field name="perm_create">0</field>
+            <field name="perm_unlink">0</field>
+            <field name="groups" eval="[(4, ref('group_medical_sales'))]"/>
+        </record>
+
+        <!-- HR Manager: Can see and edit all calendars -->
+        <record id="rule_resource_calendar_hr_manager" model="ir.rule">
+            <field name="name">HR Manager: All Calendars</field>
+            <field name="model_id" ref="resource.model_resource_calendar"/>
+            <field name="domain_force">[(1, '=', 1)]</field>
+            <field name="perm_read">1</field>
+            <field name="perm_write">1</field>
+            <field name="perm_create">1</field>
+            <field name="perm_unlink">0</field>
+            <field name="groups" eval="[(4, ref('group_medical_hr_manager'))]"/>
+        </record>
+
+        <!-- Calendar Events (Meetings) Access Rules -->
+        <!-- NOTE: Calendar events already have built-in security via user_id and partner tracking -->
+        <!-- These rules provide additional role-based filtering -->
+
+        <!-- Doctor: Can view and edit own events -->
+        <record id="rule_calendar_event_doctor" model="ir.rule">
+            <field name="name">Doctor: Own Events</field>
+            <field name="model_id" ref="calendar.model_calendar_event"/>
+            <field name="domain_force">[('user_id', '=', user.id)]</field>
+            <field name="perm_read">1</field>
+            <field name="perm_write">1</field>
+            <field name="perm_create">1</field>
+            <field name="perm_unlink">0</field>
+            <field name="groups" eval="[(4, ref('group_medical_doctor'))]"/>
+        </record>
+
+        <!-- Nurse: Can view and edit own events -->
+        <record id="rule_calendar_event_nurse" model="ir.rule">
+            <field name="name">Nurse: Own Events</field>
+            <field name="model_id" ref="calendar.model_calendar_event"/>
+            <field name="domain_force">[('user_id', '=', user.id)]</field>
+            <field name="perm_read">1</field>
+            <field name="perm_write">1</field>
+            <field name="perm_create">1</field>
+            <field name="perm_unlink">0</field>
+            <field name="groups" eval="[(4, ref('group_medical_nurse'))]"/>
+        </record>
+
+        <!-- Receptionist: Can view all events (for scheduling) -->
+        <record id="rule_calendar_event_receptionist" model="ir.rule">
+            <field name="name">Receptionist: All Events (for scheduling)</field>
+            <field name="model_id" ref="calendar.model_calendar_event"/>
+            <field name="domain_force">[(1, '=', 1)]</field>
+            <field name="perm_read">1</field>
+            <field name="perm_write">1</field>
+            <field name="perm_create">1</field>
+            <field name="perm_unlink">0</field>
+            <field name="groups" eval="[(4, ref('group_medical_receptionist'))]"/>
+        </record>
+
+        <!-- Administrator: Full Access to all HR Employees -->
+        <record id="rule_hr_employee_system_admin" model="ir.rule">
+            <field name="name">Administrator: All Employees</field>
+            <field name="model_id" ref="hr.model_hr_employee"/>
+            <field name="domain_force">[(1, '=', 1)]</field>
+            <field name="perm_read">1</field>
+            <field name="perm_write">1</field>
+            <field name="perm_create">1</field>
+            <field name="perm_unlink">1</field>
+            <field name="groups" eval="[(4, ref('base.group_system'))]"/>
+        </record>
+
+        <!-- Administrator: Full Access to all Resource Calendars -->
+        <record id="rule_resource_calendar_system_admin" model="ir.rule">
+            <field name="name">Administrator: All Resource Calendars</field>
+            <field name="model_id" ref="resource.model_resource_calendar"/>
+            <field name="domain_force">[(1, '=', 1)]</field>
+            <field name="perm_read">1</field>
+            <field name="perm_write">1</field>
+            <field name="perm_create">1</field>
+            <field name="perm_unlink">1</field>
+            <field name="groups" eval="[(4, ref('base.group_system'))]"/>
+        </record>
+
+        <!-- Administrator: Full Access to all Calendar Events -->
+        <record id="rule_calendar_event_system_admin" model="ir.rule">
+            <field name="name">Administrator: All Calendar Events</field>
+            <field name="model_id" ref="calendar.model_calendar_event"/>
+            <field name="domain_force">[(1, '=', 1)]</field>
+            <field name="perm_read">1</field>
+            <field name="perm_write">1</field>
+            <field name="perm_create">1</field>
+            <field name="perm_unlink">1</field>
+            <field name="groups" eval="[(4, ref('base.group_system'))]"/>
+        </record>
+
+    </data>
+</odoo>

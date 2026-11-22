@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Extend User Form with Medical Center Roles & Actions -->
+    <record id="view_users_form_medical" model="ir.ui.view">
+        <field name="name">res.users.form.medical</field>
+        <field name="model">res.users</field>
+        <field name="inherit_id" ref="base.view_users_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//notebook" position="inside">
+                <page string="Medical Center Staff Roles" name="medical_staff_roles">
+                    <group string="Medical Staff Allowed Actions">
+                        <group string="Clinical &amp; Healthcare">
+                            <field name="medical_is_doctor"/>
+                            <div class="text-muted mb-3" invisible="not medical_is_doctor">
+                                <em>Actions: Start &amp; End consultations, clinical diagnosis, prescriptions, follow-up bookings, and patient medical history.</em>
+                            </div>
+                            <field name="medical_is_nurse"/>
+                            <div class="text-muted mb-3" invisible="not medical_is_nurse">
+                                <em>Actions: Check patient, record vitals &amp; triage (BP, temp, pulse, SpO2, weight, height, BMI, blood sugar), nurse notes, and mark ready for doctor.</em>
+                            </div>
+                        </group>
+                        <group string="Administrative &amp; Commercial">
+                            <field name="medical_is_receptionist"/>
+                            <div class="text-muted mb-3" invisible="not medical_is_receptionist">
+                                <em>Actions: Day-before confirmation calls, confirm bookings, reschedule appointment date &amp; doctor, and patient arrival check-in.</em>
+                            </div>
+                            <field name="medical_is_sales"/>
+                            <div class="text-muted mb-3" invisible="not medical_is_sales">
+                                <em>Actions: CRM lead follow-up &amp; call logging, book appointment from lead, choose doctor &amp; service, finish lead, sales commission tracking.</em>
+                            </div>
+                            <field name="medical_is_manager"/>
+                            <div class="text-muted mb-3" invisible="not medical_is_manager">
+                                <em>Actions: Full supervisory rights across all staff roles, supervisor schedule conflict override, and clinical configuration.</em>
+                            </div>
+                        </group>
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Action for Staff Users in Medical Staff App -->
+    <record id="action_medical_staff_users" model="ir.actions.act_window">
+        <field name="name">Medical Staff Users</field>
+        <field name="res_model">res.users</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('share', '=', False)]</field>
+        <field name="context">{'default_share': False}</field>
+    </record>
+</odoo>

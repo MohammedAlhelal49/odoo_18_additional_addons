@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="0">
+        <!-- Medical Center Security Category -->
+        <record id="module_category_medical_center" model="ir.module.category">
+            <field name="name">Medical Center</field>
+            <field name="description">Manage Medical Center roles, clinical appointments, and staff permissions</field>
+            <field name="sequence">25</field>
+        </record>
+
+        <!-- Doctor Group -->
+        <record id="group_medical_doctor" model="res.groups">
+            <field name="name">Medical Center - Doctor</field>
+            <field name="category_id" ref="module_category_medical_center"/>
+            <field name="comment">Doctor Allowed Actions: Start/End consultations, clinical notes, diagnosis, prescriptions, follow-up bookings, and patient medical history</field>
+            <field name="implied_ids" eval="[(4, ref('medical_crm_lead_extension.group_medical_staff'))]"/>
+        </record>
+
+        <!-- Doctor Manager (Head of Doctors) -->
+        <record id="group_medical_doctor_manager" model="res.groups">
+            <field name="name">Medical Center - Doctor Manager (Head of Doctors)</field>
+            <field name="category_id" ref="module_category_medical_center"/>
+            <field name="comment">Head of Doctors: Can supervise and view all appointments, clinical notes, and schedules of doctors in their department or reporting to them</field>
+            <field name="implied_ids" eval="[(4, ref('group_medical_doctor'))]"/>
+        </record>
+
+        <!-- Nurse Group -->
+        <record id="group_medical_nurse" model="res.groups">
+            <field name="name">Medical Center - Nurse</field>
+            <field name="category_id" ref="module_category_medical_center"/>
+            <field name="comment">Nurse Allowed Actions: Patient vitals triage (BP, temp, pulse, SpO2, weight, height, BMI, blood sugar), nurse notes, and ready-for-doctor status</field>
+            <field name="implied_ids" eval="[(4, ref('medical_crm_lead_extension.group_medical_staff'))]"/>
+        </record>
+
+        <!-- Nurse Manager (Head Nurse) -->
+        <record id="group_medical_nurse_manager" model="res.groups">
+            <field name="name">Medical Center - Nurse Manager (Head Nurse)</field>
+            <field name="category_id" ref="module_category_medical_center"/>
+            <field name="comment">Head Nurse: Can supervise and view all triage assessments and vitals queues of nurses in their department or reporting to them</field>
+            <field name="implied_ids" eval="[(4, ref('group_medical_nurse'))]"/>
+        </record>
+
+        <!-- Receptionist Group -->
+        <record id="group_medical_receptionist" model="res.groups">
+            <field name="name">Medical Center - Receptionist</field>
+            <field name="category_id" ref="module_category_medical_center"/>
+            <field name="comment">Receptionist Allowed Actions: Day-before confirmation calls, confirm bookings, reschedule appointment date &amp; doctor, and patient arrival check-in</field>
+            <field name="implied_ids" eval="[(4, ref('sales_team.group_sale_salesman_all_leads'))]"/>
+        </record>
+
+        <!-- Receptionist Manager (Head Receptionist) -->
+        <record id="group_medical_receptionist_manager" model="res.groups">
+            <field name="name">Medical Center - Receptionist Manager (Head Receptionist)</field>
+            <field name="category_id" ref="module_category_medical_center"/>
+            <field name="comment">Head Receptionist: Can oversee all front-desk operations, waiting room check-ins, confirmation calls, and rescheduling across the clinic</field>
+            <field name="implied_ids" eval="[(4, ref('group_medical_receptionist'))]"/>
+        </record>
+
+        <!-- Sales Employee Group -->
+        <record id="group_medical_sales" model="res.groups">
+            <field name="name">Medical Center - Sales Employee</field>
+            <field name="category_id" ref="module_category_medical_center"/>
+            <field name="comment">Sales Employee Allowed Actions: CRM lead follow-up, call logging, book appointments from leads, choose doctor and service, finish lead, sales commission tracking</field>
+            <field name="implied_ids" eval="[(4, ref('sales_team.group_sale_salesman'))]"/>
+        </record>
+
+        <!-- Sales Manager (Head of Sales) -->
+        <record id="group_medical_sales_manager" model="res.groups">
+            <field name="name">Medical Center - Sales Manager (Head of Sales)</field>
+            <field name="category_id" ref="module_category_medical_center"/>
+            <field name="comment">Head of Sales: Can view and manage all CRM leads, calls, performance, and booked appointments of sales employees in their team or reporting to them</field>
+            <field name="implied_ids" eval="[(4, ref('group_medical_sales')), (4, ref('sales_team.group_sale_manager'))]"/>
+        </record>
+
+        <!-- HR Manager Group -->
+        <record id="group_medical_hr_manager" model="res.groups">
+            <field name="name">Medical Center - HR Manager</field>
+            <field name="category_id" ref="module_category_medical_center"/>
+            <field name="comment">HR Manager: Staff management, scheduling, and leave management</field>
+            <field name="implied_ids" eval="[(4, ref('hr.group_hr_manager'))]"/>
+        </record>
+
+        <!-- Security Rules Manager Group -->
+        <record id="group_medical_security_manager" model="res.groups">
+            <field name="name">Medical Center - Security Rules Manager</field>
+            <field name="category_id" ref="module_category_medical_center"/>
+            <field name="comment">Administrator who can review and configure role-based security rules</field>
+            <field name="implied_ids" eval="[(5, 0, 0)]"/>
+        </record>
+
+        <!-- System Administrator automatically inherits all Medical Center roles with full override -->
+        <record id="base.group_system" model="res.groups">
+            <field name="implied_ids" eval="[
+                (4, ref('group_medical_doctor')),
+                (4, ref('group_medical_doctor_manager')),
+                (4, ref('group_medical_nurse')),
+                (4, ref('group_medical_nurse_manager')),
+                (4, ref('group_medical_receptionist')),
+                (4, ref('group_medical_receptionist_manager')),
+                (4, ref('group_medical_sales')),
+                (4, ref('group_medical_sales_manager')),
+                (4, ref('group_medical_hr_manager')),
+                (4, ref('group_medical_security_manager'))
+            ]"/>
+        </record>
+    </data>
+</odoo>

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Define Medical Center Module Category -->
+    <record id="module_category_medical" model="ir.module.category">
+        <field name="name">Medical Center</field>
+        <field name="description">Medical center security and access rights</field>
+        <field name="sequence">25</field>
+    </record>
+
+    <!-- Create Medical Staff group for medical record access -->
+    <record id="group_medical_staff" model="res.groups">
+        <field name="name">Medical Staff</field>
+        <field name="category_id" ref="module_category_medical"/>
+        <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+        <field name="comment">Access to medical records and sensitive patient information</field>
+    </record>
+
+    <data noupdate="0">
+        <!-- Record Rule: Sales users can see ONLY unassigned leads or leads assigned to them -->
+        <record id="rule_crm_lead_team_visibility" model="ir.rule">
+            <field name="name">CRM Lead Team Visibility</field>
+            <field name="model_id" ref="crm.model_crm_lead"/>
+            <field name="domain_force">['|', ('user_id', '=', user.id), ('user_id', '=', False)]</field>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_unlink" eval="False"/>
+            <field name="groups" eval="[(4, ref('sales_team.group_sale_salesman'))]"/>
+        </record>
+    </data>
+</odoo>

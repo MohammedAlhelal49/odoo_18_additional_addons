@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <!-- Medical Center Employee Type Documentation -->
+        <!-- Note: Employee types are selected via Selection field on hr.employee, not model records -->
+        <!-- This file documents the available types and their purposes -->
+
+        <!-- Employee Type: Doctor
+             - Can provide medical appointments
+             - Views own schedule and appointments
+             - Access to patient data for assigned appointments
+             - Medical specialization tracking
+             - Appointment provider flag enabled
+        -->
+
+        <!-- Employee Type: Nurse
+             - Works assigned shifts
+             - Views assigned appointments and duties
+             - Access to patient data for assigned work
+             - Can update nursing-related information
+             - Shift assignment and schedule management
+        -->
+
+        <!-- Employee Type: Receptionist
+             - Manages appointment scheduling
+             - Views all doctor schedules
+             - Registers and updates patient contact information
+             - Manages patient check-in
+             - Can confirm and reschedule appointments
+        -->
+
+        <!-- Employee Type: Sales Employee
+             - Manages assigned CRM leads
+             - Records sales calls and contact outcomes
+             - Schedules follow-up activities
+             - Creates appointments through lead workflow
+             - Accesses lead source and attribution information
+        -->
+
+    </data>
+</odoo>

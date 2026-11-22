@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Medical Center Groups Menu -->
+        <menuitem id="menu_medical_groups" name="Medical Center Groups"
+                  parent="base.menu_administration" action="base.action_res_groups"
+                  groups="medical_employee_management.group_medical_security_manager,base.group_system"/>
+    </data>
+</odoo>

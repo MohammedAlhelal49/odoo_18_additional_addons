@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Extend HR Employee Form View -->
+        <record id="hr_employee_form_medical" model="ir.ui.view">
+            <field name="name">hr.employee.form.medical</field>
+            <field name="model">hr.employee</field>
+            <field name="inherit_id" ref="hr.view_employee_form"/>
+            <field name="arch" type="xml">
+                <!-- Add Medical Center Role section after active_group in Settings page -->
+                <!-- Medical role fields: admin can edit all, users can edit their own -->
+                <xpath expr="//page[@name='hr_settings']/group/group[@name='active_group']" position="after">
+                    <group string="Medical Center Role" name="medical_role">
+                        <!-- Medical role type: admin can edit, others see their own or read-only -->
+                        <field name="medical_employee_type" groups="base.group_system"/>
+                        <field name="medical_specialization" invisible="medical_employee_type != 'doctor'" groups="base.group_system"/>
+                        <field name="is_appointment_provider" invisible="medical_employee_type != 'doctor'" groups="base.group_system"/>
+                        <field name="working_hours_per_week"/>
+                    </group>
+                </xpath>
+
+                <!-- Add Medical Information section in Settings page (Audit Trail - Admin only) -->
+                <xpath expr="//page[@name='hr_settings']/group" position="inside">
+                    <group string="Medical Role Audit Trail" name="medical_audit" groups="base.group_system">
+                        <field name="medical_type_change_date" readonly="1"/>
+                        <field name="medical_type_changed_by_id" readonly="1"/>
+                    </group>
+                </xpath>
+
+                <!-- Quick action buttons for role assignment (Admin only) -->
+                <xpath expr="//div[@name='button_box']" position="inside">
+                    <button name="action_make_doctor" type="object" class="oe_stat_button" icon="fa-stethoscope"
+                            groups="base.group_system"
+                            invisible="medical_employee_type == 'doctor'">
+                        <div class="o_field_stat_value">Make Doctor</div>
+                    </button>
+                    <button name="action_make_nurse" type="object" class="oe_stat_button" icon="fa-heart"
+                            groups="base.group_system"
+                            invisible="medical_employee_type == 'nurse'">
+                        <div class="o_field_stat_value">Make Nurse</div>
+                    </button>
+                    <button name="action_make_receptionist" type="object" class="oe_stat_button" icon="fa-headset"
+                            groups="base.group_system"
+                            invisible="medical_employee_type == 'receptionist'">
+                        <div class="o_field_stat_value">Make Receptionist</div>
+                    </button>
+                    <button name="action_make_sales" type="object" class="oe_stat_button" icon="fa-line-chart"
+                            groups="base.group_system"
+                            invisible="medical_employee_type == 'sales'">
+                        <div class="o_field_stat_value">Make Sales</div>
+                    </button>
+                </xpath>
+            </field>
+        </record>
+
+        <!-- Extend HR Employee List View (add badge) -->
+        <record id="hr_employee_tree_medical" model="ir.ui.view">
+            <field name="name">hr.employee.list.medical</field>
+            <field name="model">hr.employee</field>
+            <field name="inherit_id" ref="hr.view_employee_tree"/>
+            <field name="arch" type="xml">
+                <field name="department_id" position="after">
+                    <field name="medical_employee_type" widget="badge" decoration-info="medical_employee_type == 'doctor'" decoration-success="medical_employee_type == 'nurse'" decoration-warning="medical_employee_type == 'receptionist'" decoration-danger="medical_employee_type == 'sales'"/>
+                </field>
+            </field>
+        </record>
+
+        <!-- Dedicated Medical Staff List View (New button disabled) -->
+        <record id="view_medical_staff_list" model="ir.ui.view">
+            <field name="name">hr.employee.medical.staff.list</field>
+            <field name="model">hr.employee</field>
+            <field name="inherit_id" ref="hr.view_employee_tree"/>
+            <field name="mode">primary</field>
+            <field name="arch" type="xml">
+                <xpath expr="//list" position="attributes">
+                    <attribute name="create">false</attribute>
+                </xpath>
+                <field name="department_id" position="after">
+                    <field name="medical_employee_type" widget="badge" decoration-info="medical_employee_type == 'doctor'" decoration-success="medical_employee_type == 'nurse'" decoration-warning="medical_employee_type == 'receptionist'" decoration-danger="medical_employee_type == 'sales'"/>
+                </field>
+            </field>
+        </record>
+
+        <!-- Dedicated Medical Staff Kanban View (New button disabled) -->
+        <record id="view_medical_staff_kanban" model="ir.ui.view">
+            <field name="name">hr.employee.medical.staff.kanban</field>
+            <field name="model">hr.employee</field>
+            <field name="inherit_id" ref="hr.hr_kanban_view_employees"/>
+            <field name="mode">primary</field>
+            <field name="arch" type="xml">
+                <xpath expr="//kanban" position="attributes">
+                    <attribute name="create">false</attribute>
+                </xpath>
+            </field>
+        </record>
+
+        <!-- Extend HR Employee Search View -->
+        <record id="hr_employee_search_medical" model="ir.ui.view">
+            <field name="name">hr.employee.search.medical</field>
+            <field name="model">hr.employee</field>
+            <field name="inherit_id" ref="hr.view_employee_filter"/>
+            <field name="arch" type="xml">
+                <!-- Context to show all medical staff by default, user can filter by type -->
+                <xpath expr="//search" position="attributes">
+                    <attribute name="string">Employees</attribute>
+                </xpath>
+
+                <xpath expr="//filter[@name='inactive']" position="after">
+                    <separator/>
+                    <filter name="filter_all_medical_staff" string="All Medical Staff" domain="[('medical_employee_type', '!=', False)]"/>
+                    <filter name="filter_doctors" string="Doctors" domain="[('medical_employee_type', '=', 'doctor')]"/>
+                    <filter name="filter_nurses" string="Nurses" domain="[('medical_employee_type', '=', 'nurse')]"/>
+                    <filter name="filter_receptionists" string="Receptionists" domain="[('medical_employee_type', '=', 'receptionist')]"/>
+                    <filter name="filter_sales" string="Sales Employees" domain="[('medical_employee_type', '=', 'sales')]"/>
+                    <filter name="filter_appointment_providers" string="Appointment Providers" domain="[('is_appointment_provider', '=', True)]"/>
+                    <separator/>
+                    <filter name="filter_medical_managers" string="Team Heads / Managers" domain="[('is_medical_manager', '=', True)]"/>
+                </xpath>
+            </field>
+        </record>
+
+    </data>
+</odoo>

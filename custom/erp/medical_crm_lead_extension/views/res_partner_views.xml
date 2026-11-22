@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Extend Partner Form View with Medical Fields -->
+        <record id="view_partner_form_medical" model="ir.ui.view">
+            <field name="name">res.partner.form.medical</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_form"/>
+            <field name="arch" type="xml">
+                <!-- Add medical fields after vat in contact information -->
+                <xpath expr="//field[@name='vat']" position="after">
+                    <field name="nationality_id"/>
+                    <field name="preferred_service"/>
+                </xpath>
+
+                <!-- Add Medical Information & Related Leads pages to notebook -->
+                <xpath expr="//notebook" position="inside">
+                    <page string="Medical Information" name="medical_info">
+                        <group>
+                            <group string="Consent &amp; Data Processing">
+                                <field name="contact_consent"/>
+                                <field name="data_processing_consent"/>
+                            </group>
+                            <group string="Medical Details">
+                                <field name="medical_record_reference" groups="medical_crm_lead_extension.group_medical_staff"/>
+                                <field name="preferred_service"/>
+                            </group>
+                        </group>
+                    </page>
+
+                    <page string="Related CRM Leads" name="crm_leads">
+                        <field name="crm_lead_ids" nolabel="1">
+                            <list string="CRM Leads">
+                                <field name="name"/>
+                                <field name="stage_id"/>
+                                <field name="source_platform"/>
+                                <field name="medical_service_ids"/>
+                                <field name="create_date"/>
+                            </list>
+                        </field>
+                    </page>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Extend CRM Lead Form View -->
+        <record id="crm_lead_form_medical" model="ir.ui.view">
+            <field name="name">crm.lead.form.medical</field>
+            <field name="model">crm.lead</field>
+            <field name="inherit_id" ref="crm.crm_lead_view_form"/>
+            <field name="arch" type="xml">
+                <!-- Add Medical Service & Source fields after team_id -->
+                <xpath expr="//field[@name='team_id']" position="after">
+                    <field name="medical_service_ids" widget="many2many_tags"/>
+                    <field name="source_type"/>
+                    <field name="source_platform"/>
+                </xpath>
+
+                <!-- Add attribution details in new section -->
+                <xpath expr="//notebook" position="inside">
+                    <page string="Lead Attribution" name="lead_attribution">
+                        <group>
+                            <group string="Source Information">
+                                <field name="source_type"/>
+                                <field name="source_platform"/>
+                                <field name="source_details"/>
+                                <field name="lead_received_date"/>
+                            </group>
+                            <group string="Campaign &amp; Advertisement">
+                                <field name="campaign_name"/>
+                                <field name="advertisement_name"/>
+                            </group>
+                        </group>
+                        <group string="Duplicate Detection" colspan="2">
+                            <field name="duplicate_phone_warning" widget="boolean"/>
+                            <field name="potential_duplicate_lead_ids"
+                                   invisible="not duplicate_phone_warning"
+                                   nolabel="1" colspan="2">
+                                <list string="Potential Duplicates" create="false" edit="false">
+                                    <field name="name"/>
+                                    <field name="phone"/>
+                                    <field name="mobile"/>
+                                    <field name="create_date"/>
+                                </list>
+                            </field>
+                            <button name="action_view_duplicate_leads" type="object" string="View All Duplicates"
+                                    invisible="not duplicate_phone_warning"/>
+                        </group>
+                    </page>
+
+                    <page string="Medical &amp; Contact Details" name="medical_details">
+                        <group>
+                            <group string="Contact Details">
+                                <field name="contact_consent"/>
+                                <field name="data_processing_consent"/>
+                                <field name="country_id"/>
+                                <field name="nationality_id"/>
+                            </group>
+                            <group string="Medical Information">
+                                <field name="medical_service_ids" widget="many2many_tags"/>
+                                <field name="medical_record_reference" groups="medical_crm_lead_extension.group_medical_staff"/>
+                            </group>
+                        </group>
+                    </page>
+
+                    <page string="Follow-up &amp; Notes" name="followup_notes">
+                        <group>
+                            <group string="Follow-up Schedule">
+                                <field name="next_followup_date"/>
+                                <field name="date_deadline"/>
+                                <field name="last_activity_date"/>
+                            </group>
+                        </group>
+                        <group string="Notes" colspan="2">
+                            <field name="internal_notes" nolabel="1" colspan="2"/>
+                        </group>
+                    </page>
+                </xpath>
+            </field>
+        </record>
+
+        <!-- Extend CRM Lead List View -->
+        <record id="crm_lead_list_medical" model="ir.ui.view">
+            <field name="name">crm.lead.list.medical</field>
+            <field name="model">crm.lead</field>
+            <field name="inherit_id" ref="crm.crm_case_tree_view_leads"/>
+            <field name="arch" type="xml">
+                <field name="user_id" position="after">
+                    <field name="medical_service_ids" optional="show"/>
+                    <field name="source_platform" optional="show"/>
+                    <field name="duplicate_phone_warning" optional="hide"/>
+                </field>
+            </field>
+        </record>
+
+        <!-- Search View with Additional Filters -->
+        <record id="crm_lead_search_medical" model="ir.ui.view">
+            <field name="name">crm.lead.search.medical</field>
+            <field name="model">crm.lead</field>
+            <field name="inherit_id" ref="crm.view_crm_case_leads_filter"/>
+            <field name="arch" type="xml">
+                <xpath expr="//filter[@name='lost']" position="after">
+                    <separator/>
+                    <filter name="filter_source_paid" string="Paid Source" domain="[('source_type', '=', 'paid')]"/>
+                    <filter name="filter_source_organic" string="Organic Source" domain="[('source_type', '=', 'organic')]"/>
+                    <filter name="filter_source_referral" string="Referral" domain="[('source_type', '=', 'referral')]"/>
+                    <separator/>
+                    <filter name="filter_platform_facebook" string="Facebook" domain="[('source_platform', '=', 'facebook')]"/>
+                    <filter name="filter_platform_instagram" string="Instagram" domain="[('source_platform', '=', 'instagram')]"/>
+                    <filter name="filter_platform_whatsapp" string="WhatsApp" domain="[('source_platform', '=', 'whatsapp')]"/>
+                    <filter name="filter_platform_website" string="Website" domain="[('source_platform', '=', 'website')]"/>
+                    <separator/>
+                    <filter name="filter_duplicates" string="Potential Duplicates" domain="[('duplicate_phone_warning', '=', True)]"/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Root App Menu for Medical Staff on Home Screen -->
+    <menuitem id="menu_medical_employee_root"
+              name="Medical Staff"
+              web_icon="medical_employee_management,static/description/icon.png"
+              sequence="30"/>
+
+    <!-- Default Entry Server Action: Auto-filters by current user's medical role -->
+    <record id="action_medical_staff_default" model="ir.actions.server">
+        <field name="name">Medical Staff</field>
+        <field name="model_id" ref="hr.model_hr_employee"/>
+        <field name="state">code</field>
+        <field name="code">action = model.action_view_medical_staff_default()</field>
+    </record>
+
+    <!-- Actions for Staff Categories with create=False and dedicated views -->
+    <record id="action_medical_doctors" model="ir.actions.act_window">
+        <field name="name">Doctors</field>
+        <field name="res_model">hr.employee</field>
+        <field name="view_mode">kanban,list,form</field>
+        <field name="view_ids" eval="[(5, 0, 0),
+            (0, 0, {'view_mode': 'kanban', 'view_id': ref('view_medical_staff_kanban')}),
+            (0, 0, {'view_mode': 'list', 'view_id': ref('view_medical_staff_list')})]"/>
+        <field name="search_view_id" ref="hr_employee_search_medical"/>
+        <field name="domain">[('medical_employee_type', '=', 'doctor')]</field>
+        <field name="context">{'default_medical_employee_type': 'doctor', 'default_is_appointment_provider': True, 'create': False}</field>
+    </record>
+
+    <record id="action_medical_nurses" model="ir.actions.act_window">
+        <field name="name">Nurses</field>
+        <field name="res_model">hr.employee</field>
+        <field name="view_mode">kanban,list,form</field>
+        <field name="view_ids" eval="[(5, 0, 0),
+            (0, 0, {'view_mode': 'kanban', 'view_id': ref('view_medical_staff_kanban')}),
+            (0, 0, {'view_mode': 'list', 'view_id': ref('view_medical_staff_list')})]"/>
+        <field name="search_view_id" ref="hr_employee_search_medical"/>
+        <field name="domain">[('medical_employee_type', '=', 'nurse')]</field>
+        <field name="context">{'default_medical_employee_type': 'nurse', 'create': False}</field>
+    </record>
+
+    <record id="action_medical_receptionists" model="ir.actions.act_window">
+        <field name="name">Receptionists</field>
+        <field name="res_model">hr.employee</field>
+        <field name="view_mode">kanban,list,form</field>
+        <field name="view_ids" eval="[(5, 0, 0),
+            (0, 0, {'view_mode': 'kanban', 'view_id': ref('view_medical_staff_kanban')}),
+            (0, 0, {'view_mode': 'list', 'view_id': ref('view_medical_staff_list')})]"/>
+        <field name="search_view_id" ref="hr_employee_search_medical"/>
+        <field name="domain">[('medical_employee_type', '=', 'receptionist')]</field>
+        <field name="context">{'default_medical_employee_type': 'receptionist', 'create': False}</field>
+    </record>
+
+    <record id="action_medical_sales_staff" model="ir.actions.act_window">
+        <field name="name">Sales Staff</field>
+        <field name="res_model">hr.employee</field>
+        <field name="view_mode">kanban,list,form</field>
+        <field name="view_ids" eval="[(5, 0, 0),
+            (0, 0, {'view_mode': 'kanban', 'view_id': ref('view_medical_staff_kanban')}),
+            (0, 0, {'view_mode': 'list', 'view_id': ref('view_medical_staff_list')})]"/>
+        <field name="search_view_id" ref="hr_employee_search_medical"/>
+        <field name="domain">[('medical_employee_type', '=', 'sales')]</field>
+        <field name="context">{'default_medical_employee_type': 'sales', 'create': False}</field>
+    </record>
+
+    <record id="action_medical_all_staff" model="ir.actions.act_window">
+        <field name="name">All Medical Staff</field>
+        <field name="res_model">hr.employee</field>
+        <field name="view_mode">kanban,list,form</field>
+        <field name="view_ids" eval="[(5, 0, 0),
+            (0, 0, {'view_mode': 'kanban', 'view_id': ref('view_medical_staff_kanban')}),
+            (0, 0, {'view_mode': 'list', 'view_id': ref('view_medical_staff_list')})]"/>
+        <field name="search_view_id" ref="hr_employee_search_medical"/>
+        <field name="domain">[('medical_employee_type', '!=', False)]</field>
+        <field name="context">{'create': False, 'search_default_filter_all_medical_staff': 1}</field>
+    </record>
+
+    <!-- Action for viewing staff by current user's type (auto-filtered via Python method) -->
+    <record id="action_medical_my_team" model="ir.actions.server">
+        <field name="name">My Team</field>
+        <field name="model_id" ref="hr.model_hr_employee"/>
+        <field name="state">code</field>
+        <field name="code">action = model.action_view_my_team()</field>
+    </record>
+
+    <!-- Submenus inside Medical Staff App -->
+    <menuitem id="menu_medical_staff_main"
+              name="Medical Staff"
+              parent="menu_medical_employee_root"
+              sequence="10"/>
+
+    <!-- First submenu item: opens default action filtered according to current user's medical role -->
+    <menuitem id="menu_item_all_staff"
+              name="All Medical Staff"
+              parent="menu_medical_staff_main"
+              action="action_medical_staff_default"
+              sequence="5"/>
+
+    <menuitem id="menu_item_my_team"
+              name="My Team"
+              parent="menu_medical_staff_main"
+              action="action_medical_my_team"
+              sequence="8"/>
+
+    <menuitem id="menu_item_doctors"
+              name="Doctors"
+              parent="menu_medical_staff_main"
+              action="action_medical_doctors"
+              sequence="10"/>
+
+    <menuitem id="menu_item_nurses"
+              name="Nurses"
+              parent="menu_medical_staff_main"
+              action="action_medical_nurses"
+              sequence="20"/>
+
+    <menuitem id="menu_item_receptionists"
+              name="Receptionists"
+              parent="menu_medical_staff_main"
+              action="action_medical_receptionists"
+              sequence="30"/>
+
+    <menuitem id="menu_item_sales_staff"
+              name="Sales Staff"
+              parent="menu_medical_staff_main"
+              action="action_medical_sales_staff"
+              sequence="40"/>
+
+    <menuitem id="menu_item_staff_users"
+              name="Staff Users"
+              parent="menu_medical_staff_main"
+              action="action_medical_staff_users"
+              sequence="60"/>
+
+    <!-- Configuration Menu -->
+    <menuitem id="menu_medical_staff_config"
+              name="Configuration"
+              parent="menu_medical_employee_root"
+              sequence="100"/>
+
+    <menuitem id="menu_medical_staff_settings"
+              name="Settings"
+              parent="menu_medical_staff_config"
+              action="action_medical_employee_config_settings"
+              sequence="100"
+              groups="base.group_system"/>
+</odoo>

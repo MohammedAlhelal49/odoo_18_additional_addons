@@ -1,0 +1,27 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_hr_employee_system,hr.employee system access,hr.model_hr_employee,base.group_system,1,1,1,1
+access_hr_employee_doctor,hr.employee doctor access,hr.model_hr_employee,group_medical_doctor,1,1,0,0
+access_hr_employee_nurse,hr.employee nurse access,hr.model_hr_employee,group_medical_nurse,1,1,0,0
+access_hr_employee_receptionist,hr.employee receptionist access,hr.model_hr_employee,group_medical_receptionist,1,1,0,0
+access_hr_employee_sales,hr.employee sales access,hr.model_hr_employee,group_medical_sales,1,1,0,0
+access_hr_employee_hr_manager,hr.employee hr manager access,hr.model_hr_employee,group_medical_hr_manager,1,1,1,0
+access_hr_employee_security_manager,hr.employee security manager access,hr.model_hr_employee,group_medical_security_manager,1,1,1,1
+access_resource_calendar_doctor,resource.calendar doctor access,resource.model_resource_calendar,group_medical_doctor,1,0,0,0
+access_resource_calendar_nurse,resource.calendar nurse access,resource.model_resource_calendar,group_medical_nurse,1,0,0,0
+access_resource_calendar_receptionist,resource.calendar receptionist access,resource.model_resource_calendar,group_medical_receptionist,1,0,0,0
+access_resource_calendar_sales,resource.calendar sales access,resource.model_resource_calendar,group_medical_sales,1,0,0,0
+access_resource_calendar_hr_manager,resource.calendar hr manager access,resource.model_resource_calendar,group_medical_hr_manager,1,1,1,0
+access_hr_holidays_doctor,hr.leave doctor access,hr_holidays.model_hr_leave,group_medical_doctor,1,0,0,0
+access_hr_holidays_nurse,hr.leave nurse access,hr_holidays.model_hr_leave,group_medical_nurse,1,0,0,0
+access_hr_holidays_receptionist,hr.leave receptionist access,hr_holidays.model_hr_leave,group_medical_receptionist,1,0,0,0
+access_hr_holidays_sales,hr.leave sales access,hr_holidays.model_hr_leave,group_medical_sales,0,0,0,0
+access_hr_holidays_hr_manager,hr.leave hr manager access,hr_holidays.model_hr_leave,group_medical_hr_manager,1,1,1,0
+access_hr_attendance_doctor,hr.attendance doctor access,hr_attendance.model_hr_attendance,group_medical_doctor,1,0,0,0
+access_hr_attendance_nurse,hr.attendance nurse access,hr_attendance.model_hr_attendance,group_medical_nurse,1,0,0,0
+access_hr_attendance_receptionist,hr.attendance receptionist access,hr_attendance.model_hr_attendance,group_medical_receptionist,1,0,0,0
+access_hr_attendance_sales,hr.attendance sales access,hr_attendance.model_hr_attendance,group_medical_sales,0,0,0,0
+access_hr_attendance_hr_manager,hr.attendance hr manager access,hr_attendance.model_hr_attendance,group_medical_hr_manager,1,1,1,0
+access_calendar_event_doctor,calendar.event doctor access,calendar.model_calendar_event,group_medical_doctor,1,0,0,0
+access_calendar_event_nurse,calendar.event nurse access,calendar.model_calendar_event,group_medical_nurse,1,0,0,0
+access_calendar_event_receptionist,calendar.event receptionist access,calendar.model_calendar_event,group_medical_receptionist,1,1,1,0
+access_calendar_event_sales,calendar.event sales access,calendar.model_calendar_event,group_medical_sales,1,1,0,0
