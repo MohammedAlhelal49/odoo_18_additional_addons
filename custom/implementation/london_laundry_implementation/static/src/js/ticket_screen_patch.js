@@ -26,6 +26,22 @@ function hasPayLater(order) {
     );
 }
 
+// إذا اللي انكتب بالبحث رقم: الأرقام بس، والإماراتي الدولي (+971 / 00971 / 971) بصيغته المحفوظة (0…)
+function laundryPhoneTerm(term) {
+    const raw = (term || "").trim();
+    if (!/^[+\d][\d\s\-()]{3,}$/.test(raw)) {
+        return false;
+    }
+    let digits = raw.replace(/\D/g, "");
+    if (digits.startsWith("00")) {
+        digits = digits.slice(2);
+    }
+    if (digits.startsWith("971")) {
+        digits = "0" + digits.slice(3);
+    }
+    return digits;
+}
+
 // طلب على الحساب لسا ما اندفع (كامل أو جزء منه)
 function isCreditOwed(order) {
     if (order.laundry_collection_status) {
@@ -100,9 +116,35 @@ patch(TicketScreen.prototype, {
         await this._fetchSyncedOrders();
     },
 
+    // البحث بالزبون بيلاقي كمان رقم الموبايل أو الهاتف (مش بس الاسم)
+    _getSearchFields() {
+        const fields = super._getSearchFields();
+        if (fields.PARTNER) {
+            fields.PARTNER = {
+                ...fields.PARTNER,
+                displayName: _t("Customer / Phone"),
+                repr: (order) => {
+                    const partner = order.partner_id;
+                    return [order.get_partner_name(), partner?.mobile, partner?.phone].filter(Boolean).join(" ");
+                },
+            };
+        }
+        return fields;
+    },
+
     // جلب الطلبات من السيرفر: نفس جلب "Completed" بس للطلبات اللي عليها مصاري
     _computeSyncedOrdersDomain() {
-        const domain = super._computeSyncedOrdersDomain();
+        let domain = super._computeSyncedOrdersDomain();
+        const { fieldName, searchTerm } = this.state.search;
+        const phone = fieldName === "PARTNER" && laundryPhoneTerm(searchTerm);
+        if (phone) {
+            domain = [
+                "|", "|",
+                ["partner_id.complete_name", "ilike", `%${searchTerm}%`],
+                ["partner_id.mobile", "ilike", `%${phone}%`],
+                ["partner_id.phone", "ilike", `%${phone}%`],
+            ];
+        }
         if (this.state.filter === CREDIT_FILTER) {
             return [...domain, ["laundry_collection_status", "in", OWED_STATUSES]];
         }
@@ -110,8 +152,18 @@ patch(TicketScreen.prototype, {
     },
 
     getFilteredOrderList() {
+        // رقم هاتف: منفلتر بالرقم بصيغته المحفوظة (متل ما منبحث بالسيرفر)
+        const { fieldName, searchTerm } = this.state.search;
+        const phone = fieldName === "PARTNER" && laundryPhoneTerm(searchTerm);
+        const state =
+            phone && phone !== searchTerm
+                ? { ...this.state, search: { ...this.state.search, searchTerm: phone } }
+                : this.state;
         if (this.state.filter !== CREDIT_FILTER) {
-            return super.getFilteredOrderList();
+            if (state === this.state) {
+                return super.getFilteredOrderList();
+            }
+            return super.getFilteredOrderList.call(Object.create(this, { state: { value: state } }));
         }
         // منعيد استعمال منطق "Completed" (البحث، الترتيب، الصفحات) على الطلبات المسكّرة
         // اللي عليها مصاري بس
@@ -125,7 +177,7 @@ patch(TicketScreen.prototype, {
         });
         const view = Object.create(this, {
             pos: { value: pos },
-            state: { value: { ...this.state, filter: "SYNCED" } },
+            state: { value: { ...state, filter: "SYNCED" } },
         });
         return super.getFilteredOrderList.call(view);
     },
