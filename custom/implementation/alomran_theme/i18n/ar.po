@@ -24,7 +24,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:alomran_theme.custom_contact_template
 #: model_terms:ir.ui.view,arch_db:alomran_theme.footer_rtl
 #: model_terms:ir.ui.view,arch_db:alomran_theme.layout_rtl
-msgid "+971505829697"
+msgid "+971564342889"
 msgstr ""
 
 #. module: alomran_theme
@@ -869,7 +869,7 @@ msgstr "اتصل الان"
 #: model_terms:ir.ui.view,arch_db:alomran_theme.custom_contact_template
 msgid ""
 "<i class=\"fa fa-phone me-2\"/>\n"
-"                                        <span dir=\"ltr\">+971505829697</span>"
+"                                        <span dir=\"ltr\">+971564342889</span>"
 msgstr ""
 
 #. module: alomran_theme

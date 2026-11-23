@@ -17,11 +17,11 @@ from .site_facts import BRANCHES, DEFAULT_SITE_URL  # noqa: F401  (عدد الف
 TRAINEES = '+20,000'
 
 # رقم الواتساب الافتراضي (ممكن يتغير من System Parameter: alomran.english_whatsapp)
-WHATSAPP_NUMBER = '971505829697'
+WHATSAPP_NUMBER = '971564342889'
 
 # رقم الاتصال — نفس رقم صفحة تواصل معنا
-PHONE_NUMBER = '+971505829697'
-PHONE_DISPLAY = '+971 50 582 9697'
+PHONE_NUMBER = '+971564342889'
+PHONE_DISPLAY = '+971 56 434 2889'
 
 # رابط "شاهد المزيد من تجارب المتدربين"
 MORE_TESTIMONIALS_URL = 'https://www.instagram.com/alomran.td/'

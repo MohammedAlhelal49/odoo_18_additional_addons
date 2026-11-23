@@ -237,7 +237,7 @@
                                     <i class="fa fa-house" aria-hidden="true"/>
                                     <span t-out="cr['home']"/>
                                 </a>
-                                <a href="https://wa.me/971505829697" target="_blank" rel="noopener" class="alh-btn alh-btn-wa">
+                                <a href="https://wa.me/971564342889" target="_blank" rel="noopener" class="alh-btn alh-btn-wa">
                                     <i class="fab fa-whatsapp" aria-hidden="true"/>
                                     <span t-out="cr['whatsapp']"/>
                                 </a>
@@ -272,7 +272,7 @@
                                     <i class="fa fa-rotate-right" aria-hidden="true"/>
                                     <span t-out="cr['retry']"/>
                                 </a>
-                                <a href="https://wa.me/971505829697" target="_blank" rel="noopener" class="alh-btn alh-btn-wa">
+                                <a href="https://wa.me/971564342889" target="_blank" rel="noopener" class="alh-btn alh-btn-wa">
                                     <i class="fab fa-whatsapp" aria-hidden="true"/>
                                     <span t-out="cr['whatsapp']"/>
                                 </a>

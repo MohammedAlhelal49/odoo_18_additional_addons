@@ -8,7 +8,7 @@ from datetime import datetime, timedelta
 
 # رقم الواتساب الافتراضي للعروض — نفس رقم صفحة تواصل معنا
 # (ممكن يتغير من System Parameter: alomran.offers_whatsapp)
-OFFER_WHATSAPP_NUMBER = '971505829697'
+OFFER_WHATSAPP_NUMBER = '971564342889'
 
 # صفحات الكورسات اللي فيك تخصص إلها عرض: key -> (المسار، اسم الكورس عربي، إنجليزي)
 OFFER_TARGET_PAGES = {

@@ -9,15 +9,15 @@
 ملاحظة: الملف ما بيستورد أي ملف محتوى تاني (منعاً للـ circular import).
 """
 
-PHONE_NUMBER = '+971505829697'
-PHONE_DISPLAY = '+971 50 582 9697'
+PHONE_NUMBER = '+971564342889'
+PHONE_DISPLAY = '+971 56 434 2889'
 from .site_facts import DEFAULT_SITE_URL
 
 # fallback only: the pages use the website domain (see main.home_content_org_id)
 ORG_ID = DEFAULT_SITE_URL + '/#organization'
 
 # رقم الواتساب الافتراضي (ممكن يتغير من System Parameter: alomran.saudi_whatsapp)
-WHATSAPP_NUMBER = '971505829697'
+WHATSAPP_NUMBER = '971564342889'
 
 # ------------------------------------------------------------------
 # الخدمات — key: اسم الخدمة بالـ CRM (x_course_interest) منشان التقارير
