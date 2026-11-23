@@ -97,7 +97,22 @@ class AccountMove(models.Model):
 
 
 
+    def _fix_duplicate_entry_numbers(self):
+        """Draft journal entries numbered with a number already posted in the
+        same journal (numbering limited to one branch, see
+        _get_next_month_sequence) get the next free number before posting."""
+        for move in self.filtered(lambda m: m.state == 'draft' and m.move_type == 'entry'
+                                  and m.journal_id and m.date and m.name and m.name != '/'):
+            if self.sudo().search_count([
+                ('journal_id', '=', move.journal_id.id),
+                ('name', '=', move.name),
+                ('state', '=', 'posted'),
+                ('id', '!=', move.id),
+            ]):
+                move.name = move._get_next_month_sequence(move.journal_id, move.date)
+
     def action_post(self):
+        self._fix_duplicate_entry_numbers()
 
         for move in self:
 
@@ -161,7 +176,10 @@ class AccountMove(models.Model):
 
         prefix = f"{journal.code}/{year}/{month}/"
 
-        moves = self.search([
+        # sudo: a journal is shared by the parent company and its branches, the
+        # numbering must see the entries of every company, not only the ones
+        # of the branch currently selected (record rules).
+        moves = self.sudo().search([
             ("journal_id", "=", journal.id),
             ("name", "=like", prefix + "%"),
         ])
