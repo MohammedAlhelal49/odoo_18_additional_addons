@@ -142,7 +142,21 @@ class CrmLead(models.Model):
         leads = super().create(vals_list)
         leads._alomran_check_source_required()
         leads._alomran_check_notes_length()
+        leads._alomran_check_tags_required()
         return leads
+
+    def _alomran_check_tags_required(self):
+        """Tags are mandatory on leads and opportunities (employees working
+        from the UI / RPC; website forms, mail gateway and technical flows are
+        not blocked)."""
+        if not self._alomran_enforce_opportunity_rules():
+            return
+        missing = self.filtered(lambda l: not l.tag_ids)
+        if missing:
+            raise ValidationError(_(
+                "Tags are required. Please add at least one tag to: %s",
+                ", ".join(missing.mapped('name')),
+            ))
 
     def write(self, vals):
         res = super().write(vals)
@@ -153,6 +167,10 @@ class CrmLead(models.Model):
         # or a lead is converted, so existing records stay editable.
         if 'description' in vals or vals.get('type') == 'opportunity':
             self._alomran_check_notes_length()
+        # the tags cannot be removed (other edits of old untagged records are
+        # not blocked here: the form asks for a tag when it is saved)
+        if 'tag_ids' in vals:
+            self._alomran_check_tags_required()
         return res
 
     @api.depends("partner_id.mobile")
@@ -366,3 +384,78 @@ class UtmSource(models.Model):
     _inherit = 'utm.source'
 
     _order = 'name asc'
+
+    # ------------------------------------------------------------------
+    # The list of lead sources is managed by the Sales Managers only:
+    # salespeople just pick a source from the list.
+    # ------------------------------------------------------------------
+    def _alomran_check_source_manager(self):
+        env = self.env
+        # website forms (public user), automatic UTM tracking (cookies / links)
+        # and technical flows (sudo) keep creating sources as before
+        if env.su or env.context.get('alomran_utm_auto') or not env.user._is_internal():
+            return
+        if env.user.has_group('sales_team.group_sale_manager'):
+            return
+        # Recruitment uses the same sources (hr.recruitment.source)
+        recruitment = env.ref('hr_recruitment.group_hr_recruitment_user', raise_if_not_found=False)
+        if recruitment and recruitment in env.user.groups_id:
+            return
+        raise AccessError(_(
+            "Only Sales Managers can add, edit or delete lead sources. "
+            "Please choose a source from the list."
+        ))
+
+    @api.model_create_multi
+    def create(self, vals_list):
+        self._alomran_check_source_manager()
+        return super().create(vals_list)
+
+    def write(self, vals):
+        self._alomran_check_source_manager()
+        return super().write(vals)
+
+    def unlink(self):
+        self._alomran_check_source_manager()
+        return super().unlink()
+
+
+class CrmTag(models.Model):
+    _inherit = 'crm.tag'
+
+    # ------------------------------------------------------------------
+    # Like the sources, the list of tags is managed by the Sales Managers
+    # only: salespeople just pick tags from the list.
+    # ------------------------------------------------------------------
+    def _alomran_check_tag_manager(self):
+        env = self.env
+        if env.su or not env.user._is_internal():
+            return
+        if env.user.has_group('sales_team.group_sale_manager'):
+            return
+        raise AccessError(_(
+            "Only Sales Managers can add, edit or delete tags. "
+            "Please choose tags from the list."
+        ))
+
+    @api.model_create_multi
+    def create(self, vals_list):
+        self._alomran_check_tag_manager()
+        return super().create(vals_list)
+
+    def write(self, vals):
+        self._alomran_check_tag_manager()
+        return super().write(vals)
+
+    def unlink(self):
+        self._alomran_check_tag_manager()
+        return super().unlink()
+
+
+class UtmMixin(models.AbstractModel):
+    _inherit = 'utm.mixin'
+
+    def _find_or_create_record(self, model_name, name):
+        # Automatic UTM tracking (utm_* cookies, tracked links) may create a
+        # source: allowed for everyone, see utm.source._alomran_check_source_manager
+        return super(UtmMixin, self.with_context(alomran_utm_auto=True))._find_or_create_record(model_name, name)

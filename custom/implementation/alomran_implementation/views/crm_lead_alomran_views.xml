@@ -91,6 +91,8 @@
                        options="{'no_create': True}"/>
                 <field name="description" widget="text" required="type == 'opportunity'"
                        placeholder="Opportunity details (minimum 50 characters)..."/>
+                <field name="tag_ids" widget="many2many_tags" required="1"
+                       options="{'color_field': 'color', 'no_create': True, 'no_create_edit': True}"/>
             </xpath>
         </field>
     </record>
