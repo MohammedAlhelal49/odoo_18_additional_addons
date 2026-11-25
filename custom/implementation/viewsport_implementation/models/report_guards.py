@@ -81,6 +81,19 @@ class ReportCreditNote(models.AbstractModel):
         return move.move_type == 'out_refund'
 
 
+class ReportPurchaseVoucher(models.AbstractModel):
+    _name = R + 'report_purchase_voucher_viewsport_document'
+    _inherit = 'report.viewsport_implementation.vs_guard_mixin'
+    _description = 'Viewsport Purchase Voucher'
+    _table = 'vs_rpt_purchase_voucher'
+    _vs_model = 'account.move'
+    _vs_document = 'Purchase Voucher'
+    _vs_applies_to = 'vendor bills'
+
+    def _vs_is_allowed(self, move):
+        return move.move_type == 'in_invoice'
+
+
 class ReportReceiptVoucher(models.AbstractModel):
     _name = R + 'report_receipt_voucher_viewsport_document'
     _inherit = 'report.viewsport_implementation.vs_guard_mixin'

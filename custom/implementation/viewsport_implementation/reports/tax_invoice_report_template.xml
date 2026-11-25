@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <!--
-        Shared layout of the Viewsport invoice family (Tax Invoice, Proforma, Commercial, Credit Note, Debit Note).
+        Shared layout of the Viewsport invoice family (Tax Invoice, Proforma, Commercial, Credit Note, Debit Note,
+        and the Purchase Voucher printed on vendor bills).
         Each document template sets `vs_kind` and calls this one; the differences between the client's
         templates are described in `kinds` below.
     -->
@@ -50,6 +51,13 @@
                                      ('Contract Ref. number:', o._get_contract_ref()), ('Customer Ref:', o.ref or o._get_contract_ref())],
                             'to': ('DN-TO ADDRESS', 'إلى'), 'from': ('FROM', 'من'),
                             'trn_first': False, 'band': False, 'total': 'grand', 'words': 'Grand Total', 'reason': ('Reason of Return:', 2), 'bank': True},
+                        'purchase': {
+                            'title': 'PURCHASE VOUCHER', 'title_ar': 'ســـند مشـــتريات', 'info': 'Voucher Information',
+                            'rows': [('Voucher Number #', num), ('Vendor Invoice No.:', o.ref or '-'), ('Bill Date:', fmt_date(o.invoice_date)),
+                                     ('Due Date:', fmt_date(o.invoice_date_due)), ('Payment Terms:', o.invoice_payment_term_id.name or '-'),
+                                     ('PO Number:', o.invoice_origin or '-'), ('Project Code:', o._get_contract_ref())],
+                            'to': ('VENDOR', 'المورد'), 'from': ('BILLED TO', 'فاتورة إلى'),
+                            'trn_first': False, 'band': False, 'total': 'payable', 'words': 'Grand Total', 'reason': False, 'bank': True},
                     }"/>
                     <t t-set="k" t-value="kinds[vs_kind]"/>
                     <t t-set="cols" t-value="['6.9', '6.4', '38.7', '4.7', '5.5', '7.3', '9.9', '8.2', '12.4'] if vs_kind == 'tax' else ['7.4', '6.9', '33.1', '5.9', '7.6', '8.8', '9.5', '10.4', '10.4']"/>
@@ -119,7 +127,18 @@
                             <tr>
                                 <td style="vertical-align: top; padding: 0;">
                                     <t t-set="cust_address" t-value="', '.join(x for x in [cp.street, cp.street2, cp.city, cp.country_id.name] if x) or '-'"/>
-                                    <table class="vs-box">
+                                    <table t-if="vs_kind == 'purchase'" class="vs-box">
+                                        <tr>
+                                            <td class="vs-lbl" t-att-style="'width: ' + lbl_w[0] + '%;'">Vendor:</td>
+                                            <td class="vs-ph" style="font-weight: bold;">M/s <t t-esc="cp.name"/></td>
+                                        </tr>
+                                        <tr><td class="vs-lbl">Address:</td><td class="vs-ph" style="font-weight: bold;" t-esc="cust_address"/></tr>
+                                        <tr><td class="vs-lbl">Vendor TRN:</td><td class="vs-red" t-esc="cp.vat or '-'"/></tr>
+                                        <tr><td class="vs-lbl">Vendor Code:</td><td class="vs-ph" t-esc="cp.ref or '-'"/></tr>
+                                        <tr><td class="vs-lbl">Phone:</td><td class="vs-ph" t-esc="cp.phone or p.phone or '-'"/></tr>
+                                        <tr><td class="vs-lbl">Vendor Email:</td><td class="vs-blue" t-esc="cp.email or p.email or '-'"/></tr>
+                                    </table>
+                                    <table t-else="" class="vs-box">
                                         <tr>
                                             <td class="vs-lbl" t-att-style="'width: ' + lbl_w[0] + '%;'">Customer:</td>
                                             <td class="vs-ph" style="font-weight: bold;">M/s <t t-esc="cp.name"/></td>
@@ -225,6 +244,13 @@
                             <t t-esc="k['words']"/> (<t t-out="symbol"/>) <t t-esc="o._get_amount_in_words()"/>
                         </div>
 
+                        <!-- 5b. PAYMENT STATUS (purchase voucher) -->
+                        <table t-if="vs_kind == 'purchase'" class="vs-box" style="margin-top: 12px; width: 46%; page-break-inside: avoid;">
+                            <tr><td class="vs-lbl" style="width: 50%;">Amount Paid:</td><td class="vs-num" style="text-align: right;" t-esc="fmt_cur(o.amount_total - o.amount_residual)"/></tr>
+                            <tr><td class="vs-lbl">Balance Due:</td><td class="vs-num vs-red" style="text-align: right;" t-esc="fmt_cur(o.amount_residual)"/></tr>
+                            <tr><td class="vs-lbl">Payment Status:</td><td style="font-weight: bold;" t-esc="dict(o._fields['payment_state']._description_selection(o.env)).get(o.payment_state, '')"/></tr>
+                        </table>
+
                         <!-- 6. REASON (credit / debit notes) -->
                         <t t-if="k['reason']">
                             <t t-set="reasons" t-value="[r for r in (o.vs_note_reason or '').splitlines() if r.strip()]"/>
@@ -239,16 +265,16 @@
                         </t>
 
                         <!-- 7. BANK ACCOUNT INFORMATION (invoice recipient bank, else first company account) -->
-                        <t t-set="bank" t-value="o._get_report_bank_account() if k['bank'] else False"/>
+                        <t t-set="bank" t-value="(o.partner_bank_id if vs_kind == 'purchase' else o._get_report_bank_account()) if k['bank'] else False"/>
                         <t t-if="bank">
                         <div style="page-break-inside: avoid;">
-                        <div class="vs-gap-bank" style="margin-top: 22px; color: #1a73c8; font-weight: bold; font-size: 17.5px; text-decoration: underline; padding-left: 4px;">Bank account information:</div>
+                        <div class="vs-gap-bank" style="margin-top: 22px; color: #1a73c8; font-weight: bold; font-size: 17.5px; text-decoration: underline; padding-left: 4px;"><t t-if="vs_kind == 'purchase'">Vendor bank account information:</t><t t-else="">Bank account information:</t></div>
                         <table style="margin-top: 4px;">
                             <tr>
                                 <td style="width: 52%; vertical-align: top;">
                                     <table>
                                         <tr><td class="vs-bank-l">Title of Account:</td></tr>
-                                        <tr><td class="vs-bank-v" t-esc="bank.acc_holder_name or o.company_id.vs_legal_name or o.company_id.name"/></tr>
+                                        <tr><td class="vs-bank-v" t-esc="bank.acc_holder_name or bank.partner_id.name or o.company_id.vs_legal_name or o.company_id.name"/></tr>
                                         <tr><td class="vs-bank-l">Bank Name:</td></tr>
                                         <tr><td class="vs-bank-v" t-esc="bank.bank_id.name or '-'"/></tr>
                                         <tr><td class="vs-bank-l">Account No:</td></tr>
@@ -325,6 +351,9 @@
                                              ('Approved by:', ['u:Managing Director'], False), ('Received By*:', ['Name: ........................', 'Contact no…................'], True)],
                                 'credit': [('Prepared by:', ['Nmae:…..............'], False), ('Accountant', [accountant, '', 'Sign: ….........................'], False),
                                            ('Authorized By', ['u:Managing Director'], False)],
+                                'purchase': [('Prepared by:', ['Accountant', accountant, '', 'Sign: ….........................'], False),
+                                             ('Checked by:', ['Name: ........................', '', 'Sign: ….........................'], False),
+                                             ('Approved by:', ['u:Managing Director', '', '', 'Sign: ….........................'], False)],
                                 'debit': [('Prepared by:', ['Nmae:…..............'], False), ('Accountant', [accountant, '', 'Sign: ….........................'], False),
                                           ('Approved by:', ['u:Managing Director'], False)],
                             }[vs_kind]"/>
@@ -363,6 +392,11 @@
 
     <template id="report_tax_invoice_viewsport_document">
         <t t-set="vs_kind" t-value="'tax'"/>
+        <t t-call="viewsport_implementation.report_vs_invoice_family_document"/>
+    </template>
+
+    <template id="report_purchase_voucher_viewsport_document">
+        <t t-set="vs_kind" t-value="'purchase'"/>
         <t t-call="viewsport_implementation.report_vs_invoice_family_document"/>
     </template>
 </odoo>
