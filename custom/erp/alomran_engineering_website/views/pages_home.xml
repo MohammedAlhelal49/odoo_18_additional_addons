@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <template id="page_home" name="Al Omran - Home">
+        <t t-call="alomran_engineering_website.layout">
+            <t t-set="h" t-value="page['hero']"/>
+
+            <!-- ===== HERO ===== -->
+            <section class="aoe-hero">
+                <div class="aoe-blueprint"/>
+                <div class="aoe-hero-glow"/>
+                <div class="aoe-container aoe-hero-grid">
+                    <div class="aoe-hero-copy">
+                        <span class="aoe-eyebrow aoe-eyebrow-light aoe-reveal"><i class="fa fa-map-marker"/> <t t-out="h['eyebrow']"/></span>
+                        <h1 class="aoe-reveal">
+                            <span t-out="h['title_1']"/>
+                            <span t-out="h['title_2']"/>
+                            <em t-out="h['title_3']"/>
+                        </h1>
+                        <p class="aoe-hero-lead aoe-reveal" t-out="h['lead']"/>
+                        <div class="aoe-hero-actions aoe-reveal">
+                            <a href="/contact#aoe-form" class="aoe-btn aoe-btn-gold"><t t-out="h['cta_primary']"/> <i class="fa fa-arrow-right aoe-flip"/></a>
+                            <a href="/projects" class="aoe-btn aoe-btn-ghost-light" t-out="h['cta_secondary']"/>
+                        </div>
+                        <ul class="aoe-chips aoe-reveal">
+                            <li t-foreach="h['chips']" t-as="chip"><i class="fa fa-check"/> <t t-out="chip"/></li>
+                        </ul>
+                    </div>
+
+                    <div class="aoe-hero-art aoe-reveal">
+                        <div class="aoe-hero-photo">
+                            <img t-att-src="h['image']" t-att-alt="c['company_full']" fetchpriority="high"/>
+                        </div>
+                        <div class="aoe-float-card aoe-float-1">
+                            <i class="fa fa-file-text-o"/>
+                            <div><strong t-out="h['card_1_title']"/><small t-out="h['card_1_text']"/></div>
+                        </div>
+                        <div class="aoe-float-card aoe-float-2">
+                            <i class="fa fa-cube"/>
+                            <div><strong t-out="h['card_2_title']"/><small t-out="h['card_2_text']"/></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ===== MARQUEE ===== -->
+            <div class="aoe-marquee" aria-hidden="true">
+                <div class="aoe-marquee-track">
+                    <t t-foreach="range(2)" t-as="_r">
+                        <span t-foreach="page['marquee']" t-as="m"><t t-out="m"/><i>✦</i></span>
+                    </t>
+                </div>
+            </div>
+
+            <!-- ===== INTRO ===== -->
+            <section class="aoe-section">
+                <div class="aoe-container aoe-intro">
+                    <div class="aoe-reveal">
+                        <span class="aoe-eyebrow" t-out="page['intro']['eyebrow']"/>
+                        <h2 class="aoe-h2" t-out="page['intro']['title']"/>
+                        <p class="aoe-lead" t-out="page['intro']['text']"/>
+                        <a href="/about" class="aoe-link"><t t-out="c['read_more']"/> <i class="fa fa-arrow-right aoe-flip"/></a>
+                        <div class="aoe-intro-photo">
+                            <img t-att-src="page['intro']['image']" alt="" loading="lazy"/>
+                        </div>
+                    </div>
+                    <div class="aoe-pillars">
+                        <div class="aoe-pillar aoe-reveal" t-foreach="page['intro']['pillars']" t-as="p">
+                            <span class="aoe-pillar-num" t-out="'0%s' % (p_index + 1)"/>
+                            <i t-attf-class="fa #{p['icon']}"/>
+                            <div>
+                                <h3 t-out="p['title']"/>
+                                <p t-out="p['text']"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ===== SERVICES ===== -->
+            <section class="aoe-section aoe-bg-sand">
+                <div class="aoe-container">
+                    <div class="aoe-section-head aoe-reveal">
+                        <div>
+                            <span class="aoe-eyebrow" t-out="page['services']['eyebrow']"/>
+                            <h2 class="aoe-h2" t-out="page['services']['title']"/>
+                        </div>
+                        <a href="/services" class="aoe-btn aoe-btn-outline"><t t-out="page['services']['cta']"/> <i class="fa fa-arrow-right aoe-flip"/></a>
+                    </div>
+                    <div class="aoe-services-grid">
+                        <a t-foreach="services" t-as="s" t-att-href="'/services#' + s['key']" class="aoe-service-card aoe-reveal">
+                            <div class="aoe-service-media">
+                                <img t-att-src="s['image']" t-att-alt="s['title']" loading="lazy"/>
+                            </div>
+                            <span class="aoe-service-icon"><i t-attf-class="fa #{s['icon']}"/></span>
+                            <h3 t-out="s['title']"/>
+                            <p t-out="s['short']"/>
+                            <span class="aoe-link"><t t-out="c['read_more']"/> <i class="fa fa-arrow-right aoe-flip"/></span>
+                        </a>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ===== PROCESS ===== -->
+            <section class="aoe-section aoe-bg-ink">
+                <div class="aoe-blueprint"/>
+                <div class="aoe-container">
+                    <div class="aoe-section-head aoe-center aoe-reveal">
+                        <div>
+                            <span class="aoe-eyebrow aoe-eyebrow-light" t-out="page['process']['eyebrow']"/>
+                            <h2 class="aoe-h2" t-out="page['process']['title']"/>
+                        </div>
+                    </div>
+                    <t t-call="alomran_engineering_website.process_steps"/>
+                </div>
+            </section>
+
+            <!-- ===== PROJECTS ===== -->
+            <section class="aoe-section" t-if="projects">
+                <div class="aoe-container">
+                    <div class="aoe-section-head aoe-reveal">
+                        <div>
+                            <span class="aoe-eyebrow" t-out="page['projects']['eyebrow']"/>
+                            <h2 class="aoe-h2" t-out="page['projects']['title']"/>
+                        </div>
+                        <a href="/projects" class="aoe-btn aoe-btn-outline"><t t-out="c['view_all']"/> <i class="fa fa-arrow-right aoe-flip"/></a>
+                    </div>
+                    <div class="aoe-projects-grid">
+                        <t t-foreach="projects" t-as="project">
+                            <div class="aoe-reveal"><t t-call="alomran_engineering_website.project_card"/></div>
+                        </t>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ===== WHY + STATS ===== -->
+            <section class="aoe-section aoe-bg-sand">
+                <div class="aoe-container aoe-why">
+                    <div class="aoe-why-head aoe-reveal">
+                        <span class="aoe-eyebrow" t-out="page['why']['eyebrow']"/>
+                        <h2 class="aoe-h2" t-out="page['why']['title']"/>
+                        <div class="aoe-stats">
+                            <div class="aoe-stat" t-foreach="page['stats']" t-as="st">
+                                <strong><span class="aoe-count" t-att-data-to="st['value']" t-out="st['value']"/><t t-out="st['suffix']"/></strong>
+                                <span t-out="st['label']"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="aoe-why-grid">
+                        <div class="aoe-why-item aoe-reveal" t-foreach="page['why']['items']" t-as="w">
+                            <i t-attf-class="fa #{w['icon']}"/>
+                            <h3 t-out="w['title']"/>
+                            <p t-out="w['text']"/>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ===== APPROVALS STRIP ===== -->
+            <section class="aoe-approvals">
+                <div class="aoe-container aoe-approvals-inner aoe-reveal">
+                    <h3><i class="fa fa-check-square-o"/> <t t-out="page['approvals']['title']"/></h3>
+                    <ul>
+                        <li t-foreach="page['approvals']['items']" t-as="a" t-out="a"/>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- ===== CONTACT ===== -->
+            <section class="aoe-section">
+                <div class="aoe-container aoe-contact-split">
+                    <div class="aoe-reveal">
+                        <span class="aoe-eyebrow" t-out="c['footer_contact']"/>
+                        <h2 class="aoe-h2" t-out="cta['title']"/>
+                        <p class="aoe-lead" t-out="cta['text']"/>
+                        <ul class="aoe-contact-list">
+                            <li><i class="fa fa-phone"/> <a t-att-href="company['phone_href']" dir="ltr" t-out="company['phone']"/></li>
+                            <li><i class="fa fa-whatsapp"/> <a t-att-href="company['whatsapp']" target="_blank" rel="noopener" t-out="c['whatsapp_label']"/></li>
+                            <li><i class="fa fa-envelope-o"/> <a t-att-href="'mailto:%s' % company['email']" t-out="company['email']"/></li>
+                            <li><i class="fa fa-map-marker"/> <span t-out="c['address']"/></li>
+                        </ul>
+                    </div>
+                    <div class="aoe-card aoe-reveal">
+                        <t t-call="alomran_engineering_website.consultation_form"/>
+                    </div>
+                </div>
+            </section>
+        </t>
+    </template>
+
+    <template id="process_steps" name="Al Omran Process Steps">
+        <ol class="aoe-process">
+            <li t-foreach="process" t-as="step" class="aoe-reveal">
+                <span class="aoe-step-num" t-out="'0%s' % (step_index + 1)"/>
+                <h3 t-out="step['title']"/>
+                <p t-out="step['text']"/>
+            </li>
+        </ol>
+    </template>
+
+</odoo>

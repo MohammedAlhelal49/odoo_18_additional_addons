@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <template id="page_services" name="Al Omran - Services">
+        <t t-call="alomran_engineering_website.layout">
+            <t t-call="alomran_engineering_website.page_hero"/>
+
+            <!-- Quick index -->
+            <nav class="aoe-service-index">
+                <div class="aoe-container">
+                    <a t-foreach="services" t-as="s" t-att-href="'#' + s['key']"><i t-attf-class="fa #{s['icon']}"/> <t t-out="s['title']"/></a>
+                </div>
+            </nav>
+
+            <section class="aoe-section">
+                <div class="aoe-container aoe-service-list">
+                    <article t-foreach="services" t-as="s" t-att-id="s['key']" class="aoe-service-row aoe-reveal">
+                        <div class="aoe-service-row-head">
+                            <span class="aoe-service-num" t-out="'%02d' % (s_index + 1)"/>
+                            <span class="aoe-service-icon"><i t-attf-class="fa #{s['icon']}"/></span>
+                        </div>
+                        <div>
+                            <h2 t-out="s['title']"/>
+                            <p class="aoe-lead" t-out="s['short']"/>
+                            <div class="aoe-service-row-media">
+                                <img t-att-src="s['image']" t-att-alt="s['title']" loading="lazy"/>
+                            </div>
+                        </div>
+                        <div>
+                            <ul class="aoe-checks">
+                                <li t-foreach="s['points']" t-as="pt"><i class="fa fa-check"/> <t t-out="pt"/></li>
+                            </ul>
+                            <a t-att-href="'/contact?service=%s#aoe-form' % s['key']" class="aoe-link"><t t-out="c['cta']"/> <i class="fa fa-arrow-right aoe-flip"/></a>
+                        </div>
+                    </article>
+                </div>
+            </section>
+
+            <section class="aoe-section aoe-bg-ink">
+                <div class="aoe-blueprint"/>
+                <div class="aoe-container">
+                    <t t-call="alomran_engineering_website.process_steps"/>
+                </div>
+            </section>
+
+            <!-- FAQ -->
+            <section class="aoe-section aoe-bg-sand">
+                <div class="aoe-container aoe-narrow">
+                    <h2 class="aoe-h2 aoe-text-center aoe-reveal" t-out="page['faq_title']"/>
+                    <div class="aoe-faq">
+                        <details t-foreach="page['faq']" t-as="f" class="aoe-reveal" t-att-open="f_first and 'open' or None">
+                            <summary><t t-out="f['q']"/><i class="fa fa-plus"/></summary>
+                            <p t-out="f['a']"/>
+                        </details>
+                    </div>
+                </div>
+            </section>
+
+            <t t-call="alomran_engineering_website.cta_band"/>
+        </t>
+    </template>
+
+</odoo>

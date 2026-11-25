@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Real project photos from the previous website (Villa 1-3).
+         noupdate: once installed, edit them from Al Omran Website > Portfolio Projects.
+         Arabic texts are in i18n/ar.po. -->
+    <data noupdate="1">
+        <record id="project_villa_01" model="alomran.eng.project">
+            <field name="name">Contemporary Villa</field>
+            <field name="summary">A modern two-storey villa with clean volumes and large glazing — photographed on site during construction.</field>
+            <field name="category">villa</field>
+            <field name="emirate" eval="False"/>
+            <field name="sequence">1</field>
+            <field name="is_featured" eval="True"/>
+            <field name="image" type="base64" file="alomran_engineering_website/static/src/img/projects/villa-01.jpg"/>
+        </record>
+        <record id="project_villa_02" model="alomran.eng.project">
+            <field name="name">Villa Finishing Works</field>
+            <field name="summary">Aluminium windows and finishing works on a private villa.</field>
+            <field name="category">villa</field>
+            <field name="emirate" eval="False"/>
+            <field name="sequence">2</field>
+            <field name="is_featured" eval="True"/>
+            <field name="image" type="base64" file="alomran_engineering_website/static/src/img/projects/villa-02.jpg"/>
+        </record>
+        <record id="project_villa_03" model="alomran.eng.project">
+            <field name="name">Classic Villa</field>
+            <field name="summary">A two-storey villa with a classic stone façade, columned entrance and roof terraces.</field>
+            <field name="category">villa</field>
+            <field name="emirate" eval="False"/>
+            <field name="sequence">3</field>
+            <field name="is_featured" eval="True"/>
+            <field name="image" type="base64" file="alomran_engineering_website/static/src/img/projects/villa-03.jpg"/>
+        </record>
+    </data>
+</odoo>

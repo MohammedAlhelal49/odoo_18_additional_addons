@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <template id="page_contact" name="Al Omran - Contact">
+        <t t-call="alomran_engineering_website.layout">
+            <t t-call="alomran_engineering_website.page_hero"/>
+
+            <section class="aoe-section aoe-contact-section">
+                <div class="aoe-container">
+                    <div class="aoe-contact-cards">
+                        <a class="aoe-contact-card aoe-reveal" t-att-href="company['map_link']" target="_blank" rel="noopener">
+                            <i class="fa fa-map-marker"/>
+                            <h3 t-out="page['visit']"/>
+                            <p t-out="c['address']"/>
+                        </a>
+                        <a class="aoe-contact-card aoe-reveal" t-att-href="company['phone_href']">
+                            <i class="fa fa-phone"/>
+                            <h3 t-out="page['call']"/>
+                            <p dir="ltr" t-out="company['phone']"/>
+                        </a>
+                        <a class="aoe-contact-card aoe-reveal" t-att-href="'mailto:%s' % company['email']">
+                            <i class="fa fa-envelope-o"/>
+                            <h3 t-out="page['email']"/>
+                            <p t-out="company['email']"/>
+                        </a>
+                        <div class="aoe-contact-card aoe-reveal">
+                            <i class="fa fa-clock-o"/>
+                            <h3 t-out="c['hours_title']"/>
+                            <p><t t-foreach="c['hours']" t-as="hr"><t t-out="hr"/><br t-if="not hr_last"/></t></p>
+                        </div>
+                    </div>
+
+                    <div class="aoe-contact-split aoe-contact-main">
+                        <div class="aoe-card aoe-reveal">
+                            <h2 class="aoe-h3" t-out="page['form_title']"/>
+                            <t t-call="alomran_engineering_website.consultation_form"/>
+                        </div>
+                        <div class="aoe-map aoe-reveal">
+                            <iframe t-att-src="company['map_embed']" loading="lazy" referrerpolicy="no-referrer-when-downgrade"
+                                    t-att-title="c['address']" allowfullscreen=""/>
+                            <a t-att-href="company['map_link']" target="_blank" rel="noopener" class="aoe-btn aoe-btn-gold aoe-map-btn">
+                                <i class="fa fa-location-arrow"/> <t t-out="page['directions']"/>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </t>
+    </template>
+
+</odoo>

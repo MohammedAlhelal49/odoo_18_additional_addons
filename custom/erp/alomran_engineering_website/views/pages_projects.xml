@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <template id="page_projects" name="Al Omran - Projects">
+        <t t-call="alomran_engineering_website.layout">
+            <t t-call="alomran_engineering_website.page_hero"/>
+
+            <section class="aoe-section">
+                <div class="aoe-container">
+                    <div class="aoe-filters" t-if="len(used_categories) &gt; 1" role="tablist">
+                        <button type="button" class="is-active" data-filter="all" t-out="page['all']"/>
+                        <button type="button" t-foreach="used_categories" t-as="cat" t-att-data-filter="cat" t-out="page['categories'].get(cat)"/>
+                    </div>
+                    <div class="aoe-projects-grid" id="aoeProjects" t-if="projects">
+                        <t t-foreach="projects" t-as="project">
+                            <div class="aoe-reveal aoe-project-cell" t-att-data-category="project.category">
+                                <t t-call="alomran_engineering_website.project_card"/>
+                            </div>
+                        </t>
+                    </div>
+                    <p t-else="" class="aoe-empty" t-out="page['empty']"/>
+                </div>
+            </section>
+
+            <t t-call="alomran_engineering_website.cta_band"/>
+        </t>
+    </template>
+
+    <template id="page_project_detail" name="Al Omran - Project Detail">
+        <t t-call="alomran_engineering_website.layout">
+            <section class="aoe-project-hero">
+                <div t-attf-class="aoe-project-hero-media aoe-cat-#{project.category}">
+                    <img t-if="project.image" t-att-src="'/web/image/alomran.eng.project/%s/image' % project.id" t-att-alt="project.name"/>
+                    <t t-else="" t-call="alomran_engineering_website.project_placeholder"/>
+                </div>
+                <div class="aoe-project-hero-shade"/>
+                <div class="aoe-container aoe-project-hero-inner">
+                    <a href="/projects" class="aoe-back"><i class="fa fa-arrow-left aoe-flip"/> <t t-out="page['back']"/></a>
+                    <span class="aoe-eyebrow aoe-eyebrow-light" t-out="page['categories'].get(project.category)"/>
+                    <h1 t-out="project.name"/>
+                    <p t-if="project.summary" t-out="project.summary"/>
+                </div>
+            </section>
+
+            <section class="aoe-section">
+                <div class="aoe-container aoe-project-detail">
+                    <aside class="aoe-facts aoe-reveal">
+                        <dl>
+                            <t t-if="project.location"><dt t-out="page['location']"/><dd t-out="project.location"/></t>
+                            <t t-if="project.year"><dt t-out="page['year']"/><dd t-out="project.year"/></t>
+                            <t t-if="project.area"><dt t-out="page['area']"/><dd dir="auto" t-out="project.area"/></t>
+                            <t t-if="project.scope"><dt t-out="page['scope']"/><dd t-out="project.scope"/></t>
+                            <dt t-out="page['category']"/><dd t-out="page['categories'].get(project.category)"/>
+                        </dl>
+                        <a href="/contact#aoe-form" class="aoe-btn aoe-btn-gold aoe-btn-block" t-out="c['cta']"/>
+                    </aside>
+                    <div class="aoe-rich aoe-reveal">
+                        <div t-if="project.description" t-field="project.description"/>
+                        <div class="aoe-gallery" t-if="project.gallery_ids">
+                            <figure t-foreach="project.gallery_ids" t-as="img">
+                                <a t-att-href="'/web/image/alomran.eng.project.image/%s/image' % img.id" target="_blank">
+                                    <img t-att-src="'/web/image/alomran.eng.project.image/%s/image/800x600' % img.id" t-att-alt="img.name or project.name" loading="lazy"/>
+                                </a>
+                                <figcaption t-if="img.name" t-out="img.name"/>
+                            </figure>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="aoe-section aoe-bg-sand" t-if="others">
+                <div class="aoe-container">
+                    <div class="aoe-section-head aoe-reveal">
+                        <h2 class="aoe-h2" t-out="page['more']"/>
+                        <a href="/projects" class="aoe-btn aoe-btn-outline"><t t-out="c['view_all']"/> <i class="fa fa-arrow-right aoe-flip"/></a>
+                    </div>
+                    <div class="aoe-projects-grid">
+                        <t t-foreach="others" t-as="project">
+                            <div class="aoe-reveal"><t t-call="alomran_engineering_website.project_card"/></div>
+                        </t>
+                    </div>
+                </div>
+            </section>
+
+            <t t-call="alomran_engineering_website.cta_band"/>
+        </t>
+    </template>
+
+</odoo>

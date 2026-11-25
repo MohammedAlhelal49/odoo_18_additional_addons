@@ -1,0 +1,38 @@
+# Arabic translation for alomran_engineering_website
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 18.0\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Language: ar\n"
+
+#. module: alomran_engineering_website
+#: model:alomran.eng.project,name:alomran_engineering_website.project_villa_01
+msgid "Contemporary Villa"
+msgstr "فيلا عصرية"
+
+#. module: alomran_engineering_website
+#: model:alomran.eng.project,summary:alomran_engineering_website.project_villa_01
+msgid "A modern two-storey villa with clean volumes and large glazing — photographed on site during construction."
+msgstr "فيلا عصرية من طابقين بكتل نظيفة وواجهات زجاجية واسعة — صورة من الموقع أثناء التنفيذ."
+
+#. module: alomran_engineering_website
+#: model:alomran.eng.project,name:alomran_engineering_website.project_villa_02
+msgid "Villa Finishing Works"
+msgstr "أعمال تشطيب فيلا"
+
+#. module: alomran_engineering_website
+#: model:alomran.eng.project,summary:alomran_engineering_website.project_villa_02
+msgid "Aluminium windows and finishing works on a private villa."
+msgstr "أعمال النوافذ الألمنيوم والتشطيبات في فيلا خاصة."
+
+#. module: alomran_engineering_website
+#: model:alomran.eng.project,name:alomran_engineering_website.project_villa_03
+msgid "Classic Villa"
+msgstr "فيلا كلاسيكية"
+
+#. module: alomran_engineering_website
+#: model:alomran.eng.project,summary:alomran_engineering_website.project_villa_03
+msgid "A two-storey villa with a classic stone façade, columned entrance and roof terraces."
+msgstr "فيلا من طابقين بواجهة حجرية كلاسيكية ومدخل بأعمدة وتراسات علوية."

@@ -1,0 +1,11 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_aoe_project_public,alomran.eng.project.public,model_alomran_eng_project,base.group_public,1,0,0,0
+access_aoe_project_portal,alomran.eng.project.portal,model_alomran_eng_project,base.group_portal,1,0,0,0
+access_aoe_project_user,alomran.eng.project.user,model_alomran_eng_project,base.group_user,1,0,0,0
+access_aoe_project_designer,alomran.eng.project.designer,model_alomran_eng_project,website.group_website_designer,1,1,1,1
+access_aoe_project_image_public,alomran.eng.project.image.public,model_alomran_eng_project_image,base.group_public,1,0,0,0
+access_aoe_project_image_portal,alomran.eng.project.image.portal,model_alomran_eng_project_image,base.group_portal,1,0,0,0
+access_aoe_project_image_user,alomran.eng.project.image.user,model_alomran_eng_project_image,base.group_user,1,0,0,0
+access_aoe_project_image_designer,alomran.eng.project.image.designer,model_alomran_eng_project_image,website.group_website_designer,1,1,1,1
+access_aoe_inquiry_user,alomran.eng.inquiry.user,model_alomran_eng_inquiry,base.group_user,1,1,1,0
+access_aoe_inquiry_manager,alomran.eng.inquiry.manager,model_alomran_eng_inquiry,website.group_website_designer,1,1,1,1

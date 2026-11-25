@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <template id="page_about" name="Al Omran - About">
+        <t t-call="alomran_engineering_website.layout">
+            <t t-call="alomran_engineering_website.page_hero"/>
+
+            <!-- Story -->
+            <section class="aoe-section">
+                <div class="aoe-container aoe-story">
+                    <div class="aoe-reveal">
+                        <span class="aoe-eyebrow" t-out="page['story_eyebrow']"/>
+                        <h2 class="aoe-h2" t-out="page['story_title']"/>
+                        <p class="aoe-lead" t-foreach="page['story']" t-as="para" t-out="para"/>
+                    </div>
+                    <div class="aoe-mv">
+                        <div class="aoe-story-photo aoe-reveal">
+                            <img t-att-src="page['story_image']" t-att-alt="page['story_title']" loading="lazy"/>
+                        </div>
+                        <div class="aoe-mv-card aoe-reveal">
+                            <i class="fa fa-bullseye"/>
+                            <h3 t-out="page['mission_title']"/>
+                            <p t-out="page['mission']"/>
+                        </div>
+                        <div class="aoe-mv-card aoe-mv-dark aoe-reveal">
+                            <i class="fa fa-eye"/>
+                            <h3 t-out="page['vision_title']"/>
+                            <p t-out="page['vision']"/>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Disciplines -->
+            <section class="aoe-section aoe-bg-sand">
+                <div class="aoe-container">
+                    <div class="aoe-section-head aoe-reveal">
+                        <h2 class="aoe-h2" t-out="page['values_title']"/>
+                    </div>
+                    <div class="aoe-values">
+                        <div class="aoe-value aoe-reveal" t-foreach="page['values']" t-as="v">
+                            <i t-attf-class="fa #{v['icon']}"/>
+                            <h3 t-out="v['title']"/>
+                            <p t-out="v['text']"/>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Team -->
+            <section class="aoe-section">
+                <div class="aoe-container">
+                    <div class="aoe-section-head aoe-center aoe-reveal">
+                        <div>
+                            <span class="aoe-eyebrow" t-out="page['team_eyebrow']"/>
+                            <h2 class="aoe-h2" t-out="page['team_title']"/>
+                            <p class="aoe-lead" t-out="page['team_text']"/>
+                        </div>
+                    </div>
+                    <div class="aoe-team">
+                        <div class="aoe-member aoe-reveal" t-foreach="page['team']" t-as="m">
+                            <div class="aoe-member-photo">
+                                <img t-if="m.get('photo')" t-att-src="m['photo']" t-att-alt="m['name']" loading="lazy"/>
+                                <span t-else="" class="aoe-avatar" t-out="m['initials']"/>
+                            </div>
+                            <div class="aoe-member-info">
+                                <h3 t-out="m['name']"/>
+                                <p t-out="m['role']"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <t t-call="alomran_engineering_website.cta_band"/>
+        </t>
+    </template>
+
+</odoo>

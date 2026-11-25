@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="rule_aoe_project_public" model="ir.rule">
+        <field name="name">Al Omran projects: published only (public/portal)</field>
+        <field name="model_id" ref="model_alomran_eng_project"/>
+        <field name="domain_force">[('is_published', '=', True)]</field>
+        <field name="groups" eval="[(4, ref('base.group_public')), (4, ref('base.group_portal'))]"/>
+    </record>
+    <record id="rule_aoe_project_image_public" model="ir.rule">
+        <field name="name">Al Omran project images: published projects only (public/portal)</field>
+        <field name="model_id" ref="model_alomran_eng_project_image"/>
+        <field name="domain_force">[('project_id.is_published', '=', True)]</field>
+        <field name="groups" eval="[(4, ref('base.group_public')), (4, ref('base.group_portal'))]"/>
+    </record>
+</odoo>

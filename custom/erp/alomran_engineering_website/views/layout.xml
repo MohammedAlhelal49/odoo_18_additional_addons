@@ -1,0 +1,272 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <template id="brand" name="Al Omran Brand">
+        <a href="/" class="aoe-brand" t-att-aria-label="c['company_full']">
+            <img class="aoe-logo" t-att-src="company['logo_white']" t-att-alt="c['company_full']" width="110" height="66"/>
+        </a>
+    </template>
+
+    <!-- ===== HEADER ===== -->
+    <template id="header" name="Al Omran Header">
+        <header class="aoe-header" id="aoeHeader">
+            <div class="aoe-container aoe-header-inner">
+                <t t-call="alomran_engineering_website.brand"/>
+
+                <nav class="aoe-nav" aria-label="Main">
+                    <a t-foreach="c['nav']" t-as="item" t-att-href="item[1]"
+                       t-attf-class="aoe-nav-link #{active_page == item[0] and 'is-active' or ''}" t-out="item[2]"/>
+                </nav>
+
+                <div class="aoe-header-actions">
+                    <a t-if="other_lang" class="aoe-lang"
+                       t-att-href="url_localized(lang_code=other_lang, prefetch_langs=True, force_default_lang=True)"
+                       t-out="c['lang_switch']"/>
+                    <a t-att-href="company['phone_href']" class="aoe-icon-btn" t-att-aria-label="c['call']">
+                        <i class="fa fa-phone"/>
+                    </a>
+                    <a href="/contact" class="aoe-btn aoe-btn-gold aoe-btn-sm aoe-hide-md" t-out="c['cta']"/>
+                    <button type="button" class="aoe-burger" id="aoeBurger" t-att-aria-label="c['menu']" aria-expanded="false" aria-controls="aoeDrawer">
+                        <span/><span/><span/>
+                    </button>
+                </div>
+            </div>
+
+            <div class="aoe-drawer" id="aoeDrawer">
+                <nav>
+                    <a t-foreach="c['nav']" t-as="item" t-att-href="item[1]"
+                       t-attf-class="#{active_page == item[0] and 'is-active' or ''}" t-out="item[2]"/>
+                </nav>
+                <a href="/contact" class="aoe-btn aoe-btn-gold aoe-btn-block" t-out="c['cta']"/>
+                <div class="aoe-drawer-contact">
+                    <a t-att-href="company['phone_href']"><i class="fa fa-phone"/> <span dir="ltr" t-out="company['phone']"/></a>
+                    <a t-att-href="'mailto:%s' % company['email']"><i class="fa fa-envelope-o"/> <t t-out="company['email']"/></a>
+                </div>
+            </div>
+        </header>
+    </template>
+
+    <!-- ===== CTA band (reused at the bottom of pages) ===== -->
+    <template id="cta_band" name="Al Omran CTA Band">
+        <section class="aoe-cta-band">
+            <div class="aoe-container aoe-cta-inner aoe-reveal">
+                <div>
+                    <h2 t-out="cta['title']"/>
+                    <p t-out="cta['text']"/>
+                </div>
+                <div class="aoe-cta-actions">
+                    <a href="/contact#aoe-form" class="aoe-btn aoe-btn-gold"><t t-out="cta['button']"/> <i class="fa fa-arrow-right aoe-flip"/></a>
+                    <a t-att-href="company['whatsapp']" target="_blank" rel="noopener" class="aoe-btn aoe-btn-ghost-light">
+                        <i class="fa fa-whatsapp"/> <t t-out="c['whatsapp_label']"/>
+                    </a>
+                </div>
+            </div>
+        </section>
+    </template>
+
+    <!-- ===== FOOTER ===== -->
+    <template id="footer" name="Al Omran Footer">
+        <footer class="aoe-footer">
+            <div class="aoe-container">
+                <div class="aoe-footer-grid">
+                    <div class="aoe-footer-about">
+                        <t t-call="alomran_engineering_website.brand"/>
+                        <p t-out="c['footer_about']"/>
+                        <div class="aoe-social">
+                            <a t-att-href="company['instagram']" target="_blank" rel="noopener" aria-label="Instagram"><i class="fa fa-instagram"/></a>
+                            <a t-att-href="company['whatsapp']" target="_blank" rel="noopener" aria-label="WhatsApp"><i class="fa fa-whatsapp"/></a>
+                            <a t-att-href="'mailto:%s' % company['email']" aria-label="Email"><i class="fa fa-envelope-o"/></a>
+                        </div>
+                    </div>
+                    <div>
+                        <h4 t-out="c['footer_links']"/>
+                        <ul>
+                            <li t-foreach="c['nav']" t-as="item"><a t-att-href="item[1]" t-out="item[2]"/></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 t-out="c['footer_services']"/>
+                        <ul>
+                            <li t-foreach="services[:6]" t-as="s"><a t-att-href="'/services#' + s['key']" t-out="s['title']"/></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 t-out="c['footer_contact']"/>
+                        <ul class="aoe-footer-contact">
+                            <li><i class="fa fa-map-marker"/> <a t-att-href="company['map_link']" target="_blank" rel="noopener" t-out="c['address']"/></li>
+                            <li><i class="fa fa-phone"/> <a t-att-href="company['phone_href']" dir="ltr" t-out="company['phone']"/></li>
+                            <li><i class="fa fa-envelope-o"/> <a t-att-href="'mailto:%s' % company['email']" t-out="company['email']"/></li>
+                            <li><i class="fa fa-clock-o"/>
+                                <span>
+                                    <t t-foreach="c['hours']" t-as="h"><t t-out="h"/><br t-if="not h_last"/></t>
+                                </span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="aoe-footer-bottom">
+                    <span>© <t t-out="current_year"/> <t t-out="c['company_full']"/>. <t t-out="c['rights']"/></span>
+                    <a href="#top" class="aoe-to-top"><t t-out="c['back_top']"/> <i class="fa fa-arrow-up"/></a>
+                </div>
+            </div>
+        </footer>
+    </template>
+
+    <!-- ===== MAIN LAYOUT ===== -->
+    <template id="layout" name="Al Omran Layout">
+        <!-- Capture the page body before nesting into website.layout,
+             otherwise "0" would point to the wrong caller. -->
+        <t t-set="page_content"><t t-out="0"/></t>
+        <t t-call="website.layout">
+            <t t-set="no_header" t-value="True"/>
+            <t t-set="no_footer" t-value="True"/>
+            <t t-set="head">
+                <link rel="preconnect" href="https://fonts.googleapis.com"/>
+                <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin=""/>
+                <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&amp;family=Manrope:wght@400;500;600;700;800&amp;family=Noto+Kufi+Arabic:wght@500;600;700;800&amp;family=Sora:wght@500;600;700;800&amp;display=swap"/>
+                <meta name="theme-color" content="#0d1b26"/>
+            </t>
+
+            <div t-attf-class="aoe aoe-#{dir}" t-att-dir="dir" id="top">
+                <t t-call="alomran_engineering_website.header"/>
+                <main class="aoe-main">
+                    <t t-out="page_content"/>
+                </main>
+                <t t-call="alomran_engineering_website.footer"/>
+
+                <a t-att-href="company['whatsapp']" target="_blank" rel="noopener" class="aoe-whatsapp" t-att-aria-label="c['whatsapp_label']">
+                    <i class="fa fa-whatsapp"/>
+                    <span t-out="c['whatsapp_label']"/>
+                </a>
+            </div>
+
+            <!-- Plain script (not in the Odoo module bundle): no dependencies, runs once. -->
+            <script type="text/javascript" src="/alomran_engineering_website/static/src/js/aoe.js" defer="defer"/>
+        </t>
+    </template>
+
+    <!-- ===== Shared: page hero for inner pages ===== -->
+    <template id="page_hero" name="Al Omran Page Hero">
+        <section t-attf-class="aoe-page-hero #{page.get('hero_image') and 'has-image' or ''}">
+            <img t-if="page.get('hero_image')" class="aoe-page-hero-bg" t-att-src="page['hero_image']" alt="" aria-hidden="true"/>
+            <div class="aoe-blueprint"/>
+            <div class="aoe-container aoe-page-hero-inner">
+                <span class="aoe-eyebrow aoe-eyebrow-light" t-out="page['hero_eyebrow']"/>
+                <h1 t-out="page['hero_title']"/>
+                <p t-out="page['hero_lead']"/>
+            </div>
+        </section>
+    </template>
+
+    <!-- ===== Shared: consultation form ===== -->
+    <template id="consultation_form" name="Al Omran Consultation Form">
+        <form action="/contact/submit" method="post" class="aoe-form" id="aoe-form">
+            <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+            <input type="hidden" name="source_page" t-att-value="request.httprequest.path"/>
+            <!-- honeypot -->
+            <div class="aoe-hp" aria-hidden="true"><input type="text" name="website" tabindex="-1" autocomplete="off"/></div>
+
+            <div t-if="form_sent" class="aoe-alert aoe-alert-ok">
+                <i class="fa fa-check-circle"/>
+                <div><strong t-out="form['success_title']"/> <t t-out="form['success_text']"/></div>
+            </div>
+            <div t-if="form_error" class="aoe-alert aoe-alert-err">
+                <i class="fa fa-exclamation-circle"/> <span t-out="form['error']"/>
+            </div>
+
+            <div class="aoe-form-grid">
+                <label class="aoe-field">
+                    <span t-out="form['name']"/>
+                    <input type="text" name="name" required="required" maxlength="120" autocomplete="name"/>
+                </label>
+                <label class="aoe-field">
+                    <span t-out="form['phone']"/>
+                    <input type="tel" name="phone" required="required" placeholder="+971 5X XXX XXXX" dir="ltr"
+                           pattern="^\+?[0-9\s\-()]{7,20}$" autocomplete="tel"/>
+                </label>
+                <label class="aoe-field">
+                    <span t-out="form['email']"/>
+                    <input type="email" name="email" maxlength="120" autocomplete="email" dir="ltr"/>
+                </label>
+                <label class="aoe-field">
+                    <span t-out="form['emirate']"/>
+                    <select name="emirate">
+                        <option t-foreach="form['emirates']" t-as="em" t-att-value="em[0]" t-out="em[1]"/>
+                    </select>
+                </label>
+                <label class="aoe-field aoe-field-full">
+                    <span t-out="form['service']"/>
+                    <select name="service">
+                        <option value="" t-out="form['service_placeholder']"/>
+                        <option t-foreach="services" t-as="s" t-att-value="s['key']"
+                                t-att-selected="request.params.get('service') == s['key'] and 'selected' or None" t-out="s['title']"/>
+                        <option value="other" t-out="form['service_other']"/>
+                    </select>
+                </label>
+                <label class="aoe-field aoe-field-full">
+                    <span t-out="form['message']"/>
+                    <textarea name="message" rows="4" maxlength="4000" t-att-placeholder="form['message_ph']"/>
+                </label>
+            </div>
+            <button type="submit" class="aoe-btn aoe-btn-gold aoe-btn-block">
+                <t t-out="form['submit']"/> <i class="fa fa-paper-plane"/>
+            </button>
+            <p class="aoe-form-note"><i class="fa fa-lock"/> <t t-out="form['privacy']"/></p>
+        </form>
+    </template>
+
+    <!-- ===== Shared: project card ===== -->
+    <template id="project_card" name="Al Omran Project Card">
+        <a t-att-href="project.website_url()" class="aoe-project-card" t-att-data-category="project.category">
+            <div t-attf-class="aoe-project-media aoe-cat-#{project.category}">
+                <img t-if="project.image" t-att-src="'/web/image/alomran.eng.project/%s/image/1024x768' % project.id"
+                     t-att-alt="project.name" loading="lazy"/>
+                <t t-else="" t-call="alomran_engineering_website.project_placeholder"/>
+                <span class="aoe-project-tag" t-out="pc['categories'].get(project.category)"/>
+            </div>
+            <div class="aoe-project-body">
+                <h3 t-out="project.name"/>
+                <p class="aoe-project-meta" t-if="project.location or project.year">
+                    <i class="fa fa-map-marker"/> <t t-out="project.location"/>
+                    <t t-if="project.year"> · <t t-out="project.year"/></t>
+                </p>
+                <span class="aoe-link"><t t-out="c['view_project']"/> <i class="fa fa-arrow-right aoe-flip"/></span>
+            </div>
+        </a>
+    </template>
+
+    <!-- Drawn placeholder used until a real photo is uploaded -->
+    <template id="project_placeholder" name="Al Omran Project Placeholder">
+        <svg class="aoe-placeholder" viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+            <defs>
+                <pattern t-attf-id="g#{project.id}" width="20" height="20" patternUnits="userSpaceOnUse">
+                    <path d="M20 0H0V20" fill="none" stroke="rgba(255,255,255,.07)" stroke-width="1"/>
+                </pattern>
+            </defs>
+            <rect width="400" height="300" t-attf-fill="url(#g#{project.id})"/>
+            <g fill="none" stroke="rgba(255,255,255,.55)" stroke-width="1.6" stroke-linejoin="round">
+                <t t-if="project.category in ('villa', 'residential')">
+                    <path d="M60 240V150h120v90M180 240V120h160v120M40 240h320"/>
+                    <path d="M180 120l80-40 80 40" stroke="var(--aoe-gold)"/>
+                    <path d="M80 175h30v25H80zM130 175h30v25h-30zM205 145h40v40h-40zM275 145h40v40h-40zM245 205h30v35h-30z"/>
+                </t>
+                <t t-elif="project.category in ('commercial', 'public')">
+                    <path d="M90 250V70h90v180M180 250V120h130v130M60 250h280"/>
+                    <path d="M90 70l90 0" stroke="var(--aoe-gold)"/>
+                    <path d="M105 90h60M105 115h60M105 140h60M105 165h60M105 190h60M105 215h60M200 140h90M200 170h90M200 200h90"/>
+                </t>
+                <t t-elif="project.category == 'interior'">
+                    <path d="M60 240h280M80 240v-60h100v60M90 180v-20h80v20M230 240V100h80v140"/>
+                    <path d="M200 60v40M180 100h40" stroke="var(--aoe-gold)"/>
+                    <circle cx="200" cy="118" r="10"/>
+                </t>
+                <t t-else="">
+                    <path d="M40 240c60-40 120-40 160 0s100 40 160 0"/>
+                    <circle cx="120" cy="150" r="40"/><circle cx="270" cy="130" r="55"/>
+                    <path d="M120 190v50M270 185v55" stroke="var(--aoe-gold)"/>
+                </t>
+            </g>
+        </svg>
+    </template>
+
+</odoo>
