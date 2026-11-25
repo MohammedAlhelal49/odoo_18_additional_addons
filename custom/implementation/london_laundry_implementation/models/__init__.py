@@ -2,6 +2,8 @@ from . import account_move
 from . import account_payment_register
 from . import pos_order
 from . import pos_payment
+from . import pos_payment_method
+from . import prepaid_opening
 from . import pos_session
 from . import delivery_method
 from . import delivery_person

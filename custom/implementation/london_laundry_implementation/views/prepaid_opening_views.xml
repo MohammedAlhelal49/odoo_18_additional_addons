@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- أرصدة مسبقة قديمة: بتنكتب أو بتنستورد من Excel (الزبون أو الموبايل، الرصيد، البونص اللي ضمنه)، وبعدين Post -->
+    <record id="view_london_prepaid_opening_list" model="ir.ui.view">
+        <field name="name">london.prepaid.opening.list</field>
+        <field name="model">london.prepaid.opening</field>
+        <field name="arch" type="xml">
+            <list editable="bottom" decoration-muted="state == 'posted'">
+                <header>
+                    <button name="action_post" type="object" string="Post" class="btn-primary"/>
+                </header>
+                <field name="date" readonly="state == 'posted'"/>
+                <field name="partner_id" readonly="state == 'posted'"/>
+                <field name="mobile" optional="hide" readonly="state == 'posted'"/>
+                <field name="amount" sum="Total" readonly="state == 'posted'"/>
+                <field name="bonus" sum="Total" readonly="state == 'posted'"/>
+                <field name="journal_id" optional="hide" readonly="state == 'posted'"/>
+                <field name="counterpart_account_id" optional="hide" readonly="state == 'posted'"/>
+                <field name="note" optional="show" readonly="state == 'posted'"/>
+                <field name="move_id" optional="show"/>
+                <field name="state" widget="badge" decoration-success="state == 'posted'"/>
+                <field name="currency_id" column_invisible="1"/>
+                <field name="company_id" column_invisible="1"/>
+                <button name="action_post" type="object" string="Post" icon="fa-check" invisible="state == 'posted'"/>
+                <button name="action_reset_draft" type="object" string="Reset to Draft" icon="fa-undo"
+                        invisible="state != 'posted'" confirm="The journal entry of this balance will be deleted. Continue?"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_london_prepaid_opening_search" model="ir.ui.view">
+        <field name="name">london.prepaid.opening.search</field>
+        <field name="model">london.prepaid.opening</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="partner_id"/>
+                <filter name="draft" string="Draft" domain="[('state', '=', 'draft')]"/>
+                <filter name="posted" string="Posted" domain="[('state', '=', 'posted')]"/>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_london_prepaid_opening" model="ir.actions.act_window">
+        <field name="name">Opening Prepaid Balances</field>
+        <field name="res_model">london.prepaid.opening</field>
+        <field name="view_mode">list</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">Add the prepaid balances customers already have</p>
+            <p>One line per customer: the balance (bonus included) and how much of it is bonus.
+               You can import them from Excel (Customer or Mobile, Balance, Bonus Included). Then press Post.</p>
+        </field>
+    </record>
+
+    <menuitem id="menu_london_prepaid_opening" name="Opening Prepaid Balances"
+              parent="point_of_sale.menu_point_of_sale" action="action_london_prepaid_opening"
+              sequence="90" groups="point_of_sale.group_pos_manager,account.group_account_manager"/>
+</odoo>

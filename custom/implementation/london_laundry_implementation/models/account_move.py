@@ -16,6 +16,8 @@ class AccountMove(models.Model):
     laundry_expected_hour = fields.Selection(EXPECTED_HOURS, string='Expected Hour', copy=False)
     laundry_delivery_method_id = fields.Many2one('london.delivery.method', string='Delivery Method', copy=False)
     laundry_packing = fields.Selection(PACKING_TYPES, string='Hanger / Fold', copy=False, tracking=True)
+    # رقم أمر الشراء تبع الزبون (إذا عطاه للكاشير): بينطبع على الإيصال والفاتورة
+    laundry_po = fields.Char(string='PO Number', copy=False, tracking=True)
     laundry_shelf = fields.Char(string='Shelf', copy=False, tracking=True)
     # (قديم: أسماء موصّلين بالكتابة، انحلّ محلّه الموظف تحت)
     laundry_delivery_person_id = fields.Many2one(

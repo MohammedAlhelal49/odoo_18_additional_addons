@@ -74,7 +74,7 @@
              (بيطلع "Select an order"): منعرض لوحة صغيرة للتحصيل فيها إعادة الطباعة والإلغاء -->
         <xpath expr="//CenteredIcon[@icon=&quot;'fa-shopping-cart fa-4x'&quot;]" position="before">
             <t t-set="_lryCollection"
-               t-value="_selectedSyncedOrder?.finalized and _selectedSyncedOrder.isLaundryCollection() ? _selectedSyncedOrder : false"/>
+               t-value="_selectedSyncedOrder?.finalized and (_selectedSyncedOrder.isLaundryCollection() or _selectedSyncedOrder.isLaundryPrepaidMove()) ? _selectedSyncedOrder : false"/>
             <div t-if="_lryCollection" class="d-flex flex-column flex-grow-1 bg-100 rounded-3 p-3 gap-3">
                 <div class="d-flex justify-content-between align-items-start">
                     <div>
@@ -104,6 +104,11 @@
                             class="control-button btn btn-danger btn-lg lh-lg flex-grow-1 flex-shrink-1"
                             t-on-click="() => this.onLaundryCancelCollection(_lryCollection)">
                         <i class="fa fa-undo me-1"/> Cancel Collection
+                    </button>
+                    <button t-if="canLaundryCancelTopup(_lryCollection)"
+                            class="control-button btn btn-danger btn-lg lh-lg flex-grow-1 flex-shrink-1"
+                            t-on-click="() => this.onLaundryCancelTopup(_lryCollection)">
+                        <i class="fa fa-undo me-1"/> Cancel Top-up
                     </button>
                 </div>
             </div>

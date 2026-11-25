@@ -4,3 +4,5 @@ access_london_delivery_method_manager,london.delivery.method manager,model_londo
 access_london_delivery_person_user,london.delivery.person user,model_london_delivery_person,base.group_user,1,0,0,0
 access_london_delivery_person_manager,london.delivery.person manager,model_london_delivery_person,point_of_sale.group_pos_manager,1,1,1,1
 access_london_delivery_person_invoice,london.delivery.person invoicing,model_london_delivery_person,account.group_account_invoice,1,1,1,0
+access_london_prepaid_opening_pos_manager,london.prepaid.opening pos manager,model_london_prepaid_opening,point_of_sale.group_pos_manager,1,1,1,1
+access_london_prepaid_opening_account,london.prepaid.opening accountant,model_london_prepaid_opening,account.group_account_manager,1,1,1,1

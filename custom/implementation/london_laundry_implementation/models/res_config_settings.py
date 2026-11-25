@@ -13,6 +13,34 @@ class ResConfigSettings(models.TransientModel):
     pos_laundry_free_delivery_from = fields.Float(related="pos_config_id.laundry_free_delivery_from", readonly=False)
     pos_laundry_delivery_product_id = fields.Many2one(
         related="pos_config_id.laundry_delivery_product_id", readonly=False)
+    pos_laundry_prepaid_bonus_percent = fields.Float(
+        related="pos_config_id.laundry_prepaid_bonus_percent", readonly=False)
+    pos_laundry_prepaid_bonus_min = fields.Float(related="pos_config_id.laundry_prepaid_bonus_min", readonly=False)
+    laundry_prepaid_ready = fields.Boolean(compute="_compute_laundry_prepaid_ready")
+
+    def _compute_laundry_prepaid_ready(self):
+        for settings in self:
+            settings.laundry_prepaid_ready = not self.env["pos.payment.method"]._laundry_prepaid_pending_configs(
+                settings.company_id)
+
+    def action_laundry_setup_prepaid(self):
+        """ينشئ حسابات وطرق دفع رصيد الغسيل ويضيفهن لنقاط البيع."""
+        PaymentMethod = self.env["pos.payment.method"]
+        PaymentMethod.laundry_setup_prepaid(self.company_id)
+        pending = PaymentMethod._laundry_prepaid_pending_configs(self.company_id)
+        return {
+            "type": "ir.actions.client",
+            "tag": "display_notification",
+            "params": {
+                "type": "warning" if pending else "success",
+                "message": _("Close the open session of %s, then press Set Up again to add the prepaid balance "
+                             "payment methods.", ", ".join(pending.mapped("name"))) if pending
+                           else _("Prepaid balance ready: the Laundry Balance and Prepaid Bonus payment methods "
+                                  "are added to the points of sale."),
+                "next": {"type": "ir.actions.client", "tag": "reload"},
+            },
+        }
+
     laundry_statement_whatsapp_message = fields.Char(
         string="Statement WhatsApp Message",
         config_parameter="london_laundry_implementation.statement_whatsapp_message",

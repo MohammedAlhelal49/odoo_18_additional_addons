@@ -18,7 +18,9 @@ ORDERS_CTE = """
     o AS (
         SELECT po.id, po.partner_id, po.user_id, {employee} AS employee_id,
                po.amount_total, po.amount_tax, po.date_order,
-               COALESCE(po.laundry_is_collection, FALSE) AS is_collection,
+               -- تحصيل دين أو شحن رصيد مسبق: مو مبيعات
+               (COALESCE(po.laundry_is_collection, FALSE) OR COALESCE(po.laundry_is_prepaid_move, FALSE)) AS is_collection,
+               COALESCE(po.laundry_is_prepaid_move, FALSE) AS is_topup,
                (po.date_order AT TIME ZONE 'UTC' AT TIME ZONE %(tz)s) AS local_dt
           FROM pos_order po
           JOIN pos_session ps ON ps.id = po.session_id
@@ -125,9 +127,10 @@ class LaundryDashboard(models.AbstractModel):
         return self.env.cr.dictfetchall()
 
     def _discount_products(self, configs):
+        products = configs.mapped("laundry_customer_discount_product_id")
         if "discount_product_id" in self.env["pos.config"]._fields:
-            return configs.mapped("discount_product_id").ids or [0]
-        return [0]
+            products |= configs.mapped("discount_product_id")
+        return products.ids or [0]
 
     # ------------------------------------------------------------------ blocks
     def _kpis(self, start, stop, configs):
@@ -154,9 +157,11 @@ class LaundryDashboard(models.AbstractModel):
               FROM pos_order_line l JOIN o ON o.id = l.order_id
              WHERE o.amount_total >= 0
         """, params)[0]["discounts"]
-        payments = {"cash": 0.0, "bank": 0.0, "other": 0.0}
+        # prepaid = رصيد الغسيل المسبق (شحن وبونص ودفع منه): لا مصاري واصلة ولا دين
+        payments = {"cash": 0.0, "bank": 0.0, "other": 0.0, "prepaid": 0.0}
         for row in self._query("""
-            SELECT CASE WHEN pm.is_cash_count THEN 'cash'
+            SELECT CASE WHEN pm.laundry_prepaid_role IS NOT NULL THEN 'prepaid'
+                        WHEN pm.is_cash_count THEN 'cash'
                         WHEN pm.journal_id IS NULL THEN 'other'
                         ELSE 'bank' END AS kind,
                    COALESCE(SUM(pp.amount), 0) AS amount
@@ -204,6 +209,7 @@ class LaundryDashboard(models.AbstractModel):
                    AND po.state IN %(states)s
                    AND po.amount_total >= 0
                    AND NOT COALESCE(po.laundry_is_collection, FALSE)
+                   AND NOT COALESCE(po.laundry_is_prepaid_move, FALSE)
                    AND ps.config_id = ANY(%(configs)s)
                    AND po.company_id = ANY(%(companies)s)
                  GROUP BY po.partner_id
@@ -467,6 +473,7 @@ class LaundryDashboard(models.AbstractModel):
                AND po.state IN %(states)s
                AND po.amount_total >= 0
                AND NOT COALESCE(po.laundry_is_collection, FALSE)
+                   AND NOT COALESCE(po.laundry_is_prepaid_move, FALSE)
                AND ps.config_id = ANY(%(configs)s)
                AND po.company_id = ANY(%(companies)s)
              GROUP BY po.partner_id

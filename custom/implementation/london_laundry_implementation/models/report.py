@@ -513,7 +513,8 @@ class LaundryReport(models.AbstractModel):
     def _collection_rows(self, opts, start, stop):
         return self._query(opts, start, stop, """
             SELECT pm.id AS method_id,
-                   CASE WHEN pm.is_cash_count THEN 'cash'
+                   CASE WHEN pm.laundry_prepaid_role IS NOT NULL THEN 'prepaid'
+                        WHEN pm.is_cash_count THEN 'cash'
                         WHEN pm.journal_id IS NULL THEN 'other' ELSE 'bank' END AS kind,
                    COUNT(pp.id) AS payments,
                    COALESCE(SUM(pp.amount), 0) AS amount
@@ -872,6 +873,7 @@ class LaundryReport(models.AbstractModel):
               LEFT JOIN account_move m ON m.id = o.account_move AND m.state = 'posted'
              WHERE o.state NOT IN ('draft', 'cancel')
                AND NOT COALESCE(o.laundry_is_collection, FALSE)
+               AND NOT COALESCE(o.laundry_is_prepaid_move, FALSE)
                AND o.laundry_reversed_order_id IS NULL
                AND o.company_id = ANY(%(companies)s)
                AND (o.date_order AT TIME ZONE 'UTC' AT TIME ZONE %(tz)s)::date BETWEEN %(start)s AND %(stop)s
@@ -1137,7 +1139,7 @@ class LaundryReport(models.AbstractModel):
             m = months[month]
             month_end = month + relativedelta(months=1, days=-1)
             first, last = max(month, start), min(month_end, stop)
-            month_domain = [("state", "not in", ["draft", "cancel"]), ("laundry_is_collection", "=", False),
+            month_domain = [("state", "not in", ["draft", "cancel"]), ("laundry_is_collection", "=", False), ("laundry_is_prepaid_move", "=", False),
                             ("company_id", "in", self.env.companies.ids),
                             ("date_order", ">=", fields.Datetime.to_string(dash._to_utc(first))),
                             ("date_order", "<", fields.Datetime.to_string(dash._to_utc(last + timedelta(days=1))))]

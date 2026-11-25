@@ -32,6 +32,10 @@ class PosOrder(models.Model):
     laundry_delivery_method_id = fields.Many2one('london.delivery.method', string='Delivery Method', copy=False)
     # تعليق أو طي: بيختاره الكاشير من Actions (إجباري قبل الدفع)، بيطلع على الإيصال وبينتقل للفاتورة
     laundry_packing = fields.Selection(PACKING_TYPES, string='Hanger / Fold', copy=False)
+    # المدير عدّل خصم الزبون على هالطلب أو شاله: الخصم التلقائي ما بيرجع يتحسب
+    laundry_discount_override = fields.Boolean(string='Customer Discount Changed by Manager', copy=False)
+    # رقم أمر الشراء تبع الزبون (اختياري، من Actions): بينطبع على الإيصال وبينتقل للفاتورة
+    laundry_po = fields.Char(string='PO Number', copy=False)
 
     # حقول الفاتورة (الرف والتسليم) معروضة على الطلب، لشاشة الطلبات بالـ POS
     laundry_shelf = fields.Char(related='account_move.laundry_shelf', string='Shelf')
@@ -55,13 +59,20 @@ class PosOrder(models.Model):
             ('collection', 'Collection'),
             ('collection_cancelled', 'Collection - Cancelled'),
             ('collection_reversal', 'Collection Reversal'),
+            ('topup', 'Balance Top-up'),
+            ('topup_cancelled', 'Balance Top-up - Cancelled'),
+            ('topup_reversal', 'Top-up Cancellation'),
+            ('balance_refund', 'Balance Refund'),
         ],
         string='Collection Status', compute='_compute_laundry_collection', store=True,
         help='Paid: settled at the counter (cash, card, transfer).\n'
              'On Credit: sold on the customer account; the status follows the invoice payment '
              'and the collections taken at the POS.\n'
              'Collection: a payment collected at the POS for earlier On Credit orders.\n'
-             'Collection Reversal: cancels a collection of the same session (money given back).')
+             'Collection Reversal: cancels a collection of the same session (money given back).\n'
+             'Balance Top-up: money paid in advance to the customer prepaid balance (with its bonus).\n'
+             'Top-up Cancellation: cancels a wrong top-up of the same session (money given back).\n'
+             'Balance Refund: the customer takes back what is left of the money paid (the bonus is lost).')
 
     # تحصيل الدين من الـ POS: دفعات طلبات التحصيل اللي بتسدّد هالطلب
     laundry_collection_payment_ids = fields.One2many(
@@ -80,16 +91,32 @@ class PosOrder(models.Model):
         'pos.order', 'laundry_reversed_order_id', string='Collection Cancellations', readonly=True)
     # رصيد الزبون (كل طلباته على الحساب) بعد هالتحصيل، لحظة التحصيل: بيطلع على الإيصال
     laundry_partner_balance = fields.Monetary(string='Customer Balance After', copy=False, readonly=True)
+    # رصيد الغسيل: شحن (طلب بلا أصناف) واستعمال الرصيد بالدفع
+    laundry_is_topup = fields.Boolean(
+        string='Is Balance Top-up', compute='_compute_laundry_collection', store=True,
+        help='Order created at the POS to top up the customer prepaid balance (no products, no invoice).')
+    # أي حركة على الرصيد بلا أصناف (شحن، إلغاء شحن، استرجاع): مو مبيعات
+    laundry_is_prepaid_move = fields.Boolean(
+        string='Is Prepaid Balance Move', compute='_compute_laundry_collection', store=True)
+    laundry_topup_bonus = fields.Monetary(
+        string='Top-up Bonus', compute='_compute_laundry_collection', store=True)
+    laundry_prepaid_used = fields.Monetary(
+        string='Paid From Balance', compute='_compute_laundry_collection', store=True,
+        help='Part of the order paid from the customer prepaid balance.')
+    # رصيد الزبون المسبق بعد هالطلب، لحظة الدفع: بيطلع على الإيصال
+    laundry_prepaid_balance = fields.Monetary(string='Prepaid Balance After', copy=False, readonly=True)
     laundry_credit_remaining = fields.Monetary(
         string='Remaining On Credit', compute='_compute_laundry_collection', store=True,
         help='Amount the customer still owes on this order, collections taken at the POS included.')
 
-    @api.depends('state', 'payment_ids.amount', 'payment_ids.payment_method_id.journal_id',
+    @api.depends('state', 'lines', 'payment_ids.amount', 'payment_ids.payment_method_id.journal_id',
+                 'payment_ids.payment_method_id.laundry_prepaid_role',
                  'payment_ids.payment_method_id.is_cash_count', 'payment_ids.laundry_collected_order_id',
                  'account_move.state', 'account_move.payment_state', 'account_move.amount_residual',
                  'laundry_collection_payment_ids.amount', 'laundry_collection_payment_ids.laundry_reconciled',
                  'laundry_collection_payment_ids.pos_order_id.state',
-                 'laundry_reversed_order_id', 'laundry_reversal_order_ids.state')
+                 'laundry_reversed_order_id', 'laundry_reversed_order_id.laundry_is_topup',
+                 'laundry_reversal_order_ids.state')
     def _compute_laundry_collection(self):
         for order in self:
             # أسطر التحصيل وإلغائه (مربوطة بطلب) مو بيع على الحساب
@@ -100,6 +127,14 @@ class PosOrder(models.Model):
             credit = max(credit, 0.0)
             order.laundry_credit_amount = credit
             order.laundry_is_collection = bool(order.payment_ids.laundry_collected_order_id)
+            balance = order.payment_ids.filtered(lambda p: p.payment_method_id.laundry_prepaid_role == 'balance')
+            order.laundry_is_topup = bool(
+                not order.lines and any(order.currency_id.compare_amounts(p.amount, 0) < 0 for p in balance))
+            order.laundry_topup_bonus = sum(order.payment_ids.filtered(
+                lambda p: p.payment_method_id.laundry_prepaid_role == 'bonus').mapped('amount'))
+            order.laundry_is_prepaid_move = bool(not order.lines and balance)
+            order.laundry_prepaid_used = (
+                0.0 if order.laundry_is_prepaid_move else sum(balance.mapped('amount')))
             pending = -sum(order.laundry_collection_payment_ids.filtered(
                 lambda p: not p.laundry_reconciled and p.pos_order_id.state not in ('draft', 'cancel')
             ).mapped('amount'))
@@ -116,7 +151,15 @@ class PosOrder(models.Model):
             if order.state in ('draft', 'cancel'):
                 order.laundry_collection_status = False
             elif order.laundry_reversed_order_id:
-                order.laundry_collection_status = 'collection_reversal'
+                order.laundry_collection_status = (
+                    'topup_reversal' if order.laundry_reversed_order_id.laundry_is_topup else 'collection_reversal')
+            elif order.laundry_is_topup and order.laundry_reversal_order_ids.filtered(
+                    lambda o: o.state not in ('draft', 'cancel')):
+                order.laundry_collection_status = 'topup_cancelled'
+            elif order.laundry_is_topup:
+                order.laundry_collection_status = 'topup'
+            elif order.laundry_is_prepaid_move:
+                order.laundry_collection_status = 'balance_refund'
             elif order.laundry_is_collection and order.laundry_reversal_order_ids.filtered(
                     lambda o: o.state not in ('draft', 'cancel')):
                 order.laundry_collection_status = 'collection_cancelled'
@@ -229,6 +272,73 @@ class PosOrder(models.Model):
             })
         return {'orders': result, 'without_invoice': without_invoice, 'total_due': total_due}
 
+    # ------------------------------------------------------------------ prepaid balance
+    @api.model
+    def _laundry_prepaid_balances(self, partner_ids=None, with_bonus=False):
+        """{زبون (الشركة الأم): رصيده المسبق} = الشحنات (مع البونص) ناقص اللي اندفع منه، مع الأرصدة القديمة.
+
+        من دفعات الـ POS نفسها (متل المتبقي على الطلبات)، فبيتحدّث فوراً قبل إغلاق الجلسة.
+        with_bonus: {زبون: (الرصيد، البونص اللي لسا ضمنه)}: البونص بينخصم عند الاسترجاع.
+        """
+        self.env.flush_all()
+        self.env.cr.execute("""
+            WITH moves AS (
+                SELECT COALESCE(rp.commercial_partner_id, rp.id) AS partner_id,
+                       CASE WHEN m.laundry_prepaid_role = 'balance' THEN -p.amount ELSE 0 END AS balance,
+                       CASE WHEN m.laundry_prepaid_role = 'bonus' THEN p.amount ELSE 0 END AS bonus
+                  FROM pos_payment p
+                  JOIN pos_order o ON o.id = p.pos_order_id
+                  JOIN pos_payment_method m ON m.id = p.payment_method_id
+                  JOIN res_partner rp ON rp.id = o.partner_id
+                 WHERE m.laundry_prepaid_role IS NOT NULL
+                   AND o.state NOT IN ('draft', 'cancel')
+                   AND o.company_id = ANY(%(companies)s)
+                UNION ALL
+                SELECT COALESCE(rp.commercial_partner_id, rp.id), b.amount, b.bonus
+                  FROM london_prepaid_opening b
+                  JOIN res_partner rp ON rp.id = b.partner_id
+                 WHERE b.state = 'posted' AND b.company_id = ANY(%(companies)s)
+            )
+            SELECT partner_id, SUM(balance), SUM(bonus) FROM moves
+             WHERE %(all)s OR partner_id = ANY(%(partners)s)
+             GROUP BY 1
+        """, {'companies': self.env.companies.ids, 'all': partner_ids is None, 'partners': partner_ids or [0]})
+        rows = self.env.cr.fetchall()
+        if with_bonus:
+            return {r[0]: (r[1] or 0.0, r[2] or 0.0) for r in rows}
+        return {r[0]: r[1] or 0.0 for r in rows}
+
+    @api.model
+    def _laundry_prepaid_bonus(self, config, amount):
+        """البونص على مبلغ شحن (من إعدادات نقطة البيع): النسبة من الحد الأدنى وطالع."""
+        if config.laundry_prepaid_bonus_min and amount < config.laundry_prepaid_bonus_min:
+            return 0.0
+        return config.currency_id.round(amount * (config.laundry_prepaid_bonus_percent or 0.0) / 100.0)
+
+    @api.model
+    def get_laundry_prepaid_info(self, partner_id, config_id, amount=None):
+        """للـ POS: رصيد الزبون المسبق، والبونص على مبلغ الشحن (إذا انبعت)."""
+        methods = self.env['pos.payment.method']._laundry_prepaid_methods()
+        if 'balance' not in methods or 'bonus' not in methods:
+            return {'error': _("The laundry prepaid balance is not set up. "
+                               "Point of Sale > Settings > Laundry Prepaid Balance > Set Up.")}
+        partner = self.env['res.partner'].browse(partner_id).exists().commercial_partner_id
+        if not partner:
+            return {'error': _("Select a customer first.")}
+        config = self.env['pos.config'].browse(config_id)
+        balance, bonus = self._laundry_prepaid_balances([partner.id], with_bonus=True).get(partner.id, (0.0, 0.0))
+        result = {
+            'balance': balance,
+            # الاسترجاع: الرصيد ناقص البونص اللي لسا ضمنه (الزبون بيخسر البونص)
+            'bonus_left': bonus,
+            'refundable': max(config.currency_id.round(balance - bonus), 0.0),
+            'bonus_percent': config.laundry_prepaid_bonus_percent,
+            'bonus_min': config.laundry_prepaid_bonus_min,
+        }
+        if amount is not None:
+            result['bonus'] = self._laundry_prepaid_bonus(config, amount)
+        return result
+
     @api.model
     def set_laundry_shelf(self, order_id, shelf):
         """من شاشة الطلبات بالـ POS: رقم الرف (1 لـ 9) بينحفظ على الفاتورة."""
@@ -263,6 +373,53 @@ class PosOrder(models.Model):
             return False
         return bool(employee in config.advanced_employee_ids or (
             employee.user_id and employee.user_id.has_group('point_of_sale.group_pos_manager')))
+
+    @api.model
+    def get_laundry_topup_cancel(self, order_id, session_id, employee_id=None):
+        """إلغاء شحن غلط: للمدير، بنفس الجلسة المفتوحة، ومرة وحدة، وإذا الرصيد لسا ما انصرف.
+
+        بيرجّع الدفعات (صافي لكل طريقة) اللي لازم تنعكس.
+        """
+        order = self.browse(order_id).exists()
+        if not order or not order.laundry_is_topup:
+            return {'error': _("This order is not a balance top-up.")}
+        if order.laundry_reversal_order_ids.filtered(lambda o: o.state not in ('draft', 'cancel')):
+            return {'error': _("This top-up is already cancelled.")}
+        if not self._laundry_is_pos_manager(order.session_id, employee_id):
+            return {'error': _("Only a manager can cancel a top-up.")}
+        if order.session_id.id != session_id or order.session_id.state != 'opened':
+            return {'error': _("A top-up can only be cancelled in the session where it was made, "
+                               "before the session is closed. Use Refund Balance instead.")}
+        partner = order.partner_id.commercial_partner_id
+        balance = self._laundry_prepaid_balances([partner.id]).get(partner.id, 0.0)
+        credited = -sum(order.payment_ids.filtered(
+            lambda p: p.payment_method_id.laundry_prepaid_role == 'balance').mapped('amount'))
+        if order.currency_id.compare_amounts(balance, credited) < 0:
+            return {'error': _("Part of this top-up was already used (balance %(balance)s, top-up %(credited)s). "
+                               "Use Refund Balance instead.", balance=balance, credited=credited)}
+        methods = {}
+        for payment in order.payment_ids:
+            methods[payment.payment_method_id.id] = methods.get(payment.payment_method_id.id, 0.0) + payment.amount
+        return {
+            'payments': [{'method_id': m, 'amount': a} for m, a in methods.items() if not order.currency_id.is_zero(a)],
+            'credited': credited,
+            'balance': balance,
+        }
+
+    @api.model
+    def get_laundry_prepaid_refund(self, partner_id, config_id, employee_id=None):
+        """استرجاع الرصيد (للمدير): الزبون بياخد الباقي من المصاري اللي دفعها، بدون البونص."""
+        config = self.env['pos.config'].browse(config_id)
+        session = config.current_session_id
+        if not session or not self._laundry_is_pos_manager(session, employee_id):
+            return {'error': _("Only a manager can refund a prepaid balance.")}
+        info = self.get_laundry_prepaid_info(partner_id, config_id)
+        if info.get('error'):
+            return info
+        if config.currency_id.compare_amounts(info['refundable'], 0.0) <= 0:
+            return {'error': _("Nothing to refund: the balance left (%(balance)s) is bonus only.",
+                               balance=info['balance'])}
+        return info
 
     @api.model
     def get_laundry_collection_cancel(self, order_id, session_id, employee_id=None):
@@ -304,4 +461,5 @@ class PosOrder(models.Model):
         vals['laundry_expected_hour'] = self.laundry_expected_hour
         vals['laundry_delivery_method_id'] = self.laundry_delivery_method_id.id
         vals['laundry_packing'] = self.laundry_packing
+        vals['laundry_po'] = self.laundry_po
         return vals

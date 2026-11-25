@@ -48,6 +48,7 @@ patch(PosOrder.prototype, {
         const partner = this.get_partner();
         result.partner_name = partner?.name || "";
         result.partner_mobile = partner?.mobile || partner?.phone || "";
+        result.laundry_po = this.laundry_po || "";
         result.expected_delivery = this.laundry_expected_delivery
             ? `${formatDate(deserializeDate(this.laundry_expected_delivery))} ${expectedHourLabel(
                   this.laundry_expected_hour
@@ -67,13 +68,41 @@ patch(PosOrder.prototype, {
                   }
                 : data;
         });
+        // سطر خصم الزبون بآخر الأصناف
+        const discountId = this.config.laundry_customer_discount_product_id?.id;
+        if (discountId) {
+            const isDiscount = (data, index) => lines[index]?.product_id?.id === discountId;
+            result.orderlines = [
+                ...result.orderlines.filter((d, i) => !isDiscount(d, i)),
+                ...result.orderlines.filter((d, i) => isDiscount(d, i)),
+            ];
+        }
         // الدفع على الحساب (On Credit) مو مصاري واصلة: منفصله عن المبلغ المدفوع فعلياً
         const credit = this.payment_ids
             .filter((p) => p.payment_method_id?.type === "pay_later" && !p.laundry_collected_order_id)
             .reduce((sum, p) => sum + p.get_amount(), 0);
         // سالب = تسديد دين أو إيداع (pos_settle_due): المبلغ المدفوع هو الدفعات الفعلية
         result.credit_amount = Math.max(credit, 0);
-        result.paid_real = result.total_paid - credit;
+        // الدفع من رصيد الغسيل المسبق مو مصاري واصلة كمان
+        const prepaid = this.laundryPrepaidMoved();
+        result.prepaid_used = prepaid > 0 ? prepaid : 0;
+        result.paid_real = result.total_paid - credit - result.prepaid_used;
+        result.prepaid_balance = this.laundry_prepaid_balance || 0;
+        result.show_prepaid_balance = prepaid !== 0;
+        // حركات الرصيد (شحن، إلغاء شحن، استرجاع): المصاري والبونص واللي انزاد أو انشال من الرصيد
+        if (this.isLaundryPrepaidMove()) {
+            result.is_prepaid_op = true;
+            result.is_topup = this.isLaundryTopup();
+            result.is_topup_reversal = this.isLaundryTopupReversal();
+            result.is_balance_refund = this.isLaundryBalanceRefund();
+            result.reversed_order_name = this.laundry_reversed_order_id?.name || "";
+            result.topup_credited = -prepaid;
+            result.topup_bonus = this.laundryPrepaidLines("bonus").reduce((sum, p) => sum + p.get_amount(), 0);
+            result.topup_paid = result.topup_credited - result.topup_bonus;
+            result.topup_payments = this.payment_ids
+                .filter((p) => !p.payment_method_id?.laundry_prepaid_role && !p.is_change)
+                .map((p) => ({ name: p.payment_method_id.name, amount: p.get_amount() }));
+        }
         // إيصال تحصيل: الطلبات اللي اندفعت والمتبقي (بالأرقام اللي انحفظت لحظة التحصيل)
         if (this.isLaundryCollection()) {
             result.is_collection = true;
@@ -101,10 +130,13 @@ patch(PosOrder.prototype, {
         // تعليق أو طي (بدل كلمة FOLD الثابتة)
         result.packing = this.laundry_packing || "";
         // (سطر أجرة التوصيل مو قطعة ملابس)
+        // (ولا سطر خصم الزبون)
         const deliveryProduct = this.config.laundry_delivery_product_id;
+        const discountProduct = this.config.laundry_customer_discount_product_id;
         result.total_qty = plainQty(
             this.lines
                 .filter((line) => !deliveryProduct || line.product_id?.id !== deliveryProduct.id)
+                .filter((line) => !discountProduct || line.product_id?.id !== discountProduct.id)
                 .reduce((sum, line) => sum + (line.get_quantity() || 0), 0)
         );
         return result;

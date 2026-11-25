@@ -5,6 +5,7 @@ import { patch } from "@web/core/utils/patch";
 import { _t } from "@web/core/l10n/translation";
 import { deserializeDate, formatDate } from "@web/core/l10n/dates";
 import { SelectionPopup } from "@point_of_sale/app/utils/input_popups/selection_popup";
+import { TextInputPopup } from "@point_of_sale/app/utils/input_popups/text_input_popup";
 import { ExpectedDeliveryPopup, expectedHourLabel } from "./expected_delivery_popup";
 // pay() هون لازم يلفّ pay() تبع أجرة التوصيل: الاختيارات أول، بعدين قاعدة التوصيل المجاني
 import "./delivery_charge";
@@ -118,6 +119,22 @@ patch(ControlButtons.prototype, {
 
     get packingLabel() {
         return PACKING_LABELS[this.pos.get_order()?.laundry_packing] || "";
+    },
+
+    // رقم أمر الشراء تبع الزبون (اختياري): بينطبع على الإيصال والفاتورة
+    async clickLaundryPo() {
+        const order = this.pos.get_order();
+        if (!order) {
+            return;
+        }
+        const payload = await makeAwaitable(this.dialog, TextInputPopup, {
+            title: _t("PO Number"),
+            startingValue: order.laundry_po || "",
+            placeholder: _t("Customer purchase order number"),
+        });
+        if (payload !== undefined) {
+            order.laundry_po = (payload || "").trim() || false;
+        }
     },
 
     async clickPacking() {

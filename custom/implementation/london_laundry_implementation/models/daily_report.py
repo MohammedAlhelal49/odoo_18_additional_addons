@@ -57,13 +57,14 @@ class LaundryDailyReport(models.AbstractModel):
         result = []
         for r in rows:
             method = methods[r["method_id"]]
-            kind = "cash" if method.is_cash_count else ("credit" if not method.journal_id else "bank")
+            kind = "cash" if method.is_cash_count else (
+                "credit" if not method.journal_id or method.laundry_prepaid_role else "bank")
             result.append({"name": method.name, "kind": kind, "orders": r["orders"], "amount": r["amount"]})
         return result
 
     def _collections(self, dash, day, config, local_time):
         """تحصيلات ديون On Credit بهاليوم (قسم لحاله): الطلبات اللي اندفعت وطريقة الدفع."""
-        rows = dash._query("SELECT id FROM o WHERE is_collection ORDER BY date_order, id",
+        rows = dash._query("SELECT id FROM o WHERE is_collection AND NOT is_topup ORDER BY date_order, id",
                            dash._params(day, day, config))
         orders = dash.env["pos.order"].browse([r["id"] for r in rows])
         has_employee = dash._has_employee()

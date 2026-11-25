@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- رقم أمر الشراء (PO) تبع الزبون على الفاتورة: القالب العادي (PDF ورابط الفاتورة) وقالب dekad -->
+    <template id="report_invoice_document_laundry_po" inherit_id="account.report_invoice_document">
+        <xpath expr="//div[@name='invoice_date']" position="after">
+            <div class="col" t-if="o.laundry_po" name="laundry_po">
+                <strong>PO Number</strong>
+                <div t-field="o.laundry_po"/>
+            </div>
+        </xpath>
+    </template>
+
+    <template id="report_custom_invoice_document_laundry_po" inherit_id="dekad_account_enhancement.report_custom_invoice_document">
+        <xpath expr="//div[@name='custom_invoice_info_block']/p[span[@t-field='o.ref']]" position="after">
+            <p class="mb-1" t-if="o.laundry_po">
+                <strong>PO Number :</strong>
+                <span t-field="o.laundry_po"/>
+            </p>
+        </xpath>
+    </template>
+</odoo>

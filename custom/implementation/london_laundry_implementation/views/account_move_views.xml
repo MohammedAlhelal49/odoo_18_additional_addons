@@ -20,6 +20,7 @@
                 </div>
                 <field name="laundry_delivery_method_id" options="{'no_create': True}" invisible="move_type not in ('out_invoice', 'out_refund', 'out_receipt')"/>
                 <field name="laundry_packing" invisible="move_type not in ('out_invoice', 'out_refund', 'out_receipt')"/>
+                <field name="laundry_po" invisible="move_type not in ('out_invoice', 'out_refund', 'out_receipt')"/>
                 <field name="laundry_delivered" invisible="move_type not in ('out_invoice', 'out_refund', 'out_receipt')"/>
                 <field name="laundry_delivered_employee_id" invisible="move_type not in ('out_invoice', 'out_refund', 'out_receipt')"/>
                 <field name="laundry_delivery_datetime" invisible="not laundry_delivered"/>
@@ -79,6 +80,7 @@
                 <field name="laundry_expected_delivery" widget="laundry_expected_delivery" optional="show"/>
                 <field name="laundry_delivery_method_id" optional="show"/>
                 <field name="laundry_packing" optional="show"/>
+                <field name="laundry_po" optional="hide"/>
                 <field name="laundry_shelf" widget="laundry_inline_char" optional="show"/>
                 <field name="laundry_delivered" widget="boolean_toggle" optional="show"/>
                 <field name="laundry_delivered_employee_id" optional="show"/>
@@ -98,6 +100,9 @@
                 <field name="laundry_delivery_method_id"/>
                 <field name="laundry_delivered_employee_id"/>
             </xpath>
+            <field name="partner_id" position="after">
+                <field name="laundry_po"/>
+            </field>
             <filter name="due_date" position="after">
                 <separator/>
                 <filter name="laundry_delivered" string="Delivered" domain="[('laundry_delivered', '=', True)]"/>

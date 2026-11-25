@@ -74,14 +74,31 @@ patch(TicketScreen.prototype, {
                 return _t("Collection - Cancelled");
             case "collection_reversal":
                 return _t("Collection Reversal");
+            case "topup":
+                return _t("Balance Top-up");
+            case "topup_cancelled":
+                return _t("Top-up - Cancelled");
+            case "topup_reversal":
+                return _t("Top-up Cancellation");
+            case "balance_refund":
+                return _t("Balance Refund");
             case "paid":
                 return status;
         }
-        if (order.isLaundryCollectionReversal()) {
+        if (order.isLaundryCollectionReversal() && !order.isLaundryPrepaidMove()) {
             return _t("Collection Reversal");
         }
         if (order.isLaundryCollection()) {
             return _t("Collection");
+        }
+        if (order.isLaundryTopupReversal()) {
+            return _t("Top-up Cancellation");
+        }
+        if (order.isLaundryTopup()) {
+            return _t("Balance Top-up");
+        }
+        if (order.isLaundryBalanceRefund()) {
+            return _t("Balance Refund");
         }
         if (hasPayLater(order)) {
             return _t("Unpaid");
@@ -187,7 +204,7 @@ patch(TicketScreen.prototype, {
     getLaundryRowClass(order) {
         const highlighted = this.isHighlighted(order);
         const status = order.laundry_collection_status;
-        if (highlighted || !order.finalized || !status || status.startsWith("collection")) {
+        if (highlighted || !order.finalized || !status || status.startsWith("collection") || status.startsWith("topup") || status === "balance_refund") {
             return { "highlight bg-primary text-white": highlighted };
         }
         const paid = status === "paid" || status === "credit_paid";
@@ -284,7 +301,9 @@ patch(TicketScreen.prototype, {
 
     // زر "WhatsApp Ready": رسالة "الطلب جاهز" للزبون (واتساب ويب بنافذة جديدة)
     canLaundryWhatsappReady(order) {
-        return Boolean(order?.finalized && order.partner_id && !order.isLaundryCollection());
+        return Boolean(
+            order?.finalized && order.partner_id && !order.isLaundryCollection() && !order.isLaundryPrepaidMove()
+        );
     },
 
     async onLaundryWhatsappReady(order) {
@@ -417,6 +436,42 @@ patch(TicketScreen.prototype, {
         });
         if (confirmed) {
             await this.pos.laundryStartCollectionReversal(order, info);
+        }
+    },
+
+    // زر "Cancel Top-up": شحن غلط، بنفس الجلسة المفتوحة، وللمدير بس (والرصيد لسا ما انصرف)
+    canLaundryCancelTopup(order) {
+        return Boolean(
+            this.laundryCashierIsManager &&
+                order?.finalized &&
+                order.laundry_collection_status === "topup" &&
+                order.session_id?.id === this.pos.session.id
+        );
+    },
+
+    async onLaundryCancelTopup(order) {
+        let info;
+        try {
+            info = await this.pos.data.call("pos.order", "get_laundry_topup_cancel", [
+                order.id,
+                this.pos.session.id,
+                this.pos.config.module_pos_hr ? this.pos.get_cashier()?.id : null,
+            ]);
+        } catch {
+            return this.laundryAlert(_t("Cancel Top-up"), _t("A connection to the server is needed to cancel a top-up."));
+        }
+        if (info.error) {
+            return this.laundryAlert(_t("Cancel Top-up"), info.error);
+        }
+        const confirmed = await ask(this.dialog, {
+            title: _t("Cancel Top-up"),
+            body: _t(
+                "Cancel the top-up %(order)s? %(credited)s is removed from the balance and the money is given back to the customer.",
+                { order: order.name, credited: this.env.utils.formatCurrency(info.credited) }
+            ),
+        });
+        if (confirmed) {
+            await this.pos.laundryStartTopupReversal(order, info);
         }
     },
 

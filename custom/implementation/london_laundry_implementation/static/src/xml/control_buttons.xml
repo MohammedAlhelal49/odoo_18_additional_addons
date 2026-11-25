@@ -19,6 +19,24 @@
                 <t t-if="packingLabel" t-esc="packingLabel"/>
                 <t t-else="">Hanger / Fold</t>
             </button>
+            <button class="btn btn-secondary btn-lg py-5" t-att-class="{'active': pos.get_order()?.laundry_po}" t-on-click="() => this.clickLaundryPo()">
+                <i class="fa fa-file-text-o me-1" role="img" aria-label="PO Number" title="PO Number"/>
+                <t t-if="pos.get_order()?.laundry_po">PO: <t t-esc="pos.get_order().laundry_po"/></t>
+                <t t-else="">PO Number</t>
+            </button>
+            <button class="btn btn-secondary btn-lg py-5" t-att-class="{'active': laundryDiscountLabel}" t-on-click="() => this.clickLaundryCustomerDiscount()">
+                <i class="fa fa-tag me-1" role="img" aria-label="Customer Discount" title="Customer Discount"/>
+                <t t-if="laundryDiscountLabel">Discount: <t t-esc="laundryDiscountLabel"/></t>
+                <t t-else="">Customer Discount</t>
+            </button>
+            <button class="btn btn-secondary btn-lg py-5" t-on-click="() => this.clickLaundryTopup()">
+                <i class="fa fa-credit-card me-1" role="img" aria-label="Top Up Balance" title="Top Up Balance"/>
+                Top Up Balance
+            </button>
+            <button class="btn btn-secondary btn-lg py-5" t-on-click="() => this.clickLaundryRefundBalance()">
+                <i class="fa fa-reply me-1" role="img" aria-label="Refund Balance" title="Refund Balance"/>
+                Refund Balance
+            </button>
         </xpath>
     </t>
 

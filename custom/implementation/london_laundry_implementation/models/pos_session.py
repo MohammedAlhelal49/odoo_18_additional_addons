@@ -30,6 +30,14 @@ class PosSession(models.Model):
                 )
         return super().message_post(**kwargs)
 
+    def get_closing_control_data(self):
+        # رصيد الغسيل المسبق والبونص مو مصاري بالدرج ولا بالبنك: ما بينعدّوا عند الإغلاق
+        data = super().get_closing_control_data()
+        prepaid = self.env['pos.payment.method'].sudo().search([('laundry_prepaid_role', '!=', False)]).ids
+        data['non_cash_payment_methods'] = [
+            pm for pm in data.get('non_cash_payment_methods', []) if pm['id'] not in prepaid]
+        return data
+
     def _create_pay_later_receivable_lines(self, data):
         data = super()._create_pay_later_receivable_lines(data)
         # On Credit مفعّل عليه split_transactions: سطر ذمم لكل دفعة، بنفس ترتيب الإنشاء
@@ -50,8 +58,64 @@ class PosSession(models.Model):
 
     def _reconcile_account_move_lines(self, data):
         data = super()._reconcile_account_move_lines(data)
-        self._laundry_reconcile_collections(data.get('laundry_collection_lines') or {})
+        mapped = data.get('laundry_collection_lines') or {}
+        mapped_ids = {payment.id for payment in mapped}
+        self._laundry_reconcile_collections(dict(mapped))
+        # شبكة أمان: تحصيل ما إله سطر بالخريطة (فاضية أو ناقصة) منلاقي سطره من قيد الجلسة
+        if self._laundry_unreconciled_collections().filtered(lambda p: p.id not in mapped_ids):
+            self._laundry_reconcile_pending_collections(skip_ids=mapped_ids)
         return data
+
+    def _laundry_unreconciled_collections(self):
+        return self.env['pos.payment'].sudo().search([
+            ('session_id', 'in', self.ids),
+            ('laundry_collected_order_id', '!=', False),
+            ('laundry_reconciled', '=', False),
+            ('pos_order_id.state', 'not in', ('draft', 'cancel')),
+        ], order='id')
+
+    def _laundry_collection_lines_from_move(self):
+        """{دفعة تحصيل: سطر الذمم تبعها بقيد إغلاق الجلسة} للتحصيلات اللي لسا ما انطابقت.
+
+        سطر كل دفعة (On Credit مفعّل عليه split_transactions) بيحمل شريك الزبون ومبلغ الدفعة؛
+        منطابق كل دفعة مع أول سطر بنفس الشريك والمبلغ ولسا مش مطابق.
+        """
+        self.ensure_one()
+        payments = self._laundry_unreconciled_collections()
+        move = self.sudo().move_id
+        if not payments or move.state != 'posted':
+            return {}
+        free = move.line_ids.filtered(
+            lambda l: l.account_id.account_type == 'asset_receivable' and l.partner_id and not l.reconciled
+        ).sorted('id')
+        result = {}
+        for payment in payments:
+            partner = self.env['res.partner']._find_accounting_partner(payment.partner_id)
+            line = free.filtered(
+                lambda l: l.partner_id == partner
+                and l.name == '%s - %s' % (self.name, payment.payment_method_id.name)
+                and self.currency_id.is_zero(l.balance - payment.amount)
+            )[:1]
+            if line:
+                result[payment] = line
+                free -= line
+        return result
+
+    def _laundry_reconcile_pending_collections(self, skip_ids=()):
+        """مطابقة التحصيلات اللي ضلت معلّقة بجلسات قيدها مرحّل (بتنعاد بأمان، اللي انطابق ما بينلمس)."""
+        sessions = self.sudo().filtered(lambda s: s.move_id.state == 'posted')
+        before = len(sessions._laundry_unreconciled_collections())
+        for session in sessions:
+            lines = {p: l for p, l in session._laundry_collection_lines_from_move().items() if p.id not in skip_ids}
+            missing = session._laundry_unreconciled_collections().filtered(
+                lambda p: p.id not in skip_ids and p not in lines)
+            if missing:
+                session.message_post(body=_(
+                    "Collections without a receivable line in the session entry (to check by the accountant): %s",
+                    ", ".join(missing.mapped('laundry_collected_order_id.name'))))
+            if lines:
+                session._laundry_reconcile_collections(lines)
+        return before - len(sessions._laundry_unreconciled_collections())
 
     def _laundry_reconcile_collections(self, collection_lines):
         """كل دفعة تحصيل بتنطابق مع فاتورة الطلب اللي اندفع.

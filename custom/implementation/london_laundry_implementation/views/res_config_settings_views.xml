@@ -32,6 +32,23 @@
                         <field name="pos_laundry_free_delivery_from" class="oe_inline"/>
                     </setting>
                 </block>
+                <block title="Laundry Prepaid Balance" id="laundry_prepaid_section">
+                    <setting string="Prepaid Balance"
+                             help="Customers pay in advance and get a bonus on their balance (e.g. pay 100, get 125). They then pay their orders from the balance with the Laundry Balance payment method. Set Up creates the accounts (Customer Prepaid Balance, Prepaid Balance Bonus) and the two payment methods, and adds them to the points of sale.">
+                        <field name="laundry_prepaid_ready" invisible="1"/>
+                        <div class="mt-2">
+                            <span invisible="not laundry_prepaid_ready" class="text-success me-3"><i class="fa fa-check"/> Ready</span>
+                            <button name="action_laundry_setup_prepaid" type="object" string="Set Up"
+                                    class="btn-link" icon="oi-arrow-right" invisible="laundry_prepaid_ready"/>
+                        </div>
+                    </setting>
+                    <setting string="Top-up Bonus"
+                             help="Bonus in % of the amount paid, for top-ups of the minimum amount or more. Smaller top-ups are allowed without a bonus.">
+                        <field name="pos_laundry_prepaid_bonus_percent" class="oe_inline" style="width: 4rem;"/>
+                        <span class="ms-1 me-2">% from</span>
+                        <field name="pos_laundry_prepaid_bonus_min" class="oe_inline" style="width: 5rem;"/>
+                    </setting>
+                </block>
                 <block title="Daily Report" id="laundry_daily_report_section">
                     <setting string="Daily Report by E-mail"
                              help="A summary of this point of sale (sales, payments, cashiers, sessions and deliveries) is e-mailed every night after midnight for the previous day. Separate several addresses with commas.">

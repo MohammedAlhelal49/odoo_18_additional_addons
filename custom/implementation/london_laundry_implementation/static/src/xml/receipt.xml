@@ -30,6 +30,15 @@
             <t t-elif="props.data.is_collection">
                 <div class="lry-tax-invoice">PAYMENT RECEIPT &#160;&#160; إيصال تحصيل</div>
             </t>
+            <t t-elif="props.data.is_topup_reversal">
+                <div class="lry-tax-invoice">TOP-UP CANCELLED &#160;&#160; إلغاء شحن</div>
+            </t>
+            <t t-elif="props.data.is_balance_refund">
+                <div class="lry-tax-invoice">BALANCE REFUND &#160;&#160; استرجاع رصيد</div>
+            </t>
+            <t t-elif="props.data.is_topup">
+                <div class="lry-tax-invoice">BALANCE TOP-UP &#160;&#160; شحن رصيد</div>
+            </t>
             <t t-else="">
                 <div class="lry-tax-invoice">TAX INVOICE &#160;&#160; فاتورة ضريبية</div>
                 <div t-if="props.data.packing === 'hanger'" class="lry-fold">HANGER &#160; <span class="lry-ar">تعليق</span></div>
@@ -45,7 +54,7 @@
 
             <!-- ====== ORDER NUMBER ====== -->
             <!-- إيصال التحصيل: الرقم هو رقم الإيصال، مو رقم طلب ملابس -->
-            <div t-if="props.data.is_collection" class="lry-receipt-no-label">
+            <div t-if="props.data.is_collection or props.data.is_prepaid_op" class="lry-receipt-no-label">
                 Receipt No. &#160; <span class="lry-ar">رقم الإيصال</span>
             </div>
             <div class="lry-order-number">
@@ -58,6 +67,9 @@
             </t>
             <t t-if="props.data.partner_mobile">
                 <div class="lry-customer-mobile">MOBILE: <t t-esc="props.data.partner_mobile"/></div>
+            </t>
+            <t t-if="props.data.laundry_po">
+                <div class="lry-customer-mobile">PO: <t t-esc="props.data.laundry_po"/> &#160; <span class="lry-ar">رقم أمر الشراء</span></div>
             </t>
             <t t-if="props.data.expected_delivery">
                 <div class="lry-customer-mobile">
@@ -172,7 +184,57 @@
                 </div>
             </t>
 
-            <t t-if="!props.data.is_collection">
+            <!-- ====== BALANCE TOP-UP (شحن رصيد) ====== -->
+            <t t-if="props.data.is_topup">
+                <div class="lry-divider"/>
+                <div class="lry-tax-row">
+                    <span>Amount Paid &#160; <span class="lry-ar">المبلغ المدفوع</span></span>
+                    <span><t t-esc="props.formatCurrency(props.data.topup_paid)"/></span>
+                </div>
+                <div class="lry-tax-row">
+                    <span>Bonus &#160; <span class="lry-ar">البونص</span></span>
+                    <span><t t-esc="props.formatCurrency(props.data.topup_bonus)"/></span>
+                </div>
+                <div class="lry-tax-row lry-net-amount">
+                    <span>Added to Balance &#160; <span class="lry-ar">أضيف للرصيد</span></span>
+                    <span><t t-esc="props.formatCurrency(props.data.topup_credited)"/></span>
+                </div>
+            </t>
+            <!-- ====== إلغاء شحن / استرجاع رصيد: المبالغ بترجع للزبون (منعرضها موجبة) ====== -->
+            <t t-if="props.data.is_topup_reversal or props.data.is_balance_refund">
+                <div t-if="props.data.reversed_order_name" class="lry-employee-line">
+                    Cancels receipt &#160; <span class="lry-ar">إلغاء الإيصال</span> &#160;
+                    <t t-esc="props.data.reversed_order_name"/>
+                </div>
+                <div class="lry-divider"/>
+                <div class="lry-tax-row">
+                    <span>Removed from Balance &#160; <span class="lry-ar">انخصم من الرصيد</span></span>
+                    <span><t t-esc="props.formatCurrency(-props.data.topup_credited)"/></span>
+                </div>
+                <div t-if="props.data.topup_bonus" class="lry-tax-row">
+                    <span t-if="props.data.is_topup_reversal">Bonus Cancelled &#160; <span class="lry-ar">البونص الملغي</span></span>
+                    <span t-else="">Bonus (not refunded) &#160; <span class="lry-ar">البونص (غير مسترد)</span></span>
+                    <span><t t-esc="props.formatCurrency(-props.data.topup_bonus)"/></span>
+                </div>
+                <div class="lry-tax-row lry-net-amount">
+                    <span>Refunded &#160; <span class="lry-ar">المبلغ المسترد</span></span>
+                    <span><t t-esc="props.formatCurrency(-props.data.topup_paid)"/></span>
+                </div>
+            </t>
+            <t t-if="props.data.is_prepaid_op">
+                <t t-foreach="props.data.topup_payments" t-as="tp" t-key="tp_index">
+                    <div class="lry-tax-row">
+                        <span><t t-esc="tp.name"/></span>
+                        <span><t t-esc="props.formatCurrency(props.data.is_topup ? tp.amount : -tp.amount)"/></span>
+                    </div>
+                </t>
+                <div t-if="props.data.change" class="lry-tax-row">
+                    <span>Change &#160; <span class="lry-ar">الباقي</span></span>
+                    <span><t t-esc="props.formatCurrency(props.data.change)"/></span>
+                </div>
+            </t>
+
+            <t t-if="!props.data.is_collection and !props.data.is_prepaid_op">
                 <!-- ====== ITEMS TABLE ====== -->
                 <div class="lry-table-header">
                     <span>ITEM <span class="lry-ar">الصنف</span></span>
@@ -228,9 +290,22 @@
                     <span>Paid Amount &#160; <span class="lry-ar">المبلغ المدفوع</span></span>
                     <span><t t-esc="props.formatCurrency(props.data.paid_real ?? props.data.total_paid)"/></span>
                 </div>
+                <div t-if="props.data.prepaid_used" class="lry-tax-row">
+                    <span>Paid from Balance &#160; <span class="lry-ar">مدفوع من الرصيد</span></span>
+                    <span><t t-esc="props.formatCurrency(props.data.prepaid_used)"/></span>
+                </div>
                 <div t-if="props.data.credit_amount" class="lry-tax-row lry-credit-row">
                     <span>On Credit (Unpaid) &#160; <span class="lry-ar">المتبقي على الحساب</span></span>
                     <span><t t-esc="props.formatCurrency(props.data.credit_amount)"/></span>
+                </div>
+            </t>
+
+            <!-- رصيد الغسيل المسبق بعد الشحن أو الدفع منه -->
+            <t t-if="props.data.show_prepaid_balance">
+                <div class="lry-divider"/>
+                <div class="lry-tax-row lry-net-amount">
+                    <span>Prepaid Balance &#160; <span class="lry-ar">رصيدك المسبق</span></span>
+                    <span><t t-esc="props.formatCurrency(props.data.prepaid_balance)"/></span>
                 </div>
             </t>
 
@@ -238,7 +313,7 @@
 
             <!-- ====== EMPLOYEE + PAYMENT ====== -->
             <div class="lry-employee-line">Employee: <t t-esc="props.data.cashier"/></div>
-            <div t-if="!props.data.is_collection" class="lry-employee-line">
+            <div t-if="!props.data.is_collection and !props.data.is_prepaid_op" class="lry-employee-line">
                 Payment Type:
                 <t t-foreach="props.data.paymentlines" t-as="pm" t-key="pm_index">
                     <t t-esc="pm.name"/>
@@ -248,7 +323,7 @@
             <div class="lry-divider"/>
 
             <!-- ====== TERMS ====== -->
-            <t t-if="!props.data.is_collection">
+            <t t-if="!props.data.is_collection and !props.data.is_prepaid_op">
             <div class="lry-terms">
                 The management is not responsible for any change in color for shrink.
                 In case of damage or loss of article the compensation is limited to 5 times of cleaning charges.

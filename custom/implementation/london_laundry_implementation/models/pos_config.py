@@ -17,6 +17,11 @@ class PosConfig(models.Model):
         'product.product', string='Delivery Charge Product',
         domain=[('type', '=', 'service'), ('available_in_pos', '=', True)],
         default=lambda self: self.env.ref('london_laundry_implementation.product_laundry_delivery', raise_if_not_found=False))
+    # خصم الزبون التلقائي: سطر سالب بهالمنتج (خدمة، ضريبة البيع الافتراضية)
+    laundry_customer_discount_product_id = fields.Many2one(
+        'product.product', string='Customer Discount Product',
+        domain=[('type', '=', 'service'), ('available_in_pos', '=', True)],
+        default=lambda self: self.env.ref('london_laundry_implementation.product_laundry_customer_discount', raise_if_not_found=False))
     # التوصيل مجاني للطلبات من هالمبلغ وطالع (شامل الضريبة)، وتحته الطلب مع التوصيل ما بيتعدّاه
     laundry_free_delivery_from = fields.Float(
         string='Free Delivery From', default=50.0,
@@ -34,6 +39,13 @@ class PosConfig(models.Model):
              'without a cash count (counted = expected).')
     # توقيت المغسلة للـ POS (توقيت الشركة، أو دبي إذا مش معبّى)
     laundry_tz = fields.Char(compute='_compute_laundry_tz')
+    # رصيد الغسيل المسبق: بونص بنسبة ثابتة على الشحن من حد أدنى وطالع (100 → 125)
+    laundry_prepaid_bonus_percent = fields.Float(
+        string='Top-up Bonus %', default=25.0,
+        help='Bonus added to the customer prepaid balance on each top-up, in % of the amount paid.')
+    laundry_prepaid_bonus_min = fields.Float(
+        string='Bonus From', default=100.0,
+        help='Top-ups of this amount or more get the bonus. Smaller top-ups are allowed without a bonus. 0 = always.')
     laundry_report_last_date = fields.Date(
         string="Last Daily Report", readonly=True, copy=False,
         help="Last day whose summary was sent automatically.")
@@ -57,8 +69,15 @@ class PosConfig(models.Model):
     @api.model
     def _get_special_products(self):
         # منتج التوصيل بينحمّل دايماً بالـ POS، وما بيطلع بشبكة المنتجات (بينضاف من Delivery Method)
-        delivery = self.env['pos.config'].sudo().search([]).laundry_delivery_product_id
-        return super()._get_special_products() | delivery
+        configs = self.env['pos.config'].sudo().search([])
+        return super()._get_special_products() | configs.laundry_delivery_product_id \
+            | configs.laundry_customer_discount_product_id
+
+    @api.model
+    def _laundry_set_customer_discount_product(self):
+        product = self.env.ref('london_laundry_implementation.product_laundry_customer_discount', raise_if_not_found=False)
+        if product:
+            self.sudo().search([('laundry_customer_discount_product_id', '=', False)]).laundry_customer_discount_product_id = product
 
     @api.model
     def _laundry_set_delivery_product(self):

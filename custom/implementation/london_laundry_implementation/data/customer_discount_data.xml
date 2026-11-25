@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+    <!-- خصم الزبون التلقائي: سطر سالب بهالخدمة على الطلب (الضريبة = ضريبة البيع الافتراضية، متل الأصناف) -->
+    <record id="product_laundry_customer_discount" model="product.product">
+        <field name="name">Customer Discount / خصم الزبون</field>
+        <field name="type">service</field>
+        <field name="list_price">0</field>
+        <field name="available_in_pos" eval="True"/>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+
+    <function model="pos.config" name="_laundry_set_customer_discount_product"/>
+</odoo>

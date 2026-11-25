@@ -2,8 +2,8 @@ import re
 
 import phonenumbers
 
-from odoo import _, api, models
-from odoo.exceptions import ValidationError
+from odoo import _, api, fields, models
+from odoo.exceptions import AccessError, ValidationError
 
 # أي رقم من أي بلد، بشرط يكون موبايل أو أرضي صحيح (مكتبة phonenumbers نفسها اللي بيستعملها Odoo).
 # الرقم بلا رمز دولة بينحسب إماراتي؛ الإماراتي بينحفظ بالصيغة المحلية (05XXXXXXXX / 04XXXXXXX)
@@ -55,6 +55,54 @@ def normalize_uae_mobile(value):
 class ResPartner(models.Model):
     _inherit = 'res.partner'
 
+    # رصيد الغسيل المسبق (شحنات مع البونص ناقص اللي اندفع منه)، من دفعات الـ POS
+    laundry_prepaid_balance = fields.Monetary(
+        string='Prepaid Balance', compute='_compute_laundry_prepaid_balance', currency_field='currency_id',
+        help='Laundry prepaid balance: top-ups (bonus included) minus what was paid from it at the POS.')
+
+    # خصم الزبون التلقائي بالـ POS: نسبة من الأصناف أو مبلغ ثابت على كل طلب (شامل الضريبة)
+    laundry_discount_type = fields.Selection(
+        [('percent', 'Percentage'), ('fixed', 'Fixed Amount')], string='Customer Discount',
+        help='Applied automatically on the new POS orders of this customer (clothes only, not the delivery).\n'
+             'Not applied when the customer has a special price list or a prepaid balance.')
+    laundry_discount_value = fields.Float(
+        string='Discount Value', help='Percentage (e.g. 10 = 10%) or fixed amount per order, VAT included.')
+
+    @api.model
+    def _load_pos_data_fields(self, config_id):
+        return super()._load_pos_data_fields(config_id) + ['laundry_discount_type', 'laundry_discount_value']
+
+    @api.constrains('laundry_discount_type', 'laundry_discount_value')
+    def _check_laundry_discount(self):
+        for partner in self:
+            if partner.laundry_discount_type and partner.laundry_discount_value < 0:
+                raise ValidationError(_("The customer discount cannot be negative."))
+            if partner.laundry_discount_type == 'percent' and partner.laundry_discount_value > 100:
+                raise ValidationError(_("The customer discount cannot be more than 100%."))
+
+    def _laundry_check_discount_rights(self, vals):
+        """خصم الزبون: بيحطّه المدير أو المحاسب بس."""
+        if {'laundry_discount_type', 'laundry_discount_value'} & set(vals) and not self.env.su and not (
+                self.env.user.has_group('point_of_sale.group_pos_manager')
+                or self.env.user.has_group('account.group_account_manager')):
+            raise AccessError(_("Only a manager or an accountant can set the customer discount."))
+
+    @api.onchange('laundry_discount_type', 'laundry_discount_value', 'property_product_pricelist')
+    def _onchange_laundry_discount(self):
+        default = self.env['pos.config'].search([], limit=1).pricelist_id
+        if self.laundry_discount_type and self.property_product_pricelist and default \
+                and self.property_product_pricelist != default:
+            return {'warning': {
+                'title': _("Customer with special prices"),
+                'message': _("This customer has the price list %s: the customer discount is not applied "
+                             "(discount for the normal prices only).", self.property_product_pricelist.display_name),
+            }}
+
+    def _compute_laundry_prepaid_balance(self):
+        balances = self.env['pos.order'].sudo()._laundry_prepaid_balances(self.commercial_partner_id.ids)
+        for partner in self:
+            partner.laundry_prepaid_balance = balances.get(partner.commercial_partner_id.id, 0.0)
+
     @api.onchange('mobile', 'country_id', 'company_id')
     def _onchange_mobile_validation(self):
         # بدل تنسيق phone_validation الدولي (+971 ...) نخلي الرقم بالصيغة المحلية
@@ -69,6 +117,7 @@ class ResPartner(models.Model):
     @api.model_create_multi
     def create(self, vals_list):
         for vals in vals_list:
+            self._laundry_check_discount_rights(vals)
             for field in ('mobile', 'phone'):
                 if vals.get(field):
                     vals[field] = normalize_uae_mobile(vals[field])
@@ -78,6 +127,7 @@ class ResPartner(models.Model):
         return partners
 
     def write(self, vals):
+        self._laundry_check_discount_rights(vals)
         for field in ('mobile', 'phone'):
             if vals.get(field):
                 vals[field] = normalize_uae_mobile(vals[field])
