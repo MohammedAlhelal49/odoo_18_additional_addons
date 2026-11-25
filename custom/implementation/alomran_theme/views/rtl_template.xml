@@ -60,7 +60,8 @@
             ]"/>
             <t t-set="f_arrow" t-value="'fa-arrow-left' if f_ar else 'fa-arrow-right'"/>
 
-            <footer class="alf-footer" t-att-dir="'rtl' if f_ar else 'ltr'">
+            <!-- t-if: الصفحات المستقلة (no_footer، مثل /saudi-online) إلها فوتر خاص -->
+            <footer class="alf-footer" t-att-dir="'rtl' if f_ar else 'ltr'" t-if="not no_footer">
                 <span class="alf-glow" aria-hidden="true"/>
                 <div class="container position-relative">
 
