@@ -186,4 +186,12 @@
 
         </field>
     </record>
+
+    <!-- Lead sources are managed by the Sales Managers (salespeople only pick one) -->
+    <menuitem id="menu_crm_lead_sources"
+              name="Sources"
+              parent="crm.menu_crm_config_lead"
+              action="utm.utm_source_action"
+              sequence="2"
+              groups="sales_team.group_sale_manager"/>
 </odoo>

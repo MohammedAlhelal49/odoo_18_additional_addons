@@ -1,6 +1,6 @@
 {
     'name': 'Al Omran CRM Enhancements',
-    'version': '1.3',
+    'version': '1.4',
     'category': 'Sales/CRM',
     'summary': 'Enhances CRM by preventing duplicates and automating opportunity reassignment',
     'depends': ['crm','base','sale','web' , 'contacts','dekad_sale_enhancement','utm'],

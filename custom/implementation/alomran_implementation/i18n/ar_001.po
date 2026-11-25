@@ -649,3 +649,22 @@ msgstr "موجود بالفعل:"
 #: model_terms:ir.ui.view,arch_db:alomran_implementation.res_config_settings_view_form_inherit_opportunity_transfer
 msgid "e.g. 10"
 msgstr "مثال: 10"
+
+#. module: alomran_implementation
+#: model:ir.ui.menu,name:alomran_implementation.menu_crm_lead_sources
+msgid "Sources"
+msgstr "المصادر"
+
+#. module: alomran_implementation
+#. odoo-python
+#: code:addons/alomran_implementation/models/crm_lead.py:0
+msgid ""
+"Only Sales Managers can add, edit or delete lead sources. Please choose a "
+"source from the list."
+msgstr "فقط مدراء المبيعات يمكنهم إضافة أو تعديل أو حذف المصادر. يرجى اختيار مصدر من القائمة."
+
+#. module: alomran_implementation
+#. odoo-python
+#: code:addons/alomran_implementation/models/crm_lead.py:0
+msgid "Only Sales Managers can add, edit or delete tags. Please choose tags from the list."
+msgstr "فقط مدراء المبيعات يمكنهم إضافة أو تعديل أو حذف الوسوم. يرجى اختيار الوسوم من القائمة."
