@@ -15,6 +15,161 @@ except ImportError:
 _NO_ANALYTIC_KEY = '__no_analytic__'
 
 
+def _analytic_filter_ids(options):
+    """Analytic accounts selected in the (native) analytic filter, as ints."""
+    raw = options.get('analytic_accounts') or []
+    if raw and isinstance(raw[0], dict):
+        return sorted({int(a['id']) for a in raw if a.get('selected')})
+    return sorted({int(a) for a in raw if isinstance(a, (int, str)) and str(a).isdigit()})
+
+
+def _set_analytic_scope(options):
+    """Analytic filter => amounts restricted to the share of the selected
+    analytic accounts (see analytic_share.py). No filter => standard behaviour."""
+    ids = _analytic_filter_ids(options)
+    if ids:
+        options['dekad_analytic_scope'] = tuple(ids)
+    else:
+        options.pop('dekad_analytic_scope', None)
+
+
+def _analytic_group_options(report, options, line_dict_id):
+    """Options of one analytic group line (General Ledger / Trial Balance):
+    an analytic account => share of that account only; the no-analytic group
+    => journal items without analytic distribution (real amounts)."""
+    if report._get_markup(line_dict_id) == 'no_analytic':
+        return {
+            **options,
+            'dekad_analytic_scope': False,
+            'forced_domain': options.get('forced_domain', []) + [('analytic_account_id', '=', False)],
+        }
+    analytic_id = report._get_res_id_from_line_id(line_dict_id, 'account.analytic.account')
+    if not analytic_id:
+        return None
+    return {**options, 'dekad_analytic_scope': (int(analytic_id),)}
+
+
+def _query_scope_totals(report, options):
+    """{column_group_key: {debit, credit, balance}} of the whole report scope
+    (analytic filter share included). Used as the grand total of the analytic
+    grouping: an item tagged in several analytic plans appears in several
+    groups, so summing the groups would count it more than once."""
+    queries = []
+    for column_group_key, options_group in report._split_options_per_column_group(options).items():
+        query = report._get_report_query(options_group, 'from_beginning')
+        queries.append(SQL(
+            """
+            SELECT %(column_group_key)s AS column_group_key,
+                   SUM(%(debit)s) AS debit, SUM(%(credit)s) AS credit, SUM(%(balance)s) AS balance
+              FROM %(table_references)s
+              %(currency_table_join)s
+             WHERE %(search_condition)s
+            """,
+            column_group_key=column_group_key,
+            debit=report._currency_table_apply_rate(SQL("account_move_line.debit")),
+            credit=report._currency_table_apply_rate(SQL("account_move_line.credit")),
+            balance=report._currency_table_apply_rate(SQL("account_move_line.balance")),
+            table_references=query.from_clause,
+            currency_table_join=report._currency_table_aml_join(options_group),
+            search_condition=query.where_clause,
+        ))
+    totals = defaultdict(lambda: {'debit': 0.0, 'credit': 0.0, 'balance': 0.0})
+    if queries:
+        report.env.cr.execute(SQL(" UNION ALL ").join(queries))
+        for row in report.env.cr.dictfetchall():
+            totals[row['column_group_key']] = {
+                'debit': row['debit'] or 0.0, 'credit': row['credit'] or 0.0, 'balance': row['balance'] or 0.0}
+    return totals
+
+
+def _query_analytic_group_totals(report, options):
+    """[(analytic_key, display_name, {column_group_key: {debit, credit, balance}})]
+    for the analytic groups of a report: one group per analytic account used
+    (its share of each journal item, no double counting) and, when no analytic
+    filter is applied, a last group for the journal items without analytic."""
+    env = report.env
+    filter_ids = _analytic_filter_ids(options)
+    base_options = {**options, 'dekad_analytic_scope': False}
+    queries = []
+    for column_group_key, options_group in report._split_options_per_column_group(base_options).items():
+        query = report._get_report_query(options_group, 'from_beginning')
+        # one row per (journal item, analytic account): share of the account
+        queries.append(SQL(
+            """
+            SELECT dk_share.analytic_id                                         AS analytic_id,
+                   %(column_group_key)s                                         AS column_group_key,
+                   SUM(%(debit)s)                                               AS debit,
+                   SUM(%(credit)s)                                              AS credit,
+                   SUM(%(debit)s) - SUM(%(credit)s)                             AS balance
+              FROM %(table_references)s
+              %(currency_table_join)s
+              JOIN res_company dk_company ON dk_company.id = account_move_line.company_id
+              JOIN res_currency dk_cc ON dk_cc.id = dk_company.currency_id
+              CROSS JOIN LATERAL (
+                    SELECT dk_x.analytic_id, SUM(dk_x.pct) AS pct
+                      FROM (SELECT unnest(string_to_array(dk_e.key, ','))::int AS analytic_id,
+                                   dk_e.value::numeric AS pct
+                              FROM jsonb_each_text(account_move_line.analytic_distribution) dk_e) dk_x
+                     GROUP BY dk_x.analytic_id
+              ) dk_share
+             WHERE %(search_condition)s
+               AND account_move_line.analytic_distribution IS NOT NULL
+               %(filter_condition)s
+             GROUP BY dk_share.analytic_id
+            """,
+            column_group_key=column_group_key,
+            debit=report._currency_table_apply_rate(SQL(
+                "ROUND(account_move_line.debit * dk_share.pct / 100.0, dk_cc.decimal_places)")),
+            credit=report._currency_table_apply_rate(SQL(
+                "ROUND(account_move_line.credit * dk_share.pct / 100.0, dk_cc.decimal_places)")),
+            table_references=query.from_clause,
+            currency_table_join=report._currency_table_aml_join(options_group),
+            search_condition=query.where_clause,
+            filter_condition=SQL("AND dk_share.analytic_id = ANY(%s)", filter_ids) if filter_ids else SQL(),
+        ))
+        if not filter_ids:
+            queries.append(SQL(
+                """
+                SELECT NULL::int                     AS analytic_id,
+                       %(column_group_key)s          AS column_group_key,
+                       SUM(%(debit)s)                AS debit,
+                       SUM(%(credit)s)               AS credit,
+                       SUM(%(balance)s)              AS balance
+                  FROM %(table_references)s
+                  %(currency_table_join)s
+                 WHERE %(search_condition)s
+                   AND account_move_line.analytic_account_id IS NULL
+                """,
+                column_group_key=column_group_key,
+                debit=report._currency_table_apply_rate(SQL("account_move_line.debit")),
+                credit=report._currency_table_apply_rate(SQL("account_move_line.credit")),
+                balance=report._currency_table_apply_rate(SQL("account_move_line.balance")),
+                table_references=query.from_clause,
+                currency_table_join=report._currency_table_aml_join(options_group),
+                search_condition=query.where_clause,
+            ))
+    if not queries:
+        return []
+    env.cr.execute(SQL(" UNION ALL ").join(queries))
+    named_totals, null_totals = {}, {}
+    for row in env.cr.dictfetchall():
+        vals = {'debit': row['debit'] or 0.0, 'credit': row['credit'] or 0.0, 'balance': row['balance'] or 0.0}
+        if row['analytic_id'] is None:
+            if row['debit'] is not None or row['credit'] is not None:
+                null_totals[row['column_group_key']] = vals
+        else:
+            named_totals.setdefault(row['analytic_id'], {})[row['column_group_key']] = vals
+    result = []
+    if named_totals:
+        accounts = env['account.analytic.account'].with_context(active_test=False).search(
+            [('id', 'in', list(named_totals))])
+        for aa in accounts.sorted(lambda a: (a.display_name or '').lower()):
+            result.append((aa.id, aa.display_name, named_totals[aa.id]))
+    if null_totals:
+        result.append((_NO_ANALYTIC_KEY, _('∅ No Analytic Account'), null_totals))
+    return result
+
+
 class AccountReport(models.Model):
     _inherit = 'account.report'
 
@@ -620,6 +775,9 @@ class AccountGeneralLedgerReportHandler(models.AbstractModel):
                 if col['expression_label'] != 'company_name'
             ]
 
+        # ── Analytic filter: amounts = share of the selected analytic accounts ─
+        _set_analytic_scope(options)
+
     # =========================================================================
     # GROUP BY ANALYTIC — dynamic lines generator
     # =========================================================================
@@ -647,16 +805,13 @@ class AccountGeneralLedgerReportHandler(models.AbstractModel):
 
         if options.get('group_by_analytic'):
             lines = []
-            totals_by_column_group = defaultdict(lambda: {'debit': 0.0, 'credit': 0.0, 'balance': 0.0})
             for analytic_key, display_name, col_group_totals in self._query_analytic_totals(report, options):
-                for col_group_key, vals in col_group_totals.items():
-                    totals_by_column_group[col_group_key]['debit']   += vals.get('debit',   0.0)
-                    totals_by_column_group[col_group_key]['credit']  += vals.get('credit',  0.0)
-                    totals_by_column_group[col_group_key]['balance'] += vals.get('balance', 0.0)
                 lines.append(self._get_analytic_title_line(
                     report, options, analytic_key, display_name, col_group_totals,
                 ))
-            lines.append(self._get_total_line(report, options, totals_by_column_group))
+            # Grand total of the whole scope (not the sum of the groups: an item
+            # tagged in several analytic plans belongs to several groups).
+            lines.append(self._get_total_line(report, options, _query_scope_totals(report, options)))
             return [(0, line) for line in lines]
 
         return super()._dynamic_lines_generator(
@@ -668,73 +823,9 @@ class AccountGeneralLedgerReportHandler(models.AbstractModel):
     # =========================================================================
 
     def _query_analytic_totals(self, report, options):
-        """
-        Single UNION ALL query across all column groups.
-        Returns [(analytic_key, display_name, {col_group_key: {debit,credit,balance}})]
-        Named accounts sorted by name; NULL bucket always last.
-        """
-        options_by_column_group = report._split_options_per_column_group(options)
-        queries = []
-
-        for column_group_key, options_group in options_by_column_group.items():
-            query = report._get_report_query(options_group, 'from_beginning')
-            queries.append(SQL(
-                """
-                SELECT
-                    account_move_line.analytic_account_id       AS analytic_id,
-                    %(column_group_key)s                        AS column_group_key,
-                    SUM(%(debit_select)s)                       AS debit,
-                    SUM(%(credit_select)s)                      AS credit,
-                    SUM(%(balance_select)s)                     AS balance
-                FROM %(table_references)s
-                %(currency_table_join)s
-                WHERE %(search_condition)s
-                GROUP BY account_move_line.analytic_account_id
-                """,
-                column_group_key=column_group_key,
-                table_references=query.from_clause,
-                debit_select=report._currency_table_apply_rate(SQL("account_move_line.debit")),
-                credit_select=report._currency_table_apply_rate(SQL("account_move_line.credit")),
-                balance_select=report._currency_table_apply_rate(SQL("account_move_line.balance")),
-                currency_table_join=report._currency_table_aml_join(options_group),
-                search_condition=query.where_clause,
-            ))
-
-        if not queries:
-            return []
-
-        self._cr.execute(SQL(" UNION ALL ").join(queries))
-        rows = self._cr.dictfetchall()
-        if not rows:
-            return []
-
-        named_totals = {}
-        null_totals  = {}
-        analytic_ids = set()
-
-        for row in rows:
-            aid = row['analytic_id']
-            cgk = row['column_group_key']
-            vals = {
-                'debit':   row['debit']   or 0.0,
-                'credit':  row['credit']  or 0.0,
-                'balance': row['balance'] or 0.0,
-            }
-            if aid is None:
-                null_totals[cgk] = vals
-            else:
-                analytic_ids.add(aid)
-                named_totals.setdefault(aid, {})[cgk] = vals
-
-        result = []
-        if analytic_ids:
-            for aa in self.env['account.analytic.account'].search([('id', 'in', list(analytic_ids))]):
-                result.append((aa.id, aa.display_name, named_totals[aa.id]))
-
-        if null_totals:
-            result.append((_NO_ANALYTIC_KEY, _('∅ No Analytic Account'), null_totals))
-
-        return result
+        """Analytic group totals: share of each analytic account (split journal
+        items are divided between their accounts, no double counting)."""
+        return _query_analytic_group_totals(report, options)
 
     # =========================================================================
     # GROUP BY ANALYTIC — analytic title line builder
@@ -780,21 +871,9 @@ class AccountGeneralLedgerReportHandler(models.AbstractModel):
     def _report_expand_unfoldable_line_analytic_gl(self, line_dict_id, groupby, options, progress, offset, unfold_all_batch_data=None):
         report = self.env.ref('account_reports.general_ledger_report')
 
-        markup = report._get_markup(line_dict_id)
-        is_no_analytic = (markup == 'no_analytic')
-
-        if is_no_analytic:
-            analytic_domain = [('analytic_account_id', '=', False)]
-        else:
-            analytic_id = report._get_res_id_from_line_id(line_dict_id, 'account.analytic.account')
-            if not analytic_id:
-                return {'lines': [], 'offset_increment': 0, 'has_more': False}
-            analytic_domain = [('analytic_account_id', '=', analytic_id)]
-
-        scoped_options = {
-            **options,
-            'forced_domain': options.get('forced_domain', []) + analytic_domain,
-        }
+        scoped_options = _analytic_group_options(report, options, line_dict_id)
+        if scoped_options is None:
+            return {'lines': [], 'offset_increment': 0, 'has_more': False}
 
         lines = []
         date_from = options['date']['date_from']
@@ -849,21 +928,7 @@ class AccountGeneralLedgerReportHandler(models.AbstractModel):
         """
         report = self.env.ref('account_reports.general_ledger_report')
 
-        markup = report._get_markup(line_dict_id)
-        is_no_analytic = (markup == 'no_analytic')
-
-        if is_no_analytic:
-            analytic_domain = [('analytic_account_id', '=', False)]
-        else:
-            analytic_id = report._get_res_id_from_line_id(line_dict_id, 'account.analytic.account')
-            analytic_domain = [('analytic_account_id', '=', analytic_id)] if analytic_id else []
-
-        scoped_options = options
-        if analytic_domain:
-            scoped_options = {
-                **options,
-                'forced_domain': options.get('forced_domain', []) + analytic_domain,
-            }
+        scoped_options = _analytic_group_options(report, options, line_dict_id) or options
 
         # Strip analytic prefix so _get_model_info_from_id returns account.account
         parsed = report._parse_line_id(line_dict_id)
@@ -1292,6 +1357,17 @@ class AccountGeneralLedgerReportHandler(models.AbstractModel):
             else:
                 # Should not reach here (guarded above), but safe fallback
                 return super()._get_query_amls(report, options, expanded_account_ids, offset=offset, limit=limit)
+
+        # The wrapping sub-query loses the order of Odoo's query: restate it
+        # (same order as the standard General Ledger), also needed by the
+        # OFFSET / LIMIT of "load more".
+        # (read through the id: the wrapped query exposes "date" twice)
+        outer = SQL(
+            """%s ORDER BY (SELECT dk_o.date FROM account_move_line dk_o WHERE dk_o.id = base.id),
+                          (SELECT dk_o.move_name FROM account_move_line dk_o WHERE dk_o.id = base.id),
+                          base.id""",
+            outer,
+        )
 
         if offset:
             outer = SQL('%s OFFSET %s', outer, offset)
@@ -1935,11 +2011,16 @@ class TrialBalanceCustomHandler(models.AbstractModel):
         # Store our options before super() adds Initial Balance columns
         hide_ib = (previous_options or {}).get('hide_initial_balance', False)
         group_co = (previous_options or {}).get('group_by_company', False)
+        group_aa = (previous_options or {}).get('group_by_analytic', False)
 
         super()._custom_options_initializer(report, options, previous_options=previous_options)
 
         options['hide_initial_balance'] = hide_ib
         options['group_by_company']     = group_co
+        # Group by Analytic Account (mutually exclusive with Group by Company)
+        options['group_by_analytic']    = group_aa and not group_co
+        # Analytic filter: amounts = share of the selected analytic accounts
+        _set_analytic_scope(options)
 
         # Remove Initial Balance columns/group if hide_initial_balance is on.
         # super() already injected them — we strip them out here.
@@ -2006,7 +2087,11 @@ class TrialBalanceCustomHandler(models.AbstractModel):
         # ── 1. Hide Zero Balance ──────────────────────────────────────────────
         lines = self._tb_filter_zero_balance(report, options, lines)
 
-        # ── 2. Group by Company ───────────────────────────────────────────────
+        # ── 2. Group by Analytic Account ──────────────────────────────────────
+        if options.get('group_by_analytic'):
+            return self._tb_group_by_analytic(report, options, lines)
+
+        # ── 3. Group by Company ───────────────────────────────────────────────
         if not options.get('group_by_company'):
             return lines
 
@@ -2071,6 +2156,71 @@ class TrialBalanceCustomHandler(models.AbstractModel):
 
         result.extend(other_lines)
         return result
+
+    # =========================================================================
+    # GROUP BY ANALYTIC ACCOUNT
+    # =========================================================================
+
+    def _tb_group_by_analytic(self, report, options, lines):
+        """Wraps the account rows under collapsible Analytic Account rows: each
+        group is the Trial Balance computed on the share of that analytic account
+        (split journal items divided between their accounts), plus a last group
+        for the journal items without analytic when no analytic filter is set.
+        The grand total stays the one of the whole report."""
+        other_lines = [(s, l) for s, l in lines if report._get_model_info_from_id(l['id'])[0] != 'account.account']
+        result = []
+        n_cols = len(options['columns'])
+        for analytic_key, display_name, _totals in _query_analytic_group_totals(report, options):
+            if analytic_key == _NO_ANALYTIC_KEY:
+                line_id = report._get_generic_line_id(None, None, markup='no_analytic')
+            else:
+                line_id = report._get_generic_line_id('account.analytic.account', analytic_key)
+            grp_lines = self._tb_analytic_account_lines(report, options, line_id)
+            if not grp_lines:
+                continue
+            totals = [0.0] * n_cols
+            for _seq, l in grp_lines:
+                for i, col in enumerate(l['columns']):
+                    val = col.get('no_format') or 0.0
+                    if isinstance(val, (int, float)):
+                        totals[i] += val
+            result.append((0, {
+                'id': line_id,
+                'name': display_name,
+                'columns': [report._build_column_dict(totals[i], options['columns'][i], options=options)
+                            for i in range(n_cols)],
+                'level': 1,
+                'unfoldable': True,
+                'unfolded': line_id in options.get('unfolded_lines', []) or options.get('unfold_all', False),
+                'expand_function': '_report_expand_unfoldable_line_tb_analytic',
+            }))
+        result.extend(other_lines)
+        return result
+
+    def _tb_analytic_account_lines(self, report, options, line_dict_id):
+        scoped_options = _analytic_group_options(report, options, line_dict_id)
+        if scoped_options is None:
+            return []
+        scoped_options = {
+            **scoped_options,
+            'hide_initial_balance': False,
+            'group_by_company':     False,
+            'group_by_analytic':    False,
+        }
+        lines = super()._dynamic_lines_generator(report, scoped_options, {})
+        lines = self._tb_filter_zero_balance(report, options, lines)
+        return [(s, l) for s, l in lines if report._get_model_info_from_id(l['id'])[0] == 'account.account']
+
+    def _report_expand_unfoldable_line_tb_analytic(self, line_dict_id, groupby, options, progress, offset, unfold_all_batch_data=None):
+        report = self.env.ref('account_reports.trial_balance_report')
+        child_lines = []
+        for _, line in self._tb_analytic_account_lines(report, options, line_dict_id):
+            child = dict(line)
+            child['parent_id'] = line_dict_id
+            child['level']     = 2
+            child['id']        = report._build_subline_id(line_dict_id, line['id'])
+            child_lines.append(child)
+        return {'lines': child_lines, 'offset_increment': len(child_lines), 'has_more': False}
 
     def _tb_filter_zero_balance(self, report, options, lines):
         """Strips account lines whose End Balance debit & credit are both zero."""
