@@ -1,6 +1,6 @@
 {
     'name': 'London Laundry POS Receipt',
-    'version': '18.0.1.5.6',
+    'version': '18.0.1.5.7',
     'category': 'Point of Sale',
     'summary': 'London Laundry: POS receipt, delivery tracking, On Credit collection, manager dashboard, reports and daily e-mail',
     'author': 'Dekad',

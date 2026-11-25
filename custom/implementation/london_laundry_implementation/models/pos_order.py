@@ -340,6 +340,24 @@ class PosOrder(models.Model):
         return result
 
     @api.model
+    def get_laundry_due_summary(self, domain, config_id):
+        """شاشة الطلبات بالـ POS: عدد الطلبات غير المدفوعة ومجموع المتبقي عليها، لنفس البحث المعروض.
+
+        بلا بحث: طلبات نقطة البيع هي بس (متل search_paid_order_ids).
+        """
+        scope = domain or [('config_id', '=', config_id)]
+        orders = self.search(expression.AND([scope, [
+            ('state', 'not in', ('draft', 'cancel')),
+            ('laundry_collection_status', 'in', ('credit_unpaid', 'credit_partial')),
+        ]]))
+        partners = orders.partner_id.commercial_partner_id
+        return {
+            'count': len(orders),
+            'amount': sum(orders.mapped('laundry_credit_remaining')),
+            'partner': partners.name if len(partners) == 1 else '',
+        }
+
+    @api.model
     def set_laundry_shelf(self, order_id, shelf):
         """من شاشة الطلبات بالـ POS: رقم الرف (1 لـ 9) بينحفظ على الفاتورة."""
         invoice = self.browse(order_id).exists().account_move

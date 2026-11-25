@@ -1,4 +1,5 @@
 import { TicketScreen } from "@point_of_sale/app/screens/ticket_screen/ticket_screen";
+import { useState } from "@odoo/owl";
 import { patch } from "@web/core/utils/patch";
 import { _t } from "@web/core/l10n/translation";
 import { deserializeDate, deserializeDateTime, formatDate } from "@web/core/l10n/dates";
@@ -131,6 +132,38 @@ patch(TicketScreen.prototype, {
         this.state.search = search;
         this.state.page = 1;
         await this._fetchSyncedOrders();
+    },
+
+    setup() {
+        super.setup(...arguments);
+        // مجموع المتبقي على الطلبات غير المدفوعة (فلتر Unpaid، أو بحث)
+        this.laundryDue = useState({ count: 0, amount: 0, partner: "", show: false });
+    },
+
+    async _fetchSyncedOrders() {
+        await super._fetchSyncedOrders(...arguments);
+        await this.laundryRefreshDue();
+    },
+
+    async laundryRefreshDue() {
+        const show = this.state.filter === CREDIT_FILTER || Boolean(this.state.search?.searchTerm);
+        if (!show) {
+            Object.assign(this.laundryDue, { show: false });
+            return;
+        }
+        try {
+            const result = await this.pos.data.call("pos.order", "get_laundry_due_summary", [
+                this._computeSyncedOrdersDomain(),
+                this.pos.config.id,
+            ]);
+            Object.assign(this.laundryDue, result, { show: true });
+        } catch {
+            Object.assign(this.laundryDue, { show: false });
+        }
+    },
+
+    get laundryDueAmount() {
+        return this.env.utils.formatCurrency(this.laundryDue.amount || 0);
     },
 
     // البحث بالزبون بيلاقي كمان رقم الموبايل أو الهاتف (مش بس الاسم)

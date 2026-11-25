@@ -268,7 +268,7 @@
 
                 <!-- ====== VAT ====== -->
                 <t t-set="taxTotals" t-value="props.data.taxTotals"/>
-                <div class="lry-tax-row">
+                <div class="lry-tax-row lry-before-vat">
                     <span>Before VAT &#160; <span class="lry-ar">قبل الضريبة</span></span>
                     <span><t t-esc="props.formatCurrency(props.data.total_without_tax)"/></span>
                 </div>
@@ -282,7 +282,7 @@
                         </t>
                     </t>
                 </t>
-                <div class="lry-tax-row lry-net-amount">
+                <div class="lry-tax-row lry-net-amount lry-after-vat">
                     <span>Net Amount &#160; <span class="lry-ar">المبلغ الاجمالي</span></span>
                     <span><t t-esc="props.formatCurrency(taxTotals.order_total)"/></span>
                 </div>

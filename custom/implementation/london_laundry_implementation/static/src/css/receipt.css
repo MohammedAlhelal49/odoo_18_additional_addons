@@ -65,13 +65,13 @@
 
 .lry-logo {
     /* أكبر وأوضح: الطابعة الحرارية أبيض وأسود، فمنحوّله رمادي مع تباين أعلى (والخلفية البيضا بتضل بيضا) */
-    max-width: 170px;
-    max-height: 120px;
+    max-width: 230px;
+    max-height: 165px;
     width: auto;
     height: auto;
     display: block;
     margin: 0 auto 6px auto;
-    filter: grayscale(1) contrast(1.25);
+    filter: grayscale(1) contrast(1.8);
     image-rendering: -webkit-optimize-contrast;
 }
 
@@ -221,9 +221,9 @@
     margin: 1px 0;
 }
 
-/* TERMS: أكبر شوي وغامق حتى ينقرا على الطابعة الحرارية */
+/* TERMS: غامق حتى ينقرا على الطابعة الحرارية */
 .lry-terms {
-    font-size: 16px;
+    font-size: 11px;
     font-weight: bold;
     margin: 4px 0;
     line-height: 1.4;
@@ -231,6 +231,15 @@
 
 .lry-terms.lry-ar {
     text-align: right;
+}
+
+/* المبلغ قبل الضريبة وبعدها: الرقم أصغر بـ 3 بكسل */
+.lry-before-vat > span:last-child {
+    font-size: 14px;
+}
+
+.lry-after-vat > span:last-child {
+    font-size: 15px;
 }
 
 /* BOTTOM */

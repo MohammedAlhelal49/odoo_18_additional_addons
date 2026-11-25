@@ -43,6 +43,17 @@
                 <div t-if="order.laundry_delivered_employee_id" class="small lry-nowrap" t-esc="order.laundry_delivered_employee_id.name"/>
             </div>
         </xpath>
+        <!-- مجموع المتبقي على الطلبات غير المدفوعة (فلتر Unpaid أو بحث، مثلاً عن زبون) -->
+        <xpath expr="//div[hasclass('orders')]" position="before">
+            <div t-if="laundryDue.show and laundryDue.count and ['SYNCED', 'LAUNDRY_CREDIT'].includes(state.filter)"
+                 class="d-flex flex-wrap justify-content-between align-items-center gap-2 px-3 py-2 bg-warning-subtle border-bottom fw-bold">
+                <span>
+                    <t t-if="laundryDue.partner"><t t-esc="laundryDue.partner"/> · </t>
+                    Unpaid orders: <t t-esc="laundryDue.count"/>
+                </span>
+                <span class="fs-5">Total Due: <t t-esc="laundryDueAmount"/></span>
+            </div>
+        </xpath>
         <!-- مع أزرار المغسلة صاروا الأزرار كتار على عرض القسم: بينزلوا لسطر تاني بدل ما ينضغطوا -->
         <xpath expr="//div[hasclass('control-buttons')]" position="attributes">
             <attribute name="class" add="flex-wrap" separator=" "/>
