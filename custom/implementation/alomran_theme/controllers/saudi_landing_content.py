@@ -9,15 +9,16 @@
 ملاحظة: الملف ما بيستورد أي ملف محتوى تاني (منعاً للـ circular import).
 """
 
-PHONE_NUMBER = '+971564342889'
-PHONE_DISPLAY = '+971 56 434 2889'
+# الصفحة مستقلة عن الموقع الرئيسي: رقم سعودي بس، وما في أي ذكر للإمارات
+PHONE_NUMBER = '+966559098630'
+PHONE_DISPLAY = '+966 55 909 8630'
 from .site_facts import DEFAULT_SITE_URL
 
 # fallback only: the pages use the website domain (see main.home_content_org_id)
 ORG_ID = DEFAULT_SITE_URL + '/#organization'
 
 # رقم الواتساب الافتراضي (ممكن يتغير من System Parameter: alomran.saudi_whatsapp)
-WHATSAPP_NUMBER = '971564342889'
+WHATSAPP_NUMBER = '966559098630'
 
 # ------------------------------------------------------------------
 # الخدمات — key: اسم الخدمة بالـ CRM (x_course_interest) منشان التقارير
@@ -186,8 +187,8 @@ def get_content(is_en):
                  'text': t('English one-to-one or in a group, as you prefer.',
                            'الإنجليزي فردي أو ضمن مجموعة حسب رغبتك.')},
                 {'icon': 'fa-award', 'title': t('Experience since 2010', 'خبرة منذ 2010'),
-                 'text': t('An accredited training center in the UAE since 2010.',
-                           'مركز تدريب معتمد في دولة الإمارات منذ عام 2010.')},
+                 'text': t('More than 15 years of teaching and training.',
+                           'أكثر من 15 عاماً في التعليم والتدريب.')},
             ],
         },
 
@@ -273,6 +274,30 @@ def get_content(is_en):
             'title': t('Talk to us now on WhatsApp', 'تواصل معنا الآن عبر واتساب'),
             'text': t('Our team is ready to help you choose the right service', 'فريقنا جاهز لمساعدتك في اختيار الخدمة المناسبة'),
             'tagline': t('Learn from home with a plan made for you', 'تعلّم من منزلك بخطة مصممة لك'),
+        },
+
+        # هيدر وفوتر خاصين بالصفحة (بدل هيدر وفوتر الموقع الرئيسي)
+        'header': {
+            'nav': [
+                ('#ale-services', t('Services', 'الخدمات')),
+                ('#als-how', t('How it works', 'كيف نعمل')),
+                ('#als-faq', t('FAQ', 'الأسئلة الشائعة')),
+            ],
+            'call': t('Call us', 'اتصل بنا'),
+            'cta': t('Free consultation', 'استشارة مجانية'),
+            'menu': t('Menu', 'القائمة'),
+        },
+        'footer': {
+            'about': t('Live online lessons for students in Saudi Arabia: Saudi curricula, Tahsili & Qudurat, '
+                       'English and international tests.',
+                       'حصص مباشرة أونلاين لطلاب المملكة: المناهج السعودية، والتحصيلي والقدرات، '
+                       'واللغة الإنجليزية والاختبارات الدولية.'),
+            'links_title': t('Quick links', 'روابط سريعة'),
+            'contact_title': t('Contact us', 'تواصل معنا'),
+            'phone': t('Phone', 'الهاتف'),
+            'whatsapp': t('WhatsApp', 'واتساب'),
+            'form': t('Book a free consultation', 'احجز استشارة مجانية'),
+            'rights': t('All rights reserved.', 'جميع الحقوق محفوظة.'),
         },
 
         'sticky': {

@@ -7,6 +7,8 @@
     <!-- ============================================================ -->
     <template id="floating_call_button" inherit_id="website.layout" name="Floating Call Button">
         <xpath expr="//body" position="inside">
+          <!-- الصفحات المستقلة (مثل /saudi-online) إلها أرقامها الخاصة -->
+          <t t-if="not alomran_standalone">
 
             <!-- Call Button: RIGHT in LTR / LEFT in RTL -->
             <div class="o_floating_actions_call"
@@ -36,6 +38,7 @@
                 </a>
             </div>
 
+          </t>
         </xpath>
     </template>
 </odoo>

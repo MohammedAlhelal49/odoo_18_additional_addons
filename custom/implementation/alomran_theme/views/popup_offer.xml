@@ -70,7 +70,7 @@
     <!-- ============================================================ -->
     <template id="popup_include" inherit_id="website.layout" name="Include Pop-up">
         <xpath expr="//body" position="inside">
-            <t t-call="alomran_theme.popup_offer_modal"/>
+            <t t-if="not alomran_standalone" t-call="alomran_theme.popup_offer_modal"/>
         </xpath>
     </template>
 </odoo>

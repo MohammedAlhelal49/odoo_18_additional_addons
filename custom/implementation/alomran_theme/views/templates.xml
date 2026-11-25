@@ -37,7 +37,11 @@
     <!-- العنوان والوصف العربي: شوف template alomran_seo_title_desc    -->
     <!-- ============================================================ -->
     <meta name="robots" content="max-image-preview:large"/>
-    <t t-if="request.env.lang and request.env.lang.startswith('ar')">
+    <!-- alomran_standalone: صفحة مستقلة (مثل /saudi-online) — ما بتنسب حالها للإمارات -->
+    <t t-if="alomran_standalone">
+        <meta property="og:locale" t-att-content="'ar_SA' if request.env.lang and request.env.lang.startswith('ar') else 'en_SA'"/>
+    </t>
+    <t t-elif="request.env.lang and request.env.lang.startswith('ar')">
         <meta property="og:locale" content="ar_AE"/>
         <meta property="og:locale:alternate" content="en_AE"/>
     </t>
@@ -88,7 +92,7 @@
     <!-- ============================================================ -->
     <!-- The links come from Website > Settings > Domain (website._alomran_site_url). -->
     <t t-set="alomran_site_url" t-value="website._alomran_site_url() if website else 'https://alomrantd.com'"/>
-    <script type="application/ld+json">
+    <script type="application/ld+json" t-if="not alomran_standalone">
     {
       "@context": "https://schema.org",
       "@graph": [
@@ -526,7 +530,8 @@
         </xpath>
 
 <xpath expr="//footer" position="replace">
-    <footer class="bg-dark text-white">
+    <!-- t-if: نفس شرط Odoo الأصلي، منشان الصفحات المستقلة (no_footer) -->
+    <footer class="bg-dark text-white" t-if="not no_footer">
         <!-- Footer Content -->
         <div class="py-5">
             <div class="container">

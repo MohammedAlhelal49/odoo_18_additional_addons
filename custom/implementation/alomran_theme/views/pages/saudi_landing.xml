@@ -5,6 +5,7 @@
     <!-- نفس أساس صفحات الهبوط (ale-/alt- classes و english-landing.js) -->
     <!-- النصوص: controllers/saudi_landing_content.py (المتغير c)       -->
     <!-- الفيديو: static/src/video/saudi_hero.mp4 (أو alomran.saudi_hero_video_url) -->
+    <!-- صفحة مستقلة: هيدر وفوتر خاصين، وبدون هيدر/فوتر الموقع (no_header/no_footer من الكونترولر) -->
     <!-- ============================================================ -->
     <template id="saudi_landing_page" name="Saudi Online Learning Landing">
         <t t-call="website.layout">
@@ -13,6 +14,36 @@
                  t-att-data-program="preselect_service">
 
                 <script type="application/ld+json" t-out="schema_json"/>
+
+                <!-- ================= HEADER خاص بالصفحة (بدل هيدر الموقع الرئيسي) ================= -->
+                <header class="als-header">
+                    <div class="container als-header-inner">
+                        <a href="#ale-top" class="als-brand">
+                            <img src="/alomran_theme/static/src/img/logo1.png" t-att-alt="c['org_name']"
+                                 width="48" height="48"/>
+                            <span class="als-brand-name" t-out="c['org_name']"/>
+                        </a>
+                        <nav class="als-nav d-none d-lg-flex" t-att-aria-label="c['header']['menu']">
+                            <t t-foreach="c['header']['nav']" t-as="n">
+                                <a t-att-href="n[0]" t-out="n[1]"/>
+                            </t>
+                        </nav>
+                        <div class="als-header-actions">
+                            <a t-if="lang_switch" t-att-href="lang_switch['url']" class="als-lang"
+                               t-att-lang="lang_switch['lang']" t-out="lang_switch['label']"/>
+                            <a t-att-href="'tel:%s' % phone_number" class="als-call"
+                               t-att-aria-label="c['header']['call']">
+                                <i class="fa fa-phone" aria-hidden="true"/>
+                                <span class="d-none d-md-inline" dir="ltr" t-out="phone_display"/>
+                            </a>
+                            <a t-att-href="wa_link" target="_blank" rel="noopener"
+                               class="ale-btn ale-btn-wa als-header-wa">
+                                <i class="fab fa-whatsapp"/>
+                                <span class="d-none d-sm-inline" t-out="c['header']['cta']"/>
+                            </a>
+                        </div>
+                    </div>
+                </header>
 
                 <!-- ================= HERO: فيديو تعريفي + ملخص الخدمة ================= -->
                 <section t-attf-class="ale-hero #{'ale-hero-split' if hero_media else ''}" id="ale-top">
@@ -131,7 +162,7 @@
                 </section>
 
                 <!-- ================= HOW IT WORKS ================= -->
-                <section class="ale-section ale-section-soft">
+                <section class="ale-section ale-section-soft" id="als-how">
                     <div class="container">
                         <div class="ale-section-head">
                             <h2 class="ale-h2" t-out="c['how']['title']"/>
@@ -276,7 +307,7 @@
                 </section>
 
                 <!-- ================= FAQ ================= -->
-                <section class="ale-section">
+                <section class="ale-section" id="als-faq">
                     <div class="container">
                         <div class="ale-section-head">
                             <h2 class="ale-h2" t-out="c['faq']['title']"/>
@@ -311,6 +342,51 @@
                         </div>
                     </div>
                 </section>
+
+                <!-- ================= FOOTER خاص بالصفحة ================= -->
+                <footer class="als-footer">
+                    <div class="container">
+                        <div class="row g-4">
+                            <div class="col-lg-5">
+                                <div class="als-brand als-brand-light">
+                                    <img src="/alomran_theme/static/src/img/logo1.png" t-att-alt="c['org_name']"
+                                         width="48" height="48" loading="lazy"/>
+                                    <span class="als-brand-name" t-out="c['org_name']"/>
+                                </div>
+                                <p class="als-footer-about" t-out="c['footer']['about']"/>
+                            </div>
+                            <div class="col-6 col-lg-3">
+                                <h3 class="als-footer-title" t-out="c['footer']['links_title']"/>
+                                <ul class="list-unstyled als-footer-links">
+                                    <t t-foreach="c['header']['nav']" t-as="n">
+                                        <li><a t-att-href="n[0]" t-out="n[1]"/></li>
+                                    </t>
+                                    <li><a href="#ale-form" t-out="c['footer']['form']"/></li>
+                                </ul>
+                            </div>
+                            <div class="col-6 col-lg-4">
+                                <h3 class="als-footer-title" t-out="c['footer']['contact_title']"/>
+                                <ul class="list-unstyled als-footer-links">
+                                    <li>
+                                        <a t-att-href="'tel:%s' % phone_number">
+                                            <i class="fa fa-phone" aria-hidden="true"/>
+                                            <span dir="ltr" t-out="phone_display"/>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a t-att-href="wa_link" target="_blank" rel="noopener">
+                                            <i class="fab fa-whatsapp" aria-hidden="true"/>
+                                            <span t-out="c['footer']['whatsapp']"/>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="als-footer-bottom">
+                            © <t t-out="datetime.date.today().year"/> <t t-out="c['org_name']"/>. <t t-out="c['footer']['rights']"/>
+                        </div>
+                    </div>
+                </footer>
 
                 <!-- ================= STICKY MOBILE CTA ================= -->
                 <div class="ale-sticky" aria-hidden="true">

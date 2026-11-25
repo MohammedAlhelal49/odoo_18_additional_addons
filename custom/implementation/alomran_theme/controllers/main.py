@@ -1731,11 +1731,12 @@ class AlomranWebsite(http.Controller):
         return ''
 
     def _saudi_schema(self, content):
+        # الصفحة مستقلة: ما منربطها بمؤسسة الموقع الرئيسي (عناوينها بالإمارات)
         provider = {
             '@type': 'EducationalOrganization',
-            '@id': home_content_org_id(),
             'name': content['org_name'],
-            'sameAs': site_url(),
+            'telephone': saudi_content.PHONE_NUMBER,
+            'areaServed': {'@type': 'Country', 'name': 'Saudi Arabia'},
         }
         items = []
         for position, svc in enumerate(content['services']['items'], start=1):
@@ -1759,6 +1760,17 @@ class AlomranWebsite(http.Controller):
             'name': content['services']['title'],
             'itemListElement': items,
         })
+
+    def _saudi_lang_switch(self, is_en, service):
+        """رابط نفس الصفحة باللغة التانية (لهيدر الصفحة) — None إذا اللغة مش مفعّلة بالموقع."""
+        prefix = 'ar' if is_en else 'en'
+        lang = next((l for l in request.website.language_ids if l.code.startswith(prefix)), None)
+        if not lang:
+            return None
+        url = request.env['ir.http']._url_localized(SAUDI_LANDING_URL, lang_code=lang.code)
+        if service:
+            url += f'?service={service}'
+        return {'url': url, 'label': 'العربية' if is_en else 'English', 'lang': prefix}
 
     @http.route(SAUDI_LANDING_URL, type='http', auth='public', website=True, sitemap=True)
     def saudi_landing(self, service=None, **kwargs):
@@ -1790,6 +1802,14 @@ class AlomranWebsite(http.Controller):
             'submit_url': f'{SAUDI_LANDING_URL}/submit',
             'is_en': is_en,
             'schema_json': self._saudi_schema(content),
+            'phone_number': saudi_content.PHONE_NUMBER,
+            'phone_display': saudi_content.PHONE_DISPLAY,
+            'lang_switch': self._saudi_lang_switch(is_en, service),
+            # صفحة مستقلة: بدون هيدر/فوتر الموقع، وبدون أزرار الاتصال العائمة والـ Pop-up
+            # وبيانات المؤسسة (الإمارات) — شوف alomran_standalone بالـ templates
+            'no_header': True,
+            'no_footer': True,
+            'alomran_standalone': True,
             'alomran_page_title': content['page_title'],
             'alomran_page_description': content['page_description'],
             'alomran_oai_pixel_override': openai_pixel_id(pixel) if pixel != 'default' else False,

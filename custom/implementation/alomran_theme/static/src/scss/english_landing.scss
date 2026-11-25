@@ -2362,3 +2362,168 @@ $alw-line: #eadfd6;
 [data-ale-show-for][hidden] {
     display: none !important;
 }
+
+// ---------- /saudi-online: هيدر وفوتر خاصين (الصفحة مستقلة عن الموقع الرئيسي) ----------
+.als-header {
+    position: sticky;
+    top: 0;
+    z-index: 1030;
+    background: rgba(255, 255, 255, 0.97);
+    box-shadow: 0 4px 18px rgba(15, 47, 82, 0.08);
+    backdrop-filter: blur(6px);
+}
+
+.als-header-inner {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    min-height: 68px;
+}
+
+.als-brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    min-width: 0;
+    margin-inline-end: auto;
+    color: $ale-dark;
+    text-decoration: none;
+
+    &:hover {
+        color: $ale-dark;
+    }
+
+    img {
+        width: 44px;
+        height: 44px;
+        object-fit: contain;
+        flex-shrink: 0;
+    }
+}
+
+.als-brand-name {
+    font-weight: 800;
+    font-size: 1.05rem;
+    line-height: 1.2;
+}
+
+.als-nav {
+    gap: 1.5rem;
+    margin-inline-end: 0.5rem;
+
+    a {
+        color: $ale-text;
+        font-weight: 700;
+        text-decoration: none;
+
+        &:hover {
+            color: $ale-primary;
+        }
+    }
+}
+
+.als-header-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    flex-shrink: 0;
+}
+
+.als-lang,
+.als-call {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-weight: 700;
+    color: $ale-primary;
+    text-decoration: none;
+
+    &:hover {
+        color: $ale-dark;
+    }
+}
+
+.als-lang {
+    padding: 0.3rem 0.75rem;
+    border-radius: 999px;
+    border: 1px solid #d5deea;
+    font-size: 0.9rem;
+}
+
+.als-header-wa {
+    padding: 0.5rem 1.1rem;
+}
+
+.als-footer {
+    padding: 3.5rem 0 1.5rem;
+    color: rgba(255, 255, 255, 0.78);
+    background: $ale-dark;
+
+    a {
+        color: rgba(255, 255, 255, 0.85);
+        text-decoration: none;
+
+        &:hover {
+            color: #fff;
+        }
+    }
+}
+
+.als-brand-light {
+    margin-inline-end: 0;
+    color: #fff;
+
+    img {
+        padding: 4px;
+        border-radius: 12px;
+        background: #fff;
+    }
+}
+
+.als-footer-about {
+    margin: 1rem 0 0;
+    max-width: 30rem;
+}
+
+.als-footer-title {
+    margin-bottom: 1rem;
+    font-size: 1.05rem;
+    font-weight: 800;
+    color: #fff;
+}
+
+.als-footer-links li + li {
+    margin-top: 0.6rem;
+}
+
+.als-footer-links i {
+    width: 1.2rem;
+    margin-inline-end: 0.35rem;
+}
+
+.als-footer-bottom {
+    margin-top: 2.5rem;
+    padding-top: 1.25rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.12);
+    font-size: 0.9rem;
+    text-align: center;
+}
+
+@media (max-width: 575.98px) {
+    .als-brand-name {
+        font-size: 0.9rem;
+    }
+
+    .als-header-actions {
+        gap: 0.5rem;
+    }
+
+    .als-header-wa {
+        padding: 0.5rem 0.75rem;
+    }
+
+    // مساحة تحت الفوتر للـ sticky CTA
+    .als-footer {
+        padding-bottom: 5.5rem;
+    }
+}
