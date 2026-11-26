@@ -1,6 +1,6 @@
 {
     "name": "best store implementation",
-    "version": "18.0.0.11",
+    "version": "18.0.0.12",
     'author': 'Dekad',
     "depends": ["base", "account", 'sale', 'hr', 'mail', 'purchase', 'product', 'point_of_sale', 'web',
                 'dekad_pos_sale_enhancement', 'dekad_purchase_enhancement','pos_hr', 'dekad_super_user',
@@ -20,6 +20,7 @@
         'views/hr_employee_views.xml',
         'views/product_template_views.xml',
         'views/payment_invoice_link_views.xml',
+        'views/stock_journal_entry_views.xml',
 'views/stock_pickings_views.xml'
 
     ],

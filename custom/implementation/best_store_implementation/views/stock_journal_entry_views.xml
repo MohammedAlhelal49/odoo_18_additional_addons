@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- الاستلامات والتسليمات: قيد المخزون (STJ) المرتبط بكل حركة -->
+    <record id="view_picking_form_bs_journal_entries" model="ir.ui.view">
+        <field name="name">stock.picking.form.bs.journal.entries</field>
+        <field name="model">stock.picking</field>
+        <field name="inherit_id" ref="stock.view_picking_form"/>
+        <field name="arch" type="xml">
+            <div name="button_box" position="inside">
+                <button name="action_view_bs_journal_entries" type="object" class="oe_stat_button" icon="fa-book"
+                        invisible="not bs_journal_entry_count" groups="account.group_account_readonly">
+                    <field name="bs_journal_entry_count" widget="statinfo" string="Journal Entries"/>
+                </button>
+            </div>
+            <xpath expr="//sheet" position="before">
+                <div class="alert alert-info mb-0" role="alert" invisible="not bs_zero_valuation"
+                     groups="account.group_account_readonly">
+                    No journal entry: this transfer was valued at zero (the product cost was zero at that time).
+                    The cost is corrected by the monthly stock correction entries.
+                </div>
+            </xpath>
+            <field name="origin" position="after">
+                <field name="bs_zero_valuation" invisible="1"/>
+            </field>
+        </field>
+    </record>
+
+    <record id="view_picking_list_bs_journal_entries" model="ir.ui.view">
+        <field name="name">stock.picking.list.bs.journal.entries</field>
+        <field name="model">stock.picking</field>
+        <field name="inherit_id" ref="stock.vpicktree"/>
+        <field name="arch" type="xml">
+            <field name="origin" position="after">
+                <field name="bs_journal_entry_ids" widget="many2many_tags" optional="hide" string="Journal Entries"
+                       groups="account.group_account_readonly"/>
+            </field>
+        </field>
+    </record>
+
+    <record id="view_picking_search_bs_journal_entries" model="ir.ui.view">
+        <field name="name">stock.picking.search.bs.journal.entries</field>
+        <field name="model">stock.picking</field>
+        <field name="inherit_id" ref="stock.view_picking_internal_search"/>
+        <field name="arch" type="xml">
+            <field name="origin" position="after">
+                <field name="bs_journal_entry_ids" string="Journal Entry" groups="account.group_account_readonly"/>
+            </field>
+            <filter name="backorder" position="after">
+                <separator/>
+                <filter string="With Journal Entry" name="bs_with_entry" domain="[('bs_journal_entry_ids', '!=', False)]"
+                        groups="account.group_account_readonly"/>
+                <filter string="Without Journal Entry" name="bs_without_entry" domain="[('bs_journal_entry_ids', '=', False)]"
+                        groups="account.group_account_readonly"/>
+            </filter>
+        </field>
+    </record>
+
+    <!-- قيد المخزون: الاستلام أو التسليم اللي انعمل منه -->
+    <record id="view_move_form_bs_transfers" model="ir.ui.view">
+        <field name="name">account.move.form.bs.transfers</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_move_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='ref']" position="after">
+                <field name="bs_picking_ids" widget="many2many_tags" string="Transfers"
+                       invisible="not bs_picking_ids" readonly="1" groups="stock.group_stock_user"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_account_move_filter_bs_transfers" model="ir.ui.view">
+        <field name="name">account.move.select.bs.transfers</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_account_move_filter"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='partner_id']" position="after">
+                <field name="bs_picking_ids" string="Transfer" groups="stock.group_stock_user"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

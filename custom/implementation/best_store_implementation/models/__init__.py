@@ -9,3 +9,4 @@ from . import pos_collection
 from . import pos_order_notes
 from . import pos_invoice_guard
 from . import payment_invoice_link
+from . import stock_journal_entry_link
