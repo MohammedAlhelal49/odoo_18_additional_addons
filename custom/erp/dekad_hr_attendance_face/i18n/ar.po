@@ -1,0 +1,1094 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# * dekad_hr_attendance_face
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 18.0+e\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-10-20 04:05+0000\n"
+"PO-Revision-Date: 2026-10-20 04:05+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: ar\n"
+"Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 && n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#. module: dekad_hr_attendance_face
+#. odoo-javascript
+#: code:addons/dekad_hr_attendance_face/static/src/enrollment/face_enrollment.js
+#, python-format
+msgid "%s face samples enrolled."
+msgstr "تم تسجيل %s عينات للوجه."
+
+#. module: dekad_hr_attendance_face
+#. odoo-javascript
+#: code:addons/dekad_hr_attendance_face/static/src/enrollment/face_enrollment.js
+#, python-format
+msgid "%s: only JPEG or PNG images up to 6 MB."
+msgstr "%s: يُسمح فقط بصور JPEG أو PNG بحجم أقصاه 6 ميغابايت."
+
+#. module: dekad_hr_attendance_face
+msgid ""
+"<span class=\"o_stat_text\">Face</span>\n"
+"                        <span class=\"o_stat_value text-success\" invisible=\"not face_enrolled\">Enrolled</span>\n"
+"                        <span class=\"o_stat_value text-muted\" invisible=\"face_enrolled\">Not enrolled</span>"
+msgstr ""
+"<span class=\"o_stat_text\">الوجه</span>\n"
+"                        <span class=\"o_stat_value text-success\" invisible=\"not face_enrolled\">مسجّل</span>\n"
+"                        <span class=\"o_stat_value text-muted\" invisible=\"face_enrolled\">غير مسجّل</span>"
+
+#. module: dekad_hr_attendance_face
+msgid "A face is accepted when its similarity reaches the threshold and, in the kiosk, beats the second closest employee by the margin. Ambiguous matches are rejected."
+msgstr "يُقبل الوجه عندما يبلغ التشابه الحد الأدنى، وفي الكشك يجب أن يتفوق على ثاني أقرب موظف بمقدار الهامش. تُرفض المطابقات الملتبسة."
+
+#. module: dekad_hr_attendance_face
+msgid "Ambiguous match"
+msgstr "مطابقة ملتبسة"
+
+#. module: dekad_hr_attendance_face
+msgid "An employee can only have one face profile."
+msgstr "لا يمكن أن يكون للموظف أكثر من ملف وجه واحد."
+
+#. module: dekad_hr_attendance_face
+#. odoo-python
+#: code:addons/dekad_hr_attendance_face/models/hr_face_profile.py
+#, python-format
+msgid "At most %s photos can be enrolled."
+msgstr "يمكن تسجيل %s صور كحد أقصى."
+
+#. module: dekad_hr_attendance_face
+msgid "Attendance"
+msgstr "الحضور"
+
+#. module: dekad_hr_attendance_face
+msgid "Attendance Face: clean challenges and rate limits"
+msgstr "الحضور بالوجه: تنظيف التحديات وحدود المحاولات"
+
+#. module: dekad_hr_attendance_face
+msgid "Attendance Face: delete face data of archived employees"
+msgstr "الحضور بالوجه: حذف بيانات الوجه للموظفين المؤرشفين"
+
+#. module: dekad_hr_attendance_face
+msgid "Attendance Face: purge expired check-in photos"
+msgstr "الحضور بالوجه: حذف صور الحضور المنتهية مدتها"
+
+#. module: dekad_hr_attendance_face
+msgid "Attendance could not be recorded"
+msgstr "تعذّر تسجيل الحضور"
+
+#. module: dekad_hr_attendance_face
+#. odoo-javascript
+#: code:addons/dekad_hr_attendance_face/static/src/enrollment/face_enrollment.xml
+msgid "Back"
+msgstr "رجوع"
+
+#. module: dekad_hr_attendance_face
+msgid "Below similarity threshold"
+msgstr "أقل من حد التشابه"
+
+#. module: dekad_hr_attendance_face
+msgid "Biometric template (128 float32). Never displayed."
+msgstr "قالب بيومتري (128 قيمة float32). لا يُعرض أبدًا."
+
+#. module: dekad_hr_attendance_face
+msgid "Browser"
+msgstr "المتصفح"
+
+#. module: dekad_hr_attendance_face
+#. odoo-javascript
+#: code:addons/dekad_hr_attendance_face/static/src/face_capture/face_capture.xml
+msgid "Cancel"
+msgstr "إلغاء"
+
+#. module: dekad_hr_attendance_face
+#. odoo-javascript
+#: code:addons/dekad_hr_attendance_face/static/src/enrollment/face_enrollment.xml
+msgid "Capture"
+msgstr "التقاط"
+
+#. module: dekad_hr_attendance_face
+#. odoo-javascript
+#: code:addons/dekad_hr_attendance_face/static/src/enrollment/face_enrollment.xml
+msgid "Capture or upload"
+msgstr "التقط أو ارفع"
+
+#. module: dekad_hr_attendance_face
+#. odoo-python
+#: code:addons/dekad_hr_attendance_face/models/hr_face_profile.py
+#, python-format
+msgid "Capture or upload at least %s photos."
+msgstr "التقط أو ارفع %s صور على الأقل."
+
+#. module: dekad_hr_attendance_face
+msgid "Captured too fast"
+msgstr "تم الالتقاط بسرعة كبيرة"
+
+#. module: dekad_hr_attendance_face
+msgid "Challenge"
+msgstr "التحدي"
+
+#. module: dekad_hr_attendance_face
+msgid "Challenge Validity (seconds)"
+msgstr "صلاحية التحدي (ثوانٍ)"
+
+#. module: dekad_hr_attendance_face
+msgid "Challenge issued for another kiosk or user"
+msgstr "التحدي صادر لكشك أو مستخدم آخر"
+
+#. module: dekad_hr_attendance_face
+msgid "Channel"
+msgstr "القناة"
+
+#. module: dekad_hr_attendance_face
+#. odoo-javascript
+#: code:addons/dekad_hr_attendance_face/static/src/kiosk/kiosk_patch.xml
+msgid "Check in with your face"
+msgstr "سجّل حضورك بوجهك"
+
+#. module: dekad_hr_attendance_face
+msgid "Check-in Photo"
+msgstr "صورة الحضور"
+
+#. module: dekad_hr_attendance_face
+msgid "Check-out Photo"
+msgstr "صورة الانصراف"
+
+#. module: dekad_hr_attendance_face
+#. odoo-javascript
+#: code:addons/dekad_hr_attendance_face/static/src/systray/systray_patch.js
+msgid "Checked in"
+msgstr "تم تسجيل الحضور"
+
+#. module: dekad_hr_attendance_face
+#. odoo-javascript
+#: code:addons/dekad_hr_attendance_face/static/src/systray/systray_patch.js
+msgid "Checked out"
+msgstr "تم تسجيل الانصراف"
+
+#. module: dekad_hr_attendance_face
+msgid "Companies"
+msgstr "الشركات"
+
+#. module: dekad_hr_attendance_face
+msgid "Company"
+msgstr "الشركة"
+
+#. module: dekad_hr_attendance_face
+msgid "Config Settings"
+msgstr "إعدادات التهيئة"
+
+#. module: dekad_hr_attendance_face
+msgid "Consent Date"
+msgstr "تاريخ الموافقة"
+
+#. module: dekad_hr_attendance_face
+msgid "Consent Given"
+msgstr "تمت الموافقة"
+
+#. module: dekad_hr_attendance_face
+msgid "Consent Recorded By"
+msgstr "سُجّلت الموافقة بواسطة"
+
+#. module: dekad_hr_attendance_face
+msgid "Created by"
+msgstr "أنشئ بواسطة"
+
+#. module: dekad_hr_attendance_face
+msgid "Created on"
+msgstr "أنشئ في"
+
+#. module: dekad_hr_attendance_face
+msgid "Date"
+msgstr "التاريخ"
+
+#. module: dekad_hr_attendance_face
+msgid "Day"
+msgstr "اليوم"
+
+#. module: dekad_hr_attendance_face
+msgid "Detection Score"
+msgstr "درجة الكشف"
+
+#. module: dekad_hr_attendance_face
+msgid "Different faces across frames"
+msgstr "وجوه مختلفة بين اللقطات"
+
+#. module: dekad_hr_attendance_face
+msgid "Display Name"
+msgstr "اسم العرض"
+
+#. module: dekad_hr_attendance_face
+msgid "Duplicate rate-limit key."
+msgstr "مفتاح حد المحاولات مكرر."
+
+#. module: dekad_hr_attendance_face
+msgid "Embedding"
+msgstr "البصمة الرقمية"
+
+#. module: dekad_hr_attendance_face
+msgid "Employee"
+msgstr "الموظف"
+
+#. module: dekad_hr_attendance_face
+msgid "Employee Face Profile"
+msgstr "ملف وجه الموظف"
+
+#. module: dekad_hr_attendance_face
+msgid "Employee Face Sample"
+msgstr "عينة وجه الموظف"
+
+#. module: dekad_hr_attendance_face
+msgid "Employees check in/out on the kiosk by looking at the camera (1:N identification)."
+msgstr "يسجّل الموظفون الحضور والانصراف في الكشك بالنظر إلى الكاميرا (تعرّف 1:N)."
+
+#. module: dekad_hr_attendance_face
+#. odoo-javascript
+#: code:addons/dekad_hr_attendance_face/static/src/enrollment/face_enrollment.xml
+msgid "Enroll"
+msgstr "تسجيل"
+
+#. module: dekad_hr_attendance_face
+msgid "Expired challenge"
+msgstr "تحدٍّ منتهي الصلاحية"
+
+#. module: dekad_hr_attendance_face
+msgid "Expires At"
+msgstr "ينتهي في"
+
+#. module: dekad_hr_attendance_face
+msgid "Face (Kiosk)"
+msgstr "الوجه (الكشك)"
+
+#. module: dekad_hr_attendance_face
+msgid "Face (Personal Device)"
+msgstr "الوجه (جهاز شخصي)"
+
+#. module: dekad_hr_attendance_face
+msgid "Face Attempts"
+msgstr "محاولات الوجه"
+
+#. module: dekad_hr_attendance_face
+#. odoo-javascript
+#: code:addons/dekad_hr_attendance_face/static/src/systray/systray_patch.xml
+msgid "Face Check-in"
+msgstr "الحضور بالوجه"
+
+#. module: dekad_hr_attendance_face
+msgid "Face Check-in Geofence"
+msgstr "النطاق الجغرافي للحضور بالوجه"
+
+#. module: dekad_hr_attendance_face
+msgid "Face Engine Message"
+msgstr "رسالة محرك الوجه"
+
+#. module: dekad_hr_attendance_face
+msgid "Face Engine Ok"
+msgstr "محرك الوجه جاهز"
+
+#. module: dekad_hr_attendance_face
+msgid "Face Enrolled"
+msgstr "الوجه مسجّل"
+
+#. module: dekad_hr_attendance_face
+#. odoo-python
+#: code:addons/dekad_hr_attendance_face/models/hr_employee.py
+msgid "Face Enrollment"
+msgstr "تسجيل الوجه"
+
+#. module: dekad_hr_attendance_face
+#. odoo-javascript
+#: code:addons/dekad_hr_attendance_face/static/src/enrollment/face_enrollment.xml
+msgid "Face Enrollment:"
+msgstr "تسجيل الوجه:"
+
+#. module: dekad_hr_attendance_face
+msgid "Face Only"
+msgstr "الوجه فقط"
+
+#. module: dekad_hr_attendance_face
+msgid "Face Profiles"
+msgstr "ملفات الوجه"
+
+#. module: dekad_hr_attendance_face
+msgid "Face Recognition"
+msgstr "التعرّف على الوجه"
+
+#. module: dekad_hr_attendance_face
+msgid "Face Recognition Attempt"
+msgstr "محاولة التعرّف على الوجه"
+
+#. module: dekad_hr_attendance_face
+msgid "Face Recognition Challenge"
+msgstr "تحدي التعرّف على الوجه"
+
+#. module: dekad_hr_attendance_face
+msgid "Face Recognition Engine"
+msgstr "محرك التعرّف على الوجه"
+
+#. module: dekad_hr_attendance_face
+msgid "Face Recognition Rate Limit"
+msgstr "حد محاولات التعرّف على الوجه"
+
+#. module: dekad_hr_attendance_face
+msgid "Face Recognition in Kiosk"
+msgstr "التعرّف على الوجه في الكشك"
+
+#. module: dekad_hr_attendance_face
+msgid "Face Recognition on Personal Devices"
+msgstr "التعرّف على الوجه على الأجهزة الشخصية"
+
+#. module: dekad_hr_attendance_face
+msgid "Face check-in from personal devices is only accepted within this distance of the coordinates above. 0 disables the geofence."
+msgstr "يُقبل الحضور بالوجه من الأجهزة الشخصية فقط ضمن هذه المسافة من الإحداثيات أعلاه. القيمة 0 تعطّل النطاق الجغرافي."
+
+#. module: dekad_hr_attendance_face
+msgid "Face engine unavailable"
+msgstr "محرك الوجه غير متاح"
+
+#. module: dekad_hr_attendance_face
+#. odoo-javascript
+#: code:addons/dekad_hr_attendance_face/static/src/face_capture/face_capture.js
+msgid "Face not recognized. Please try again."
+msgstr "لم يتم التعرّف على الوجه. يرجى المحاولة مرة أخرى."
+
+#. module: dekad_hr_attendance_face
+#. odoo-python
+#: code:addons/dekad_hr_attendance_face/models/res_company.py
+#, python-format
+msgid "Face recognition cannot be enabled: the face engine is not available on this server (%s)."
+msgstr "لا يمكن تفعيل التعرّف على الوجه: محرك الوجه غير متاح على هذا الخادم (%s)."
+
+#. module: dekad_hr_attendance_face
+#. odoo-javascript
+#: code:addons/dekad_hr_attendance_face/static/src/face_capture/face_capture.js
+msgid "Face recognition is not available. Please contact your administrator."
+msgstr "التعرّف على الوجه غير متاح. يرجى التواصل مع المسؤول."
+
+#. module: dekad_hr_attendance_face
+#. odoo-javascript
+#: code:addons/dekad_hr_attendance_face/static/src/face_capture/face_capture.js
+msgid "Face recognition is not enabled."
+msgstr "التعرّف على الوجه غير مفعّل."
+
+#. module: dekad_hr_attendance_face
+#. odoo-python
+#: code:addons/dekad_hr_attendance_face/models/res_config_settings.py
+msgid "Face recognition is unavailable: a model file does not match its expected checksum."
+msgstr "التعرّف على الوجه غير متاح: أحد ملفات النموذج لا يطابق المجموع الاختباري المتوقع."
+
+#. module: dekad_hr_attendance_face
+#. odoo-python
+#: code:addons/dekad_hr_attendance_face/models/res_config_settings.py
+msgid "Face recognition is unavailable: the Python packages opencv-python-headless and numpy are not installed on the server. See the module README."
+msgstr "التعرّف على الوجه غير متاح: حزم Python ‏opencv-python-headless و numpy غير مثبتة على الخادم. راجع ملف README الخاص بالموديول."
+
+#. module: dekad_hr_attendance_face
+#. odoo-python
+#: code:addons/dekad_hr_attendance_face/models/res_config_settings.py
+msgid "Face recognition is unavailable: the model files are missing from the module's face_models folder."
+msgstr "التعرّف على الوجه غير متاح: ملفات النموذج مفقودة من مجلد face_models في الموديول."
+
+#. module: dekad_hr_attendance_face
+#. odoo-python
+#: code:addons/dekad_hr_attendance_face/models/res_config_settings.py
+msgid "Face recognition is unavailable: the models could not be loaded. Check the server log."
+msgstr "التعرّف على الوجه غير متاح: تعذّر تحميل النماذج. راجع سجل الخادم."
+
+#. module: dekad_hr_attendance_face
+msgid ""
+"Face templates are stored as numeric vectors only; no photo is kept.\n"
+"                        Deleting this profile permanently removes the employee's biometric data."
+msgstr ""
+"تُخزَّن قوالب الوجه كمتجهات رقمية فقط ولا يُحتفظ بأي صورة.\n"
+"                        حذف هذا الملف يزيل البيانات البيومترية للموظف نهائيًا."
+
+#. module: dekad_hr_attendance_face
+msgid "Face too small"
+msgstr "الوجه صغير جدًا"
+
+#. module: dekad_hr_attendance_face
+#. odoo-python
+#: code:addons/dekad_hr_attendance_face/models/hr_face_profile.py
+msgid "Faces can only be enrolled for active employees."
+msgstr "يمكن تسجيل الوجوه للموظفين النشطين فقط."
+
+#. module: dekad_hr_attendance_face
+msgid "Failed attempts and challenge requests are counted per IP address, per kiosk and per user. Reaching a limit locks the key for the lockout duration."
+msgstr "تُحتسب المحاولات الفاشلة وطلبات التحدي لكل عنوان IP ولكل كشك ولكل مستخدم. عند بلوغ الحد يُقفل المفتاح طوال مدة القفل."
+
+#. module: dekad_hr_attendance_face
+msgid "Failure"
+msgstr "فشل"
+
+#. module: dekad_hr_attendance_face
+msgid "Failures"
+msgstr "الإخفاقات"
+
+#. module: dekad_hr_attendance_face
+msgid "Forbidden parameters sent by the client"
+msgstr "معاملات ممنوعة أرسلها العميل"
+
+#. module: dekad_hr_attendance_face
+msgid "Frames per Attempt"
+msgstr "عدد اللقطات لكل محاولة"
+
+#. module: dekad_hr_attendance_face
+msgid "Geofence Radius (m)"
+msgstr "نصف قطر النطاق الجغرافي (م)"
+
+#. module: dekad_hr_attendance_face
+msgid "Group By"
+msgstr "تجميع حسب"
+
+#. module: dekad_hr_attendance_face
+msgid "Head turn challenge"
+msgstr "تحدي التفات الرأس"
+
+#. module: dekad_hr_attendance_face
+msgid "Hits"
+msgstr "عدد المرات"
+
+#. module: dekad_hr_attendance_face
+msgid "ID"
+msgstr "المعرّف"
+
+#. module: dekad_hr_attendance_face
+msgid "IP Address"
+msgstr "عنوان IP"
+
+#. module: dekad_hr_attendance_face
+msgid "Internal error"
+msgstr "خطأ داخلي"
+
+#. module: dekad_hr_attendance_face
+msgid "Invalid images"
+msgstr "صور غير صالحة"
+
+#. module: dekad_hr_attendance_face
+msgid "Invalid or reused challenge"
+msgstr "تحدٍّ غير صالح أو مُعاد استخدامه"
+
+#. module: dekad_hr_attendance_face
+msgid "Ip Address"
+msgstr "عنوان IP"
+
+#. module: dekad_hr_attendance_face
+msgid "Issued"
+msgstr "صادر"
+
+#. module: dekad_hr_attendance_face
+msgid "Issued At"
+msgstr "صدر في"
+
+#. module: dekad_hr_attendance_face
+msgid "Keep the photo used for recognition on the attendance record. Photos are deleted automatically after the retention period."
+msgstr "الاحتفاظ بالصورة المستخدمة في التعرّف ضمن سجل الحضور. تُحذف الصور تلقائيًا بعد انتهاء مدة الاحتفاظ."
+
+#. module: dekad_hr_attendance_face
+msgid "Key"
+msgstr "المفتاح"
+
+#. module: dekad_hr_attendance_face
+msgid "Kiosk"
+msgstr "الكشك"
+
+#. module: dekad_hr_attendance_face
+msgid "Last Updated by"
+msgstr "آخر تحديث بواسطة"
+
+#. module: dekad_hr_attendance_face
+msgid "Last Updated on"
+msgstr "آخر تحديث في"
+
+#. module: dekad_hr_attendance_face
+msgid "Latitude"
+msgstr "خط العرض"
+
+#. module: dekad_hr_attendance_face
+msgid "Liveness Check"
+msgstr "التحقق من الحيوية"
+
+#. module: dekad_hr_attendance_face
+msgid "Liveness Method"
+msgstr "طريقة التحقق من الحيوية"
+
+#. module: dekad_hr_attendance_face
+msgid "Liveness challenge failed"
+msgstr "فشل تحدي الحيوية"
+
+#. module: dekad_hr_attendance_face
+#. odoo-javascript
+#: code:addons/dekad_hr_attendance_face/static/src/face_capture/face_capture.js
+msgid "Liveness check failed. Follow the instruction on screen and try again."
+msgstr "فشل التحقق من الحيوية. اتبع التعليمات على الشاشة وحاول مرة أخرى."
+
+#. module: dekad_hr_attendance_face
+msgid "Location missing"
+msgstr "الموقع مفقود"
+
+#. module: dekad_hr_attendance_face
+msgid "Locked"
+msgstr "مقفل"
+
+#. module: dekad_hr_attendance_face
+msgid "Locked Until"
+msgstr "مقفل حتى"
+
+#. module: dekad_hr_attendance_face
+msgid "Locked out"
+msgstr "تم القفل"
+
+#. module: dekad_hr_attendance_face
+msgid "Lockout Duration (minutes)"
+msgstr "مدة القفل (دقائق)"
+
+#. module: dekad_hr_attendance_face
+msgid "Logged-in employees verify their own face (1:1) from the backend check-in button on their phone or computer."
+msgstr "يتحقق الموظفون المسجّلو الدخول من وجوههم (1:1) عبر زر الحضور في الواجهة الخلفية من هواتفهم أو حواسيبهم."
+
+#. module: dekad_hr_attendance_face
+msgid "Longitude"
+msgstr "خط الطول"
+
+#. module: dekad_hr_attendance_face
+#. odoo-javascript
+#: code:addons/dekad_hr_attendance_face/static/src/face_capture/face_capture.js
+msgid "Look straight at the camera"
+msgstr "انظر مباشرة إلى الكاميرا"
+
+#. module: dekad_hr_attendance_face
+msgid "Matching Policy"
+msgstr "سياسة المطابقة"
+
+#. module: dekad_hr_attendance_face
+msgid "Max Challenges per IP"
+msgstr "الحد الأقصى للتحديات لكل IP"
+
+#. module: dekad_hr_attendance_face
+msgid "Max Failures per IP"
+msgstr "الحد الأقصى للإخفاقات لكل IP"
+
+#. module: dekad_hr_attendance_face
+msgid "Max Failures per Kiosk"
+msgstr "الحد الأقصى للإخفاقات لكل كشك"
+
+#. module: dekad_hr_attendance_face
+msgid "Max Failures per User"
+msgstr "الحد الأقصى للإخفاقات لكل مستخدم"
+
+#. module: dekad_hr_attendance_face
+msgid "Minimum Margin"
+msgstr "الهامش الأدنى"
+
+#. module: dekad_hr_attendance_face
+msgid "Mode"
+msgstr "الوضع"
+
+#. module: dekad_hr_attendance_face
+msgid "Model Version"
+msgstr "إصدار النموذج"
+
+#. module: dekad_hr_attendance_face
+#. odoo-javascript
+#: code:addons/dekad_hr_attendance_face/static/src/face_capture/face_capture.js
+msgid "More than one face detected. Only one person at a time."
+msgstr "تم اكتشاف أكثر من وجه. شخص واحد فقط في كل مرة."
+
+#. module: dekad_hr_attendance_face
+msgid "Multiple faces detected"
+msgstr "تم اكتشاف عدة وجوه"
+
+#. module: dekad_hr_attendance_face
+msgid "No enrolled faces"
+msgstr "لا توجد وجوه مسجّلة"
+
+#. module: dekad_hr_attendance_face
+msgid "No enrolled faces yet"
+msgstr "لا توجد وجوه مسجّلة بعد"
+
+#. module: dekad_hr_attendance_face
+msgid "No face detected"
+msgstr "لم يتم اكتشاف وجه"
+
+#. module: dekad_hr_attendance_face
+#. odoo-javascript
+#: code:addons/dekad_hr_attendance_face/static/src/face_capture/face_capture.js
+msgid "No face detected. Center your face in the frame."
+msgstr "لم يتم اكتشاف وجه. ضع وجهك في منتصف الإطار."
+
+#. module: dekad_hr_attendance_face
+msgid "No frontal face"
+msgstr "لا يوجد وجه أمامي"
+
+#. module: dekad_hr_attendance_face
+msgid "Nonce Hash"
+msgstr "بصمة الرمز (Nonce)"
+
+#. module: dekad_hr_attendance_face
+msgid "Nonce collision."
+msgstr "تعارض في الرمز (Nonce)."
+
+#. module: dekad_hr_attendance_face
+msgid "Number of Samples"
+msgstr "عدد العينات"
+
+#. module: dekad_hr_attendance_face
+#. odoo-python
+#: code:addons/dekad_hr_attendance_face/models/hr_face_profile.py
+#, python-format
+msgid "Only %(count)s usable photos (minimum %(minimum)s). Rejected: %(rejected)s"
+msgstr "فقط %(count)s صور صالحة (الحد الأدنى %(minimum)s). المرفوضة: %(rejected)s"
+
+#. module: dekad_hr_attendance_face
+#. odoo-python
+#: code:addons/dekad_hr_attendance_face/models/hr_employee.py
+msgid "Only Attendance administrators can delete face data."
+msgstr "يمكن لمسؤولي الحضور فقط حذف بيانات الوجه."
+
+#. module: dekad_hr_attendance_face
+#. odoo-python
+#: code:addons/dekad_hr_attendance_face/models/hr_employee.py
+#: code:addons/dekad_hr_attendance_face/models/hr_face_profile.py
+msgid "Only Attendance administrators can enroll faces."
+msgstr "يمكن لمسؤولي الحضور فقط تسجيل الوجوه."
+
+#. module: dekad_hr_attendance_face
+msgid "Open an employee and click \"Face\" to enroll their face with their consent."
+msgstr "افتح ملف موظف واضغط على \"الوجه\" لتسجيل وجهه بعد موافقته."
+
+#. module: dekad_hr_attendance_face
+msgid "Out Mode"
+msgstr "وضع الانصراف"
+
+#. module: dekad_hr_attendance_face
+msgid "Outside the work location"
+msgstr "خارج موقع العمل"
+
+#. module: dekad_hr_attendance_face
+msgid "Personal Device"
+msgstr "جهاز شخصي"
+
+#. module: dekad_hr_attendance_face
+msgid "Personal Devices"
+msgstr "الأجهزة الشخصية"
+
+#. module: dekad_hr_attendance_face
+msgid "Photo Retention (days)"
+msgstr "مدة الاحتفاظ بالصور (أيام)"
+
+#. module: dekad_hr_attendance_face
+#. odoo-javascript
+#: code:addons/dekad_hr_attendance_face/static/src/face_capture/face_capture.js
+msgid "Please move closer to the camera."
+msgstr "يرجى الاقتراب من الكاميرا."
+
+#. module: dekad_hr_attendance_face
+msgid "Profile"
+msgstr "الملف"
+
+#. module: dekad_hr_attendance_face
+msgid "Rate Limit Window (minutes)"
+msgstr "نافذة حد المحاولات (دقائق)"
+
+#. module: dekad_hr_attendance_face
+msgid "Rate Limiting"
+msgstr "تحديد عدد المحاولات"
+
+#. module: dekad_hr_attendance_face
+#. odoo-python
+#: code:addons/dekad_hr_attendance_face/models/res_company.py
+msgid "Rate limits, durations and the photo retention must be positive."
+msgstr "يجب أن تكون حدود المحاولات والمدد ومدة الاحتفاظ بالصور قيمًا موجبة."
+
+#. module: dekad_hr_attendance_face
+msgid "Reason"
+msgstr "السبب"
+
+#. module: dekad_hr_attendance_face
+msgid "Recognized"
+msgstr "تم التعرّف"
+
+#. module: dekad_hr_attendance_face
+msgid "Recognized employee (kiosk) or employee of the logged-in user (personal device)."
+msgstr "الموظف الذي تم التعرّف عليه (الكشك) أو موظف المستخدم المسجّل دخوله (الجهاز الشخصي)."
+
+#. module: dekad_hr_attendance_face
+msgid "Reject the other check-in methods on the server: badge and manual selection in the kiosk, and the plain check-in button on personal devices."
+msgstr "رفض طرق الحضور الأخرى على الخادم: البطاقة والاختيار اليدوي في الكشك، وزر الحضور العادي على الأجهزة الشخصية."
+
+#. module: dekad_hr_attendance_face
+#. odoo-javascript
+#: code:addons/dekad_hr_attendance_face/static/src/enrollment/face_enrollment.xml
+msgid "Remove"
+msgstr "إزالة"
+
+#. module: dekad_hr_attendance_face
+msgid "Require Geolocation on Personal Devices"
+msgstr "إلزام تحديد الموقع على الأجهزة الشخصية"
+
+#. module: dekad_hr_attendance_face
+msgid "Result"
+msgstr "النتيجة"
+
+#. module: dekad_hr_attendance_face
+#. odoo-javascript
+#: code:addons/dekad_hr_attendance_face/static/src/enrollment/face_enrollment.xml
+msgid "Sample"
+msgstr "عينة"
+
+#. module: dekad_hr_attendance_face
+msgid "Samples"
+msgstr "العينات"
+
+#. module: dekad_hr_attendance_face
+msgid "Score"
+msgstr "الدرجة"
+
+#. module: dekad_hr_attendance_face
+msgid "Second Best Score"
+msgstr "ثاني أعلى درجة"
+
+#. module: dekad_hr_attendance_face
+msgid "Server-side face detection and recognition (OpenCV YuNet + SFace)."
+msgstr "كشف الوجه والتعرّف عليه على الخادم (OpenCV YuNet + SFace)."
+
+#. module: dekad_hr_attendance_face
+msgid "Set a geofence on work locations to restrict where employees can check in."
+msgstr "حدّد نطاقًا جغرافيًا لمواقع العمل لتقييد أماكن تسجيل الحضور."
+
+#. module: dekad_hr_attendance_face
+msgid "Similarity Threshold"
+msgstr "حد التشابه"
+
+#. module: dekad_hr_attendance_face
+#. odoo-javascript
+#: code:addons/dekad_hr_attendance_face/static/src/face_capture/face_capture.js
+msgid "Slowly turn your head to your left"
+msgstr "أدر رأسك ببطء إلى يسارك"
+
+#. module: dekad_hr_attendance_face
+#. odoo-javascript
+#: code:addons/dekad_hr_attendance_face/static/src/face_capture/face_capture.js
+msgid "Slowly turn your head to your right"
+msgstr "أدر رأسك ببطء إلى يمينك"
+
+#. module: dekad_hr_attendance_face
+#. odoo-javascript
+#: code:addons/dekad_hr_attendance_face/static/src/enrollment/face_enrollment.js
+msgid "Some photos were rejected"
+msgstr "تم رفض بعض الصور"
+
+#. module: dekad_hr_attendance_face
+#. odoo-javascript
+#: code:addons/dekad_hr_attendance_face/static/src/face_capture/face_capture.js
+msgid "Something went wrong. Please try again."
+msgstr "حدث خطأ ما. يرجى المحاولة مرة أخرى."
+
+#. module: dekad_hr_attendance_face
+msgid "Stage"
+msgstr "المرحلة"
+
+#. module: dekad_hr_attendance_face
+#. odoo-javascript
+#: code:addons/dekad_hr_attendance_face/static/src/enrollment/face_enrollment.xml
+msgid "Start camera"
+msgstr "تشغيل الكاميرا"
+
+#. module: dekad_hr_attendance_face
+#. odoo-javascript
+#: code:addons/dekad_hr_attendance_face/static/src/face_capture/face_capture.js
+msgid "Starting the camera…"
+msgstr "جارٍ تشغيل الكاميرا…"
+
+#. module: dekad_hr_attendance_face
+msgid "State"
+msgstr "الحالة"
+
+#. module: dekad_hr_attendance_face
+#. odoo-javascript
+#: code:addons/dekad_hr_attendance_face/static/src/enrollment/face_enrollment.xml
+msgid "Stop camera"
+msgstr "إيقاف الكاميرا"
+
+#. module: dekad_hr_attendance_face
+msgid "Store Check-in Photo"
+msgstr "حفظ صورة الحضور"
+
+#. module: dekad_hr_attendance_face
+msgid "Success"
+msgstr "نجاح"
+
+#. module: dekad_hr_attendance_face
+#. odoo-javascript
+#: code:addons/dekad_hr_attendance_face/static/src/face_capture/face_capture.js
+msgid "The camera is not available. Camera access requires HTTPS and your permission."
+msgstr "الكاميرا غير متاحة. يتطلب الوصول إلى الكاميرا اتصال HTTPS وإذنك."
+
+#. module: dekad_hr_attendance_face
+#. odoo-javascript
+#: code:addons/dekad_hr_attendance_face/static/src/enrollment/face_enrollment.js
+msgid "The camera is not available. Camera access requires HTTPS."
+msgstr "الكاميرا غير متاحة. يتطلب الوصول إلى الكاميرا اتصال HTTPS."
+
+#. module: dekad_hr_attendance_face
+#. odoo-javascript
+#: code:addons/dekad_hr_attendance_face/static/src/face_capture/face_capture.js
+msgid "The captured images were invalid. Please try again."
+msgstr "الصور الملتقطة غير صالحة. يرجى المحاولة مرة أخرى."
+
+#. module: dekad_hr_attendance_face
+#. odoo-python
+#: code:addons/dekad_hr_attendance_face/models/res_company.py
+msgid "The challenge validity must be between 15 and 300 seconds."
+msgstr "يجب أن تكون صلاحية التحدي بين 15 و300 ثانية."
+
+#. module: dekad_hr_attendance_face
+#. odoo-javascript
+#: code:addons/dekad_hr_attendance_face/static/src/enrollment/face_enrollment.xml
+msgid "The employee has given explicit consent to the processing of their biometric data for attendance."
+msgstr "أعطى الموظف موافقته الصريحة على معالجة بياناته البيومترية لأغراض الحضور."
+
+#. module: dekad_hr_attendance_face
+#. odoo-python
+#: code:addons/dekad_hr_attendance_face/models/hr_face_profile.py
+msgid "The employee's consent is required before enrolling their face."
+msgstr "موافقة الموظف مطلوبة قبل تسجيل وجهه."
+
+#. module: dekad_hr_attendance_face
+#. odoo-python
+#: code:addons/dekad_hr_attendance_face/models/hr_face_profile.py
+msgid "The face recognition engine is not available on this server."
+msgstr "محرك التعرّف على الوجه غير متاح على هذا الخادم."
+
+#. module: dekad_hr_attendance_face
+#. odoo-python
+#: code:addons/dekad_hr_attendance_face/models/res_config_settings.py
+msgid "The face recognition engine is ready."
+msgstr "محرك التعرّف على الوجه جاهز."
+
+#. module: dekad_hr_attendance_face
+#. odoo-python
+#: code:addons/dekad_hr_attendance_face/models/res_company.py
+msgid "The minimum margin must be between 0 and 0.5."
+msgstr "يجب أن يكون الهامش الأدنى بين 0 و0.5."
+
+#. module: dekad_hr_attendance_face
+#. odoo-python
+#: code:addons/dekad_hr_attendance_face/models/res_company.py
+msgid "The number of frames per attempt must be between 3 and 8."
+msgstr "يجب أن يكون عدد اللقطات لكل محاولة بين 3 و8."
+
+#. module: dekad_hr_attendance_face
+#. odoo-python
+#: code:addons/dekad_hr_attendance_face/models/hr_face_profile.py
+msgid "The photos do not seem to show the same person. Please capture them again."
+msgstr "يبدو أن الصور لا تُظهر الشخص نفسه. يرجى التقاطها مرة أخرى."
+
+#. module: dekad_hr_attendance_face
+#. odoo-javascript
+#: code:addons/dekad_hr_attendance_face/static/src/face_capture/face_capture.js
+msgid "The session expired. Please try again."
+msgstr "انتهت صلاحية الجلسة. يرجى المحاولة مرة أخرى."
+
+#. module: dekad_hr_attendance_face
+#. odoo-python
+#: code:addons/dekad_hr_attendance_face/models/res_company.py
+msgid "The similarity threshold must be between 0.20 and 0.95."
+msgstr "يجب أن يكون حد التشابه بين 0.20 و0.95."
+
+#. module: dekad_hr_attendance_face
+#. odoo-python
+#: code:addons/dekad_hr_attendance_face/models/hr_face_profile.py
+#, python-format
+msgid "This face is too similar to the enrolled face of %s. Enrollment refused to avoid ambiguous matches."
+msgstr "هذا الوجه مشابه جدًا للوجه المسجّل للموظف %s. تم رفض التسجيل لتجنب المطابقات الملتبسة."
+
+#. module: dekad_hr_attendance_face
+msgid "Today"
+msgstr "اليوم"
+
+#. module: dekad_hr_attendance_face
+msgid "Too many challenge requests"
+msgstr "طلبات تحدٍّ كثيرة جدًا"
+
+#. module: dekad_hr_attendance_face
+#. odoo-javascript
+#: code:addons/dekad_hr_attendance_face/static/src/face_capture/face_capture.js
+msgid "Too many failed attempts. Please try again later."
+msgstr "محاولات فاشلة كثيرة جدًا. يرجى المحاولة لاحقًا."
+
+#. module: dekad_hr_attendance_face
+#. odoo-javascript
+#: code:addons/dekad_hr_attendance_face/static/src/face_capture/face_capture.js
+msgid "Too many requests. Please wait a moment and try again."
+msgstr "طلبات كثيرة جدًا. يرجى الانتظار قليلًا ثم المحاولة مرة أخرى."
+
+#. module: dekad_hr_attendance_face
+#. odoo-javascript
+#: code:addons/dekad_hr_attendance_face/static/src/face_capture/face_capture.xml
+msgid "Try again"
+msgstr "حاول مرة أخرى"
+
+#. module: dekad_hr_attendance_face
+#. odoo-javascript
+#: code:addons/dekad_hr_attendance_face/static/src/enrollment/face_enrollment.xml
+msgid "Upload photos"
+msgstr "رفع صور"
+
+#. module: dekad_hr_attendance_face
+msgid "Used"
+msgstr "مستخدم"
+
+#. module: dekad_hr_attendance_face
+msgid "User"
+msgstr "المستخدم"
+
+#. module: dekad_hr_attendance_face
+msgid "User without employee"
+msgstr "مستخدم غير مرتبط بموظف"
+
+#. module: dekad_hr_attendance_face
+msgid "Verification"
+msgstr "التحقق"
+
+#. module: dekad_hr_attendance_face
+#. odoo-javascript
+#: code:addons/dekad_hr_attendance_face/static/src/face_capture/face_capture.js
+msgid "Verifying…"
+msgstr "جارٍ التحقق…"
+
+#. module: dekad_hr_attendance_face
+msgid "When face recognition is enabled for a channel, the server rejects the other check-in methods of that channel (badge and manual selection in the kiosk, the systray button for personal devices)."
+msgstr "عند تفعيل التعرّف على الوجه لقناة ما، يرفض الخادم طرق الحضور الأخرى لتلك القناة (البطاقة والاختيار اليدوي في الكشك، وزر شريط النظام للأجهزة الشخصية)."
+
+#. module: dekad_hr_attendance_face
+msgid "Window Start"
+msgstr "بداية النافذة"
+
+#. module: dekad_hr_attendance_face
+msgid "Work Location"
+msgstr "موقع العمل"
+
+#. module: dekad_hr_attendance_face
+#. odoo-javascript
+#: code:addons/dekad_hr_attendance_face/static/src/face_capture/face_capture.js
+msgid "You are not at your work location."
+msgstr "أنت لست في موقع عملك."
+
+#. module: dekad_hr_attendance_face
+#. odoo-javascript
+#: code:addons/dekad_hr_attendance_face/static/src/face_capture/face_capture.js
+msgid "Your face is not enrolled yet. Please contact your HR administrator."
+msgstr "لم يتم تسجيل وجهك بعد. يرجى التواصل مع مسؤول الموارد البشرية."
+
+#. module: dekad_hr_attendance_face
+#. odoo-javascript
+#: code:addons/dekad_hr_attendance_face/static/src/face_capture/face_capture.js
+msgid "Your location is required. Allow location access and try again."
+msgstr "موقعك مطلوب. اسمح بالوصول إلى الموقع وحاول مرة أخرى."
+
+#. module: dekad_hr_attendance_face
+#. odoo-javascript
+#: code:addons/dekad_hr_attendance_face/static/src/face_capture/face_capture.js
+msgid "Your user is not linked to an employee."
+msgstr "مستخدمك غير مرتبط بموظف."
+
+#. module: dekad_hr_attendance_face
+#. odoo-javascript
+#: code:addons/dekad_hr_attendance_face/static/src/enrollment/face_enrollment.xml
+msgid ""
+"clear photos of the employee\n"
+"            looking at the camera, with good lighting and only one face per photo.\n"
+"            Photos are not stored: only numeric face templates are kept. Enrolling again replaces the previous templates."
+msgstr ""
+"صور واضحة للموظف\n"
+"            وهو ينظر إلى الكاميرا، بإضاءة جيدة ووجه واحد فقط في كل صورة.\n"
+"            لا تُخزَّن الصور: يُحتفظ فقط بقوالب رقمية للوجه. إعادة التسجيل تستبدل القوالب السابقة."
+
+#. module: dekad_hr_attendance_face
+#. odoo-python
+#: code:addons/dekad_hr_attendance_face/models/hr_face_profile.py
+msgid "face not clear or not looking at the camera"
+msgstr "الوجه غير واضح أو لا ينظر إلى الكاميرا"
+
+#. module: dekad_hr_attendance_face
+#. odoo-python
+#: code:addons/dekad_hr_attendance_face/models/hr_face_profile.py
+msgid "face too small"
+msgstr "الوجه صغير جدًا"
+
+#. module: dekad_hr_attendance_face
+#. odoo-python
+#: code:addons/dekad_hr_attendance_face/models/hr_face_profile.py
+msgid "invalid or unsupported image"
+msgstr "صورة غير صالحة أو غير مدعومة"
+
+#. module: dekad_hr_attendance_face
+#. odoo-python
+#: code:addons/dekad_hr_attendance_face/models/hr_face_profile.py
+msgid "more than one face"
+msgstr "أكثر من وجه"
+
+#. module: dekad_hr_attendance_face
+#. odoo-python
+#: code:addons/dekad_hr_attendance_face/models/hr_face_profile.py
+msgid "no face detected"
+msgstr "لم يتم اكتشاف وجه"
+
+#. module: dekad_hr_attendance_face
+#. odoo-python
+#: code:addons/dekad_hr_attendance_face/models/hr_face_profile.py
+#, python-format
+msgid "photo %(index)s: %(reason)s"
+msgstr "الصورة %(index)s: %(reason)s"
+
+#. module: dekad_hr_attendance_face
+#. odoo-javascript
+#: code:addons/dekad_hr_attendance_face/static/src/enrollment/face_enrollment.xml
+msgid "photos"
+msgstr "صور"
+
+#. module: dekad_hr_attendance_face
+#. odoo-javascript
+#: code:addons/dekad_hr_attendance_face/static/src/enrollment/face_enrollment.xml
+msgid "to"
+msgstr "إلى"
+
+#. module: dekad_hr_attendance_face
+#. odoo-javascript
+#: code:addons/dekad_hr_attendance_face/static/src/face_capture/face_capture.js
+msgid "No camera was found on this device."
+msgstr "لم يتم العثور على كاميرا في هذا الجهاز."
+
+#. module: dekad_hr_attendance_face
+#. odoo-javascript
+#: code:addons/dekad_hr_attendance_face/static/src/face_capture/face_capture.js
+msgid "Camera permission was denied. Allow the camera in the browser settings and try again."
+msgstr "تم رفض إذن الكاميرا. اسمح باستخدام الكاميرا من إعدادات المتصفح وحاول مرة أخرى."
+
+#. module: dekad_hr_attendance_face
+#. odoo-javascript
+#: code:addons/dekad_hr_attendance_face/static/src/face_capture/face_capture.js
+msgid "The camera is already in use by another application."
+msgstr "الكاميرا مستخدمة حاليًا من تطبيق آخر."
+
+#. module: dekad_hr_attendance_face
+#. odoo-javascript
+#: code:addons/dekad_hr_attendance_face/static/src/enrollment/face_enrollment.xml
+msgid "Capture at least"
+msgstr "التقط على الأقل"
+
+#. module: dekad_hr_attendance_face
+#. odoo-javascript
+#: code:addons/dekad_hr_attendance_face/static/src/enrollment/face_enrollment.xml
+msgid "photos."
+msgstr "صور."
+
+#. module: dekad_hr_attendance_face
+#. odoo-javascript
+#: code:addons/dekad_hr_attendance_face/static/src/enrollment/face_enrollment.xml
+msgid "Tick the consent box above to enable enrollment."
+msgstr "ضع علامة على مربع الموافقة في الأعلى لتفعيل التسجيل."

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Extends hr.hr_work_location_form_view -->
+    <record id="hr_work_location_form_view_face" model="ir.ui.view">
+        <field name="name">hr.work.location.form.inherit.face</field>
+        <field name="model">hr.work.location</field>
+        <field name="inherit_id" ref="hr.hr_work_location_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//sheet" position="inside">
+                <group string="Face Check-in Geofence" name="face_geofence">
+                    <group>
+                        <field name="face_latitude"/>
+                        <field name="face_longitude"/>
+                        <field name="face_geofence_radius"/>
+                    </group>
+                </group>
+            </xpath>
+        </field>
+    </record>
+</odoo>

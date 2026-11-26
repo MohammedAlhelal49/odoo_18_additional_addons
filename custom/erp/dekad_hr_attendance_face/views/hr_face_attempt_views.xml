@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="hr_face_attempt_view_list" model="ir.ui.view">
+        <field name="name">hr.face.attempt.list</field>
+        <field name="model">hr.face.attempt</field>
+        <field name="arch" type="xml">
+            <list create="0" edit="0" decoration-success="result == 'success'"
+                  decoration-danger="result == 'locked'" decoration-warning="result == 'failure'">
+                <field name="attempt_date"/>
+                <field name="company_id" groups="base.group_multi_company" optional="hide"/>
+                <field name="channel"/>
+                <field name="stage" optional="hide"/>
+                <field name="result"/>
+                <field name="reason"/>
+                <field name="employee_id"/>
+                <field name="user_id" optional="hide"/>
+                <field name="score" optional="show"/>
+                <field name="second_score" optional="hide"/>
+                <field name="ip_address"/>
+                <field name="browser" optional="hide"/>
+                <field name="attendance_id" optional="hide"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="hr_face_attempt_view_search" model="ir.ui.view">
+        <field name="name">hr.face.attempt.search</field>
+        <field name="model">hr.face.attempt</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="employee_id"/>
+                <field name="ip_address"/>
+                <filter name="success" string="Success" domain="[('result', '=', 'success')]"/>
+                <filter name="failure" string="Failures" domain="[('result', '!=', 'success')]"/>
+                <separator/>
+                <filter name="kiosk" string="Kiosk" domain="[('channel', '=', 'kiosk')]"/>
+                <filter name="mobile" string="Personal Devices" domain="[('channel', '=', 'mobile')]"/>
+                <separator/>
+                <filter name="today" string="Today" domain="[('attempt_date', '&gt;=', context_today().strftime('%Y-%m-%d'))]"/>
+                <group expand="0" string="Group By">
+                    <filter name="group_result" string="Result" context="{'group_by': 'result'}"/>
+                    <filter name="group_reason" string="Reason" context="{'group_by': 'reason'}"/>
+                    <filter name="group_ip" string="IP Address" context="{'group_by': 'ip_address'}"/>
+                    <filter name="group_day" string="Day" context="{'group_by': 'attempt_date:day'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="hr_face_attempt_action" model="ir.actions.act_window">
+        <field name="name">Face Attempts</field>
+        <field name="res_model">hr.face.attempt</field>
+        <field name="view_mode">list</field>
+        <field name="context">{'search_default_today': 1}</field>
+    </record>
+</odoo>

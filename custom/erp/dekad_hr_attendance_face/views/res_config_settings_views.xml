@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Extends hr_attendance/views/res_config_settings_views.xml -->
+    <record id="res_config_settings_view_form_face" model="ir.ui.view">
+        <field name="name">res.config.settings.view.form.inherit.hr.attendance.face</field>
+        <field name="model">res.config.settings</field>
+        <field name="inherit_id" ref="hr_attendance.res_config_settings_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//block[@name='overtime_settings']" position="before">
+                <block title="Face Recognition" name="face_recognition_settings">
+                    <setting string="Face Recognition Engine" help="Server-side face detection and recognition (OpenCV YuNet + SFace).">
+                        <field name="face_engine_ok" invisible="1"/>
+                        <div class="text-success" invisible="not face_engine_ok">
+                            <i class="fa fa-check me-1"/><field name="face_engine_message" class="d-inline" readonly="1"/>
+                        </div>
+                        <div class="alert alert-warning mb-0 mt-1" role="alert" invisible="face_engine_ok">
+                            <i class="fa fa-exclamation-triangle me-1"/><field name="face_engine_message" class="d-inline" readonly="1"/>
+                        </div>
+                    </setting>
+                    <setting string="Face Recognition in Kiosk" company_dependent="1"
+                             help="Employees check in/out on the kiosk by looking at the camera (1:N identification).">
+                        <field name="face_kiosk_enabled" readonly="not face_engine_ok and not face_kiosk_enabled"/>
+                    </setting>
+                    <setting string="Face Recognition on Personal Devices" company_dependent="1"
+                             help="Logged-in employees verify their own face (1:1) from the backend check-in button on their phone or computer.">
+                        <field name="face_mobile_enabled" readonly="not face_engine_ok and not face_mobile_enabled"/>
+                        <div class="mt-2" invisible="not face_mobile_enabled">
+                            <field name="face_require_geolocation"/>
+                            <label for="face_require_geolocation"/>
+                            <div class="text-muted">Set a geofence on work locations to restrict where employees can check in.</div>
+                        </div>
+                    </setting>
+                    <setting string="Face Only" company_dependent="1"
+                             invisible="not face_kiosk_enabled and not face_mobile_enabled"
+                             help="Reject the other check-in methods on the server: badge and manual selection in the kiosk, and the plain check-in button on personal devices.">
+                        <field name="face_only"/>
+                    </setting>
+                    <setting string="Matching Policy" company_dependent="1"
+                             invisible="not face_kiosk_enabled and not face_mobile_enabled"
+                             help="A face is accepted when its similarity reaches the threshold and, in the kiosk, beats the second closest employee by the margin. Ambiguous matches are rejected.">
+                        <div class="row mt-2">
+                            <label for="face_match_threshold" class="col-lg-5 o_light_label"/>
+                            <field name="face_match_threshold" class="col-lg-3"/>
+                        </div>
+                        <div class="row">
+                            <label for="face_match_margin" class="col-lg-5 o_light_label"/>
+                            <field name="face_match_margin" class="col-lg-3"/>
+                        </div>
+                        <div class="row">
+                            <label for="face_liveness_method" class="col-lg-5 o_light_label"/>
+                            <field name="face_liveness_method" class="col-lg-5"/>
+                        </div>
+                        <div class="row">
+                            <label for="face_frame_count" class="col-lg-5 o_light_label"/>
+                            <field name="face_frame_count" class="col-lg-3"/>
+                        </div>
+                        <div class="row">
+                            <label for="face_nonce_ttl" class="col-lg-5 o_light_label"/>
+                            <field name="face_nonce_ttl" class="col-lg-3"/>
+                        </div>
+                    </setting>
+                    <setting string="Rate Limiting" company_dependent="1"
+                             invisible="not face_kiosk_enabled and not face_mobile_enabled"
+                             help="Failed attempts and challenge requests are counted per IP address, per kiosk and per user. Reaching a limit locks the key for the lockout duration.">
+                        <div class="row mt-2">
+                            <label for="face_max_failures_ip" class="col-lg-5 o_light_label"/>
+                            <field name="face_max_failures_ip" class="col-lg-3"/>
+                        </div>
+                        <div class="row">
+                            <label for="face_max_failures_kiosk" class="col-lg-5 o_light_label"/>
+                            <field name="face_max_failures_kiosk" class="col-lg-3"/>
+                        </div>
+                        <div class="row">
+                            <label for="face_max_failures_user" class="col-lg-5 o_light_label"/>
+                            <field name="face_max_failures_user" class="col-lg-3"/>
+                        </div>
+                        <div class="row">
+                            <label for="face_max_challenges" class="col-lg-5 o_light_label"/>
+                            <field name="face_max_challenges" class="col-lg-3"/>
+                        </div>
+                        <div class="row">
+                            <label for="face_rate_window" class="col-lg-5 o_light_label"/>
+                            <field name="face_rate_window" class="col-lg-3"/>
+                        </div>
+                        <div class="row">
+                            <label for="face_lockout_minutes" class="col-lg-5 o_light_label"/>
+                            <field name="face_lockout_minutes" class="col-lg-3"/>
+                        </div>
+                    </setting>
+                    <setting string="Check-in Photo" company_dependent="1"
+                             invisible="not face_kiosk_enabled and not face_mobile_enabled"
+                             help="Keep the photo used for recognition on the attendance record. Photos are deleted automatically after the retention period.">
+                        <field name="face_store_photo"/>
+                        <div class="mt-2" invisible="not face_store_photo">
+                            <label for="face_photo_retention_days" class="o_light_label me-2"/>
+                            <field name="face_photo_retention_days" class="text-center" style="width: 6ch;"/>
+                        </div>
+                    </setting>
+                </block>
+            </xpath>
+        </field>
+    </record>
+</odoo>

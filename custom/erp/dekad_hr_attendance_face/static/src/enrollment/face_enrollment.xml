@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+
+<t t-name="dekad_hr_attendance_face.FaceEnrollment">
+    <div class="o_face_enrollment o_action h-100 overflow-auto p-3 p-md-4">
+        <div class="d-flex align-items-center gap-2 mb-3">
+            <button class="btn btn-secondary" t-on-click="() => this.back()">
+                <i class="oi oi-chevron-left me-1"/>Back
+            </button>
+            <h2 class="m-0">Face Enrollment: <t t-esc="employeeName"/></h2>
+        </div>
+
+        <div class="alert alert-info">
+            Capture or upload <t t-esc="minSamples"/> to <t t-esc="maxSamples"/> clear photos of the employee
+            looking at the camera, with good lighting and only one face per photo.
+            Photos are not stored: only numeric face templates are kept. Enrolling again replaces the previous templates.
+        </div>
+
+        <div class="form-check mb-3">
+            <input class="form-check-input" type="checkbox" id="o_face_consent" t-model="state.consent"/>
+            <label class="form-check-label fw-bold" for="o_face_consent">
+                The employee has given explicit consent to the processing of their biometric data for attendance.
+            </label>
+        </div>
+
+        <div class="d-flex flex-wrap gap-2 mb-3">
+            <button t-if="!state.cameraOn" class="btn btn-primary" t-on-click="() => this.startCamera()">
+                <i class="fa fa-camera me-1"/>Start camera
+            </button>
+            <t t-else="">
+                <button class="btn btn-primary" t-on-click="() => this.capture()"
+                        t-att-disabled="!state.videoReady or state.images.length >= maxSamples">
+                    <i class="fa fa-circle me-1"/>Capture
+                </button>
+                <button class="btn btn-secondary" t-on-click="() => this.stopCamera()">Stop camera</button>
+            </t>
+            <label class="btn btn-secondary mb-0">
+                <i class="fa fa-upload me-1"/>Upload photos
+                <input type="file" class="d-none" accept="image/jpeg,image/png" multiple="multiple"
+                       t-on-change="onUpload"/>
+            </label>
+        </div>
+
+        <div t-if="state.cameraOn" class="o_face_capture_frame position-relative mb-3">
+            <video t-ref="video" class="o_face_capture_video" autoplay="autoplay" muted="muted" playsinline="playsinline"/>
+            <div class="o_face_capture_oval"/>
+        </div>
+
+        <div class="d-flex flex-wrap gap-2 mb-3">
+            <t t-foreach="state.images" t-as="image" t-key="image_index">
+                <div class="position-relative">
+                    <img t-att-src="image" class="rounded border" style="height: 110px;" alt="Sample"/>
+                    <button class="btn btn-sm btn-danger position-absolute top-0 end-0 m-1" title="Remove"
+                            t-on-click="() => this.removeImage(image_index)">
+                        <i class="fa fa-trash"/>
+                    </button>
+                </div>
+            </t>
+        </div>
+
+        <div class="d-flex align-items-center gap-3">
+            <button class="btn btn-success btn-lg" t-att-disabled="!canSubmit" t-on-click="() => this.submit()">
+                <i t-attf-class="fa {{ state.busy ? 'fa-circle-o-notch fa-spin' : 'fa-check' }} me-1"/>Enroll
+            </button>
+            <span class="text-muted"><t t-esc="state.images.length"/> / <t t-esc="maxSamples"/> photos</span>
+            <span t-if="state.images.length &lt; minSamples" class="text-warning">
+                <i class="fa fa-info-circle me-1"/>Capture at least <t t-esc="minSamples"/> photos.
+            </span>
+            <span t-elif="!state.consent" class="text-warning">
+                <i class="fa fa-info-circle me-1"/>Tick the consent box above to enable enrollment.
+            </span>
+        </div>
+    </div>
+</t>
+
+</templates>

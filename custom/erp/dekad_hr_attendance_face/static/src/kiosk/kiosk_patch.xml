@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+
+<!-- Extends hr_attendance/static/src/public_kiosk/public_kiosk_app.xml -->
+<t t-inherit="hr_attendance.public_kiosk_app" t-inherit-mode="extension">
+    <!-- Main screen: face button next to the badge scanner -->
+    <xpath expr="//div[hasclass('o_hr_kiosk_mode_main')]" position="inside">
+        <button t-if="faceState.enabled" class="o_face_kiosk_btn btn btn-primary btn-lg p-5 rounded-3"
+                t-on-click="() => this.switchDisplay('face')">
+            <i class="fa fa-3x fa-user-circle mb-3"/>
+            <span class="d-block">Check in with your face</span>
+        </button>
+    </xpath>
+    <!-- Face only: hide the badge scanner and the manual identification button -->
+    <xpath expr="//KioskBarcodeScanner/.." position="attributes">
+        <attribute name="t-if">this.props.kioskMode !== 'manual' and !faceState.faceOnly</attribute>
+    </xpath>
+    <xpath expr="//div[hasclass('o_hr_kiosk_mode_bottom')]/t[1]" position="attributes">
+        <attribute name="t-if">this.props.kioskMode !== 'barcode' and !faceState.faceOnly</attribute>
+    </xpath>
+    <!-- Manual-selection screen (kiosk mode "manual"): floating face button -->
+    <xpath expr="//KioskManualSelection" position="after">
+        <button t-if="faceState.enabled" class="o_face_kiosk_fab btn btn-primary btn-lg rounded-pill shadow position-fixed bottom-0 end-0 m-4"
+                t-on-click="() => this.switchDisplay('face')">
+            <i class="fa fa-user-circle me-2"/>Check in with your face
+        </button>
+    </xpath>
+    <!-- Face capture screen -->
+    <xpath expr="//KioskPinCode/.." position="after">
+        <t t-if="this.state.active_display === 'face'">
+            <FaceCapture challengeRoute="'/dekad_face/kiosk/challenge'"
+                         verifyRoute="'/dekad_face/kiosk/verify'"
+                         params="{ token: this.props.token }"
+                         onSuccess.bind="onFaceSuccess"
+                         onCancel="() => this.kioskReturn()"/>
+        </t>
+    </xpath>
+</t>
+
+</templates>

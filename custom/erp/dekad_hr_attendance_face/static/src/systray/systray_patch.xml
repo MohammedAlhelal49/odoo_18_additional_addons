@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+
+<t t-name="dekad_hr_attendance_face.FaceCaptureDialog">
+    <Dialog title.translate="Face Check-in" size="'md'" footer="false" bodyClass="'p-0'">
+        <FaceCapture challengeRoute="'/dekad_face/my/challenge'"
+                     verifyRoute="'/dekad_face/my/verify'"
+                     withLocation="true"
+                     onSuccess.bind="onSuccess"
+                     onCancel="props.close"/>
+    </Dialog>
+</t>
+
+</templates>

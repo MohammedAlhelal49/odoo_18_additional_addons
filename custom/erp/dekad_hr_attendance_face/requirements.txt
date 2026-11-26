@@ -1,0 +1,4 @@
+# Optional: the module installs without these; face recognition stays disabled until they are present.
+# Tested with Python 3.12 / Odoo 18.0. Wheels exist for Python 3.10-3.13 (no compilation needed).
+opencv-python-headless==4.12.0.88
+numpy==2.2.6

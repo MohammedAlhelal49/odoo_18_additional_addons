@@ -1,0 +1,6 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_hr_face_profile_manager,hr.face.profile.manager,model_hr_face_profile,hr_attendance.group_hr_attendance_manager,1,1,1,1
+access_hr_face_sample_manager,hr.face.sample.manager,model_hr_face_sample,hr_attendance.group_hr_attendance_manager,1,0,1,1
+access_hr_face_attempt_manager,hr.face.attempt.manager,model_hr_face_attempt,hr_attendance.group_hr_attendance_manager,1,0,0,1
+access_hr_face_challenge_none,hr.face.challenge.none,model_hr_face_challenge,base.group_system,0,0,0,0
+access_hr_face_throttle_none,hr.face.throttle.none,model_hr_face_throttle,base.group_system,0,0,0,0

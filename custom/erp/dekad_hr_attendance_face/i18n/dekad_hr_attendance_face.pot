@@ -1,0 +1,1330 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* dekad_hr_attendance_face
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 18.0+e\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-10-20 07:19+0000\n"
+"PO-Revision-Date: 2026-10-20 07:19+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: dekad_hr_attendance_face
+#. odoo-javascript
+#: code:addons/dekad_hr_attendance_face/static/src/enrollment/face_enrollment.js:0
+msgid "%s face samples enrolled."
+msgstr ""
+
+#. module: dekad_hr_attendance_face
+#. odoo-javascript
+#: code:addons/dekad_hr_attendance_face/static/src/enrollment/face_enrollment.js:0
+msgid "%s: only JPEG or PNG images up to 6 MB."
+msgstr ""
+
+#. module: dekad_hr_attendance_face
+#: model_terms:ir.ui.view,arch_db:dekad_hr_attendance_face.view_employee_form_inherit_face
+msgid ""
+"<span class=\"o_stat_text\">Face</span>\n"
+"                        <span class=\"o_stat_value text-success\" invisible=\"not face_enrolled\">Enrolled</span>\n"
+"                        <span class=\"o_stat_value text-muted\" invisible=\"face_enrolled\">Not enrolled</span>"
+msgstr ""
+
+#. module: dekad_hr_attendance_face
+#: model_terms:ir.ui.view,arch_db:dekad_hr_attendance_face.res_config_settings_view_form_face
+msgid ""
+"A face is accepted when its similarity reaches the threshold and, in the "
+"kiosk, beats the second closest employee by the margin. Ambiguous matches "
+"are rejected."
+msgstr ""
+
+#. module: dekad_hr_attendance_face
+#: model:ir.model.fields.selection,name:dekad_hr_attendance_face.selection__hr_face_attempt__reason__ambiguous
+msgid "Ambiguous match"
+msgstr ""
+
+#. module: dekad_hr_attendance_face
+#: model:ir.model.constraint,message:dekad_hr_attendance_face.constraint_hr_face_profile_employee_uniq
+msgid "An employee can only have one face profile."
+msgstr ""
+
+#. module: dekad_hr_attendance_face
+#. odoo-python
+#: code:addons/dekad_hr_attendance_face/models/hr_face_profile.py:0
+msgid "At most %s photos can be enrolled."
+msgstr ""
+
+#. module: dekad_hr_attendance_face
+#: model:ir.model,name:dekad_hr_attendance_face.model_hr_attendance
+#: model:ir.model.fields,field_description:dekad_hr_attendance_face.field_hr_face_attempt__attendance_id
+msgid "Attendance"
+msgstr ""
+
+#. module: dekad_hr_attendance_face
+#: model:ir.actions.server,name:dekad_hr_attendance_face.ir_cron_face_gc_ir_actions_server
+msgid "Attendance Face: clean challenges and rate limits"
+msgstr ""
+
+#. module: dekad_hr_attendance_face
+#: model:ir.actions.server,name:dekad_hr_attendance_face.ir_cron_face_purge_inactive_ir_actions_server
+msgid "Attendance Face: delete face data of archived employees"
+msgstr ""
+
+#. module: dekad_hr_attendance_face
+#: model:ir.actions.server,name:dekad_hr_attendance_face.ir_cron_face_purge_photos_ir_actions_server
+msgid "Attendance Face: purge expired check-in photos"
+msgstr ""
+
+#. module: dekad_hr_attendance_face
+#: model:ir.model.fields.selection,name:dekad_hr_attendance_face.selection__hr_face_attempt__reason__attendance_error
+msgid "Attendance could not be recorded"
+msgstr ""
+
+#. module: dekad_hr_attendance_face
+#. odoo-javascript
+#: code:addons/dekad_hr_attendance_face/static/src/enrollment/face_enrollment.xml:0
+msgid "Back"
+msgstr ""
+
+#. module: dekad_hr_attendance_face
+#: model:ir.model.fields.selection,name:dekad_hr_attendance_face.selection__hr_face_attempt__reason__below_threshold
+msgid "Below similarity threshold"
+msgstr ""
+
+#. module: dekad_hr_attendance_face
+#: model:ir.model.fields,help:dekad_hr_attendance_face.field_hr_face_sample__embedding
+msgid "Biometric template (128 float32). Never displayed."
+msgstr ""
+
+#. module: dekad_hr_attendance_face
+#: model:ir.model.fields,field_description:dekad_hr_attendance_face.field_hr_face_attempt__browser
+msgid "Browser"
+msgstr ""
+
+#. module: dekad_hr_attendance_face
+#. odoo-javascript
+#: code:addons/dekad_hr_attendance_face/static/src/face_capture/face_capture.js:0
+msgid ""
+"Camera permission was denied. Allow the camera in the browser settings and "
+"try again."
+msgstr ""
+
+#. module: dekad_hr_attendance_face
+#. odoo-javascript
+#: code:addons/dekad_hr_attendance_face/static/src/face_capture/face_capture.xml:0
+msgid "Cancel"
+msgstr ""
+
+#. module: dekad_hr_attendance_face
+#. odoo-javascript
+#: code:addons/dekad_hr_attendance_face/static/src/enrollment/face_enrollment.xml:0
+msgid "Capture"
+msgstr ""
+
+#. module: dekad_hr_attendance_face
+#. odoo-javascript
+#: code:addons/dekad_hr_attendance_face/static/src/enrollment/face_enrollment.xml:0
+msgid "Capture at least"
+msgstr ""
+
+#. module: dekad_hr_attendance_face
+#. odoo-javascript
+#: code:addons/dekad_hr_attendance_face/static/src/enrollment/face_enrollment.xml:0
+msgid "Capture or upload"
+msgstr ""
+
+#. module: dekad_hr_attendance_face
+#. odoo-python
+#: code:addons/dekad_hr_attendance_face/models/hr_face_profile.py:0
+msgid "Capture or upload at least %s photos."
+msgstr ""
+
+#. module: dekad_hr_attendance_face
+#: model:ir.model.fields.selection,name:dekad_hr_attendance_face.selection__hr_face_attempt__reason__too_fast
+msgid "Captured too fast"
+msgstr ""
+
+#. module: dekad_hr_attendance_face
+#: model:ir.model.fields,field_description:dekad_hr_attendance_face.field_hr_face_challenge__challenge
+#: model:ir.model.fields.selection,name:dekad_hr_attendance_face.selection__hr_face_attempt__stage__challenge
+msgid "Challenge"
+msgstr ""
+
+#. module: dekad_hr_attendance_face
+#: model:ir.model.fields,field_description:dekad_hr_attendance_face.field_res_company__face_nonce_ttl
+#: model:ir.model.fields,field_description:dekad_hr_attendance_face.field_res_config_settings__face_nonce_ttl
+msgid "Challenge Validity (seconds)"
+msgstr ""
+
+#. module: dekad_hr_attendance_face
+#: model:ir.model.fields.selection,name:dekad_hr_attendance_face.selection__hr_face_attempt__reason__nonce_mismatch
+msgid "Challenge issued for another kiosk or user"
+msgstr ""
+
+#. module: dekad_hr_attendance_face
+#: model:ir.model.fields,field_description:dekad_hr_attendance_face.field_hr_face_attempt__channel
+#: model:ir.model.fields,field_description:dekad_hr_attendance_face.field_hr_face_challenge__channel
+msgid "Channel"
+msgstr ""
+
+#. module: dekad_hr_attendance_face
+#. odoo-javascript
+#: code:addons/dekad_hr_attendance_face/static/src/kiosk/kiosk_patch.xml:0
+msgid "Check in with your face"
+msgstr ""
+
+#. module: dekad_hr_attendance_face
+#: model:ir.model.fields,field_description:dekad_hr_attendance_face.field_hr_attendance__face_photo_in
+#: model_terms:ir.ui.view,arch_db:dekad_hr_attendance_face.res_config_settings_view_form_face
+msgid "Check-in Photo"
+msgstr ""
+
+#. module: dekad_hr_attendance_face
+#: model:ir.model.fields,field_description:dekad_hr_attendance_face.field_hr_attendance__face_photo_out
+msgid "Check-out Photo"
+msgstr ""
+
+#. module: dekad_hr_attendance_face
+#. odoo-javascript
+#: code:addons/dekad_hr_attendance_face/static/src/systray/systray_patch.js:0
+msgid "Checked in"
+msgstr ""
+
+#. module: dekad_hr_attendance_face
+#. odoo-javascript
+#: code:addons/dekad_hr_attendance_face/static/src/systray/systray_patch.js:0
+msgid "Checked out"
+msgstr ""
+
+#. module: dekad_hr_attendance_face
+#: model:ir.model,name:dekad_hr_attendance_face.model_res_company
+msgid "Companies"
+msgstr ""
+
+#. module: dekad_hr_attendance_face
+#: model:ir.model.fields,field_description:dekad_hr_attendance_face.field_hr_face_attempt__company_id
+#: model:ir.model.fields,field_description:dekad_hr_attendance_face.field_hr_face_challenge__company_id
+#: model:ir.model.fields,field_description:dekad_hr_attendance_face.field_hr_face_profile__company_id
+#: model:ir.model.fields,field_description:dekad_hr_attendance_face.field_hr_face_sample__company_id
+msgid "Company"
+msgstr ""
+
+#. module: dekad_hr_attendance_face
+#: model:ir.model,name:dekad_hr_attendance_face.model_res_config_settings
+msgid "Config Settings"
+msgstr ""
+
+#. module: dekad_hr_attendance_face
+#: model:ir.model.fields,field_description:dekad_hr_attendance_face.field_hr_face_profile__consent_date
+msgid "Consent Date"
+msgstr ""
+
+#. module: dekad_hr_attendance_face
+#: model:ir.model.fields,field_description:dekad_hr_attendance_face.field_hr_face_profile__consent_given
+msgid "Consent Given"
+msgstr ""
+
+#. module: dekad_hr_attendance_face
+#: model:ir.model.fields,field_description:dekad_hr_attendance_face.field_hr_face_profile__consent_user_id
+msgid "Consent Recorded By"
+msgstr ""
+
+#. module: dekad_hr_attendance_face
+#: model:ir.model.fields,field_description:dekad_hr_attendance_face.field_hr_face_attempt__create_uid
+#: model:ir.model.fields,field_description:dekad_hr_attendance_face.field_hr_face_challenge__create_uid
+#: model:ir.model.fields,field_description:dekad_hr_attendance_face.field_hr_face_profile__create_uid
+#: model:ir.model.fields,field_description:dekad_hr_attendance_face.field_hr_face_sample__create_uid
+#: model:ir.model.fields,field_description:dekad_hr_attendance_face.field_hr_face_throttle__create_uid
+msgid "Created by"
+msgstr ""
+
+#. module: dekad_hr_attendance_face
+#: model:ir.model.fields,field_description:dekad_hr_attendance_face.field_hr_face_attempt__create_date
+#: model:ir.model.fields,field_description:dekad_hr_attendance_face.field_hr_face_challenge__create_date
+#: model:ir.model.fields,field_description:dekad_hr_attendance_face.field_hr_face_profile__create_date
+#: model:ir.model.fields,field_description:dekad_hr_attendance_face.field_hr_face_sample__create_date
+#: model:ir.model.fields,field_description:dekad_hr_attendance_face.field_hr_face_throttle__create_date
+msgid "Created on"
+msgstr ""
+
+#. module: dekad_hr_attendance_face
+#: model:ir.model.fields,field_description:dekad_hr_attendance_face.field_hr_face_attempt__attempt_date
+msgid "Date"
+msgstr ""
+
+#. module: dekad_hr_attendance_face
+#: model_terms:ir.ui.view,arch_db:dekad_hr_attendance_face.hr_face_attempt_view_search
+msgid "Day"
+msgstr ""
+
+#. module: dekad_hr_attendance_face
+#: model:ir.model.fields,field_description:dekad_hr_attendance_face.field_hr_face_sample__detection_score
+msgid "Detection Score"
+msgstr ""
+
+#. module: dekad_hr_attendance_face
+#: model:ir.model.fields.selection,name:dekad_hr_attendance_face.selection__hr_face_attempt__reason__identity_changed
+msgid "Different faces across frames"
+msgstr ""
+
+#. module: dekad_hr_attendance_face
+#: model:ir.model.fields,field_description:dekad_hr_attendance_face.field_hr_face_attempt__display_name
+#: model:ir.model.fields,field_description:dekad_hr_attendance_face.field_hr_face_challenge__display_name
+#: model:ir.model.fields,field_description:dekad_hr_attendance_face.field_hr_face_profile__display_name
+#: model:ir.model.fields,field_description:dekad_hr_attendance_face.field_hr_face_sample__display_name
+#: model:ir.model.fields,field_description:dekad_hr_attendance_face.field_hr_face_throttle__display_name
+msgid "Display Name"
+msgstr ""
+
+#. module: dekad_hr_attendance_face
+#: model:ir.model.constraint,message:dekad_hr_attendance_face.constraint_hr_face_throttle_key_uniq
+msgid "Duplicate rate-limit key."
+msgstr ""
+
+#. module: dekad_hr_attendance_face
+#: model:ir.model.fields,field_description:dekad_hr_attendance_face.field_hr_face_sample__embedding
+msgid "Embedding"
+msgstr ""
+
+#. module: dekad_hr_attendance_face
+#: model:ir.model,name:dekad_hr_attendance_face.model_hr_employee
+#: model:ir.model.fields,field_description:dekad_hr_attendance_face.field_hr_face_attempt__employee_id
+#: model:ir.model.fields,field_description:dekad_hr_attendance_face.field_hr_face_profile__employee_id
+#: model:ir.model.fields,field_description:dekad_hr_attendance_face.field_hr_face_sample__employee_id
+msgid "Employee"
+msgstr ""
+
+#. module: dekad_hr_attendance_face
+#: model:ir.model,name:dekad_hr_attendance_face.model_hr_face_profile
+msgid "Employee Face Profile"
+msgstr ""
+
+#. module: dekad_hr_attendance_face
+#: model:ir.model,name:dekad_hr_attendance_face.model_hr_face_sample
+msgid "Employee Face Sample"
+msgstr ""
+
+#. module: dekad_hr_attendance_face
+#: model_terms:ir.ui.view,arch_db:dekad_hr_attendance_face.res_config_settings_view_form_face
+msgid ""
+"Employees check in/out on the kiosk by looking at the camera (1:N "
+"identification)."
+msgstr ""
+
+#. module: dekad_hr_attendance_face
+#. odoo-javascript
+#: code:addons/dekad_hr_attendance_face/static/src/enrollment/face_enrollment.xml:0
+msgid "Enroll"
+msgstr ""
+
+#. module: dekad_hr_attendance_face
+#: model:ir.model.fields.selection,name:dekad_hr_attendance_face.selection__hr_face_attempt__reason__expired_nonce
+msgid "Expired challenge"
+msgstr ""
+
+#. module: dekad_hr_attendance_face
+#: model:ir.model.fields,field_description:dekad_hr_attendance_face.field_hr_face_challenge__expires_at
+msgid "Expires At"
+msgstr ""
+
+#. module: dekad_hr_attendance_face
+#: model:ir.model.fields.selection,name:dekad_hr_attendance_face.selection__hr_attendance__in_mode__face_kiosk
+#: model:ir.model.fields.selection,name:dekad_hr_attendance_face.selection__hr_attendance__out_mode__face_kiosk
+msgid "Face (Kiosk)"
+msgstr ""
+
+#. module: dekad_hr_attendance_face
+#: model:ir.model.fields.selection,name:dekad_hr_attendance_face.selection__hr_attendance__in_mode__face_mobile
+#: model:ir.model.fields.selection,name:dekad_hr_attendance_face.selection__hr_attendance__out_mode__face_mobile
+msgid "Face (Personal Device)"
+msgstr ""
+
+#. module: dekad_hr_attendance_face
+#: model:ir.actions.act_window,name:dekad_hr_attendance_face.hr_face_attempt_action
+#: model:ir.ui.menu,name:dekad_hr_attendance_face.menu_hr_face_attempts
+msgid "Face Attempts"
+msgstr ""
+
+#. module: dekad_hr_attendance_face
+#. odoo-javascript
+#: code:addons/dekad_hr_attendance_face/static/src/systray/systray_patch.xml:0
+msgid "Face Check-in"
+msgstr ""
+
+#. module: dekad_hr_attendance_face
+#: model_terms:ir.ui.view,arch_db:dekad_hr_attendance_face.hr_work_location_form_view_face
+msgid "Face Check-in Geofence"
+msgstr ""
+
+#. module: dekad_hr_attendance_face
+#: model:ir.model.fields,field_description:dekad_hr_attendance_face.field_res_config_settings__face_engine_message
+msgid "Face Engine Message"
+msgstr ""
+
+#. module: dekad_hr_attendance_face
+#: model:ir.model.fields,field_description:dekad_hr_attendance_face.field_res_config_settings__face_engine_ok
+msgid "Face Engine Ok"
+msgstr ""
+
+#. module: dekad_hr_attendance_face
+#: model:ir.model.fields,field_description:dekad_hr_attendance_face.field_hr_employee__face_enrolled
+msgid "Face Enrolled"
+msgstr ""
+
+#. module: dekad_hr_attendance_face
+#. odoo-python
+#: code:addons/dekad_hr_attendance_face/models/hr_employee.py:0
+msgid "Face Enrollment"
+msgstr ""
+
+#. module: dekad_hr_attendance_face
+#. odoo-javascript
+#: code:addons/dekad_hr_attendance_face/static/src/enrollment/face_enrollment.xml:0
+msgid "Face Enrollment:"
+msgstr ""
+
+#. module: dekad_hr_attendance_face
+#: model:ir.model.fields,field_description:dekad_hr_attendance_face.field_res_company__face_only
+#: model:ir.model.fields,field_description:dekad_hr_attendance_face.field_res_config_settings__face_only
+#: model_terms:ir.ui.view,arch_db:dekad_hr_attendance_face.res_config_settings_view_form_face
+msgid "Face Only"
+msgstr ""
+
+#. module: dekad_hr_attendance_face
+#: model:ir.actions.act_window,name:dekad_hr_attendance_face.hr_face_profile_action
+#: model:ir.ui.menu,name:dekad_hr_attendance_face.menu_hr_face_profiles
+msgid "Face Profiles"
+msgstr ""
+
+#. module: dekad_hr_attendance_face
+#: model_terms:ir.ui.view,arch_db:dekad_hr_attendance_face.hr_attendance_view_form_face
+#: model_terms:ir.ui.view,arch_db:dekad_hr_attendance_face.res_config_settings_view_form_face
+msgid "Face Recognition"
+msgstr ""
+
+#. module: dekad_hr_attendance_face
+#: model:ir.model,name:dekad_hr_attendance_face.model_hr_face_attempt
+msgid "Face Recognition Attempt"
+msgstr ""
+
+#. module: dekad_hr_attendance_face
+#: model:ir.model,name:dekad_hr_attendance_face.model_hr_face_challenge
+msgid "Face Recognition Challenge"
+msgstr ""
+
+#. module: dekad_hr_attendance_face
+#: model_terms:ir.ui.view,arch_db:dekad_hr_attendance_face.res_config_settings_view_form_face
+msgid "Face Recognition Engine"
+msgstr ""
+
+#. module: dekad_hr_attendance_face
+#: model:ir.model,name:dekad_hr_attendance_face.model_hr_face_throttle
+msgid "Face Recognition Rate Limit"
+msgstr ""
+
+#. module: dekad_hr_attendance_face
+#: model:ir.model.fields,field_description:dekad_hr_attendance_face.field_res_company__face_kiosk_enabled
+#: model:ir.model.fields,field_description:dekad_hr_attendance_face.field_res_config_settings__face_kiosk_enabled
+#: model_terms:ir.ui.view,arch_db:dekad_hr_attendance_face.res_config_settings_view_form_face
+msgid "Face Recognition in Kiosk"
+msgstr ""
+
+#. module: dekad_hr_attendance_face
+#: model:ir.model.fields,field_description:dekad_hr_attendance_face.field_res_company__face_mobile_enabled
+#: model:ir.model.fields,field_description:dekad_hr_attendance_face.field_res_config_settings__face_mobile_enabled
+#: model_terms:ir.ui.view,arch_db:dekad_hr_attendance_face.res_config_settings_view_form_face
+msgid "Face Recognition on Personal Devices"
+msgstr ""
+
+#. module: dekad_hr_attendance_face
+#: model:ir.model.fields,help:dekad_hr_attendance_face.field_hr_work_location__face_geofence_radius
+msgid ""
+"Face check-in from personal devices is only accepted within this distance of"
+" the coordinates above. 0 disables the geofence."
+msgstr ""
+
+#. module: dekad_hr_attendance_face
+#: model:ir.model.fields.selection,name:dekad_hr_attendance_face.selection__hr_face_attempt__reason__engine_unavailable
+msgid "Face engine unavailable"
+msgstr ""
+
+#. module: dekad_hr_attendance_face
+#. odoo-javascript
+#: code:addons/dekad_hr_attendance_face/static/src/face_capture/face_capture.js:0
+msgid "Face not recognized. Please try again."
+msgstr ""
+
+#. module: dekad_hr_attendance_face
+#. odoo-python
+#: code:addons/dekad_hr_attendance_face/models/res_company.py:0
+msgid ""
+"Face recognition cannot be enabled: the face engine is not available on this"
+" server (%s)."
+msgstr ""
+
+#. module: dekad_hr_attendance_face
+#. odoo-javascript
+#: code:addons/dekad_hr_attendance_face/static/src/face_capture/face_capture.js:0
+msgid "Face recognition is not available. Please contact your administrator."
+msgstr ""
+
+#. module: dekad_hr_attendance_face
+#. odoo-javascript
+#: code:addons/dekad_hr_attendance_face/static/src/face_capture/face_capture.js:0
+msgid "Face recognition is not enabled."
+msgstr ""
+
+#. module: dekad_hr_attendance_face
+#. odoo-python
+#: code:addons/dekad_hr_attendance_face/models/res_config_settings.py:0
+msgid ""
+"Face recognition is unavailable: a model file does not match its expected "
+"checksum."
+msgstr ""
+
+#. module: dekad_hr_attendance_face
+#. odoo-python
+#: code:addons/dekad_hr_attendance_face/models/res_config_settings.py:0
+msgid ""
+"Face recognition is unavailable: the Python packages opencv-python-headless "
+"and numpy are not installed on the server. See the module README."
+msgstr ""
+
+#. module: dekad_hr_attendance_face
+#. odoo-python
+#: code:addons/dekad_hr_attendance_face/models/res_config_settings.py:0
+msgid ""
+"Face recognition is unavailable: the model files are missing from the "
+"module's face_models folder."
+msgstr ""
+
+#. module: dekad_hr_attendance_face
+#. odoo-python
+#: code:addons/dekad_hr_attendance_face/models/res_config_settings.py:0
+msgid ""
+"Face recognition is unavailable: the models could not be loaded. Check the "
+"server log."
+msgstr ""
+
+#. module: dekad_hr_attendance_face
+#: model_terms:ir.ui.view,arch_db:dekad_hr_attendance_face.hr_face_profile_view_form
+msgid ""
+"Face templates are stored as numeric vectors only; no photo is kept.\n"
+"                        Deleting this profile permanently removes the employee's biometric data."
+msgstr ""
+
+#. module: dekad_hr_attendance_face
+#: model:ir.model.fields.selection,name:dekad_hr_attendance_face.selection__hr_face_attempt__reason__face_too_small
+msgid "Face too small"
+msgstr ""
+
+#. module: dekad_hr_attendance_face
+#. odoo-python
+#: code:addons/dekad_hr_attendance_face/models/hr_face_profile.py:0
+msgid "Faces can only be enrolled for active employees."
+msgstr ""
+
+#. module: dekad_hr_attendance_face
+#: model_terms:ir.ui.view,arch_db:dekad_hr_attendance_face.res_config_settings_view_form_face
+msgid ""
+"Failed attempts and challenge requests are counted per IP address, per kiosk"
+" and per user. Reaching a limit locks the key for the lockout duration."
+msgstr ""
+
+#. module: dekad_hr_attendance_face
+#: model:ir.model.fields.selection,name:dekad_hr_attendance_face.selection__hr_face_attempt__result__failure
+msgid "Failure"
+msgstr ""
+
+#. module: dekad_hr_attendance_face
+#: model_terms:ir.ui.view,arch_db:dekad_hr_attendance_face.hr_face_attempt_view_search
+msgid "Failures"
+msgstr ""
+
+#. module: dekad_hr_attendance_face
+#: model:ir.model.fields.selection,name:dekad_hr_attendance_face.selection__hr_face_attempt__reason__tampered
+msgid "Forbidden parameters sent by the client"
+msgstr ""
+
+#. module: dekad_hr_attendance_face
+#: model:ir.model.fields,field_description:dekad_hr_attendance_face.field_res_company__face_frame_count
+#: model:ir.model.fields,field_description:dekad_hr_attendance_face.field_res_config_settings__face_frame_count
+msgid "Frames per Attempt"
+msgstr ""
+
+#. module: dekad_hr_attendance_face
+#: model:ir.model.fields,field_description:dekad_hr_attendance_face.field_hr_work_location__face_geofence_radius
+msgid "Geofence Radius (m)"
+msgstr ""
+
+#. module: dekad_hr_attendance_face
+#: model_terms:ir.ui.view,arch_db:dekad_hr_attendance_face.hr_face_attempt_view_search
+msgid "Group By"
+msgstr ""
+
+#. module: dekad_hr_attendance_face
+#: model:ir.model.fields.selection,name:dekad_hr_attendance_face.selection__res_company__face_liveness_method__head_turn
+msgid "Head turn challenge"
+msgstr ""
+
+#. module: dekad_hr_attendance_face
+#: model:ir.model.fields,field_description:dekad_hr_attendance_face.field_hr_face_throttle__hits
+msgid "Hits"
+msgstr ""
+
+#. module: dekad_hr_attendance_face
+#: model:ir.model.fields,field_description:dekad_hr_attendance_face.field_hr_face_attempt__id
+#: model:ir.model.fields,field_description:dekad_hr_attendance_face.field_hr_face_challenge__id
+#: model:ir.model.fields,field_description:dekad_hr_attendance_face.field_hr_face_profile__id
+#: model:ir.model.fields,field_description:dekad_hr_attendance_face.field_hr_face_sample__id
+#: model:ir.model.fields,field_description:dekad_hr_attendance_face.field_hr_face_throttle__id
+msgid "ID"
+msgstr ""
+
+#. module: dekad_hr_attendance_face
+#: model:ir.model.fields,field_description:dekad_hr_attendance_face.field_hr_face_attempt__ip_address
+#: model_terms:ir.ui.view,arch_db:dekad_hr_attendance_face.hr_face_attempt_view_search
+msgid "IP Address"
+msgstr ""
+
+#. module: dekad_hr_attendance_face
+#: model:ir.model.fields.selection,name:dekad_hr_attendance_face.selection__hr_face_attempt__reason__error
+msgid "Internal error"
+msgstr ""
+
+#. module: dekad_hr_attendance_face
+#: model:ir.model.fields.selection,name:dekad_hr_attendance_face.selection__hr_face_attempt__reason__bad_input
+msgid "Invalid images"
+msgstr ""
+
+#. module: dekad_hr_attendance_face
+#: model:ir.model.fields.selection,name:dekad_hr_attendance_face.selection__hr_face_attempt__reason__invalid_nonce
+msgid "Invalid or reused challenge"
+msgstr ""
+
+#. module: dekad_hr_attendance_face
+#: model:ir.model.fields,field_description:dekad_hr_attendance_face.field_hr_face_challenge__ip_address
+msgid "Ip Address"
+msgstr ""
+
+#. module: dekad_hr_attendance_face
+#: model:ir.model.fields.selection,name:dekad_hr_attendance_face.selection__hr_face_challenge__state__issued
+msgid "Issued"
+msgstr ""
+
+#. module: dekad_hr_attendance_face
+#: model:ir.model.fields,field_description:dekad_hr_attendance_face.field_hr_face_challenge__issued_at
+msgid "Issued At"
+msgstr ""
+
+#. module: dekad_hr_attendance_face
+#: model_terms:ir.ui.view,arch_db:dekad_hr_attendance_face.res_config_settings_view_form_face
+msgid ""
+"Keep the photo used for recognition on the attendance record. Photos are "
+"deleted automatically after the retention period."
+msgstr ""
+
+#. module: dekad_hr_attendance_face
+#: model:ir.model.fields,field_description:dekad_hr_attendance_face.field_hr_face_throttle__key
+msgid "Key"
+msgstr ""
+
+#. module: dekad_hr_attendance_face
+#: model:ir.model.fields.selection,name:dekad_hr_attendance_face.selection__hr_face_attempt__channel__kiosk
+#: model:ir.model.fields.selection,name:dekad_hr_attendance_face.selection__hr_face_challenge__channel__kiosk
+#: model_terms:ir.ui.view,arch_db:dekad_hr_attendance_face.hr_face_attempt_view_search
+msgid "Kiosk"
+msgstr ""
+
+#. module: dekad_hr_attendance_face
+#: model:ir.model.fields,field_description:dekad_hr_attendance_face.field_hr_face_attempt__write_uid
+#: model:ir.model.fields,field_description:dekad_hr_attendance_face.field_hr_face_challenge__write_uid
+#: model:ir.model.fields,field_description:dekad_hr_attendance_face.field_hr_face_profile__write_uid
+#: model:ir.model.fields,field_description:dekad_hr_attendance_face.field_hr_face_sample__write_uid
+#: model:ir.model.fields,field_description:dekad_hr_attendance_face.field_hr_face_throttle__write_uid
+msgid "Last Updated by"
+msgstr ""
+
+#. module: dekad_hr_attendance_face
+#: model:ir.model.fields,field_description:dekad_hr_attendance_face.field_hr_face_attempt__write_date
+#: model:ir.model.fields,field_description:dekad_hr_attendance_face.field_hr_face_challenge__write_date
+#: model:ir.model.fields,field_description:dekad_hr_attendance_face.field_hr_face_profile__write_date
+#: model:ir.model.fields,field_description:dekad_hr_attendance_face.field_hr_face_sample__write_date
+#: model:ir.model.fields,field_description:dekad_hr_attendance_face.field_hr_face_throttle__write_date
+msgid "Last Updated on"
+msgstr ""
+
+#. module: dekad_hr_attendance_face
+#: model:ir.model.fields,field_description:dekad_hr_attendance_face.field_hr_work_location__face_latitude
+msgid "Latitude"
+msgstr ""
+
+#. module: dekad_hr_attendance_face
+#: model:ir.model.fields,field_description:dekad_hr_attendance_face.field_res_company__face_liveness_method
+#: model:ir.model.fields,field_description:dekad_hr_attendance_face.field_res_config_settings__face_liveness_method
+msgid "Liveness Check"
+msgstr ""
+
+#. module: dekad_hr_attendance_face
+#: model:ir.model.fields,field_description:dekad_hr_attendance_face.field_hr_face_challenge__liveness_method
+msgid "Liveness Method"
+msgstr ""
+
+#. module: dekad_hr_attendance_face
+#: model:ir.model.fields.selection,name:dekad_hr_attendance_face.selection__hr_face_attempt__reason__challenge_failed
+msgid "Liveness challenge failed"
+msgstr ""
+
+#. module: dekad_hr_attendance_face
+#. odoo-javascript
+#: code:addons/dekad_hr_attendance_face/static/src/face_capture/face_capture.js:0
+msgid "Liveness check failed. Follow the instruction on screen and try again."
+msgstr ""
+
+#. module: dekad_hr_attendance_face
+#: model:ir.model.fields.selection,name:dekad_hr_attendance_face.selection__hr_face_attempt__reason__no_location
+msgid "Location missing"
+msgstr ""
+
+#. module: dekad_hr_attendance_face
+#: model:ir.model.fields.selection,name:dekad_hr_attendance_face.selection__hr_face_attempt__result__locked
+msgid "Locked"
+msgstr ""
+
+#. module: dekad_hr_attendance_face
+#: model:ir.model.fields,field_description:dekad_hr_attendance_face.field_hr_face_throttle__locked_until
+msgid "Locked Until"
+msgstr ""
+
+#. module: dekad_hr_attendance_face
+#: model:ir.model.fields.selection,name:dekad_hr_attendance_face.selection__hr_face_attempt__reason__locked
+msgid "Locked out"
+msgstr ""
+
+#. module: dekad_hr_attendance_face
+#: model:ir.model.fields,field_description:dekad_hr_attendance_face.field_res_company__face_lockout_minutes
+#: model:ir.model.fields,field_description:dekad_hr_attendance_face.field_res_config_settings__face_lockout_minutes
+msgid "Lockout Duration (minutes)"
+msgstr ""
+
+#. module: dekad_hr_attendance_face
+#: model_terms:ir.ui.view,arch_db:dekad_hr_attendance_face.res_config_settings_view_form_face
+msgid ""
+"Logged-in employees verify their own face (1:1) from the backend check-in "
+"button on their phone or computer."
+msgstr ""
+
+#. module: dekad_hr_attendance_face
+#: model:ir.model.fields,field_description:dekad_hr_attendance_face.field_hr_work_location__face_longitude
+msgid "Longitude"
+msgstr ""
+
+#. module: dekad_hr_attendance_face
+#. odoo-javascript
+#: code:addons/dekad_hr_attendance_face/static/src/face_capture/face_capture.js:0
+msgid "Look straight at the camera"
+msgstr ""
+
+#. module: dekad_hr_attendance_face
+#: model_terms:ir.ui.view,arch_db:dekad_hr_attendance_face.res_config_settings_view_form_face
+msgid "Matching Policy"
+msgstr ""
+
+#. module: dekad_hr_attendance_face
+#: model:ir.model.fields,field_description:dekad_hr_attendance_face.field_res_company__face_max_challenges
+#: model:ir.model.fields,field_description:dekad_hr_attendance_face.field_res_config_settings__face_max_challenges
+msgid "Max Challenges per IP"
+msgstr ""
+
+#. module: dekad_hr_attendance_face
+#: model:ir.model.fields,field_description:dekad_hr_attendance_face.field_res_company__face_max_failures_ip
+#: model:ir.model.fields,field_description:dekad_hr_attendance_face.field_res_config_settings__face_max_failures_ip
+msgid "Max Failures per IP"
+msgstr ""
+
+#. module: dekad_hr_attendance_face
+#: model:ir.model.fields,field_description:dekad_hr_attendance_face.field_res_company__face_max_failures_kiosk
+#: model:ir.model.fields,field_description:dekad_hr_attendance_face.field_res_config_settings__face_max_failures_kiosk
+msgid "Max Failures per Kiosk"
+msgstr ""
+
+#. module: dekad_hr_attendance_face
+#: model:ir.model.fields,field_description:dekad_hr_attendance_face.field_res_company__face_max_failures_user
+#: model:ir.model.fields,field_description:dekad_hr_attendance_face.field_res_config_settings__face_max_failures_user
+msgid "Max Failures per User"
+msgstr ""
+
+#. module: dekad_hr_attendance_face
+#: model:ir.model.fields,field_description:dekad_hr_attendance_face.field_res_company__face_match_margin
+#: model:ir.model.fields,field_description:dekad_hr_attendance_face.field_res_config_settings__face_match_margin
+msgid "Minimum Margin"
+msgstr ""
+
+#. module: dekad_hr_attendance_face
+#: model:ir.model.fields,field_description:dekad_hr_attendance_face.field_hr_attendance__in_mode
+msgid "Mode"
+msgstr ""
+
+#. module: dekad_hr_attendance_face
+#: model:ir.model.fields,field_description:dekad_hr_attendance_face.field_hr_face_sample__model_version
+msgid "Model Version"
+msgstr ""
+
+#. module: dekad_hr_attendance_face
+#. odoo-javascript
+#: code:addons/dekad_hr_attendance_face/static/src/face_capture/face_capture.js:0
+msgid "More than one face detected. Only one person at a time."
+msgstr ""
+
+#. module: dekad_hr_attendance_face
+#: model:ir.model.fields.selection,name:dekad_hr_attendance_face.selection__hr_face_attempt__reason__multiple_faces
+msgid "Multiple faces detected"
+msgstr ""
+
+#. module: dekad_hr_attendance_face
+#. odoo-javascript
+#: code:addons/dekad_hr_attendance_face/static/src/face_capture/face_capture.js:0
+msgid "No camera was found on this device."
+msgstr ""
+
+#. module: dekad_hr_attendance_face
+#: model:ir.model.fields.selection,name:dekad_hr_attendance_face.selection__hr_face_attempt__reason__no_gallery
+msgid "No enrolled faces"
+msgstr ""
+
+#. module: dekad_hr_attendance_face
+#: model_terms:ir.actions.act_window,help:dekad_hr_attendance_face.hr_face_profile_action
+msgid "No enrolled faces yet"
+msgstr ""
+
+#. module: dekad_hr_attendance_face
+#: model:ir.model.fields.selection,name:dekad_hr_attendance_face.selection__hr_face_attempt__reason__no_face
+msgid "No face detected"
+msgstr ""
+
+#. module: dekad_hr_attendance_face
+#. odoo-javascript
+#: code:addons/dekad_hr_attendance_face/static/src/face_capture/face_capture.js:0
+msgid "No face detected. Center your face in the frame."
+msgstr ""
+
+#. module: dekad_hr_attendance_face
+#: model:ir.model.fields.selection,name:dekad_hr_attendance_face.selection__hr_face_attempt__reason__no_frontal
+msgid "No frontal face"
+msgstr ""
+
+#. module: dekad_hr_attendance_face
+#: model:ir.model.fields,field_description:dekad_hr_attendance_face.field_hr_face_challenge__nonce_hash
+msgid "Nonce Hash"
+msgstr ""
+
+#. module: dekad_hr_attendance_face
+#: model:ir.model.constraint,message:dekad_hr_attendance_face.constraint_hr_face_challenge_nonce_hash_uniq
+msgid "Nonce collision."
+msgstr ""
+
+#. module: dekad_hr_attendance_face
+#: model:ir.model.fields,field_description:dekad_hr_attendance_face.field_hr_face_profile__sample_count
+msgid "Number of Samples"
+msgstr ""
+
+#. module: dekad_hr_attendance_face
+#. odoo-python
+#: code:addons/dekad_hr_attendance_face/models/hr_face_profile.py:0
+msgid ""
+"Only %(count)s usable photos (minimum %(minimum)s). Rejected: %(rejected)s"
+msgstr ""
+
+#. module: dekad_hr_attendance_face
+#. odoo-python
+#: code:addons/dekad_hr_attendance_face/models/hr_employee.py:0
+msgid "Only Attendance administrators can delete face data."
+msgstr ""
+
+#. module: dekad_hr_attendance_face
+#. odoo-python
+#: code:addons/dekad_hr_attendance_face/models/hr_employee.py:0
+#: code:addons/dekad_hr_attendance_face/models/hr_face_profile.py:0
+msgid "Only Attendance administrators can enroll faces."
+msgstr ""
+
+#. module: dekad_hr_attendance_face
+#: model_terms:ir.actions.act_window,help:dekad_hr_attendance_face.hr_face_profile_action
+msgid ""
+"Open an employee and click \"Face\" to enroll their face with their consent."
+msgstr ""
+
+#. module: dekad_hr_attendance_face
+#: model:ir.model.fields,field_description:dekad_hr_attendance_face.field_hr_attendance__out_mode
+msgid "Out Mode"
+msgstr ""
+
+#. module: dekad_hr_attendance_face
+#: model:ir.model.fields.selection,name:dekad_hr_attendance_face.selection__hr_face_attempt__reason__outside_geofence
+msgid "Outside the work location"
+msgstr ""
+
+#. module: dekad_hr_attendance_face
+#: model:ir.model.fields.selection,name:dekad_hr_attendance_face.selection__hr_face_attempt__channel__mobile
+#: model:ir.model.fields.selection,name:dekad_hr_attendance_face.selection__hr_face_challenge__channel__mobile
+msgid "Personal Device"
+msgstr ""
+
+#. module: dekad_hr_attendance_face
+#: model_terms:ir.ui.view,arch_db:dekad_hr_attendance_face.hr_face_attempt_view_search
+msgid "Personal Devices"
+msgstr ""
+
+#. module: dekad_hr_attendance_face
+#: model:ir.model.fields,field_description:dekad_hr_attendance_face.field_res_company__face_photo_retention_days
+#: model:ir.model.fields,field_description:dekad_hr_attendance_face.field_res_config_settings__face_photo_retention_days
+msgid "Photo Retention (days)"
+msgstr ""
+
+#. module: dekad_hr_attendance_face
+#. odoo-javascript
+#: code:addons/dekad_hr_attendance_face/static/src/face_capture/face_capture.js:0
+msgid "Please move closer to the camera."
+msgstr ""
+
+#. module: dekad_hr_attendance_face
+#: model:ir.model.fields,field_description:dekad_hr_attendance_face.field_hr_face_sample__profile_id
+msgid "Profile"
+msgstr ""
+
+#. module: dekad_hr_attendance_face
+#: model:ir.model.fields,field_description:dekad_hr_attendance_face.field_res_company__face_rate_window
+#: model:ir.model.fields,field_description:dekad_hr_attendance_face.field_res_config_settings__face_rate_window
+msgid "Rate Limit Window (minutes)"
+msgstr ""
+
+#. module: dekad_hr_attendance_face
+#: model_terms:ir.ui.view,arch_db:dekad_hr_attendance_face.res_config_settings_view_form_face
+msgid "Rate Limiting"
+msgstr ""
+
+#. module: dekad_hr_attendance_face
+#. odoo-python
+#: code:addons/dekad_hr_attendance_face/models/res_company.py:0
+msgid "Rate limits, durations and the photo retention must be positive."
+msgstr ""
+
+#. module: dekad_hr_attendance_face
+#: model:ir.model.fields,field_description:dekad_hr_attendance_face.field_hr_face_attempt__reason
+#: model_terms:ir.ui.view,arch_db:dekad_hr_attendance_face.hr_face_attempt_view_search
+msgid "Reason"
+msgstr ""
+
+#. module: dekad_hr_attendance_face
+#: model:ir.model.fields.selection,name:dekad_hr_attendance_face.selection__hr_face_attempt__reason__ok
+msgid "Recognized"
+msgstr ""
+
+#. module: dekad_hr_attendance_face
+#: model:ir.model.fields,help:dekad_hr_attendance_face.field_hr_face_attempt__employee_id
+msgid ""
+"Recognized employee (kiosk) or employee of the logged-in user (personal "
+"device)."
+msgstr ""
+
+#. module: dekad_hr_attendance_face
+#: model_terms:ir.ui.view,arch_db:dekad_hr_attendance_face.res_config_settings_view_form_face
+msgid ""
+"Reject the other check-in methods on the server: badge and manual selection "
+"in the kiosk, and the plain check-in button on personal devices."
+msgstr ""
+
+#. module: dekad_hr_attendance_face
+#. odoo-javascript
+#: code:addons/dekad_hr_attendance_face/static/src/enrollment/face_enrollment.xml:0
+msgid "Remove"
+msgstr ""
+
+#. module: dekad_hr_attendance_face
+#: model:ir.model.fields,field_description:dekad_hr_attendance_face.field_res_company__face_require_geolocation
+#: model:ir.model.fields,field_description:dekad_hr_attendance_face.field_res_config_settings__face_require_geolocation
+msgid "Require Geolocation on Personal Devices"
+msgstr ""
+
+#. module: dekad_hr_attendance_face
+#: model:ir.model.fields,field_description:dekad_hr_attendance_face.field_hr_face_attempt__result
+#: model_terms:ir.ui.view,arch_db:dekad_hr_attendance_face.hr_face_attempt_view_search
+msgid "Result"
+msgstr ""
+
+#. module: dekad_hr_attendance_face
+#. odoo-javascript
+#: code:addons/dekad_hr_attendance_face/static/src/enrollment/face_enrollment.xml:0
+msgid "Sample"
+msgstr ""
+
+#. module: dekad_hr_attendance_face
+#: model:ir.model.fields,field_description:dekad_hr_attendance_face.field_hr_face_profile__sample_ids
+msgid "Samples"
+msgstr ""
+
+#. module: dekad_hr_attendance_face
+#: model:ir.model.fields,field_description:dekad_hr_attendance_face.field_hr_face_attempt__score
+msgid "Score"
+msgstr ""
+
+#. module: dekad_hr_attendance_face
+#: model:ir.model.fields,field_description:dekad_hr_attendance_face.field_hr_face_attempt__second_score
+msgid "Second Best Score"
+msgstr ""
+
+#. module: dekad_hr_attendance_face
+#: model_terms:ir.ui.view,arch_db:dekad_hr_attendance_face.res_config_settings_view_form_face
+msgid "Server-side face detection and recognition (OpenCV YuNet + SFace)."
+msgstr ""
+
+#. module: dekad_hr_attendance_face
+#: model_terms:ir.ui.view,arch_db:dekad_hr_attendance_face.res_config_settings_view_form_face
+msgid ""
+"Set a geofence on work locations to restrict where employees can check in."
+msgstr ""
+
+#. module: dekad_hr_attendance_face
+#: model:ir.model.fields,field_description:dekad_hr_attendance_face.field_res_company__face_match_threshold
+#: model:ir.model.fields,field_description:dekad_hr_attendance_face.field_res_config_settings__face_match_threshold
+msgid "Similarity Threshold"
+msgstr ""
+
+#. module: dekad_hr_attendance_face
+#. odoo-javascript
+#: code:addons/dekad_hr_attendance_face/static/src/face_capture/face_capture.js:0
+msgid "Slowly turn your head to your left"
+msgstr ""
+
+#. module: dekad_hr_attendance_face
+#. odoo-javascript
+#: code:addons/dekad_hr_attendance_face/static/src/face_capture/face_capture.js:0
+msgid "Slowly turn your head to your right"
+msgstr ""
+
+#. module: dekad_hr_attendance_face
+#. odoo-javascript
+#: code:addons/dekad_hr_attendance_face/static/src/enrollment/face_enrollment.js:0
+msgid "Some photos were rejected"
+msgstr ""
+
+#. module: dekad_hr_attendance_face
+#. odoo-javascript
+#: code:addons/dekad_hr_attendance_face/static/src/face_capture/face_capture.js:0
+msgid "Something went wrong. Please try again."
+msgstr ""
+
+#. module: dekad_hr_attendance_face
+#: model:ir.model.fields,field_description:dekad_hr_attendance_face.field_hr_face_attempt__stage
+msgid "Stage"
+msgstr ""
+
+#. module: dekad_hr_attendance_face
+#. odoo-javascript
+#: code:addons/dekad_hr_attendance_face/static/src/enrollment/face_enrollment.xml:0
+msgid "Start camera"
+msgstr ""
+
+#. module: dekad_hr_attendance_face
+#. odoo-javascript
+#: code:addons/dekad_hr_attendance_face/static/src/face_capture/face_capture.js:0
+msgid "Starting the camera…"
+msgstr ""
+
+#. module: dekad_hr_attendance_face
+#: model:ir.model.fields,field_description:dekad_hr_attendance_face.field_hr_face_challenge__state
+msgid "State"
+msgstr ""
+
+#. module: dekad_hr_attendance_face
+#. odoo-javascript
+#: code:addons/dekad_hr_attendance_face/static/src/enrollment/face_enrollment.xml:0
+msgid "Stop camera"
+msgstr ""
+
+#. module: dekad_hr_attendance_face
+#: model:ir.model.fields,field_description:dekad_hr_attendance_face.field_res_company__face_store_photo
+#: model:ir.model.fields,field_description:dekad_hr_attendance_face.field_res_config_settings__face_store_photo
+msgid "Store Check-in Photo"
+msgstr ""
+
+#. module: dekad_hr_attendance_face
+#: model:ir.model.fields.selection,name:dekad_hr_attendance_face.selection__hr_face_attempt__result__success
+#: model_terms:ir.ui.view,arch_db:dekad_hr_attendance_face.hr_face_attempt_view_search
+msgid "Success"
+msgstr ""
+
+#. module: dekad_hr_attendance_face
+#. odoo-javascript
+#: code:addons/dekad_hr_attendance_face/static/src/face_capture/face_capture.js:0
+msgid "The camera is already in use by another application."
+msgstr ""
+
+#. module: dekad_hr_attendance_face
+#. odoo-javascript
+#: code:addons/dekad_hr_attendance_face/static/src/face_capture/face_capture.js:0
+msgid ""
+"The camera is not available. Camera access requires HTTPS and your "
+"permission."
+msgstr ""
+
+#. module: dekad_hr_attendance_face
+#. odoo-javascript
+#: code:addons/dekad_hr_attendance_face/static/src/enrollment/face_enrollment.js:0
+msgid "The camera is not available. Camera access requires HTTPS."
+msgstr ""
+
+#. module: dekad_hr_attendance_face
+#. odoo-javascript
+#: code:addons/dekad_hr_attendance_face/static/src/face_capture/face_capture.js:0
+msgid "The captured images were invalid. Please try again."
+msgstr ""
+
+#. module: dekad_hr_attendance_face
+#. odoo-python
+#: code:addons/dekad_hr_attendance_face/models/res_company.py:0
+msgid "The challenge validity must be between 15 and 300 seconds."
+msgstr ""
+
+#. module: dekad_hr_attendance_face
+#. odoo-javascript
+#: code:addons/dekad_hr_attendance_face/static/src/enrollment/face_enrollment.xml:0
+msgid ""
+"The employee has given explicit consent to the processing of their biometric"
+" data for attendance."
+msgstr ""
+
+#. module: dekad_hr_attendance_face
+#. odoo-python
+#: code:addons/dekad_hr_attendance_face/models/hr_face_profile.py:0
+msgid "The employee's consent is required before enrolling their face."
+msgstr ""
+
+#. module: dekad_hr_attendance_face
+#. odoo-python
+#: code:addons/dekad_hr_attendance_face/models/hr_face_profile.py:0
+msgid "The face recognition engine is not available on this server."
+msgstr ""
+
+#. module: dekad_hr_attendance_face
+#. odoo-python
+#: code:addons/dekad_hr_attendance_face/models/res_config_settings.py:0
+msgid "The face recognition engine is ready."
+msgstr ""
+
+#. module: dekad_hr_attendance_face
+#. odoo-python
+#: code:addons/dekad_hr_attendance_face/models/res_company.py:0
+msgid "The minimum margin must be between 0 and 0.5."
+msgstr ""
+
+#. module: dekad_hr_attendance_face
+#. odoo-python
+#: code:addons/dekad_hr_attendance_face/models/res_company.py:0
+msgid "The number of frames per attempt must be between 3 and 8."
+msgstr ""
+
+#. module: dekad_hr_attendance_face
+#. odoo-python
+#: code:addons/dekad_hr_attendance_face/models/hr_face_profile.py:0
+msgid ""
+"The photos do not seem to show the same person. Please capture them again."
+msgstr ""
+
+#. module: dekad_hr_attendance_face
+#. odoo-javascript
+#: code:addons/dekad_hr_attendance_face/static/src/face_capture/face_capture.js:0
+msgid "The session expired. Please try again."
+msgstr ""
+
+#. module: dekad_hr_attendance_face
+#. odoo-python
+#: code:addons/dekad_hr_attendance_face/models/res_company.py:0
+msgid "The similarity threshold must be between 0.20 and 0.95."
+msgstr ""
+
+#. module: dekad_hr_attendance_face
+#. odoo-python
+#: code:addons/dekad_hr_attendance_face/models/hr_face_profile.py:0
+msgid ""
+"This face is too similar to the enrolled face of %s. Enrollment refused to "
+"avoid ambiguous matches."
+msgstr ""
+
+#. module: dekad_hr_attendance_face
+#. odoo-javascript
+#: code:addons/dekad_hr_attendance_face/static/src/enrollment/face_enrollment.xml:0
+msgid "Tick the consent box above to enable enrollment."
+msgstr ""
+
+#. module: dekad_hr_attendance_face
+#: model_terms:ir.ui.view,arch_db:dekad_hr_attendance_face.hr_face_attempt_view_search
+msgid "Today"
+msgstr ""
+
+#. module: dekad_hr_attendance_face
+#: model:ir.model.fields.selection,name:dekad_hr_attendance_face.selection__hr_face_attempt__reason__rate_limited
+msgid "Too many challenge requests"
+msgstr ""
+
+#. module: dekad_hr_attendance_face
+#. odoo-javascript
+#: code:addons/dekad_hr_attendance_face/static/src/face_capture/face_capture.js:0
+msgid "Too many failed attempts. Please try again later."
+msgstr ""
+
+#. module: dekad_hr_attendance_face
+#. odoo-javascript
+#: code:addons/dekad_hr_attendance_face/static/src/face_capture/face_capture.js:0
+msgid "Too many requests. Please wait a moment and try again."
+msgstr ""
+
+#. module: dekad_hr_attendance_face
+#. odoo-javascript
+#: code:addons/dekad_hr_attendance_face/static/src/face_capture/face_capture.xml:0
+msgid "Try again"
+msgstr ""
+
+#. module: dekad_hr_attendance_face
+#. odoo-javascript
+#: code:addons/dekad_hr_attendance_face/static/src/enrollment/face_enrollment.xml:0
+msgid "Upload photos"
+msgstr ""
+
+#. module: dekad_hr_attendance_face
+#: model:ir.model.fields.selection,name:dekad_hr_attendance_face.selection__hr_face_challenge__state__used
+msgid "Used"
+msgstr ""
+
+#. module: dekad_hr_attendance_face
+#: model:ir.model.fields,field_description:dekad_hr_attendance_face.field_hr_face_attempt__user_id
+#: model:ir.model.fields,field_description:dekad_hr_attendance_face.field_hr_face_challenge__user_id
+msgid "User"
+msgstr ""
+
+#. module: dekad_hr_attendance_face
+#: model:ir.model.fields.selection,name:dekad_hr_attendance_face.selection__hr_face_attempt__reason__no_employee
+msgid "User without employee"
+msgstr ""
+
+#. module: dekad_hr_attendance_face
+#: model:ir.model.fields.selection,name:dekad_hr_attendance_face.selection__hr_face_attempt__stage__verify
+msgid "Verification"
+msgstr ""
+
+#. module: dekad_hr_attendance_face
+#. odoo-javascript
+#: code:addons/dekad_hr_attendance_face/static/src/face_capture/face_capture.js:0
+msgid "Verifying…"
+msgstr ""
+
+#. module: dekad_hr_attendance_face
+#: model:ir.model.fields,help:dekad_hr_attendance_face.field_res_company__face_only
+#: model:ir.model.fields,help:dekad_hr_attendance_face.field_res_config_settings__face_only
+msgid ""
+"When face recognition is enabled for a channel, the server rejects the other"
+" check-in methods of that channel (badge and manual selection in the kiosk, "
+"the systray button for personal devices)."
+msgstr ""
+
+#. module: dekad_hr_attendance_face
+#: model:ir.model.fields,field_description:dekad_hr_attendance_face.field_hr_face_throttle__window_start
+msgid "Window Start"
+msgstr ""
+
+#. module: dekad_hr_attendance_face
+#: model:ir.model,name:dekad_hr_attendance_face.model_hr_work_location
+msgid "Work Location"
+msgstr ""
+
+#. module: dekad_hr_attendance_face
+#. odoo-javascript
+#: code:addons/dekad_hr_attendance_face/static/src/face_capture/face_capture.js:0
+msgid "You are not at your work location."
+msgstr ""
+
+#. module: dekad_hr_attendance_face
+#. odoo-javascript
+#: code:addons/dekad_hr_attendance_face/static/src/face_capture/face_capture.js:0
+msgid "Your face is not enrolled yet. Please contact your HR administrator."
+msgstr ""
+
+#. module: dekad_hr_attendance_face
+#. odoo-javascript
+#: code:addons/dekad_hr_attendance_face/static/src/face_capture/face_capture.js:0
+msgid "Your location is required. Allow location access and try again."
+msgstr ""
+
+#. module: dekad_hr_attendance_face
+#. odoo-javascript
+#: code:addons/dekad_hr_attendance_face/static/src/face_capture/face_capture.js:0
+msgid "Your user is not linked to an employee."
+msgstr ""
+
+#. module: dekad_hr_attendance_face
+#. odoo-javascript
+#: code:addons/dekad_hr_attendance_face/static/src/enrollment/face_enrollment.xml:0
+msgid ""
+"clear photos of the employee\n"
+"            looking at the camera, with good lighting and only one face per photo.\n"
+"            Photos are not stored: only numeric face templates are kept. Enrolling again replaces the previous templates."
+msgstr ""
+
+#. module: dekad_hr_attendance_face
+#. odoo-python
+#: code:addons/dekad_hr_attendance_face/models/hr_face_profile.py:0
+msgid "face not clear or not looking at the camera"
+msgstr ""
+
+#. module: dekad_hr_attendance_face
+#. odoo-python
+#: code:addons/dekad_hr_attendance_face/models/hr_face_profile.py:0
+msgid "face too small"
+msgstr ""
+
+#. module: dekad_hr_attendance_face
+#. odoo-python
+#: code:addons/dekad_hr_attendance_face/models/hr_face_profile.py:0
+msgid "invalid or unsupported image"
+msgstr ""
+
+#. module: dekad_hr_attendance_face
+#. odoo-python
+#: code:addons/dekad_hr_attendance_face/models/hr_face_profile.py:0
+msgid "more than one face"
+msgstr ""
+
+#. module: dekad_hr_attendance_face
+#. odoo-python
+#: code:addons/dekad_hr_attendance_face/models/hr_face_profile.py:0
+msgid "no face detected"
+msgstr ""
+
+#. module: dekad_hr_attendance_face
+#. odoo-python
+#: code:addons/dekad_hr_attendance_face/models/hr_face_profile.py:0
+msgid "photo %(index)s: %(reason)s"
+msgstr ""
+
+#. module: dekad_hr_attendance_face
+#. odoo-javascript
+#: code:addons/dekad_hr_attendance_face/static/src/enrollment/face_enrollment.xml:0
+msgid "photos"
+msgstr ""
+
+#. module: dekad_hr_attendance_face
+#. odoo-javascript
+#: code:addons/dekad_hr_attendance_face/static/src/enrollment/face_enrollment.xml:0
+msgid "photos."
+msgstr ""
+
+#. module: dekad_hr_attendance_face
+#. odoo-javascript
+#: code:addons/dekad_hr_attendance_face/static/src/enrollment/face_enrollment.xml:0
+msgid "to"
+msgstr ""

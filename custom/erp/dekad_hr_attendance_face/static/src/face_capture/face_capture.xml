@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+
+<t t-name="dekad_hr_attendance_face.FaceCapture">
+    <div class="o_face_capture d-flex flex-column align-items-center gap-3 p-3 w-100">
+        <div class="o_face_capture_frame position-relative">
+            <video t-ref="video" class="o_face_capture_video" autoplay="autoplay" muted="muted" playsinline="playsinline"/>
+            <div class="o_face_capture_oval"/>
+            <!-- Physical side (inline style, not start/end) so RTL layouts keep the arrow on the mirrored preview's correct side. -->
+            <div t-if="state.phase === 'turn'" class="o_face_capture_arrow position-absolute top-50 translate-middle-y"
+                 t-att-style="state.challenge === 'left' ? 'left: 0.75rem;' : 'right: 0.75rem;'">
+                <i t-attf-class="fa fa-4x fa-arrow-{{ state.challenge === 'left' ? 'left' : 'right' }}"/>
+            </div>
+            <div t-if="state.phase === 'verifying'" class="o_face_capture_busy position-absolute top-50 start-50 translate-middle">
+                <i class="fa fa-3x fa-circle-o-notch fa-spin"/>
+            </div>
+        </div>
+        <h4 t-if="state.phase !== 'error'" class="text-center m-0" t-esc="instruction"/>
+        <div t-if="state.phase === 'error'" class="alert alert-danger text-center m-0" role="alert" t-esc="state.error"/>
+        <div class="d-flex gap-2">
+            <button t-if="state.phase === 'error'" class="btn btn-primary btn-lg" t-on-click="() => this.retry()">
+                <i class="fa fa-refresh me-1"/>Try again
+            </button>
+            <button class="btn btn-secondary btn-lg" t-on-click="() => this.props.onCancel()">Cancel</button>
+        </div>
+    </div>
+</t>
+
+</templates>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Extends hr.view_employee_form (button box), like hr_attendance/views/hr_employee_view.xml -->
+    <record id="view_employee_form_inherit_face" model="ir.ui.view">
+        <field name="name">hr.employee.form.inherit.face</field>
+        <field name="model">hr.employee</field>
+        <field name="inherit_id" ref="hr.view_employee_form"/>
+        <field name="priority">120</field>
+        <field name="arch" type="xml">
+            <xpath expr="//div[@name='button_box']" position="inside">
+                <button name="action_open_face_enrollment" type="object" class="oe_stat_button"
+                        icon="fa-user-circle" groups="hr_attendance.group_hr_attendance_manager">
+                    <div class="o_stat_info">
+                        <span class="o_stat_text">Face</span>
+                        <span class="o_stat_value text-success" invisible="not face_enrolled">Enrolled</span>
+                        <span class="o_stat_value text-muted" invisible="face_enrolled">Not enrolled</span>
+                    </div>
+                    <field name="face_enrolled" invisible="1"/>
+                </button>
+            </xpath>
+        </field>
+    </record>
+</odoo>
