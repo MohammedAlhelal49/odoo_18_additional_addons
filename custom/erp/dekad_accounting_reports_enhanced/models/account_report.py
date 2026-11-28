@@ -792,14 +792,25 @@ class AccountGeneralLedgerReportHandler(models.AbstractModel):
         _custom_options_initializer).
         """
         if options.get('group_by_company'):
+            # Company totals are the sums of the company's own account lines
+            # (same queries as the expanded rows), so they always match them
+            # whatever the options (secondary currency, hide initial balance,
+            # strict range, search...). The Total line is the sum of companies.
             lines = []
             totals_by_column_group = defaultdict(lambda: {'debit': 0.0, 'credit': 0.0, 'balance': 0.0})
-            for company, col_group_totals in self._query_company_totals(report, options):
+            for company in self._query_report_companies(report, options):
+                company_line_id = report._get_generic_line_id('res.company', company.id)
+                account_lines, col_group_totals = self._get_company_account_lines(report, options, company_line_id)
+                if not account_lines:
+                    continue
                 for col_group_key, vals in col_group_totals.items():
-                    totals_by_column_group[col_group_key]['debit']   += vals.get('debit',   0.0)
-                    totals_by_column_group[col_group_key]['credit']  += vals.get('credit',  0.0)
-                    totals_by_column_group[col_group_key]['balance'] += vals.get('balance', 0.0)
+                    totals_by_column_group[col_group_key]['debit']   += vals['debit']
+                    totals_by_column_group[col_group_key]['credit']  += vals['credit']
+                    totals_by_column_group[col_group_key]['balance'] += vals['balance']
                 lines.append(self._get_company_title_line(report, options, company, col_group_totals))
+            company_currency = self.env.company.currency_id
+            for totals in totals_by_column_group.values():
+                totals['balance'] = company_currency.round(totals['balance'])
             lines.append(self._get_total_line(report, options, totals_by_column_group))
             return [(0, line) for line in lines]
 
@@ -875,8 +886,25 @@ class AccountGeneralLedgerReportHandler(models.AbstractModel):
         if scoped_options is None:
             return {'lines': [], 'offset_increment': 0, 'has_more': False}
 
+        lines, _totals = self._get_group_account_lines(
+            report, options, scoped_options, line_dict_id,
+            '_report_expand_unfoldable_line_analytic_account_gl',
+        )
+        return {'lines': lines, 'offset_increment': len(lines), 'has_more': False}
+
+    # =========================================================================
+    # GROUP BY (COMPANY / ANALYTIC) — shared helpers
+    # =========================================================================
+
+    def _get_group_account_lines(self, report, options, scoped_options, parent_line_id, expand_function):
+        """
+        Account lines (level 2) under a group line (company / analytic), computed
+        with scoped_options, and their totals {col_group_key: {debit, credit, balance}}.
+        """
         lines = []
+        totals = defaultdict(lambda: {'debit': 0.0, 'credit': 0.0, 'balance': 0.0})
         date_from = options['date']['date_from']
+        unfolded_lines = options.get('unfolded_lines', [])
 
         for account, column_group_results in self._query_values(report, scoped_options):
             eval_dict = {}
@@ -895,23 +923,44 @@ class AccountGeneralLedgerReportHandler(models.AbstractModel):
                     'credit':  account_sum.get('credit',  0.0) + account_un_earn.get('credit',  0.0),
                     'balance': account_sum.get('balance', 0.0) + account_un_earn.get('balance', 0.0),
                 }
+                for key in ('debit', 'credit', 'balance'):
+                    totals[col_group_key][key] += eval_dict[col_group_key][key]
 
                 max_date = account_sum.get('max_date')
                 has_lines = has_lines or bool(max_date and str(max_date) >= date_from)
 
             account_line = self._get_account_title_line(report, scoped_options, account, has_lines, eval_dict)
-            account_line['parent_id'] = line_dict_id
+            account_line['parent_id'] = parent_line_id
             account_line['level'] = 2
-            account_line['id'] = report._build_subline_id(line_dict_id, account_line['id'])
-
+            account_line['id'] = report._build_subline_id(parent_line_id, account_line['id'])
+            # Odoo marks the account unfolded when it is unfolded anywhere (under
+            # another group or in the ungrouped report): only this group's own
+            # line counts here.
+            account_line['unfolded'] = bool(has_lines and (
+                account_line['id'] in unfolded_lines or options.get('unfold_all')
+            ))
             if has_lines:
-                account_line['expand_function'] = '_report_expand_unfoldable_line_analytic_account_gl'
-                if account_line['id'] in options.get('unfolded_lines', []):
-                    account_line['unfolded'] = True
+                account_line['expand_function'] = expand_function
 
             lines.append(account_line)
 
-        return {'lines': lines, 'offset_increment': len(lines), 'has_more': False}
+        return lines, totals
+
+    def _reparent_expanded_account_lines(self, expansion_result, account_line_id, line_dict_id):
+        """
+        Odoo's GL expand builds the initial balance / journal item lines under
+        the plain account id. Under a group they must be under the group's
+        account line (line_dict_id): the web client folds a line by hiding the
+        lines whose id starts with its id, and an account shared by several
+        companies would otherwise give the same line ids under each company.
+        """
+        prefix = account_line_id + '|'
+        for line in expansion_result.get('lines', []):
+            if line['id'].startswith(prefix):
+                line['id'] = line_dict_id + line['id'][len(account_line_id):]
+            if line.get('parent_id') == account_line_id:
+                line['parent_id'] = line_dict_id
+        return expansion_result
 
     # =========================================================================
     # GROUP BY ANALYTIC — expand account → AML lines (keeps analytic scope)
@@ -952,9 +1001,12 @@ class AccountGeneralLedgerReportHandler(models.AbstractModel):
                 'has_more': {account_id: has_more},
             }
 
-        return self._report_expand_unfoldable_line_general_ledger(
-            actual_line_id, groupby, scoped_options, progress, offset,
-            unfold_all_batch_data=unfold_all_batch_data,
+        return self._reparent_expanded_account_lines(
+            self._report_expand_unfoldable_line_general_ledger(
+                actual_line_id, groupby, scoped_options, progress, offset,
+                unfold_all_batch_data=unfold_all_batch_data,
+            ),
+            actual_line_id, line_dict_id,
         )
 
     # =========================================================================
@@ -966,61 +1018,32 @@ class AccountGeneralLedgerReportHandler(models.AbstractModel):
     # GROUP BY COMPANY — totals query (single SQL round-trip)
     # =========================================================================
 
-    def _query_company_totals(self, report, options):
-        """
-        Single UNION ALL query across all column groups.
-        Returns [(res.company, {col_group_key: {debit, credit, balance}})]
-        sorted by company name.
-        company_id is a direct column on account_move_line — no join needed.
-        """
-        options_by_column_group = report._split_options_per_column_group(options)
-        queries = []
+    def _query_report_companies(self, report, options):
+        """Companies having journal items in the report scope (res.company order)."""
+        query = report._get_report_query(options, 'from_beginning')
+        self._cr.execute(SQL(
+            """
+            SELECT DISTINCT account_move_line.company_id
+            FROM %(table_references)s
+            WHERE %(search_condition)s
+            """,
+            table_references=query.from_clause,
+            search_condition=query.where_clause,
+        ))
+        company_ids = [row[0] for row in self._cr.fetchall() if row[0]]
+        return self.env['res.company'].search([('id', 'in', company_ids)])
 
-        for column_group_key, options_group in options_by_column_group.items():
-            query = report._get_report_query(options_group, 'from_beginning')
-            queries.append(SQL(
-                """
-                SELECT
-                    account_move_line.company_id                AS company_id,
-                    %(column_group_key)s                        AS column_group_key,
-                    SUM(%(debit_select)s)                       AS debit,
-                    SUM(%(credit_select)s)                      AS credit,
-                    SUM(%(balance_select)s)                     AS balance
-                FROM %(table_references)s
-                %(currency_table_join)s
-                WHERE %(search_condition)s
-                GROUP BY account_move_line.company_id
-                """,
-                column_group_key=column_group_key,
-                table_references=query.from_clause,
-                debit_select=report._currency_table_apply_rate(SQL("account_move_line.debit")),
-                credit_select=report._currency_table_apply_rate(SQL("account_move_line.credit")),
-                balance_select=report._currency_table_apply_rate(SQL("account_move_line.balance")),
-                currency_table_join=report._currency_table_aml_join(options_group),
-                search_condition=query.where_clause,
-            ))
-
-        if not queries:
-            return []
-
-        self._cr.execute(SQL(" UNION ALL ").join(queries))
-        rows = self._cr.dictfetchall()
-        if not rows:
-            return []
-
-        totals_by_company = {}
-        company_ids = set()
-        for row in rows:
-            cid = row['company_id']
-            company_ids.add(cid)
-            totals_by_company.setdefault(cid, {})[row['column_group_key']] = {
-                'debit':   row['debit']   or 0.0,
-                'credit':  row['credit']  or 0.0,
-                'balance': row['balance'] or 0.0,
-            }
-
-        companies = self.env['res.company'].search([('id', 'in', list(company_ids))])
-        return [(company, totals_by_company[company.id]) for company in companies]
+    def _get_company_account_lines(self, report, options, company_line_id):
+        """Account lines of one company group and their totals (see _get_group_account_lines)."""
+        company_id = report._get_res_id_from_line_id(company_line_id, 'res.company')
+        scoped_options = {
+            **options,
+            'forced_domain': options.get('forced_domain', []) + [('company_id', '=', company_id)],
+        }
+        return self._get_group_account_lines(
+            report, options, scoped_options, company_line_id,
+            '_report_expand_unfoldable_line_company_account_gl',
+        )
 
     # =========================================================================
     # GROUP BY COMPANY — company title line builder
@@ -1042,10 +1065,7 @@ class AccountGeneralLedgerReportHandler(models.AbstractModel):
             line_columns.append(report._build_column_dict(col_val, column, options=options))
 
         line_id = report._get_generic_line_id('res.company', company.id)
-        is_unfolded = any(
-            report._get_res_id_from_line_id(lid, 'res.company') == company.id
-            for lid in options.get('unfolded_lines', [])
-        )
+        is_unfolded = line_id in options.get('unfolded_lines', [])
 
         return {
             'id': line_id,
@@ -1073,47 +1093,7 @@ class AccountGeneralLedgerReportHandler(models.AbstractModel):
         if not company_id:
             return {'lines': [], 'offset_increment': 0, 'has_more': False}
 
-        scoped_options = {
-            **options,
-            'forced_domain': options.get('forced_domain', []) + [('company_id', '=', company_id)],
-        }
-
-        lines = []
-        date_from = options['date']['date_from']
-
-        for account, column_group_results in self._query_values(report, scoped_options):
-            eval_dict = {}
-            has_lines = False
-
-            for col_group_key, results in column_group_results.items():
-                account_sum     = results.get('sum', {})
-                account_un_earn = results.get('unaffected_earnings', {})
-
-                eval_dict[col_group_key] = {
-                    'amount_currency': (
-                        account_sum.get('amount_currency', 0.0)
-                        + account_un_earn.get('amount_currency', 0.0)
-                    ),
-                    'debit':   account_sum.get('debit',   0.0) + account_un_earn.get('debit',   0.0),
-                    'credit':  account_sum.get('credit',  0.0) + account_un_earn.get('credit',  0.0),
-                    'balance': account_sum.get('balance', 0.0) + account_un_earn.get('balance', 0.0),
-                }
-
-                max_date = account_sum.get('max_date')
-                has_lines = has_lines or bool(max_date and str(max_date) >= date_from)
-
-            account_line = self._get_account_title_line(report, scoped_options, account, has_lines, eval_dict)
-            account_line['parent_id'] = line_dict_id
-            account_line['level'] = 2
-            account_line['id'] = report._build_subline_id(line_dict_id, account_line['id'])
-
-            if has_lines:
-                account_line['expand_function'] = '_report_expand_unfoldable_line_company_account_gl'
-                if account_line['id'] in options.get('unfolded_lines', []):
-                    account_line['unfolded'] = True
-
-            lines.append(account_line)
-
+        lines, _totals = self._get_company_account_lines(report, options, line_dict_id)
         return {'lines': lines, 'offset_increment': len(lines), 'has_more': False}
 
     # =========================================================================
@@ -1168,9 +1148,12 @@ class AccountGeneralLedgerReportHandler(models.AbstractModel):
                 'has_more': {account_id: has_more},
             }
 
-        return self._report_expand_unfoldable_line_general_ledger(
-            actual_line_id, groupby, scoped_options, progress, offset,
-            unfold_all_batch_data=unfold_all_batch_data,
+        return self._reparent_expanded_account_lines(
+            self._report_expand_unfoldable_line_general_ledger(
+                actual_line_id, groupby, scoped_options, progress, offset,
+                unfold_all_batch_data=unfold_all_batch_data,
+            ),
+            actual_line_id, line_dict_id,
         )
 
     def _get_initial_balance_values(self, report, account_ids, options):

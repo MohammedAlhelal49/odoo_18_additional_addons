@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 {
     'name': 'Dekad Accounting Reports Enhanced',
-    'version': '18.0.1.4.0',
+    'version': '18.0.1.4.1',
     'category': 'Accounting/Accounting',
     'summary': 'Secondary currency filter + Analytic Account column + Analytic filter and Group by Analytic (by share) for General Ledger and Trial Balance',
     'description': """
